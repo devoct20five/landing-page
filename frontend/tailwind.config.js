@@ -1,104 +1,311 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ["class"],
+
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx}",
+    "./src/**/*.{js,jsx}",
   ],
-  prefix: "",
+
   theme: {
     container: {
       center: true,
-      padding: '1.5rem',
-      screens: { '2xl': '1440px' },
+      padding: {
+        DEFAULT: "1.5rem",
+        sm: "1.5rem",
+        lg: "2rem",
+        xl: "2.5rem",
+      },
+      screens: {
+        "2xl": "1440px",
+      },
     },
+
     extend: {
+      /* ========================================
+         COLORS
+      ======================================== */
+
       colors: {
-        // ==== OCT20FIVE Brand Tokens ====
         brand: {
-          orange: '#FF5A1F',
-          orangeHover: '#E64E1A',
-          orangeSoft: '#FFB08A',
-          orangeTint: '#FFF3EC',
-          dark: '#1A0907',
-          dark2: '#2A140F',
-          dark3: '#3A241F',
-          cream: '#F6F0E8',
-          cream2: '#EDE4D6',
-          peach: '#F4E4D5',
+          black: "#0A0A0A",
+          blackSoft: "#151515",
+          blackElevated: "#1E1E1E",
+
+          white: "#FFFFFF",
+
+          cream: "#F6F4EF",
+          creamSoft: "#EFE9DF",
+
+          text: "#111111",
+          textSoft: "#585858",
+
+          border: "#E8E2D9",
+          borderDark: "rgba(255,255,255,.08)",
+
+          orange: "#FF5A1F",
+          orangeHover: "#E94D15",
+          orangeSoft: "#FFB089",
         },
+
         surface: {
-          bg: 'var(--surface-bg)',
-          fg: 'var(--surface-fg)',
-          muted: 'var(--surface-muted)',
-          card: 'var(--surface-card)',
-          border: 'var(--surface-border)',
+          bg: "var(--surface-bg)",
+          fg: "var(--surface-fg)",
+          card: "var(--surface-card)",
+          muted: "var(--surface-muted)",
+          border: "var(--surface-border)",
         },
-        // shadcn passthrough
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
-        secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
-        destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
-        muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
-        accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
-        popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
-        card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
+
+      /* ========================================
+         TYPOGRAPHY
+      ======================================== */
+
       fontFamily: {
-        display: ['var(--font-display)', 'Eurostile', 'Oswald', 'Bebas Neue', 'sans-serif'],
-        body: ['Satoshi', 'Satoshi Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+        display: [
+          "var(--font-display)",
+          "General Sans",
+          "Satoshi",
+          "Inter",
+          "sans-serif",
+        ],
+
+        body: ["Satoshi", "Inter", "ui-sans-serif", "system-ui"],
+
+        mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
+
       fontSize: {
-        'display-2xl': ['clamp(3.5rem, 10vw, 11rem)', { lineHeight: '0.9', letterSpacing: '-0.03em', fontWeight: '800' }],
-        'display-xl':  ['clamp(3rem, 8vw, 8.5rem)',  { lineHeight: '0.92', letterSpacing: '-0.02em', fontWeight: '800' }],
-        'display-lg':  ['clamp(2.5rem, 6vw, 6rem)',  { lineHeight: '0.96', letterSpacing: '-0.015em', fontWeight: '700' }],
-        'display-md':  ['clamp(2rem, 4vw, 3.75rem)', { lineHeight: '1.02', letterSpacing: '-0.01em', fontWeight: '700' }],
-        'display-sm':  ['clamp(1.5rem, 2.5vw, 2.25rem)', { lineHeight: '1.15', fontWeight: '600' }],
-        'body-xl':     ['clamp(1.125rem, 1.4vw, 1.5rem)', { lineHeight: '1.5' }],
-        'body-lg':     ['1.125rem', { lineHeight: '1.55' }],
-        eyebrow:       ['0.7rem', { lineHeight: '1', letterSpacing: '0.18em', fontWeight: '600' }],
+        hero: [
+          "clamp(4rem,10vw,9rem)",
+          {
+            lineHeight: ".88",
+            letterSpacing: "-.045em",
+            fontWeight: "700",
+          },
+        ],
+
+        "display-xl": [
+          "clamp(3rem,7vw,6.5rem)",
+          {
+            lineHeight: ".92",
+            letterSpacing: "-.04em",
+            fontWeight: "700",
+          },
+        ],
+
+        "display-lg": [
+          "clamp(2.5rem,5vw,4.75rem)",
+          {
+            lineHeight: ".95",
+            letterSpacing: "-.03em",
+            fontWeight: "700",
+          },
+        ],
+
+        "display-md": [
+          "clamp(2rem,4vw,3.25rem)",
+          {
+            lineHeight: "1",
+            letterSpacing: "-.025em",
+            fontWeight: "700",
+          },
+        ],
+
+        "display-sm": [
+          "clamp(1.5rem,2vw,2.25rem)",
+          {
+            lineHeight: "1.1",
+            fontWeight: "600",
+          },
+        ],
+
+        lead: [
+          "clamp(1.125rem,1.5vw,1.5rem)",
+          {
+            lineHeight: "1.7",
+          },
+        ],
+
+        eyebrow: [
+          ".72rem",
+          {
+            letterSpacing: ".22em",
+            lineHeight: "1",
+            fontWeight: "600",
+          },
+        ],
       },
+
+      /* ========================================
+         RADIUS
+      ======================================== */
+
       borderRadius: {
-        pill: '999px',
-        card: '1.75rem',
-        icon: '0.875rem',
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        xs: ".5rem",
+        sm: ".75rem",
+        md: "1rem",
+        lg: "1.5rem",
+        xl: "2rem",
+        card: "2rem",
+        section: "2.5rem",
+        pill: "999px",
+
+        DEFAULT: "var(--radius)",
       },
+
+      /* ========================================
+         SHADOWS
+      ======================================== */
+
       boxShadow: {
-        'brand-glow': '0 20px 60px -20px rgba(255,90,31,0.55), 0 8px 30px -10px rgba(255,90,31,0.35)',
-        'brand-soft': '0 30px 80px -30px rgba(26,9,7,0.35)',
-        'card-lift': '0 30px 80px -30px rgba(0,0,0,0.35), 0 10px 30px -12px rgba(0,0,0,0.2)',
+        soft: "0 20px 60px rgba(0,0,0,.08)",
+
+        medium: "0 30px 90px rgba(0,0,0,.12)",
+
+        floating: "0 50px 120px rgba(0,0,0,.18)",
+
+        glow: "0 20px 50px rgba(255,90,31,.18)",
       },
+
+      /* ========================================
+         BACKGROUNDS
+      ======================================== */
+
       backgroundImage: {
-        'radial-orange': 'radial-gradient(circle at 50% 50%, rgba(255,90,31,0.35) 0%, rgba(255,90,31,0) 60%)',
-        'noise': "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0.98  0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>\")",
+        noise:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E\")",
+
+        glow: "radial-gradient(circle at center, rgba(255,90,31,.18), transparent 70%)",
       },
+
+      /* ========================================
+         ANIMATION
+      ======================================== */
+
       keyframes: {
-        'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },
-        'accordion-up':   { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } },
-        'marquee':        { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
-        'ping-slow':      { '0%,100%': { opacity: '0.4', transform: 'scale(1)' }, '50%': { opacity: '0', transform: 'scale(2.2)' } },
+        fadeUp: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(32px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+
+        fade: {
+          from: {
+            opacity: "0",
+          },
+          to: {
+            opacity: "1",
+          },
+        },
+
+        marquee: {
+          "0%": {
+            transform: "translateX(0)",
+          },
+          "100%": {
+            transform: "translateX(-50%)",
+          },
+        },
+
+        accordionDown: {
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
+        },
+
+        accordionUp: {
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
+        },
       },
+
       animation: {
-        'accordion-down': 'accordion-down 0.25s ease-out',
-        'accordion-up':   'accordion-up 0.25s ease-out',
-        'marquee':        'marquee 40s linear infinite',
-        'ping-slow':      'ping-slow 2.6s cubic-bezier(0, 0, 0.2, 1) infinite',
+        fade: "fade .8s cubic-bezier(.22,1,.36,1)",
+
+        "fade-up": "fadeUp .8s cubic-bezier(.22,1,.36,1)",
+
+        marquee: "marquee 35s linear infinite",
+
+        "accordion-down": "accordionDown .3s ease",
+
+        "accordion-up": "accordionUp .3s ease",
       },
+
+      /* ========================================
+         TRANSITIONS
+      ======================================== */
+
       transitionTimingFunction: {
-        'apple': 'cubic-bezier(0.22, 1, 0.36, 1)',
-        'apple-in': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        smooth: "cubic-bezier(.22,1,.36,1)",
+        standard: "cubic-bezier(.4,0,.2,1)",
+      },
+
+      transitionDuration: {
+        400: "400ms",
+        600: "600ms",
+        800: "800ms",
+        1200: "1200ms",
       },
     },
   },
+
   plugins: [require("tailwindcss-animate")],
 };

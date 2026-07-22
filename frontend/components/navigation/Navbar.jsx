@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
+
 import Logo from '@/components/ui/Logo'
 
-// variants:
-//   agency  -> Services, Work, Behind the Work, Vision, Careers  CTA Get in Touch
-//   service -> Solution, Work, Behind the Work, Pricing, FAQs    CTA Book a Call
-//   utility -> Services, Work, Behind the Work, Vision, Careers  CTA Get in Touch
-const variantLinks = {
+/* =========================================================
+   NAVIGATION DATA
+========================================================= */
+
+const NAV_LINKS = {
   agency: [
     { label: 'Services', href: '/agency#services' },
     { label: 'Work', href: '/agency#showreel' },
@@ -19,6 +20,7 @@ const variantLinks = {
     { label: 'Vision', href: '/agency/vision' },
     { label: 'Careers', href: '/agency/careers' },
   ],
+
   service: [
     { label: 'Solution', href: '#solution' },
     { label: 'Work', href: '#showreel' },
@@ -26,6 +28,7 @@ const variantLinks = {
     { label: 'Pricing', href: '#pricing' },
     { label: 'FAQs', href: '#faqs' },
   ],
+
   utility: [
     { label: 'Services', href: '/agency#services' },
     { label: 'Work', href: '/agency#showreel' },
@@ -33,113 +36,590 @@ const variantLinks = {
     { label: 'Vision', href: '/agency/vision' },
     { label: 'Careers', href: '/agency/careers' },
   ],
+
   minimal: [],
 }
 
-export default function Navbar({ variant = 'agency', ctaLabel, ctaHref, initialTheme = 'dark' }) {
-  const [scrolled, setScrolled] = useState(false)
-  const [theme, setTheme] = useState(initialTheme) // 'dark' or 'light'
-  const [open, setOpen] = useState(false)
+/* =========================================================
+   COMPONENT
+========================================================= */
+
+export default function Navbar({
+  variant = 'agency',
+  ctaLabel,
+  ctaHref,
+  initialTheme = 'dark',
+  contactHref = '/agency/get-in-touch',
+}) {
   const pathname = usePathname()
 
-  const links = variantLinks[variant] || variantLinks.agency
-  const defaultCta = variant === 'service' ? { label: 'Book a Call', href: '/agency/book-a-call' } : { label: 'Get in Touch', href: '/agency/get-in-touch' }
-  const cta = { label: ctaLabel || defaultCta.label, href: ctaHref || defaultCta.href }
+  const [open, setOpen] = useState(false)
+  const [theme, setTheme] = useState(initialTheme)
+  const [scrolled, setScrolled] = useState(false)
 
-  // Scroll listener for backdrop
+  const links = NAV_LINKS[variant] ?? NAV_LINKS.agency
+
+  const defaultCTA =
+    variant === 'service'
+      ? {
+          label: 'Book a Call',
+          href: '/agency/book-a-call',
+        }
+      : {
+          label: 'Get in Touch',
+          href: '/agency/get-in-touch',
+        }
+
+  const cta = {
+    label: ctaLabel || defaultCTA.label,
+    href: ctaHref || defaultCTA.href,
+  }
+
+  /* =====================================
+      Detect Scroll
+  ===================================== */
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 25)
+    }
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
+
+    return () =>
+      window.removeEventListener(
+        'scroll',
+        handleScroll
+      )
   }, [])
 
-  // Theme awareness — read data-theme of section under navbar
+  /* =====================================
+      Detect Section Theme
+  ===================================== */
+
   useEffect(() => {
-    const sections = document.querySelectorAll('section[data-theme]')
+    const sections = document.querySelectorAll(
+      'section[data-theme]'
+    )
+
     if (!sections.length) return
-    const io = new IntersectionObserver((entries) => {
-      // Find the section closest to the top that is intersecting
-      let best = null
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          if (!best || e.boundingClientRect.top < best.boundingClientRect.top) best = e
-        }
-      })
-      if (best) {
-        const t = best.target.getAttribute('data-theme')
-        setTheme(t === 'dark' ? 'dark' : 'light')
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let current = null
+
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+
+          if (
+            !current ||
+            entry.boundingClientRect.top <
+              current.boundingClientRect.top
+          ) {
+            current = entry
+          }
+        })
+
+        if (!current) return
+
+        const sectionTheme =
+          current.target.getAttribute('data-theme')
+
+        setTheme(
+          sectionTheme === 'dark'
+            ? 'dark'
+            : 'light'
+        )
+      },
+      {
+        rootMargin: '-90px 0px -70% 0px',
       }
-    }, { rootMargin: '-80px 0px -75% 0px', threshold: 0 })
-    sections.forEach((s) => io.observe(s))
-    return () => io.disconnect()
+    )
+
+    sections.forEach((section) =>
+      observer.observe(section)
+    )
+
+    return () => observer.disconnect()
   }, [pathname])
 
-  const isDark = theme === 'dark'
-  const glassCls = isDark ? 'glass-nav glass-nav-dark' : 'glass-nav glass-nav-light'
+  const dark = theme === 'dark'
+
+  const navClass = dark
+    ? 'glass-nav glass-nav-dark'
+    : 'glass-nav glass-nav-light'
+
+  const logoVariant = dark ? 'dark' : 'light'
 
   return (
     <>
       <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className="fixed top-4 md:top-5 left-0 right-0 z-50 flex justify-center px-4"
+        initial={{
+          y: -30,
+          opacity: 0,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        transition={{
+          duration: 0.9,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="
+          fixed
+          inset-x-0
+          top-6
+          z-50
+          flex
+          justify-center
+          px-5
+        "
       >
-        <nav className={`${glassCls} flex items-center gap-2 rounded-full pl-4 pr-2 py-2 shadow-brand-soft transition-colors duration-500 max-w-5xl w-full`}>
-          <Link href="/" className="flex items-center gap-2 font-display font-bold tracking-tight text-[0.95rem]" aria-label="OCT20FIVE">
-            <span className="inline-block w-6 h-6 rounded-md border-[1.5px] border-current relative overflow-hidden">
-              <span className="absolute inset-0.5 bg-brand-orange rounded-[3px]" />
-            </span>
-            <span className="hidden sm:inline">OCT20FIVE</span>
-          </Link>
-          <div className="hidden lg:flex items-center gap-1 mx-auto">
-            {links.map((l) => (
-              <Link key={l.href} href={l.href} className="relative px-3 py-2 text-[0.85rem] font-medium opacity-80 hover:opacity-100 transition-opacity group">
-                {l.label}
-                <span className="absolute left-3 right-3 bottom-1 h-[1.5px] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-brand-orange" />
-              </Link>
-            ))}
+        <nav
+          className={`
+            ${navClass}
+            relative
+            flex
+            h-[74px]
+            w-full
+            max-w-[1380px]
+            items-center
+            rounded-full
+            border
+            px-7
+            transition-all
+            duration-500
+            ${
+              scrolled
+                ? 'shadow-[0_20px_60px_rgba(0,0,0,.18)]'
+                : ''
+            }
+          `}
+        >
+          {/* ========= LOGO ========= */}
+
+          <Logo
+            variant={logoVariant}
+            size="sm"
+          />
+
+          {/* Desktop Navigation continues in Part 2 */}
+                    {/* =====================================
+              DESKTOP NAVIGATION
+          ===================================== */}
+
+          <div className="mx-auto hidden items-center lg:flex">
+
+            <div className="flex items-center gap-1 rounded-full border border-white/6 bg-white/[0.015] px-2 py-2">
+
+              {links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="
+                    group
+                    relative
+                    overflow-hidden
+                    rounded-full
+                    px-5
+                    py-3
+                    text-[14px]
+                    font-medium
+                    tracking-[-0.01em]
+                    text-white/65
+                    transition-all
+                    duration-500
+                    hover:text-white
+                  "
+                >
+                  <span className="relative z-10">
+                    {link.label}
+                  </span>
+
+                  {/* Hover Background */}
+
+                  <span
+                    className="
+                      absolute
+                      inset-0
+                      scale-90
+                      rounded-full
+                      bg-white/[0.05]
+                      opacity-0
+                      transition-all
+                      duration-500
+                      group-hover:scale-100
+                      group-hover:opacity-100
+                    "
+                  />
+
+                  {/* Orange Line */}
+
+                  <span
+                    className="
+                      absolute
+                      bottom-2
+                      left-5
+                      h-[2px]
+                      w-0
+                      bg-brand-orange
+                      transition-all
+                      duration-500
+                      group-hover:w-[calc(100%-40px)]
+                    "
+                  />
+                </Link>
+              ))}
+
+            </div>
+
           </div>
-          <Link
-            href={cta.href}
-            className="ml-auto lg:ml-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-orange text-white text-[0.85rem] font-semibold hover:bg-brand-orangeHover transition-colors"
-          >
-            {cta.label}
-            <ArrowUpRight size={14} />
-          </Link>
-          <button className="lg:hidden ml-1 p-2" onClick={() => setOpen(true)} aria-label="Open menu">
-            <Menu size={18} />
-          </button>
+
+          {/* =====================================
+                RIGHT SIDE
+          ===================================== */}
+
+          <div className="ml-auto flex items-center gap-3">
+
+            {/* CTA */}
+
+            <Link
+              href={cta.href}
+              className="
+                hidden
+                md:inline-flex
+                items-center
+                gap-2
+                rounded-full
+                bg-brand-orange
+                px-6
+                py-3
+                text-[14px]
+                font-semibold
+                text-white
+                transition-all
+                duration-500
+                hover:-translate-y-1
+                hover:bg-brand-orangeHover
+                hover:shadow-brand-glow
+              "
+            >
+              <span>{cta.label}</span>
+
+              <ArrowUpRight
+                size={16}
+                className="
+                  transition-transform
+                  duration-500
+                  group-hover:-translate-y-1
+                  group-hover:translate-x-1
+                "
+              />
+            </Link>
+
+            {/* Contact Pill */}
+
+            <Link
+              href={contactHref}
+              className={`
+                hidden
+                xl:inline-flex
+                items-center
+                gap-3
+                rounded-full
+                border
+                px-5
+                py-3
+                text-[13px]
+                font-semibold
+                tracking-[0.18em]
+                uppercase
+                transition-all
+                duration-500
+                ${
+                  dark
+                    ? 'border-white/10 bg-white/[0.03] text-white/80 hover:bg-white/[0.06]'
+                    : 'border-black/10 bg-black/[0.03] text-black/75 hover:bg-black/[0.05]'
+                }
+              `}
+            >
+              <span className="h-2 w-2 rounded-full bg-brand-orange shadow-[0_0_12px_#FF5A1F]" />
+
+              Contact
+            </Link>
+
+            {/* Mobile Button */}
+
+            <button
+              onClick={() => setOpen(true)}
+              className="
+                flex
+                h-12
+                w-12
+                items-center
+                justify-center
+                rounded-full
+                border
+                transition-all
+                duration-500
+                lg:hidden
+              "
+            >
+              <Menu size={18} />
+            </button>
+
+          </div>
+
         </nav>
+
       </motion.header>
 
+      {/* Mobile Menu continues in Part 3 */}
+            {/* =====================================================
+          MOBILE MENU
+      ====================================================== */}
+
       <AnimatePresence>
+
         {open && (
+
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-brand-dark text-brand-cream"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: .35 }}
+            className="
+              fixed
+              inset-0
+              z-[100]
+              bg-brand-dark
+              text-brand-cream
+            "
           >
-            <div className="flex items-center justify-between p-6">
-              <Logo size="md" />
-              <button onClick={() => setOpen(false)} className="btn-icon" aria-label="Close menu"><X size={20} /></button>
+
+            {/* Background Glow */}
+
+            <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-brand-orange/10 blur-[160px]" />
+
+            {/* Header */}
+
+            <div className="relative flex items-center justify-between border-b border-white/10 px-7 py-7">
+
+              <Logo
+                variant="dark"
+                size="md"
+              />
+
+              <button
+                onClick={() => setOpen(false)}
+                className="
+                  flex
+                  h-12
+                  w-12
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-white/10
+                  transition-all
+                  duration-500
+                  hover:border-brand-orange
+                  hover:text-brand-orange
+                "
+              >
+                <X size={20} />
+              </button>
+
             </div>
+
+            {/* Navigation */}
+
             <motion.div
-              initial="hidden" animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
-              className="px-6 pt-8 flex flex-col gap-4"
+
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: .08,
+                  },
+                },
+              }}
+
+              initial="hidden"
+
+              animate="visible"
+
+              className="
+                flex
+                flex-col
+                px-8
+                pt-14
+              "
+
             >
-              {links.map((l) => (
-                <motion.div key={l.href} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-                  <Link onClick={() => setOpen(false)} href={l.href} className="font-display text-4xl font-bold tracking-tight">{l.label}</Link>
+
+              {links.map((link) => (
+
+                <motion.div
+
+                  key={link.href}
+
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: 40,
+                    },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                    },
+                  }}
+
+                >
+
+                  <Link
+
+                    href={link.href}
+
+                    onClick={() => setOpen(false)}
+
+                    className="
+                      group
+                      flex
+                      items-center
+                      justify-between
+                      border-b
+                      border-white/8
+                      py-7
+                    "
+
+                  >
+
+                    <span
+                      className="
+                        font-display
+                        text-[42px]
+                        leading-none
+                        tracking-[-0.03em]
+                        transition-colors
+                        duration-500
+                        group-hover:text-brand-orange
+                      "
+                    >
+                      {link.label}
+                    </span>
+
+                    <ArrowUpRight
+                      size={22}
+                      className="
+                        transition-all
+                        duration-500
+                        group-hover:-translate-y-1
+                        group-hover:translate-x-1
+                        group-hover:text-brand-orange
+                      "
+                    />
+
+                  </Link>
+
                 </motion.div>
+
               ))}
-              <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="mt-8">
-                <Link onClick={() => setOpen(false)} href={cta.href} className="btn btn-primary">{cta.label} <ArrowUpRight size={16} /></Link>
+
+              {/* CTA */}
+
+              <motion.div
+
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    y: 40,
+                  },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                  },
+                }}
+
+                className="mt-12 flex flex-col gap-5"
+
+              >
+
+                <Link
+
+                  href={cta.href}
+
+                  onClick={() => setOpen(false)}
+
+                  className="
+                    inline-flex
+                    w-fit
+                    items-center
+                    gap-3
+                    rounded-full
+                    bg-brand-orange
+                    px-8
+                    py-4
+                    font-semibold
+                    text-white
+                    transition-all
+                    duration-500
+                    hover:-translate-y-1
+                    hover:bg-brand-orangeHover
+                  "
+
+                >
+
+                  {cta.label}
+
+                  <ArrowUpRight size={18} />
+
+                </Link>
+
+                <Link
+
+                  href={contactHref}
+
+                  onClick={() => setOpen(false)}
+
+                  className="
+                    inline-flex
+                    w-fit
+                    items-center
+                    gap-3
+                    rounded-full
+                    border
+                    border-white/10
+                    px-8
+                    py-4
+                    font-semibold
+                    text-white/75
+                    transition-all
+                    duration-500
+                    hover:border-brand-orange
+                    hover:text-white
+                  "
+
+                >
+
+                  Contact
+
+                </Link>
+
               </motion.div>
+
             </motion.div>
+
           </motion.div>
+
         )}
+
       </AnimatePresence>
+
     </>
+
   )
+
 }
