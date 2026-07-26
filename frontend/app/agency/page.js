@@ -78,7 +78,7 @@ export default function AgencyPage() {
                   <StaggerItem key={service.slug}>
                     <Link
                       href={`/agency/${service.slug}`}
-                      className="group block rounded-[24px] border bg-white p-7 transition-all duration-500 hover:-translate-y-2 hover:border-brand-orange hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)]"
+                      className="group block rounded-lg border bg-white p-7 transition-all duration-500 ease-smooth hover:-translate-y-2 hover:border-brand-orange hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)]"
                       style={{
                         borderColor: "var(--surface-border)",
                       }}
@@ -114,7 +114,7 @@ export default function AgencyPage() {
 
                         <ArrowRight
                           size={18}
-                          className="text-brand-orange transition-transform duration-500 group-hover:translate-x-2"
+                          className="text-brand-orange transition-transform duration-500 ease-smooth group-hover:translate-x-2"
                         />
                       </div>
                     </Link>

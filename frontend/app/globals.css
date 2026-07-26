@@ -10,15 +10,34 @@
   :root {
     /* Brand primitives */
     --brand-orange: #ff5a1f;
-    --brand-orange-hover: #e64e1a;
+    /* aligned: tailwind.config brand.orangeHover is #E94D15 — this
+       previously read #e64e1a, a close but distinct hex, so any
+       element styled purely via the CSS variable (vs. the
+       hover:bg-brand-orangeHover utility class) was rendering a
+       slightly different hover color than the token system intends. */
+    --brand-orange-hover: #e94d15;
     --brand-orange-soft: #ffb089;
 
+    /* note: tailwind.config only defines brand.black (#0A0A0A), not
+       brand.dark — but the hex value here is identical, so bg-brand-black
+       in components correctly resolves to this same color. Kept the
+       --brand-dark-* variable names as-is since they're internal to
+       this file and not exposed as Tailwind color classes; just be
+       aware "dark" here and "black" in tailwind.config refer to the
+       same color by different names. */
     --brand-dark: #0a0a0a;
     --brand-dark-2: #121212;
     --brand-dark-3: #1c1c1c;
 
-    --brand-cream: #f6f0e8;
-    --brand-cream-2: #ede4d6;
+    /* aligned: tailwind.config brand.cream is #F6F4EF and
+       brand.creamSoft is #EFE9DF — these previously read #f6f0e8 and
+       #ede4d6, which are close but distinct warmer/darker hexes. Since
+       --surface-bg (light theme) and .glass-nav-light both derive from
+       these, the light-theme background and floating nav were
+       rendering a visibly different cream than bg-brand-cream would
+       produce anywhere it's used directly. */
+    --brand-cream: #f6f4ef;
+    --brand-cream-2: #efe9df;
     --brand-peach: #f4e4d5;
 
     --brand-ink: #111111;
@@ -30,11 +49,25 @@
     --brand-muted-light: #585858;
     --brand-muted-dark: #9a9a9a;
 
-    --brand-line: rgba(255, 255, 255, 0.1);
+    /* aligned: tailwind.config brand.borderDark is rgba(255,255,255,.08)
+       — this previously read .1 opacity, a small but real mismatch, so
+       a border styled via border-brand-borderDark (Tailwind class) and
+       one styled via var(--surface-border) on a dark section (which
+       traces back to this variable) were two slightly different
+       opacities for what's meant to be the same hairline. */
+    --brand-line: rgba(255, 255, 255, 0.08);
+    /* open question — not changed: tailwind.config's brand.border is a
+       solid warm hex (#E8E2D9), not a translucent black overlay like
+       this variable. Both represent "the light-theme hairline" but are
+       built two different ways. If a component ever uses the
+       border-brand-border Tailwind class directly on a cream surface,
+       it'll look visibly different from one using var(--surface-border)
+       here. Worth deciding which is canonical — happy to make that
+       call if you tell me which one matches the reference. */
     --brand-line-on-light: rgba(17, 17, 17, 0.1);
 
     /* Theme-swappable surface tokens (default = light) */
-    --surface-bg: #f6f0e8;
+    --surface-bg: #f6f4ef;
     --surface-fg: var(--brand-ink);
     --surface-muted: var(--brand-muted-light);
     --surface-card: #ffffff;
@@ -165,7 +198,11 @@
      face, distinct from the heavy grotesque used everywhere else in
      the reference). Swap the fallback stack for the real font file
      once confirmed — placeholder uses a generic elegant serif so the
-     class works immediately. */
+     class works immediately.
+     note: --font-accent is not currently set anywhere (layout.js only
+     defines --font-display via next/font/google Oswald), so .font-accent
+     always falls through to the Playfair Display placeholder today.
+     Not a tailwind-alignment issue, just flagging it's not wired up yet. */
   .font-accent {
     font-family: var(--font-accent), "Playfair Display", Georgia, serif;
     font-style: italic;
@@ -524,7 +561,9 @@
     border-color: var(--brand-line);
   }
   .glass-nav-light {
-    background: rgba(246, 240, 232, 0.7);
+    /* aligned: recomputed from the corrected --brand-cream (#F6F4EF)
+       above — was rgba(246,240,232,.7), the old cream's RGB. */
+    background: rgba(246, 244, 239, 0.7);
     color: var(--brand-ink);
     border-color: var(--brand-line-on-light);
   }

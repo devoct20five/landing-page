@@ -46,7 +46,7 @@ function HomeHero() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/60 via-brand-dark/50 to-brand-dark" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/60 via-brand-black/50 to-brand-black" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,rgba(255,90,31,0.35),transparent_60%)]" />
       </motion.div>
 
@@ -191,7 +191,7 @@ export default function HomePage() {
                         {v.title}
                       </h3>
                       <span
-                        className={`text-[0.65rem] font-semibold tracking-[0.2em] px-2 py-0.5 rounded-full ${v.tag === "LIVE" ? "bg-brand-orange text-white" : "bg-black/5 text-current opacity-60"}`}
+                        className={`text-[0.65rem] font-semibold tracking-[0.2em] px-2 py-0.5 rounded-pill ${v.tag === "LIVE" ? "bg-brand-orange text-white" : "bg-black/5 text-current opacity-60"}`}
                       >
                         {v.tag}
                       </span>
@@ -211,7 +211,7 @@ export default function HomePage() {
                           Explore Agency{" "}
                           <ArrowRight
                             size={16}
-                            className="transition-transform duration-500 ease-apple group-hover:translate-x-2"
+                            className="transition-transform duration-500 ease-smooth group-hover:translate-x-2"
                           />
                         </span>
                       )}
