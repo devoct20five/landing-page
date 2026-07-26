@@ -1,237 +1,660 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 import Image from "next/image";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, Lock } from "lucide-react";
+
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
 import Reveal, { Stagger, StaggerItem } from "@/components/motion/Reveal";
+
 import { HOME_VERTICALS } from "@/data/content";
 
-// corrected: TBA accent tokens don't exist in the brand palette yet —
-// using these as placeholders until exact hex values are provided.
-// The AGENCY card no longer uses this map since it renders the real
-// logo mark, not a colored icon.
+/* =========================================================
+   Accent placeholders
+========================================================= */
+
 const ACCENT_BG = {
-  gold: "bg-gradient-to-br from-amber-400/70 to-orange-500/40",
-  red: "bg-gradient-to-br from-red-500/70 to-rose-600/40",
-  purple: "bg-gradient-to-br from-purple-500/70 to-violet-600/40",
+  gold: "from-amber-300 via-orange-300 to-amber-100",
+  red: "from-red-400 via-rose-300 to-red-100",
+  purple: "from-violet-400 via-fuchsia-300 to-violet-100",
 };
+
+/* =========================================================
+   HERO
+========================================================= */
 
 function HomeHero() {
   const ref = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.22]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   return (
     <section
-      data-theme="dark"
       ref={ref}
-      className="section theme-dark relative min-h-[100svh] flex items-center overflow-hidden pt-24"
+      data-theme="dark"
+      className="
+      relative
+      flex
+      min-h-screen
+      items-center
+      overflow-hidden
+      bg-brand-black
+      pt-24
+      "
     >
-      <motion.div style={{ scale, y }} className="absolute inset-0 z-0">
+      {/* Background */}
+
+      <motion.div style={{ scale, y }} className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1655195215404-a89325e7dd3e?crop=entropy&cs=srgb&fm=jpg&q=85&w=2600"
-          alt="OCT20FIVE cinematic hero"
           fill
           priority
           sizes="100vw"
+          alt="Hero"
+          src="https://images.unsplash.com/photo-1655195215404-a89325e7dd3e?crop=entropy&cs=srgb&fm=jpg&q=90&w=2400"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/60 via-brand-black/50 to-brand-black" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_60%,rgba(255,90,31,0.35),transparent_60%)]" />
+
+        <div className="absolute inset-0 bg-black/55" />
+
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-brand-black" />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,90,31,.28),transparent_55%)]" />
       </motion.div>
 
-      <div className="container relative z-10 text-center">
-        {/* corrected: "Showcase" is the dominant hero element in the
-            reference (huge script/italic), not a small subtitle. */}
-        <h1 className="font-display italic font-black leading-[0.9] tracking-tight text-[clamp(3.5rem,14vw,13rem)]">
-          <span className="block overflow-hidden">
-            <motion.span
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: 1.1,
-                ease: [0.22, 1, 0.36, 1],
-                delay: 0.25,
-              }}
-              className="inline-block"
-            >
-              Showcase
-            </motion.span>
-          </span>
-        </h1>
+      {/* Content */}
 
-        {/* corrected: "OCT20FIVE" is a small letter-spaced line under
-            "Showcase", not the giant headline. */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
+      <div className="container relative z-10 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 120 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-          className="mt-4 font-display uppercase tracking-[0.4em] text-xs md:text-sm opacity-80"
+          transition={{
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="
+          font-display
+          italic
+          font-black
+          leading-[0.82]
+          tracking-tight
+          text-[clamp(4rem,13vw,13rem)]
+          text-white
+          "
+        >
+          Showcase
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.45 }}
+          className="
+          mt-6
+          text-[11px]
+          uppercase
+          tracking-[0.6em]
+          text-white/70
+          "
         >
           O C T 2 0 F I V E
         </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
+        <motion.h2
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
-          className="mt-3 font-display uppercase tracking-tight text-2xl md:text-4xl font-black"
+          transition={{ delay: 0.6 }}
+          className="
+          mt-4
+          font-display
+          text-3xl
+          font-black
+          uppercase
+          tracking-tight
+          text-white
+          md:text-5xl
+          "
         >
           A Creative Ecosystem
-        </motion.p>
+        </motion.h2>
 
-        {/* corrected: pipe separators, not slashes */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.9 }}
-          className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm md:text-base tracking-tight"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className="
+          mt-7
+          flex
+          flex-wrap
+          items-center
+          justify-center
+          gap-4
+          text-sm
+          uppercase
+          tracking-[0.12em]
+          text-white/75
+          "
         >
           <span>We Create.</span>
+
           <span className="opacity-30">|</span>
+
           <span>We Build.</span>
+
           <span className="opacity-30">|</span>
+
           <span>We Evolve.</span>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 1 }}
-          className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center gap-3"
+          transition={{ delay: 1.3 }}
+          className="
+          absolute
+          bottom-8
+          left-1/2
+          flex
+          -translate-x-1/2
+          flex-col
+          items-center
+          gap-2
+          "
         >
-          {/* corrected: literal reference copy is "SCROLL DOWN" */}
-          <span className="text-[0.65rem] tracking-[0.35em] uppercase opacity-60">
-            Scroll down
+          <span
+            className="
+            text-[10px]
+            uppercase
+            tracking-[0.45em]
+            text-white/50
+            "
+          >
+            Scroll Down
           </span>
-          <motion.span
+
+          <motion.div
             animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{
+              repeat: Infinity,
+              duration: 1.8,
+            }}
           >
             <ChevronDown size={20} className="text-brand-orange" />
-          </motion.span>
+          </motion.div>
         </motion.div>
       </div>
     </section>
   );
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default function HomePage() {
   return (
     <>
       <Navbar variant="utility" initialTheme="dark" />
+
       <main>
         <HomeHero />
 
-        {/* Ecosystem grid — Home section 2 (light) per plan §3 */}
+        {/* =====================================================
+            ECOSYSTEM
+        ===================================================== */}
+
         <SectionWrapper theme="light">
-          <div className="container">
-            <div className="text-center max-w-4xl mx-auto">
+          <div className="relative mx-auto max-w-[1500px] px-6 lg:px-12">
+            {/* Background glow */}
+
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div
+                className="
+                absolute
+                left-1/2
+                top-44
+                h-[550px]
+                w-[550px]
+                -translate-x-1/2
+                rounded-full
+                bg-brand-orange/10
+                blur-[170px]
+                "
+              />
+            </div>
+
+            {/* Heading */}
+
+            <div className="relative mx-auto max-w-5xl text-center">
               <Reveal>
                 <SectionTag>OCT20FIVE</SectionTag>
               </Reveal>
 
-              {/* corrected: two distinct lines — bold headline, then a
-                  separate small tracked subheading flanked by dashes —
-                  not one merged sentence with a color-split fragment. */}
               <Reveal delay={0.05}>
-                <h2 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-xl text-balance">
+                <h2
+                  className="
+                  mt-4
+                  font-display
+                  text-[clamp(3rem,6vw,5.5rem)]
+                  font-black
+                  uppercase
+                  leading-none
+                  tracking-[-0.04em]
+                  text-brand-black
+                  "
+                >
                   A Creative Ecosystem
                 </h2>
               </Reveal>
-              <Reveal delay={0.12}>
-                <p className="mt-5 flex items-center justify-center gap-4 text-xs md:text-sm tracking-[0.3em] uppercase opacity-60">
-                  <span className="h-px w-8 bg-current opacity-40" />
-                  Built for the future
-                  <span className="h-px w-8 bg-current opacity-40" />
-                </p>
+
+              <Reveal delay={0.15}>
+                <div
+                  className="
+                  mt-3
+                  flex
+                  items-center
+                  justify-center
+                  gap-5
+                  text-[12px]
+                  uppercase
+                  tracking-[0.4em]
+                  text-black/45
+                  "
+                >
+                  <span className="h-px w-10 bg-black/20" />
+                  Built For The Future
+                  <span className="h-px w-10 bg-black/20" />
+                </div>
               </Reveal>
             </div>
 
-            <Stagger className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {HOME_VERTICALS.map((v) => {
-                const inner = (
-                  <article
-                    className={`brand-card h-full group relative ${v.locked ? "opacity-90" : ""}`}
-                  >
-                    {v.locked ? (
-                      // corrected: TBA cards get a solid blurred-gradient
-                      // color square, not a bordered lucide icon.
-                      <div
-                        className={`w-14 h-14 rounded-icon ${ACCENT_BG[v.accent] || ACCENT_BG.gold} blur-[1px]`}
-                      />
-                    ) : (
-                      // corrected: AGENCY card icon is the real boxed
-                      // OCT20FIVE logo mark, not a Compass icon.
-                      <div className="w-14 h-14 rounded-icon bg-brand-orange flex items-center justify-center">
-                        <span className="font-display font-black text-white text-[0.6rem] leading-[0.9] text-center">
-                          OCT
-                          <br />
-                          20
-                          <br />
-                          FIVE
-                        </span>
-                      </div>
-                    )}
+            {/* =====================================================
+    PREMIUM ECOSYSTEM GRID
+===================================================== */}
 
-                    <div className="mt-6 flex items-center gap-2">
-                      <h3
-                        className={`font-display text-2xl uppercase leading-tight ${v.locked ? "blur-[2px] select-none" : ""}`}
-                      >
-                        {v.title}
-                      </h3>
+            <Stagger
+              className="
+  relative
+  mt-14
+  grid
+  gap-8
+  lg:grid-cols-[1.15fr_1fr_1fr_1fr]
+  "
+            >
+              {/* =====================================================
+      AGENCY CARD
+  ===================================================== */}
+
+              <StaggerItem>
+                <Link href="/agency">
+                  <motion.article
+                    whileHover={{
+                      y: -10,
+                      rotateX: 2,
+                      rotateY: -2,
+                    }}
+                    transition={{
+                      duration: 0.45,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="
+        group
+        relative
+        h-full
+        overflow-hidden
+        rounded-[34px]
+        border
+        border-black/5
+        bg-white
+        p-9
+        shadow-[0_20px_60px_rgba(0,0,0,.08)]
+        "
+                  >
+                    {/* Glow */}
+
+                    <div
+                      className="
+          absolute
+          -right-20
+          -top-20
+          h-56
+          w-56
+          rounded-full
+          bg-brand-orange/10
+          blur-[80px]
+          transition-all
+          duration-700
+          group-hover:scale-125
+          "
+                    />
+
+                    {/* Logo */}
+
+                    <div
+                      className="
+          relative
+          flex
+          h-20
+          w-20
+          items-center
+          justify-center
+          rounded-2xl
+          bg-brand-orange
+          shadow-lg
+          "
+                    >
                       <span
-                        className={`text-[0.65rem] font-semibold tracking-[0.2em] px-2 py-0.5 rounded-pill ${v.tag === "LIVE" ? "bg-brand-orange text-white" : "bg-black/5 text-current opacity-60"}`}
+                        className="
+            text-center
+            font-display
+            text-[14px]
+            font-black
+            leading-[0.85]
+            text-white
+            "
                       >
-                        {v.tag}
+                        OCT
+                        <br />
+                        20
+                        <br />
+                        FIVE
                       </span>
                     </div>
-                    <p
-                      className={`mt-3 opacity-70 text-[0.95rem] leading-relaxed ${v.locked ? "blur-[2px] select-none" : ""}`}
-                    >
-                      {v.body}
-                    </p>
-                    <div className="mt-8 flex items-center gap-2 text-sm font-semibold">
-                      {v.locked ? (
-                        <span className="inline-flex items-center gap-2 opacity-60">
-                          <Lock size={14} /> Explore TBA
+
+                    {/* Content */}
+
+                    <div className="mt-8">
+                      <div className="flex items-center gap-3">
+                        <h3
+                          className="
+              font-display
+              text-[30px]
+              font-black
+              uppercase
+              tracking-tight
+              "
+                        >
+                          Agency
+                        </h3>
+
+                        <span
+                          className="
+              rounded-full
+              bg-brand-orange
+              px-3
+              py-1
+              text-[10px]
+              font-bold
+              uppercase
+              tracking-[0.25em]
+              text-white
+              "
+                        >
+                          Live
                         </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 text-brand-orange">
-                          Explore Agency{" "}
-                          <ArrowRight
-                            size={16}
-                            className="transition-transform duration-500 ease-smooth group-hover:translate-x-2"
-                          />
-                        </span>
-                      )}
+                      </div>
+
+                      <p
+                        className="
+            mt-5
+            max-w-sm
+            text-[15px]
+            leading-8
+            text-black/60
+            "
+                      >
+                        Digital experiences, branding, design systems, websites
+                        and products crafted for ambitious founders and modern
+                        companies.
+                      </p>
                     </div>
-                  </article>
-                );
-                return (
-                  <StaggerItem key={v.title}>
-                    {v.href && !v.locked ? (
-                      <Link href={v.href}>{inner}</Link>
-                    ) : (
-                      inner
-                    )}
-                  </StaggerItem>
-                );
-              })}
+
+                    {/* Footer */}
+
+                    <div
+                      className="
+          mt-12
+          flex
+          items-center
+          justify-between
+          "
+                    >
+                      <span
+                        className="
+            text-[13px]
+            font-bold
+            uppercase
+            tracking-[0.22em]
+            text-brand-orange
+            "
+                      >
+                        Explore Agency
+                      </span>
+
+                      <div
+                        className="
+            flex
+            h-12
+            w-12
+            items-center
+            justify-center
+            rounded-full
+            bg-brand-orange
+            transition-transform
+            duration-500
+            group-hover:translate-x-1
+            "
+                      >
+                        <ArrowRight size={18} className="text-white" />
+                      </div>
+                    </div>
+                  </motion.article>
+                </Link>
+              </StaggerItem>
+
+              {/* =====================================================
+      PART 1B-A ENDS HERE
+
+      Next response:
+      - Film
+      - Labs
+      - Originals
+      - Closing </Stagger>
+  ===================================================== */}
+              {/* =====================================================
+      FILM
+  ===================================================== */}
+
+              <StaggerItem>
+                <motion.article
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.4 }}
+                  className="
+      group
+      relative
+      h-full
+      overflow-hidden
+      rounded-[34px]
+      border
+      border-black/5
+      bg-white
+      p-9
+      shadow-[0_20px_60px_rgba(0,0,0,.08)]
+      "
+                >
+                  <div
+                    className="
+        h-20
+        w-20
+        rounded-2xl
+        bg-gradient-to-br
+        from-amber-300
+        via-orange-300
+        to-yellow-100
+        opacity-70
+        blur-[8px]
+        "
+                  />
+
+                  <div className="mt-8 flex items-center gap-3">
+                    <h3 className="font-display text-[30px] font-black uppercase tracking-tight opacity-30">
+                      Film
+                    </h3>
+
+                    <span className="rounded-full bg-black/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-black/50">
+                      TBA
+                    </span>
+                  </div>
+
+                  <p className="mt-5 text-[15px] leading-8 text-black/35">
+                    Original documentaries, cinematic stories, branded films and
+                    visual narratives built for audiences that value exceptional
+                    storytelling.
+                  </p>
+
+                  <div className="mt-12 flex items-center justify-between">
+                    <span className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.2em] text-black/40">
+                      <Lock size={14} />
+                      Coming Soon
+                    </span>
+                  </div>
+                </motion.article>
+              </StaggerItem>
+
+              {/* =====================================================
+      LABS
+  ===================================================== */}
+
+              <StaggerItem>
+                <motion.article
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.4 }}
+                  className="
+      group
+      relative
+      h-full
+      overflow-hidden
+      rounded-[34px]
+      border
+      border-black/5
+      bg-white
+      p-9
+      shadow-[0_20px_60px_rgba(0,0,0,.08)]
+      "
+                >
+                  <div
+                    className="
+        h-20
+        w-20
+        rounded-2xl
+        bg-gradient-to-br
+        from-purple-400
+        via-fuchsia-300
+        to-violet-100
+        opacity-70
+        blur-[8px]
+        "
+                  />
+
+                  <div className="mt-8 flex items-center gap-3">
+                    <h3 className="font-display text-[30px] font-black uppercase tracking-tight opacity-30">
+                      Labs
+                    </h3>
+
+                    <span className="rounded-full bg-black/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-black/50">
+                      TBA
+                    </span>
+                  </div>
+
+                  <p className="mt-5 text-[15px] leading-8 text-black/35">
+                    Experimental products, AI experiences, developer tools and
+                    technology ventures currently under active development.
+                  </p>
+
+                  <div className="mt-12 flex items-center justify-between">
+                    <span className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.2em] text-black/40">
+                      <Lock size={14} />
+                      Coming Soon
+                    </span>
+                  </div>
+                </motion.article>
+              </StaggerItem>
+
+              {/* =====================================================
+      ORIGINALS
+  ===================================================== */}
+
+              <StaggerItem>
+                <motion.article
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.4 }}
+                  className="
+      group
+      relative
+      h-full
+      overflow-hidden
+      rounded-[34px]
+      border
+      border-black/5
+      bg-white
+      p-9
+      shadow-[0_20px_60px_rgba(0,0,0,.08)]
+      "
+                >
+                  <div
+                    className="
+        h-20
+        w-20
+        rounded-2xl
+        bg-gradient-to-br
+        from-red-400
+        via-rose-300
+        to-red-100
+        opacity-70
+        blur-[8px]
+        "
+                  />
+
+                  <div className="mt-8 flex items-center gap-3">
+                    <h3 className="font-display text-[30px] font-black uppercase tracking-tight opacity-30">
+                      Originals
+                    </h3>
+
+                    <span className="rounded-full bg-black/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-black/50">
+                      TBA
+                    </span>
+                  </div>
+
+                  <p className="mt-5 text-[15px] leading-8 text-black/35">
+                    Independent IPs, premium media properties, long-form
+                    storytelling and creator-first entertainment built from the
+                    ground up.
+                  </p>
+
+                  <div className="mt-12 flex items-center justify-between">
+                    <span className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.2em] text-black/40">
+                      <Lock size={14} />
+                      Coming Soon
+                    </span>
+                  </div>
+                </motion.article>
+              </StaggerItem>
             </Stagger>
           </div>
         </SectionWrapper>
       </main>
+
       <Footer />
     </>
   );

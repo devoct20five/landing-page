@@ -34,199 +34,177 @@ export default function Footer({ variant = "agency" }) {
   const navLinks = variant === "service" ? SERVICE_NAVIGATE : AGENCY_NAVIGATE;
 
   return (
-    <footer className="theme-dark relative overflow-hidden bg-brand-black">
-      {/* subtle top divider */}
+<footer className="relative overflow-hidden bg-brand-black text-white">
+  {/* Background */}
+  <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+  <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-brand-orange/5 blur-[150px]" />
 
-      <div className="absolute inset-x-0 top-0 h-px bg-brand-borderDark" />
+  <div className="container relative py-16">
+    {/* Top Divider */}
+    <div className="mb-12 border-t border-white/10" />
 
-      {/* background glow */}
+    {/* Logo */}
+    <div className="mb-14 flex justify-center">
+      <LogoMark />
+    </div>
 
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-brand-orange/5 blur-[160px]" />
+    {/* Main Content */}
+    <div className="grid gap-10 lg:grid-cols-[1fr_1fr_1fr_1.3fr]">
 
-      <div className="container relative pt-36 pb-14">
-        {/* ===============================
-             LOGO
-        ================================ */}
+      {/* Navigation */}
+      <div>
+        <Heading>Navigate</Heading>
 
-        <div className="mb-28 flex justify-center">
-          <LogoMark />
-        </div>
+        <ul className="space-y-2.5">
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <FooterLink href={link.href}>{link.label}</FooterLink>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        {/* ===============================
-            MAIN GRID
-        ================================ */}
+      {/* Contact */}
+      <div>
+        <Heading>Get In Touch</Heading>
 
-        <div
-          className="
-            grid
-            gap-16
-            xl:grid-cols-[1fr_1fr_1fr_1.35fr]
-            lg:grid-cols-4
-            md:grid-cols-2
-          "
-        >
-          {/* ===============================
-              NAVIGATION
-          =============================== */}
+        <ul className="space-y-3">
+          <li>
+            <FooterLink
+              href="mailto:hello@oct20five.com"
+              icon={<Mail size={14} />}
+            >
+              Email
+            </FooterLink>
+          </li>
 
-          <div>
-            <p className="mb-8 font-body text-eyebrow uppercase text-white/35">
-              Navigate
-            </p>
+          <li>
+            <FooterLink
+              href="https://instagram.com"
+              external
+              icon={<Instagram size={14} />}
+            >
+              Instagram
+            </FooterLink>
+          </li>
 
-            <ul className="space-y-4">
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <FooterLink href={link.href}>{link.label}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <li>
+            <FooterLink
+              href="https://linkedin.com"
+              external
+              icon={<Linkedin size={14} />}
+            >
+              LinkedIn
+            </FooterLink>
+          </li>
+        </ul>
+      </div>
 
-          {/* ===============================
-              CONTACT
-          =============================== */}
+      {/* Useful Links */}
+      <div>
+        <Heading>Useful Links</Heading>
 
-          <div>
-            <p className="mb-8 font-body text-eyebrow uppercase text-white/35">
-              Get in touch
-            </p>
+        <ul className="space-y-2.5">
+          {USEFUL_LINKS.map((link) => (
+            <li key={link.label}>
+              <FooterLink href={link.href}>{link.label}</FooterLink>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-            <ul className="space-y-5">
-              <li>
-                <FooterLink
-                  href="mailto:hello@oct20five.com"
-                  icon={<Mail size={14} strokeWidth={2} />}
-                  iconClass="bg-brand-orange"
-                >
-                  hello@oct20five.com
-                </FooterLink>
-              </li>
+      {/* CTA */}
+      <div>
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-7">
 
-              <li>
-                <FooterLink
-                  href="https://instagram.com"
-                  external
-                  icon={<Instagram size={14} strokeWidth={2} />}
-                  iconStyle={{
-                    background:
-                      "linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)",
-                  }}
-                >
-                  Instagram
-                </FooterLink>
-              </li>
+          <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-brand-orange/20 blur-3xl" />
 
-              <li>
-                <FooterLink
-                  href="https://linkedin.com"
-                  external
-                  icon={<Linkedin size={14} strokeWidth={2} />}
-                  iconStyle={{
-                    background: "#0A66C2",
-                  }}
-                >
-                  LinkedIn
-                </FooterLink>
-              </li>
-            </ul>
-          </div>
+          <h3 className="mb-4 text-3xl font-bold text-white">
+            Join us now!
+          </h3>
 
-          {/* ===============================
-              USEFUL LINKS
-          =============================== */}
+          <p className="mb-6 text-sm leading-7 text-white/60">
+            Good at what you do and serious about making great work?
+            We're always open to meeting people who can bring
+            something new to the table.
+          </p>
 
-          <div>
-            <p className="mb-8 font-body text-eyebrow uppercase text-white/35">
-              Useful Links
-            </p>
+          <Link
+            href="/agency/careers"
+            className="group inline-flex items-center gap-2 rounded-full border border-brand-orange px-5 py-2.5 text-sm font-semibold text-brand-orange transition-all duration-300 hover:bg-brand-orange hover:text-white"
+          >
+            Join the team!
 
-            <ul className="space-y-4">
-              {USEFUL_LINKS.map((link) => (
-                <li key={link.label}>
-                  <FooterLink href={link.href}>{link.label}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* ===============================
-              CTA CARD
-          =============================== */}
-
-          <div>
-            <div className="relative overflow-hidden rounded-card border border-brand-borderDark bg-white/[0.03] p-10">
-              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-orange/10 blur-[100px]" />
-
-              <div className="relative">
-                <span className="mb-5 inline-block font-body text-eyebrow uppercase text-brand-orange">
-                  Careers
-                </span>
-
-                <h3 className="mb-6 max-w-xs font-display text-display-sm font-bold leading-[0.95] text-white">
-                  Ready to build
-                  <br />
-                  something
-                  <br />
-                  unforgettable?
-                </h3>
-
-                <p className="mb-8 max-w-sm text-[15px] leading-7 text-white/60">
-                  We are always looking for designers, developers, editors and
-                  creators who genuinely care about building exceptional digital
-                  experiences.
-                </p>
-
-                <Link
-                  href="/agency/careers"
-                  className="group inline-flex items-center gap-3 rounded-pill bg-brand-orange px-7 py-3 text-sm font-semibold text-white shadow-glow transition-all duration-600 ease-smooth hover:-translate-y-1 hover:bg-brand-orangeHover"
-                >
-                  Join our team
-                  <ArrowUpRight
-                    size={16}
-                    className="transition-transform duration-600 ease-smooth group-hover:translate-x-1 group-hover:-translate-y-1"
-                  />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* ===============================
-            FOOTER BOTTOM
-        =============================== */}
-
-        <div className="mt-24 border-t border-brand-borderDark pt-8">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <p className="text-sm tracking-wide text-white/40">
-              © {new Date().getFullYear()} OCT20FIVE. All rights reserved.
-            </p>
-
-            <div className="flex items-center gap-8 text-sm text-white/40">
-              <Link
-                href="/agency/Privacy-Policy"
-                className="transition-colors duration-400 ease-smooth hover:text-white"
-              >
-                Privacy
-              </Link>
-
-              <Link
-                href="/agency/Term-&-Conditions"
-                className="transition-colors duration-400 ease-smooth hover:text-white"
-              >
-                Terms
-              </Link>
-
-              <Link
-                href="/agency/Refund-&-Cancellation"
-                className="transition-colors duration-400 ease-smooth hover:text-white"
-              >
-                Refund
-              </Link>
-            </div>
-          </div>
+            <ArrowUpRight
+              size={15}
+              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            />
+          </Link>
         </div>
       </div>
-    </footer>
+    </div>
+
+    {/* Bottom */}
+    <div className="mt-12 border-t border-white/10 pt-8">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+
+        <div className="flex items-center gap-5">
+
+          <div className="flex h-12 w-12 flex-col items-center justify-center border border-white/20 text-white">
+
+            <span className="text-[8px] font-bold tracking-[0.3em]">
+              OCT
+            </span>
+
+            <span className="text-lg font-black leading-none">
+              20
+            </span>
+
+            <span className="text-[8px] font-bold tracking-[0.3em]">
+              FIVE
+            </span>
+
+          </div>
+
+          <div>
+            <p className="text-[13px] text-white/40">
+              © {new Date().getFullYear()} OCT20FIVE Agency. All rights reserved.
+            </p>
+
+            <p className="mt-1 text-[13px] text-white/30">
+              Crafted with purpose. Built for impact.
+              <span className="ml-1 text-brand-orange">•</span>
+            </p>
+          </div>
+
+        </div>
+
+        <div className="flex items-center gap-8">
+
+          <div className="hidden h-10 w-px bg-white/10 lg:block" />
+
+          <div className="flex items-center gap-5 text-[12px] uppercase tracking-[0.45em] text-white/55">
+
+            <span>CREATE</span>
+
+            <span className="text-brand-orange">•</span>
+
+            <span>CONCEPT</span>
+
+            <span className="text-brand-orange">•</span>
+
+            <span>DELIVER</span>
+
+            <span className="text-brand-orange">.</span>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</footer>
   );
 }
 
@@ -236,38 +214,19 @@ export default function Footer({ variant = "agency" }) {
 
 function LogoMark() {
   return (
-    <Link href="/" className="group relative inline-flex">
-      {/* subtle glow */}
+    <Link href="/" className="group">
+      <div className="relative flex h-32 w-32 items-center justify-center border-2 border-brand-orange bg-black transition-all duration-300 group-hover:scale-105">
 
-      <div className="pointer-events-none absolute inset-0 rounded-2xl bg-brand-orange/10 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
+        <div className="text-center font-black leading-none text-brand-orange">
 
-      <div
-        className="
-          relative
-          overflow-hidden
-          rounded-2xl
-          border
-          border-brand-borderDark
-          bg-white/[0.02]
-          px-10
-          py-7
-          backdrop-blur-xl
-          transition-all
-          duration-500
-          ease-smooth
-          group-hover:border-brand-orange/40
-          group-hover:-translate-y-1
-        "
-      >
-        <div className="font-display leading-[0.82] text-center">
-          <div className="text-lg tracking-[0.18em] text-brand-orange">OCT</div>
+          <div className="text-3xl">OCT</div>
 
-          <div className="my-1 text-[64px] font-bold text-white">20</div>
+          <div className="text-5xl">20</div>
 
-          <div className="text-lg tracking-[0.18em] text-brand-orange">
-            FIVE
-          </div>
+          <div className="text-3xl">FIVE</div>
+
         </div>
+
       </div>
     </Link>
   );
@@ -327,5 +286,16 @@ function FooterLink({
         </span>
       </span>
     </Link>
+  );
+}
+function Heading({ children }) {
+  return (
+    <div className="mb-5">
+      <p className="relative inline-block text-[13px] font-semibold uppercase tracking-wider text-white">
+        {children}
+
+        <span className="absolute -bottom-2 left-0 h-[2px] w-8 bg-brand-orange" />
+      </p>
+    </div>
   );
 }
