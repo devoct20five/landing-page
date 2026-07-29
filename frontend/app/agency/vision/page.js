@@ -6,166 +6,499 @@ import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
-import Reveal, { Stagger, StaggerItem } from "@/components/motion/Reveal";
+import Reveal from "@/components/motion/Reveal";
+import { ArrowRight, Users } from "lucide-react";
 import { TEAM } from "@/data/content";
-import { ArrowUpRight } from "lucide-react";
-
 export default function VisionPage() {
   return (
     <>
-      {/* Vision uses a minimal nav per plan \u00a73: logo + Contact pill only */}
-      <header className="fixed top-4 md:top-5 left-0 right-0 z-50 flex justify-center px-4">
-        <div className="glass-nav glass-nav-light rounded-full pl-5 pr-2 py-2 flex items-center gap-3 shadow-brand-soft max-w-5xl w-full">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-display font-bold tracking-tight text-[0.95rem]"
-          >
-            <span className="inline-block w-6 h-6 rounded-md border-[1.5px] border-current relative overflow-hidden">
-              <span className="absolute inset-0.5 bg-brand-orange rounded-[3px]" />
-            </span>
-            <span className="hidden sm:inline">OCT20FIVE</span>
-          </Link>
-          <span className="opacity-40 text-xs tracking-[0.25em] uppercase ml-4 hidden md:inline">
-            Vision
-          </span>
-          <Link
-            href="/agency/get-in-touch"
-            className="ml-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-orange text-white text-[0.85rem] font-semibold hover:bg-brand-orangeHover transition-colors"
-          >
-            Get in Touch <ArrowUpRight size={14} />
-          </Link>
-        </div>
-      </header>
-      <main>
-        <SectionWrapper theme="light" className="!pt-40">
-          <div className="container">
-            <div className="grid md:grid-cols-12 gap-10">
-              <div className="md:col-span-7">
-                <Reveal>
-                  <SectionTag>Core Members</SectionTag>
-                </Reveal>
-                <Reveal delay={0.05}>
-                  <h1 className="mt-6 font-display uppercase leading-[0.9] tracking-tight text-display-2xl text-balance">
-                    The people who{" "}
-                    <span className="text-brand-orange">made this</span>{" "}
-                    possible.
-                  </h1>
-                </Reveal>
-              </div>
-              <div className="md:col-span-5">
-                <Reveal delay={0.15}>
-                  <div className="relative aspect-[4/3] rounded-card overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1573867607590-361ea324975e?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
-                      alt="OCT20FIVE core team"
-                      fill
-                      sizes="50vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </div>
-        </SectionWrapper>
+      <Navbar />
 
-        <SectionWrapper theme="light" className="!pt-4">
-          <div className="container">
-            <Stagger className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-              {TEAM.map((m) => (
-                <StaggerItem key={m.name}>
-                  <article className="brand-card group h-full">
-                    <div className="aspect-square rounded-icon overflow-hidden mb-5 bg-[radial-gradient(circle_at_30%_20%,#FF5A1F,#1A0907)] relative">
-                      <div className="absolute inset-0 grain" />
-                      <div className="absolute inset-0 flex items-center justify-center font-display text-6xl text-white/30 uppercase">
-                        {m.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </div>
-                    </div>
-                    <h3 className="font-display text-xl leading-tight">
-                      {m.name}
-                    </h3>
-                    <p className="mt-1 text-sm opacity-70">{m.role}</p>
-                  </article>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </div>
-        </SectionWrapper>
+      <main className="bg-white text-neutral-900">
+        {/* ============================= */}
+        {/* OUR VISION                    */}
+        {/* ============================= */}
+        <SectionWrapper theme="light" className="pt-36 pb-24">
+          <div className="container max-w-6xl mx-auto">
+            <Reveal>
+              <div className="flex flex-col items-center text-center">
+                <SectionTag>Our Vision</SectionTag>
 
-        <SectionWrapper theme="dark">
-          <div className="container">
-            <div className="grid md:grid-cols-12 gap-14">
-              <div className="md:col-span-5">
-                <Reveal>
-                  <SectionTag>Our Vision</SectionTag>
-                </Reveal>
-                <Reveal delay={0.05}>
-                  <h2 className="mt-6 font-display uppercase leading-[0.9] tracking-tight text-display-xl text-balance">
-                    We all started <br /> this{" "}
-                    <span className="text-brand-orange">creative</span>{" "}
-                    agency...
-                  </h2>
-                </Reveal>
-              </div>
-              <div className="md:col-span-7 space-y-6 text-body-lg opacity-80 leading-relaxed">
-                <Reveal>
+                <h1 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-5xl md:text-7xl xl:text-8xl max-w-5xl text-balance">
+                  We all started{" "}
+                  <span className="text-brand-orange">
+                    this creative agency...
+                  </span>
+                </h1>
+
+                <div className="mt-12 max-w-3xl space-y-7 text-base md:text-lg leading-8 text-neutral-600">
                   <p>
                     We started OCT20FIVE Agency because we wanted to give people
                     the quality they actually deserve, not the low-effort work
-                    they&rsquo;ve learned to settle for. A one-stop creative
-                    solution where people don&rsquo;t have to contact different
-                    agencies for different services, where ideas don&rsquo;t get
-                    lost between different people and different directions.
+                    they've learned to settle for. A one-stop creative solution
+                    where people don't have to contact different agencies for
+                    different services, where ideas don't get lost between
+                    different people and different directions.
                   </p>
-                </Reveal>
-                <Reveal delay={0.1}>
+
                   <p>
-                    That&rsquo;s why we believe in{" "}
-                    <span className="text-brand-orange font-medium">
-                      FULL SPECTRUM CREATIVE SERVICES
+                    That's why we believe in{" "}
+                    <span className="font-semibold text-brand-orange uppercase">
+                      Full Spectrum Creative Services
                     </span>
-                    , and that&rsquo;s what makes OCT20FIVE Agency.
+                    , and that's what makes OCT20FIVE Agency.
                   </p>
-                </Reveal>
-                <Reveal delay={0.2}>
+
                   <p>
                     But beyond the work, we also saw creatives around us fall
-                    apart, brilliant ideas buried under miscommunication,
-                    unhealthy workflows, and impossible timelines. We
-                    didn&rsquo;t want that. Not for clients, not for creatives,
-                    not for ourselves. That&rsquo;s our vision.
+                    apart. Brilliant ideas buried under miscommunication,
+                    unhealthy workflows, and impossible timelines. We didn't
+                    want that—not for clients, not for creatives, not for
+                    ourselves.
+                    <br />
+                    <span className="font-medium text-neutral-900">
+                      That's our vision.
+                    </span>
                   </p>
-                </Reveal>
+                </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </SectionWrapper>
 
-        <SectionWrapper theme="dark" className="!pt-0">
-          <div className="container">
-            <div className="rounded-card border border-white/10 p-10 md:p-20 relative overflow-hidden text-center">
-              <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-radial-orange blur-3xl opacity-70" />
-              <div className="relative">
-                <Reveal>
-                  <SectionTag>Our Mission</SectionTag>
-                </Reveal>
-                <Reveal delay={0.05}>
-                  <h2 className="mt-6 font-display uppercase leading-[0.9] tracking-tight text-display-xl text-balance">
-                    We just have one mission... <br />{" "}
-                    <span className="text-brand-orange">
-                      Concept. Create. Deliver.
-                    </span>{" "}
-                    <br /> That&rsquo;s all.
-                  </h2>
-                </Reveal>
+        {/* ============================= */}
+        {/* OUR MISSION                   */}
+        {/* ============================= */}
+        <SectionWrapper theme="light" className="pt-4 pb-20">
+          <div className="container max-w-6xl mx-auto">
+            <Reveal>
+              <div className="text-center">
+                <SectionTag>Our Mission</SectionTag>
+
+                <p className="mt-6 uppercase tracking-[0.35em] text-xs text-neutral-500">
+                  We just have one mission...
+                </p>
+
+                <h2 className="mt-5 font-display uppercase leading-[0.85] tracking-tight text-5xl md:text-7xl xl:text-8xl">
+                  <span className="text-neutral-900">Concept.</span>{" "}
+                  <span className="text-neutral-900">Create.</span>{" "}
+                  <span className="text-neutral-900">Deliver.</span>{" "}
+                  <span className="text-brand-orange">That's All.</span>
+                </h2>
               </div>
+            </Reveal>
+
+            {/* Leadership CTA Card */}
+            <Reveal delay={0.15}>
+              <Link
+                href="#leadership"
+                className="group mt-16 block rounded-3xl border border-brand-orange/20 bg-[#fffaf7] transition-all duration-300 hover:border-brand-orange hover:shadow-xl"
+              >
+                <div className="grid md:grid-cols-12 items-center gap-8 px-8 py-8 md:px-10">
+                  <div className="md:col-span-2 flex justify-center md:justify-start">
+                    <div className="w-16 h-16 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
+                      <Users
+                        size={30}
+                        className="text-brand-orange"
+                        strokeWidth={1.8}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-4 text-center md:text-left">
+                    <h3 className="font-display uppercase text-3xl leading-none">
+                      Leadership
+                      <br />& Team
+                    </h3>
+                  </div>
+
+                  <div className="md:col-span-4 text-center md:text-left text-neutral-600 leading-7">
+                    Meet the people turning this vision into reality.
+                  </div>
+
+                  <div className="md:col-span-2 flex justify-center md:justify-end">
+                    <div className="flex items-center gap-3 font-semibold uppercase tracking-wide text-sm">
+                      Explore Team
+                      <div className="w-11 h-11 rounded-full border border-brand-orange text-brand-orange flex items-center justify-center transition-all duration-300 group-hover:bg-brand-orange group-hover:text-white">
+                        <ArrowRight
+                          size={18}
+                          className="group-hover:translate-x-0.5 transition-transform"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </Reveal>
+          </div>
+        </SectionWrapper>
+
+        {/* ============================= */}
+        {/* LEADERSHIP & TEAM            */}
+        {/* ============================= */}
+
+        <SectionWrapper id="leadership" theme="light" className="pt-12 pb-28">
+          <div className="container max-w-7xl mx-auto">
+            <Reveal>
+              <div className="text-center">
+                <SectionTag>Core Members</SectionTag>
+
+                <h2 className="mt-6 font-display uppercase tracking-tight leading-[0.88] text-5xl md:text-7xl">
+                  Leadership & Team
+                </h2>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.15}>
+              <div className="relative mt-14 rounded-[28px] overflow-hidden border border-neutral-200">
+                <div className="relative aspect-[16/8]">
+                  <Image
+                    src="/images/team/team-photo.jpg"
+                    alt="OCT20FIVE Team"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
+
+                  <div className="absolute left-10 bottom-10 max-w-sm">
+                    <p className="text-white/80 uppercase tracking-[0.35em] text-xs mb-4">
+                      OCT20FIVE
+                    </p>
+
+                    <h3 className="font-display uppercase leading-[0.88] text-4xl md:text-6xl text-white">
+                      People
+                      <br />
+                      <span className="text-brand-orange">Who Made</span>
+                      <br />
+                      This Possible.
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Leadership */}
+
+            <Reveal delay={0.25}>
+              <div className="mt-24">
+                <div className="flex justify-center">
+                  <div className="h-px w-24 bg-neutral-300" />
+                </div>
+
+                <p className="text-center mt-5 uppercase tracking-[0.45em] text-xs text-neutral-500">
+                  Leadership
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7 mt-12">
+              {/* Founder */}
+
+              <Reveal>
+                <article className="group">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                    <Image
+                      src="/images/team/tarun.jpg"
+                      alt="Tarun Verma"
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="font-display uppercase text-xl">
+                      Tarun Verma
+                    </h3>
+
+                    <p className="text-sm text-neutral-500 mt-1">
+                      Founder & CEO
+                    </p>
+
+                    <div className="mt-4 flex gap-4">
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        LinkedIn
+                      </Link>
+
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        Instagram
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+
+              {/* Designer */}
+
+              <Reveal delay={0.05}>
+                <article className="group">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                    <Image
+                      src="/images/team/ananya.jpg"
+                      alt="Ananya Iyer"
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="font-display uppercase text-xl">
+                      Ananya Iyer
+                    </h3>
+
+                    <p className="text-sm text-neutral-500 mt-1">Design Lead</p>
+
+                    <div className="mt-4 flex gap-4">
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        LinkedIn
+                      </Link>
+
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        Instagram
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+
+              {/* Head */}
+
+              <Reveal delay={0.1}>
+                <article className="group">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                    <Image
+                      src="/images/team/rachav.jpg"
+                      alt="Rachav Sharma"
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="font-display uppercase text-xl">
+                      Rachav Sharma
+                    </h3>
+
+                    <p className="text-sm text-neutral-500 mt-1">
+                      Head of Production
+                    </p>
+
+                    <div className="mt-4 flex gap-4">
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        LinkedIn
+                      </Link>
+
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        Instagram
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+
+              {/* Marketing */}
+
+              <Reveal delay={0.15}>
+                <article className="group">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                    <Image
+                      src="/images/team/vivek.jpg"
+                      alt="Vivek Rathi"
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="font-display uppercase text-xl">
+                      Vivek Rathi
+                    </h3>
+
+                    <p className="text-sm text-neutral-500 mt-1">
+                      3D & Motion Lead
+                    </p>
+
+                    <div className="mt-4 flex gap-4">
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        LinkedIn
+                      </Link>
+
+                      <Link
+                        href="#"
+                        className="text-brand-orange text-sm hover:underline"
+                      >
+                        Instagram
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
             </div>
+
+            {/* Divider before team */}
+
+            <Reveal delay={0.3}>
+              <div className="mt-28 flex justify-center">
+                <div className="h-px w-24 bg-neutral-300" />
+              </div>
+
+              <p className="mt-5 text-center uppercase tracking-[0.45em] text-xs text-neutral-500">
+                Team
+              </p>
+            </Reveal>
+
+            {/* ===================================== */}
+            {/* TEAM GRID                             */}
+            {/* ===================================== */}
+
+            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {TEAM.map((member, index) => (
+                <Reveal key={member.name} delay={index * 0.04}>
+                  <article className="group">
+                    {/* Image */}
+
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 border border-neutral-200">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width:768px) 50vw,20vw"
+                        className="object-cover transition duration-500 group-hover:scale-105"
+                      />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
+                    </div>
+
+                    {/* Details */}
+
+                    <div className="mt-4">
+                      <h3 className="font-display uppercase tracking-tight text-[15px] leading-tight">
+                        {member.name}
+                      </h3>
+
+                      <p className="mt-1 text-xs text-neutral-500">
+                        {member.role}
+                      </p>
+
+                      {(member.linkedin || member.instagram) && (
+                        <div className="flex gap-3 mt-3">
+                          {member.linkedin && (
+                            <Link
+                              href={member.linkedin}
+                              target="_blank"
+                              className="text-brand-orange text-xs hover:underline"
+                            >
+                              LinkedIn
+                            </Link>
+                          )}
+
+                          {member.instagram && (
+                            <Link
+                              href={member.instagram}
+                              target="_blank"
+                              className="text-brand-orange text-xs hover:underline"
+                            >
+                              Instagram
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* ===================================== */}
+            {/* BOTTOM BRAND STATEMENT                */}
+            {/* ===================================== */}
+
+            <Reveal delay={0.25}>
+              <div className="mt-32 border-t border-neutral-200 pt-20">
+                <div className="max-w-5xl mx-auto text-center">
+                  <SectionTag>Our Culture</SectionTag>
+
+                  <h2 className="mt-6 font-display uppercase leading-[0.88] tracking-tight text-4xl md:text-6xl">
+                    Great work begins with
+                    <span className="text-brand-orange"> great people.</span>
+                  </h2>
+
+                  <p className="mt-8 text-lg leading-8 text-neutral-600 max-w-3xl mx-auto">
+                    Every campaign, every design, every line of code and every
+                    strategy that leaves OCT20FIVE carries the effort of a team
+                    that believes creativity isn't a department—it's a culture.
+                    We collaborate, challenge each other and obsess over the
+                    smallest details because extraordinary work is never created
+                    alone.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* ===================================== */}
+            {/* FINAL CTA                             */}
+            {/* ===================================== */}
+
+            <Reveal delay={0.35}>
+              <div className="mt-24 rounded-[36px] overflow-hidden bg-neutral-950 text-white">
+                <div className="px-10 md:px-20 py-20 text-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ff5a1f33,transparent_65%)]" />
+
+                  <div className="relative">
+                    <SectionTag>Let's Build Together</SectionTag>
+
+                    <h2 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-5xl md:text-7xl max-w-4xl mx-auto">
+                      Ready to create
+                      <span className="text-brand-orange">
+                        {" "}
+                        something remarkable?
+                      </span>
+                    </h2>
+
+                    <p className="mt-8 max-w-2xl mx-auto text-neutral-300 leading-8">
+                      Whether you're launching a brand, scaling a product,
+                      producing content or building a digital experience, we'd
+                      love to hear your story.
+                    </p>
+
+                    <Link
+                      href="/agency/get-in-touch"
+                      className="inline-flex items-center gap-3 mt-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover transition-colors px-8 py-4 font-semibold text-white"
+                    >
+                      Start Your Project
+                      <ArrowRight size={18} />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </SectionWrapper>
       </main>
+
       <Footer />
     </>
   );

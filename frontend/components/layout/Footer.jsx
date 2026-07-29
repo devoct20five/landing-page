@@ -25,9 +25,9 @@ const SERVICE_NAVIGATE = [
 const USEFUL_LINKS = [
   { label: "Contact Form", href: "/agency/get-in-touch" },
   { label: "Book a Call", href: "/agency/book-a-call" },
-  { label: "Terms & Condition", href: "/agency/Term-&-Conditions" },
-  { label: "Privacy Policy", href: "/agency/Privacy-Policy" },
-  { label: "Refund & Cancellation", href: "/agency/Refund-&-Cancellation" },
+  { label: "Terms & Condition", href: "/agency/terms-and-conditions" },
+  { label: "Privacy Policy", href: "/agency/privacy-policy" },
+  { label: "Refund & Cancellation", href: "/agency/refund-and-cancellation" },
 ];
 
 export default function Footer({ variant = "agency" }) {

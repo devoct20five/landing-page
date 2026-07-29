@@ -6,53 +6,67 @@ import Link from "next/link";
 import {
   Check,
   ArrowRight,
+  ArrowLeft,
   Upload,
   CalendarClock,
   Mail,
+  MessageSquare,
+  Clock,
   X,
   ArrowUpRight,
+  User,
+  Briefcase,
+  Building2,
+  MoreHorizontal,
+  Scissors,
+  PenTool,
+  Box,
+  Globe,
+  LayoutGrid,
+  CircleDot,
 } from "lucide-react";
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
-import Pill from "@/components/ui/Pill";
 import Reveal from "@/components/motion/Reveal";
 
 const REACHING = [
-  "Individual/Creator",
-  "Brand/Business",
-  "Agency/Studio",
-  "Other",
+  { label: "Individual / Creator", icon: User },
+  { label: "Brand / Business", icon: Briefcase },
+  { label: "Agency / Studio", icon: Building2 },
+  { label: "Other", icon: MoreHorizontal },
 ];
+
 const NEEDS = [
-  "Editing",
-  "Design",
-  "3D Ads",
-  "Web Dev",
-  "Multiple Services",
-  "Not Sure Yet",
+  { label: "Editing", icon: Scissors },
+  { label: "Design", icon: PenTool },
+  { label: "3D Ads", icon: Box },
+  { label: "Web Dev", icon: Globe },
+  { label: "Multiple Services", icon: LayoutGrid },
+  { label: "Not Sure Yet", icon: CircleDot },
 ];
+
 const BUDGET = [
-  "Under 10K",
-  "10K – 25K",
-  "25K – 50K",
-  "50K – 1L",
-  "1L+",
+  "Under ₹10K",
+  "₹10K – ₹25K",
+  "₹25K – ₹50K",
+  "₹50K – ₹1L",
+  "₹1L+",
   "Not Sure Yet",
 ];
+
 const TIMELINE = [
   "ASAP",
-  "Within 2 weeks",
-  "This month",
-  "This quarter",
+  "1 – 2 Weeks",
+  "This Month",
   "Flexible",
   "Not Sure Yet",
 ];
 
 export default function GetInTouchPage() {
   const [state, setState] = useState({
-    role: "Brand/Business",
+    role: "Individual / Creator",
     name: "",
     email: "",
     needs: [],
@@ -81,9 +95,9 @@ export default function GetInTouchPage() {
 
   return (
     <>
-      <Navbar variant="utility" initialTheme="light" />
+      <Navbar variant="utility" initialTheme="dark" />
       <main>
-        <SectionWrapper theme="light" className="!pt-40 !pb-16">
+        <SectionWrapper theme="dark" className="!pt-40 !pb-16">
           <div className="container">
             <AnimatePresence mode="wait">
               {!submitted ? (
@@ -96,79 +110,123 @@ export default function GetInTouchPage() {
                 >
                   <div className="grid lg:grid-cols-12 gap-12">
                     {/* Left column */}
-                    <div className="lg:col-span-5">
+                    <div className="lg:col-span-4">
                       <SectionTag>Get in touch</SectionTag>
-                      <h1 className="mt-6 font-display uppercase leading-[0.9] tracking-tight text-display-xl text-balance">
+                      <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
                         Ready to start? <br />
-                        <span className="text-brand-orange italic font-medium normal-case tracking-tight">
+                        <span className="text-brand-orange">
                           Or still figuring it out?
                         </span>
                       </h1>
-                      <p className="mt-6 text-body-lg opacity-75 max-w-md">
-                        Two ways in. Pick the one that feels right — we don’t
-                        judge.
+                      <p className="mt-6 text-body-lg opacity-70 max-w-md">
+                        Either works. Book a call if you&rsquo;re ready to talk
+                        — or tell us what you have so far and we&rsquo;ll help
+                        figure out what comes next.
                       </p>
 
-                      <div className="mt-10 space-y-3">
-                        <Link
-                          href="/agency/book-a-call"
-                          className="group flex items-center gap-4 brand-card !p-5 hover:!bg-brand-dark hover:!text-brand-cream transition-colors"
-                        >
-                          <div
-                            className="w-12 h-12 rounded-icon border flex items-center justify-center text-brand-orange group-hover:border-white"
-                            style={{ borderColor: "var(--surface-border)" }}
-                          >
-                            <CalendarClock size={20} />
-                          </div>
+                      <div className="mt-10 space-y-0">
+                        {/* Step 01 */}
+                        <div className="brand-card !p-6 flex items-start gap-5">
+                          <span className="font-display text-4xl leading-none opacity-30">
+                            01
+                          </span>
                           <div className="flex-1">
-                            <h3 className="font-display text-xl uppercase">
-                              Book a Call
-                            </h3>
-                            <p className="text-sm opacity-70">
-                              20 minutes with a lead.
+                            <p className="eyebrow">
+                              <span className="eyebrow-dot" /> I know what I
+                              need
                             </p>
+                            <h3 className="mt-3 font-display text-2xl uppercase">
+                              Let&rsquo;s talk.
+                            </h3>
+                            <p className="mt-2 text-sm opacity-70">
+                              You have a project, a direction, or a clear idea
+                              of what you need. Pick a time and let&rsquo;s
+                              discuss the details.
+                            </p>
+                            <Link
+                              href="/agency/book-a-call"
+                              className="btn btn-primary mt-5 !w-auto"
+                            >
+                              Book a call <ArrowUpRight size={16} />
+                            </Link>
                           </div>
-                          <ArrowRight
-                            size={18}
-                            className="transition-transform duration-500 ease-apple group-hover:translate-x-2"
+                        </div>
+
+                        <div className="flex items-center gap-4 py-3">
+                          <span
+                            className="h-px flex-1"
+                            style={{ background: "var(--surface-border)" }}
                           />
-                        </Link>
-                        <a
-                          href="#form"
-                          className="flex items-center gap-4 brand-card !p-5 !bg-brand-orange !text-white border-brand-orange"
-                        >
-                          <div className="w-12 h-12 rounded-icon border border-white/40 flex items-center justify-center">
-                            <Mail size={20} />
-                          </div>
+                          <span className="text-xs opacity-50 uppercase tracking-widest">
+                            Or
+                          </span>
+                          <span
+                            className="h-px flex-1"
+                            style={{ background: "var(--surface-border)" }}
+                          />
+                        </div>
+
+                        {/* Step 02 */}
+                        <div className="brand-card !p-6 flex items-start gap-5">
+                          <span className="font-display text-4xl leading-none text-brand-orange">
+                            02
+                          </span>
                           <div className="flex-1">
-                            <h3 className="font-display text-xl uppercase">
-                              Fill out form
-                            </h3>
-                            <p className="text-sm opacity-90">
-                              Scoped brief in under 3 min.
+                            <p className="eyebrow">
+                              <span className="eyebrow-dot" /> I&rsquo;m still
+                              figuring it out
                             </p>
+                            <h3 className="mt-3 font-display text-2xl uppercase">
+                              Start with what you know.
+                            </h3>
+                            <p className="mt-2 text-sm opacity-70">
+                              You don&rsquo;t need a perfect brief. Tell us the
+                              idea, the problem, or whatever you have so far.
+                            </p>
+                            <a
+                              href="#form"
+                              className="btn btn-outline mt-5 !w-auto"
+                            >
+                              Fill out form <ArrowRight size={16} />
+                            </a>
                           </div>
-                          <ArrowRight size={18} />
-                        </a>
+                        </div>
                       </div>
                     </div>
 
                     {/* Right column form */}
-                    <div className="lg:col-span-7" id="form">
+                    <div className="lg:col-span-8" id="form">
                       <form
                         onSubmit={onSubmit}
                         className="brand-card !p-8 md:!p-10 space-y-8"
                       >
-                        <FieldGroup label="You’re reaching out as…">
-                          <div className="flex flex-wrap gap-2">
-                            {REACHING.map((r) => (
+                        <div className="flex items-center gap-3 pb-2">
+                          <div
+                            className="w-9 h-9 rounded-icon border flex items-center justify-center text-brand-orange"
+                            style={{ borderColor: "var(--surface-border)" }}
+                          >
+                            <MessageSquare size={16} />
+                          </div>
+                          <h2 className="font-display text-xl uppercase tracking-tight">
+                            Tell us what you have so far
+                          </h2>
+                        </div>
+
+                        <FieldGroup number="1" label="You’re reaching out as…">
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            {REACHING.map(({ label, icon: Icon }) => (
                               <button
-                                key={r}
+                                key={label}
                                 type="button"
-                                onClick={() => setField("role", r)}
-                                className={`pill ${state.role === r ? "pill-active" : ""}`}
+                                onClick={() => setField("role", label)}
+                                className={`pill !flex-col !items-center !justify-center !py-4 gap-2 text-center ${
+                                  state.role === label ? "pill-active" : ""
+                                }`}
                               >
-                                {r}
+                                <Icon size={18} />
+                                <span className="text-xs uppercase tracking-tight leading-tight">
+                                  {label}
+                                </span>
                               </button>
                             ))}
                           </div>
@@ -181,10 +239,10 @@ export default function GetInTouchPage() {
                               value={state.name}
                               onChange={(e) => setField("name", e.target.value)}
                               className="brand-input"
-                              placeholder="Jane Doe"
+                              placeholder="Full name"
                             />
                           </FieldGroup>
-                          <FieldGroup label="Your email">
+                          <FieldGroup label="Email address">
                             <input
                               required
                               type="email"
@@ -193,27 +251,35 @@ export default function GetInTouchPage() {
                                 setField("email", e.target.value)
                               }
                               className="brand-input"
-                              placeholder="jane@brand.com"
+                              placeholder="you@example.com"
                             />
                           </FieldGroup>
                         </div>
 
-                        <FieldGroup label="What do you need?">
-                          <div className="flex flex-wrap gap-2">
-                            {NEEDS.map((n) => (
+                        <FieldGroup number="2" label="What do you need?">
+                          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                            {NEEDS.map(({ label, icon: Icon }) => (
                               <button
-                                key={n}
+                                key={label}
                                 type="button"
-                                onClick={() => toggleNeed(n)}
-                                className={`pill ${state.needs.includes(n) ? "pill-active" : ""}`}
+                                onClick={() => toggleNeed(label)}
+                                className={`pill !flex-col !items-center !justify-center !py-4 gap-2 text-center ${
+                                  state.needs.includes(label)
+                                    ? "pill-active"
+                                    : ""
+                                }`}
                               >
-                                {n}
+                                <Icon size={18} />
+                                <span className="text-[11px] uppercase tracking-tight leading-tight">
+                                  {label}
+                                </span>
                               </button>
                             ))}
                           </div>
                         </FieldGroup>
 
                         <FieldGroup
+                          number="3"
                           label="Tell us about it"
                           hint={`${state.project.length}/1000`}
                         >
@@ -224,42 +290,48 @@ export default function GetInTouchPage() {
                               setField("project", e.target.value)
                             }
                             className="brand-textarea"
-                            placeholder="A rough idea of the brief — what you're trying to make, who it's for, references you love…"
+                            placeholder="An idea, a problem, a rough brief — anything helps."
                             rows={4}
                           />
                         </FieldGroup>
 
-                        <FieldGroup label="Budget">
-                          <div className="flex flex-wrap gap-2">
-                            {BUDGET.map((b) => (
-                              <button
-                                key={b}
-                                type="button"
-                                onClick={() => setField("budget", b)}
-                                className={`pill ${state.budget === b ? "pill-active" : ""}`}
-                              >
-                                {b}
-                              </button>
-                            ))}
-                          </div>
-                        </FieldGroup>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <FieldGroup label="Budget" tag="Optional">
+                            <div className="grid grid-cols-3 gap-2">
+                              {BUDGET.map((b) => (
+                                <button
+                                  key={b}
+                                  type="button"
+                                  onClick={() => setField("budget", b)}
+                                  className={`pill !justify-center text-center ${
+                                    state.budget === b ? "pill-active" : ""
+                                  }`}
+                                >
+                                  {b}
+                                </button>
+                              ))}
+                            </div>
+                          </FieldGroup>
 
-                        <FieldGroup label="Timeline">
-                          <div className="flex flex-wrap gap-2">
-                            {TIMELINE.map((t) => (
-                              <button
-                                key={t}
-                                type="button"
-                                onClick={() => setField("timeline", t)}
-                                className={`pill ${state.timeline === t ? "pill-active" : ""}`}
-                              >
-                                {t}
-                              </button>
-                            ))}
-                          </div>
-                        </FieldGroup>
+                          <FieldGroup label="Timeline" tag="Optional">
+                            <div className="grid grid-cols-3 gap-2">
+                              {TIMELINE.map((t) => (
+                                <button
+                                  key={t}
+                                  type="button"
+                                  onClick={() => setField("timeline", t)}
+                                  className={`pill !justify-center text-center ${
+                                    state.timeline === t ? "pill-active" : ""
+                                  }`}
+                                >
+                                  {t}
+                                </button>
+                              ))}
+                            </div>
+                          </FieldGroup>
+                        </div>
 
-                        <FieldGroup label="Attach a file (optional, max 20MB)">
+                        <FieldGroup label="Reference / Brief" tag="Optional">
                           <label
                             className="flex items-center gap-3 rounded-card border border-dashed p-6 cursor-pointer hover:border-brand-orange transition-colors"
                             style={{ borderColor: "var(--surface-border)" }}
@@ -274,10 +346,10 @@ export default function GetInTouchPage() {
                               <p className="font-medium">
                                 {state.file
                                   ? state.file.name
-                                  : "Drop a brief, deck or reference video"}
+                                  : "Upload a brief, reference, deck, image, or anything that helps us understand the idea"}
                               </p>
                               <p className="text-xs opacity-60">
-                                .pdf, .png, .jpg, .mp4 — up to 20MB
+                                Max file size 20MB
                               </p>
                             </div>
                             <input
@@ -299,12 +371,17 @@ export default function GetInTouchPage() {
                           )}
                         </FieldGroup>
 
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
-                          <button type="submit" className="btn btn-primary">
-                            Send brief <ArrowRight size={16} />
+                        <div className="pt-2 space-y-3">
+                          <button
+                            type="submit"
+                            className="btn btn-primary w-full justify-center"
+                          >
+                            Send it our way <ArrowRight size={16} />
                           </button>
-                          <p className="text-sm opacity-60">
-                            We reply within one business day.
+                          <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
+                            <Check size={12} className="text-brand-orange" />
+                            We&rsquo;ll get back to you within 1–2 business
+                            days.
                           </p>
                         </div>
                       </form>
@@ -327,12 +404,19 @@ export default function GetInTouchPage() {
   );
 }
 
-function FieldGroup({ label, hint, children }) {
+function FieldGroup({ number, label, hint, tag, children }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <label className="eyebrow">
-          <span className="eyebrow-dot" /> {label}
+          <span className="eyebrow-dot" />
+          {number ? `${number}. ` : ""}
+          {label}
+          {tag && (
+            <span className="ml-2 text-[11px] opacity-50 normal-case">
+              ({tag})
+            </span>
+          )}
         </label>
         {hint && <span className="text-xs opacity-60">{hint}</span>}
       </div>
@@ -347,93 +431,101 @@ function ConfirmationScreen({ name, email }) {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="max-w-3xl mx-auto text-center"
+      className="max-w-3xl mx-auto text-center py-10"
     >
       <motion.div
         initial={{ scale: 0, rotate: -30 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        className="w-24 h-24 mx-auto rounded-full bg-brand-orange text-white flex items-center justify-center shadow-brand-glow"
+        className="relative w-20 h-20 mx-auto"
       >
-        <Check size={44} strokeWidth={2.4} />
+        <span className="absolute inset-0 rounded-full border border-brand-orange/30 animate-ping" />
+        <span className="absolute -inset-3 rounded-full border border-brand-orange/10" />
+        <div className="relative w-20 h-20 rounded-full border-2 border-brand-orange text-brand-orange flex items-center justify-center shadow-brand-glow">
+          <Check size={32} strokeWidth={2.6} />
+        </div>
       </motion.div>
+
       <p className="mt-8 eyebrow mx-auto w-fit">
         <span className="eyebrow-dot" /> Thank you!
       </p>
-      <h1 className="mt-4 font-display uppercase leading-[0.9] tracking-tight text-display-xl text-balance">
-        We&rsquo;ve got your <span className="text-brand-orange">message.</span>{" "}
-        <br /> We&rsquo;ll get back to you.
+      <h1 className="mt-4 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
+        We&rsquo;ve got your message. <br />
+        <span className="text-brand-orange">We&rsquo;ll get back to you.</span>
       </h1>
-      <p className="mt-6 text-body-lg opacity-75 max-w-xl mx-auto">
+      <p className="mt-6 text-body-lg opacity-70 max-w-xl mx-auto">
         Thanks for reaching out to OCT20FIVE{name ? `, ${name}` : ""}. Our team
         has received your details and will get back to you within 1&ndash;2
-        business days at{" "}
-        <span className="font-medium">{email || "your inbox"}</span>.
+        business days
+        {email ? (
+          <>
+            {" "}
+            at <span className="font-medium text-brand-orange">{email}</span>
+          </>
+        ) : (
+          "."
+        )}
       </p>
 
       <div className="mt-12 grid md:grid-cols-2 gap-5 text-left">
         <div className="brand-card">
           <p className="eyebrow">
-            <span className="eyebrow-dot" /> What happens next?
+            <Mail size={14} className="text-brand-orange" /> What happens next?
           </p>
           <ul className="mt-5 space-y-3 text-sm">
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 shrink-0 rounded-full bg-brand-orange text-white text-xs font-bold flex items-center justify-center">
-                1
-              </span>
-              <span className="opacity-85 mt-0.5">
-                We&rsquo;ll review your message
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 shrink-0 rounded-full bg-brand-orange text-white text-xs font-bold flex items-center justify-center">
-                2
-              </span>
-              <span className="opacity-85 mt-0.5">
-                The right person will reach out
-              </span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 shrink-0 rounded-full bg-brand-orange text-white text-xs font-bold flex items-center justify-center">
-                3
-              </span>
-              <span className="opacity-85 mt-0.5">
-                We&rsquo;ll discuss how we can help
-              </span>
-            </li>
+            {[
+              "We'll review your message",
+              "The right person will reach out",
+              "We'll discuss how we can help",
+            ].map((step) => (
+              <li key={step} className="flex items-start gap-3">
+                <Check
+                  size={16}
+                  className="shrink-0 mt-0.5 text-brand-orange"
+                />
+                <span className="opacity-85">{step}</span>
+              </li>
+            ))}
           </ul>
         </div>
-        <div className="brand-card !bg-brand-orange !text-white border-brand-orange">
-          <p className="eyebrow border-white/40 text-white/90">
-            <span className="eyebrow-dot !bg-white" /> Response time
+        <div className="brand-card">
+          <p className="eyebrow">
+            <Clock size={14} className="text-brand-orange" /> Response time
           </p>
-          <h3 className="mt-4 font-display text-3xl uppercase leading-[0.95]">
+          <h3 className="mt-4 font-display text-2xl text-brand-orange uppercase leading-[1.05]">
             Within 1&ndash;2 <br /> business days
           </h3>
-          <p className="mt-3 opacity-90 text-sm">
+          <p className="mt-3 opacity-70 text-sm">
             We usually respond faster. Keep an eye on your inbox.
           </p>
         </div>
       </div>
 
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <p className="text-sm opacity-70">
-          Have something urgent? Drop us an email at
+      <div className="mt-10 brand-card !flex !flex-col sm:!flex-row items-center justify-between gap-4 !py-4">
+        <p className="text-sm opacity-70 flex items-center gap-2">
+          <MessageSquare size={14} className="text-brand-orange" />
+          Have something urgent? Drop us an email at{" "}
+          <a
+            href="mailto:hello@oct20five.com"
+            className="underline underline-offset-4 text-brand-orange font-medium"
+          >
+            hello@oct20five.com
+          </a>
         </p>
         <a
           href="mailto:hello@oct20five.com"
-          className="underline underline-offset-4 text-brand-orange text-sm font-medium"
+          className="btn btn-primary !w-auto"
         >
-          hello@oct20five.com
+          Email us directly <ArrowUpRight size={16} />
         </a>
       </div>
 
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <a href="mailto:hello@oct20five.com" className="btn btn-primary">
-          Email us directly <ArrowUpRight size={16} />
-        </a>
-        <Link href="/" className="btn btn-outline">
-          Back to Home <ArrowUpRight size={16} />
+      <div className="mt-6">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm opacity-70 hover:opacity-100 hover:text-brand-orange transition-colors"
+        >
+          <ArrowLeft size={14} /> Back to Home
         </Link>
       </div>
     </motion.div>

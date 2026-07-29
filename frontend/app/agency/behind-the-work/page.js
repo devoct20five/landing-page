@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
@@ -36,12 +38,43 @@ const STEPS = [
   },
 ];
 
+const CRAFTS = [
+  {
+    title: "Editing",
+    desc: "Cuts that hold attention — social, brand films, docs.",
+    href: "/agency/work/editing",
+    thumbnail:
+      "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
+  },
+  {
+    title: "Design",
+    desc: "Identity, packaging, and visual systems built to last.",
+    href: "/agency/work/design",
+    thumbnail:
+      "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
+  },
+  {
+    title: "3D-Ads",
+    desc: "CGI and product films that feel real, not rendered.",
+    href: "/agency/work/3d-ads",
+    thumbnail:
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
+  },
+  {
+    title: "Web-Dev",
+    desc: "Sites and products built for speed, taste, and conversion.",
+    href: "/agency/work/web-dev",
+    thumbnail:
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
+  },
+];
+
 export default function BehindTheWorkPage() {
   return (
     <>
-      <Navbar variant="utility" initialTheme="light" />
+      <Navbar variant="utility" initialTheme="dark" />
       <main>
-        <SectionWrapper theme="light" className="!pt-40">
+        <SectionWrapper theme="dark" className="!pt-40 !pb-16">
           <div className="container">
             <div className="grid md:grid-cols-12 gap-10 items-end">
               <div className="md:col-span-7">
@@ -57,9 +90,9 @@ export default function BehindTheWorkPage() {
               </div>
               <div className="md:col-span-5">
                 <Reveal delay={0.15}>
-                  <p className="text-body-lg opacity-75 max-w-md">
+                  <p className="text-body-lg opacity-70 max-w-md">
                     The 6-stage rhythm behind every OCT20FIVE project — whether
-                    it’s a 30-second social edit or a full brand relaunch.
+                    it&rsquo;s a 30-second social edit or a full brand relaunch.
                   </p>
                 </Reveal>
               </div>
@@ -67,7 +100,8 @@ export default function BehindTheWorkPage() {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper theme="peach" className="!pt-8">
+        {/* 6-stage process */}
+        <SectionWrapper theme="dark" className="!pt-8">
           <div className="container">
             <Stagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {STEPS.map((s, i) => (
@@ -85,6 +119,57 @@ export default function BehindTheWorkPage() {
           </div>
         </SectionWrapper>
 
+        {/* Explore by craft — links into the 4 category pages */}
+        <SectionWrapper theme="dark">
+          <div className="container">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <Reveal>
+                  <p className="eyebrow">
+                    <span className="eyebrow-dot" /> Explore the work
+                  </p>
+                </Reveal>
+                <Reveal delay={0.05}>
+                  <h2 className="mt-4 font-display uppercase leading-[0.9] tracking-tight text-display-lg">
+                    See it by <span className="text-brand-orange">craft.</span>
+                  </h2>
+                </Reveal>
+              </div>
+            </div>
+
+            <Stagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {CRAFTS.map((c) => (
+                <StaggerItem key={c.title}>
+                  <Link href={c.href} className="group block">
+                    <div className="relative aspect-[4/5] rounded-card overflow-hidden">
+                      <Image
+                        src={c.thumbnail}
+                        alt={c.title}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-700 ease-apple group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-5">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-display text-2xl uppercase leading-none">
+                            {c.title}
+                          </h3>
+                          <span className="w-8 h-8 shrink-0 rounded-icon border border-white/30 flex items-center justify-center text-white transition-colors group-hover:border-brand-orange group-hover:text-brand-orange">
+                            <ArrowUpRight size={14} />
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm text-white/70">{c.desc}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
+        </SectionWrapper>
+
+        {/* Testimonial */}
         <SectionWrapper theme="dark">
           <div className="container">
             <div className="grid md:grid-cols-2 gap-5">

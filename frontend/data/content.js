@@ -3,6 +3,13 @@
 // Aligned verbatim to "Website - Finalisation.pdf"
 // ============================
 
+import {
+  EDITING_COLLECTIONS,
+  DESIGN_COLLECTIONS,
+  ADS_3D_COLLECTIONS,
+  WEB_DEV_COLLECTIONS,
+} from "./collection";
+
 export const AGENCY_SERVICES = [
   {
     n: 1,
@@ -86,10 +93,71 @@ export const SERVICES = {
       ctaLabel: "Book a call",
     },
     pricing: {
-      headline: "Great edits. Fair prices. None of the usual headaches.",
+      eyebrow: "Pricing",
+      headline: "Premium work. Fair pricing. No compromises.",
       subline:
-        "Professional editing shouldn\u2019t mean confusing pricing, endless waiting, or chasing your editor. We keep the process simple, the quality high, and the costs sensible.",
-      priceFrom: 3000,
+        "Choose the plan that fits your needs. Scale up or down as your projects grow.",
+
+      plans: [
+        {
+          name: "Standard",
+          icon: "Film",
+          price: "₹3,000",
+          total: "₹9,000",
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 0,
+
+          features: [
+            "Delivery in 48–72 Hours",
+            "Basic Color Correction",
+            "Basic Titles & Captions",
+            "Client Footage",
+            "Up to 2 Rounds of Revisions",
+            "Basic Audio Cleanup",
+          ],
+        },
+
+        {
+          name: "Advance",
+          icon: "Rocket",
+          price: "₹6,500",
+          total: "₹41,860",
+          discount: "8%",
+          featured: true,
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 1,
+
+          features: [
+            "Delivery in 48–72 Hours",
+            "Advanced Color Matching & Grading",
+            "Branded Graphics & Transitions",
+            "Client Footage + Stock Assets",
+            "Up to 3 Rounds of Revisions",
+            "Enhanced Audio & SFX",
+          ],
+        },
+
+        {
+          name: "Black",
+          icon: "Sparkles",
+          price: "₹10,000",
+          total: "₹132,000",
+          discount: "12%",
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 2,
+
+          features: [
+            "Delivery in 24–48 Hours",
+            "Cinematic Color Grading",
+            "Premium Motion Design",
+            "Extensive Integration",
+            "Premium Sound Design",
+            "Up to 3 Rounds of Revisions",
+          ],
+        },
+      ],
       features: [
         {
           icon: "BadgeIndianRupee",
@@ -99,7 +167,7 @@ export const SERVICES = {
         {
           icon: "Clock",
           title: "Fast when you need it",
-          body: "First cuts inside 48\u201372 hours \u2014 in your inbox before the week ends.",
+          body: "First cuts inside 48–72 hours — in your inbox before the week ends.",
         },
         {
           icon: "Layers",
@@ -109,12 +177,12 @@ export const SERVICES = {
         {
           icon: "Repeat",
           title: "More than just cuts",
-          body: "Color, sound-design, motion titles \u2014 the finish is baked in, not an add-on.",
+          body: "Color, sound-design, motion titles — the finish is baked in, not an add-on.",
         },
         {
           icon: "Sparkles",
           title: "Your content, your style",
-          body: "We match your voice, your palette and your platform \u2014 not a template.",
+          body: "We match your voice, your palette and your platform — not a template.",
         },
         {
           icon: "ShieldCheck",
@@ -122,8 +190,18 @@ export const SERVICES = {
           body: "Kick off with a pilot. Roll into a retainer when the fit is right.",
         },
       ],
+      signature: {
+        title: "Built Around Your Vision.",
+        body: "Tailored from scratch. For brands that need more than a package.",
+        price: "₹55,000",
+      },
+
+      compareLabel: "Compare Plans",
+      compareHref: "#compare",
+
       ctaLabel: "Find your editing plan",
     },
+    collections: EDITING_COLLECTIONS,
   },
   design: {
     slug: "design",
@@ -172,10 +250,71 @@ export const SERVICES = {
       ctaLabel: "Book a call",
     },
     pricing: {
+      eyebrow: "Pricing",
       headline: "Beautiful design. Priced like a partner, not a vendor.",
       subline:
         "Scoped design packs for identity, campaigns and always-on brand teams. Sensible pricing, senior craft, and no template-shop feel.",
-      priceFrom: 2500,
+
+      plans: [
+        {
+          name: "Standard",
+          icon: "Palette",
+          price: "₹2,500",
+          total: "₹7,500",
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 0,
+
+          features: [
+            "5–7 Day Delivery",
+            "One Design Direction",
+            "Print + Digital Assets",
+            "Client Brand Assets",
+            "Up to 2 Rounds of Revisions",
+            "Production-Ready Exports",
+          ],
+        },
+
+        {
+          name: "Advance",
+          icon: "Sparkles",
+          price: "₹6,500",
+          total: "₹41,860",
+          discount: "8%",
+          featured: true,
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 1,
+
+          features: [
+            "5–10 Day Design Sprint",
+            "Multiple Creative Directions",
+            "Brand + Campaign Systems",
+            "Custom Illustration & Graphics",
+            "Up to 3 Rounds of Revisions",
+            "Print + Digital Production",
+          ],
+        },
+
+        {
+          name: "Black",
+          icon: "Gem",
+          price: "₹12,000",
+          total: "₹158,400",
+          discount: "12%",
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 2,
+
+          features: [
+            "Priority Design Delivery",
+            "Full Brand System",
+            "Campaign Art Direction",
+            "Premium Motion & Graphics",
+            "Up to 3 Rounds of Revisions",
+            "Complete Source File Handover",
+          ],
+        },
+      ],
       features: [
         {
           icon: "BadgeIndianRupee",
@@ -185,7 +324,7 @@ export const SERVICES = {
         {
           icon: "Clock",
           title: "Fast, without cutting corners",
-          body: "5\u201310 day sprints. Focused rounds. No scope drift.",
+          body: "5–10 day sprints. Focused rounds. No scope drift.",
         },
         {
           icon: "Layers",
@@ -200,7 +339,7 @@ export const SERVICES = {
         {
           icon: "Sparkles",
           title: "Print + digital ready",
-          body: "CMYK, RGB, web \u2014 exports for every surface you\u2019ll need.",
+          body: "CMYK, RGB, web — exports for every surface you’ll need.",
         },
         {
           icon: "ShieldCheck",
@@ -208,8 +347,18 @@ export const SERVICES = {
           body: "Full ownership of source files and the rights that matter.",
         },
       ],
+      signature: {
+        title: "Built Around Your Brand.",
+        body: "Custom identity, campaign or design systems built from scratch.",
+        price: "₹35,000",
+      },
+
+      compareLabel: "Compare Plans",
+      compareHref: "#compare",
+
       ctaLabel: "Find your design plan",
     },
+    collections: DESIGN_COLLECTIONS,
   },
   "3d-ads": {
     slug: "3d-ads",
@@ -261,10 +410,71 @@ export const SERVICES = {
       ctaLabel: "Make it real",
     },
     pricing: {
+      eyebrow: "Pricing",
       headline: "Big ideas. Without big production headaches.",
       subline:
         "From clean product showcases to full-scale CGI campaigns, we build the product, the world, and everything impossible in between.",
-      priceFrom: 7999,
+
+      plans: [
+        {
+          name: "Standard",
+          icon: "Boxes",
+          price: "₹7,999",
+          total: "₹23,997",
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 0,
+
+          features: [
+            "5–7 Day Production",
+            "Single Product Setup",
+            "Basic CGI Animation",
+            "Studio Lighting Setup",
+            "Up to 2 Revision Rounds",
+            "Platform-Ready Export",
+          ],
+        },
+
+        {
+          name: "Advance",
+          icon: "Clapperboard",
+          price: "₹18,000",
+          total: "₹116,640",
+          discount: "8%",
+          featured: true,
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 1,
+
+          features: [
+            "7–14 Day Production",
+            "Custom Product Modeling",
+            "Cinematic Lighting & Materials",
+            "Advanced Animation & Simulation",
+            "Up to 3 Revision Rounds",
+            "Color, Comp & Sound Design",
+          ],
+        },
+
+        {
+          name: "Black",
+          icon: "Atom",
+          price: "₹35,000",
+          total: "₹369,600",
+          discount: "12%",
+
+          packages: ["3 Pack", "7 Pack", "15 Pack"],
+          selectedPackage: 2,
+
+          features: [
+            "Priority Production",
+            "Photoreal Product Environments",
+            "Complex FX & Simulation",
+            "Premium Art Direction",
+            "Up to 3 Revision Rounds",
+            "Broadcast-Ready Mastering",
+          ],
+        },
+      ],
       features: [
         {
           icon: "BadgeIndianRupee",
@@ -279,7 +489,7 @@ export const SERVICES = {
         {
           icon: "Layers",
           title: "Your product, built in 3D",
-          body: "Model once, render everywhere \u2014 stills, films, socials.",
+          body: "Model once, render everywhere — stills, films, socials.",
         },
         {
           icon: "Repeat",
@@ -297,8 +507,18 @@ export const SERVICES = {
           body: "ACES color-managed pipeline. Broadcast-safe deliverables.",
         },
       ],
+      signature: {
+        title: "Built Around Your Impossible.",
+        body: "Full CGI campaigns, product worlds and custom VFX production.",
+        price: "₹75,000",
+      },
+
+      compareLabel: "Compare Plans",
+      compareHref: "#compare",
+
       ctaLabel: "Bring your idea to life",
     },
+    collections: ADS_3D_COLLECTIONS,
   },
   "web-dev": {
     slug: "web-dev",
@@ -350,10 +570,71 @@ export const SERVICES = {
       ctaLabel: "Build your website",
     },
     pricing: {
-      headline: "Good websites shouldn\u2019t just sit there.",
+      eyebrow: "Pricing",
+      headline: "Good websites shouldn't just sit there.",
       subline:
         "From getting you online to running your business, we build websites and web products designed to look good, work properly, and grow with you.",
-      priceFrom: 6000,
+
+      plans: [
+        {
+          name: "Standard",
+          icon: "Code2",
+          price: "₹6,000",
+          total: "₹6,000",
+          packages: ["Landing", "Business", "Portfolio"],
+          selectedPackage: 0,
+
+          features: [
+            "3–5 Day Delivery",
+            "Responsive Design",
+            "Up to 5 Pages",
+            "Contact / Lead Forms",
+            "Basic SEO Setup",
+            "Deployment Included",
+          ],
+        },
+
+        {
+          name: "Advance",
+          icon: "Layers",
+          price: "₹18,000",
+          total: "₹18,000",
+          discount: "8%",
+          featured: true,
+
+          packages: ["Landing", "Business", "E-commerce"],
+          selectedPackage: 1,
+
+          features: [
+            "7–14 Day Delivery",
+            "Custom UI/UX Design",
+            "CMS Integration",
+            "Motion & Interactions",
+            "Performance Optimization",
+            "30 Days Post-Launch Support",
+          ],
+        },
+
+        {
+          name: "Black",
+          icon: "Rocket",
+          price: "₹35,000",
+          total: "₹35,000",
+          discount: "12%",
+
+          packages: ["Business", "E-commerce", "Custom"],
+          selectedPackage: 2,
+
+          features: [
+            "Priority Development",
+            "Advanced Web Architecture",
+            "Custom Components",
+            "E-commerce / API Integration",
+            "Advanced Motion & Interaction",
+            "Full Source + Deployment Handover",
+          ],
+        },
+      ],
       features: [
         {
           icon: "BadgeIndianRupee",
@@ -386,8 +667,18 @@ export const SERVICES = {
           body: "Full source handover. Your repo, your host, your ownership.",
         },
       ],
+      signature: {
+        title: "Built Around Your Business.",
+        body: "Custom web products, platforms and experiences scoped around your actual requirements.",
+        price: "₹55,000",
+      },
+
+      compareLabel: "Compare Plans",
+      compareHref: "#compare",
+
       ctaLabel: "Build something that works",
     },
+    collections: WEB_DEV_COLLECTIONS,
   },
 };
 
