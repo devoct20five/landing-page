@@ -45,14 +45,35 @@ export default function AgencyPage() {
 
         <SectionWrapper id="services" theme="cream">
           <div className="container">
+            {/* =========================================
+        SECTION LABEL
+    ========================================= */}
+
             <Reveal>
               <div className="flex justify-center">
                 <SectionTag>SERVICES</SectionTag>
               </div>
             </Reveal>
 
+            {/* =========================================
+        HEADING
+    ========================================= */}
+
             <Reveal delay={0.05}>
-              <h2 className="mt-8 text-center font-display font-black uppercase leading-[0.83] tracking-[-0.05em] text-[clamp(3.5rem,8vw,7.25rem)]">
+              <h2
+                className="
+          mx-auto
+          mt-7
+          max-w-[1050px]
+          text-center
+          font-display
+          font-black
+          uppercase
+          leading-[0.84]
+          tracking-[-0.055em]
+          text-[clamp(3.25rem,7.4vw,7rem)]
+        "
+              >
                 EVERYTHING YOUR IDEA NEEDS
                 <span className="text-brand-orange">.</span>
                 <br />
@@ -61,8 +82,23 @@ export default function AgencyPage() {
               </h2>
             </Reveal>
 
-            <Reveal delay={0.12}>
-              <p className="mx-auto mt-8 max-w-[720px] text-center text-[1.05rem] leading-8 opacity-75">
+            {/* =========================================
+        DESCRIPTION
+    ========================================= */}
+
+            <Reveal delay={0.1}>
+              <p
+                className="
+          mx-auto
+          mt-7
+          max-w-[690px]
+          text-center
+          text-[0.88rem]
+          leading-[1.65]
+          text-black/75
+          md:text-[0.95rem]
+        "
+              >
                 From the first cut to the final launch, we bring editing,
                 design, 3D and web together under one creative roof. Choose
                 exactly what you need—or combine services to build something
@@ -70,7 +106,21 @@ export default function AgencyPage() {
               </p>
             </Reveal>
 
-            <Stagger className="mt-20 grid gap-6 lg:grid-cols-4 sm:grid-cols-2">
+            {/* =========================================
+        SERVICE CARDS
+    ========================================= */}
+
+            <Stagger
+              className="
+        mt-12
+        grid
+        gap-4
+        sm:grid-cols-2
+        lg:mt-14
+        lg:grid-cols-4
+        lg:gap-5
+      "
+            >
               {AGENCY_SERVICES.map((service) => {
                 const Icon = ICONS[service.icon] || Film;
 
@@ -78,43 +128,148 @@ export default function AgencyPage() {
                   <StaggerItem key={service.slug}>
                     <Link
                       href={`/agency/${service.slug}`}
-                      className="group block rounded-lg border bg-white p-7 transition-all duration-500 ease-smooth hover:-translate-y-2 hover:border-brand-orange hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)]"
+                      className="
+                group
+                flex
+                min-h-[360px]
+                flex-col
+                rounded-[9px]
+                border
+                bg-white
+                p-5
+                transition-all
+                duration-500
+                ease-smooth
+                hover:-translate-y-1.5
+                hover:border-brand-orange
+                hover:shadow-[0_25px_60px_rgba(0,0,0,0.09)]
+                md:p-6
+              "
                       style={{
                         borderColor: "var(--surface-border)",
                       }}
                     >
+                      {/* ---------------------------------
+                  ICON + NUMBER
+              --------------------------------- */}
+
                       <div className="flex items-start justify-between">
                         <Icon
-                          size={34}
+                          size={32}
                           strokeWidth={1.5}
-                          className="text-brand-orange"
+                          className="
+                    text-brand-orange
+                    transition-transform
+                    duration-500
+                    group-hover:scale-105
+                  "
                         />
 
-                        <span className="font-display text-[2rem] font-black leading-none text-brand-orange">
+                        <span
+                          className="
+                    font-display
+                    text-[1.7rem]
+                    font-black
+                    leading-none
+                    text-brand-orange
+                  "
+                        >
                           {service.n}
                         </span>
                       </div>
 
-                      <h3 className="mt-7 font-display text-[2rem] font-black uppercase leading-none">
+                      {/* ---------------------------------
+                  TITLE
+              --------------------------------- */}
+
+                      <h3
+                        className="
+                  mt-7
+                  font-display
+                  text-[1.8rem]
+                  font-black
+                  uppercase
+                  leading-[0.9]
+                  tracking-[-0.035em]
+                "
+                      >
                         {service.title}
                       </h3>
 
-                      <p className="mt-5 text-[0.92rem] font-medium uppercase leading-6 opacity-80">
+                      {/* ---------------------------------
+                  BLURB
+              --------------------------------- */}
+
+                      <p
+                        className="
+                  mt-4
+                  max-w-[240px]
+                  text-[0.72rem]
+                  font-medium
+                  uppercase
+                  leading-[1.55]
+                  text-black/75
+                "
+                      >
                         {service.blurb}
                       </p>
 
-                      <p className="mt-4 text-[13px] font-bold uppercase tracking-wide text-brand-orange">
+                      {/* ---------------------------------
+                  ORANGE TAG
+              --------------------------------- */}
+
+                      <p
+                        className="
+                  mt-2
+                  text-[0.68rem]
+                  font-bold
+                  uppercase
+                  leading-[1.4]
+                  tracking-[0.03em]
+                  text-brand-orange
+                "
+                      >
                         {service.tag}
                       </p>
 
-                      <div className="mt-10 flex items-center justify-between border-t pt-5">
-                        <span className="text-[0.9rem] font-bold uppercase tracking-wide">
+                      {/* ---------------------------------
+                  BOTTOM CTA
+              --------------------------------- */}
+
+                      <div
+                        className="
+                  mt-auto
+                  flex
+                  items-center
+                  justify-between
+                  border-t
+                  pt-4
+                "
+                        style={{
+                          borderColor: "var(--surface-border)",
+                        }}
+                      >
+                        <span
+                          className="
+                    text-[0.68rem]
+                    font-bold
+                    uppercase
+                    tracking-[0.02em]
+                  "
+                        >
                           EXPLORE {service.title}
                         </span>
 
                         <ArrowRight
-                          size={18}
-                          className="text-brand-orange transition-transform duration-500 ease-smooth group-hover:translate-x-2"
+                          size={17}
+                          strokeWidth={1.5}
+                          className="
+                    text-brand-orange
+                    transition-transform
+                    duration-500
+                    ease-smooth
+                    group-hover:translate-x-1.5
+                  "
                         />
                       </div>
                     </Link>
@@ -124,7 +279,6 @@ export default function AgencyPage() {
             </Stagger>
           </div>
         </SectionWrapper>
-
         <Showreel />
 
         <TrustedBy />

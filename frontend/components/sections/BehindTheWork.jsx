@@ -2,82 +2,426 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Film, Palette, Boxes, Code2 } from 'lucide-react'
+import {
+  ArrowRight,
+  Film,
+  Palette,
+  Boxes,
+  Code2,
+} from 'lucide-react'
+
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTag from '@/components/ui/SectionTag'
-import Reveal, { Stagger, StaggerItem } from '@/components/motion/Reveal'
+import Reveal, {
+  Stagger,
+  StaggerItem,
+} from '@/components/motion/Reveal'
 import MagneticButton from '@/components/motion/MagneticButton'
 import { AGENCY_SERVICES } from '@/data/content'
 
-const ICONS = { Film, Palette, Boxes, Code2 }
+const ICONS = {
+  Film,
+  Palette,
+  Boxes,
+  Code2,
+}
 
-export default function BehindTheWork({ theme = 'dark', currentSlug }) {
-  const others = AGENCY_SERVICES.filter((s) => s.slug !== currentSlug)
+export default function BehindTheWork({
+  theme = 'dark',
+  currentSlug,
+}) {
+  const others = AGENCY_SERVICES.filter(
+    (service) => service.slug !== currentSlug
+  )
+
   return (
-    <SectionWrapper theme={theme} id="behind">
+    <SectionWrapper
+      theme={theme}
+      id="behind"
+      className="!py-20 md:!py-24"
+    >
       <div className="container">
-        <div className="grid md:grid-cols-12 gap-10 items-center">
-          <div className="md:col-span-6">
-            <Reveal><SectionTag>Behind the Work</SectionTag></Reveal>
+
+        {/* =====================================================
+            MAIN FEATURE
+        ===================================================== */}
+
+        <div
+          className="
+            grid
+            items-center
+            gap-12
+            lg:grid-cols-12
+            lg:gap-14
+          "
+        >
+
+          {/* -----------------------------------------------
+              LEFT — COPY
+          ----------------------------------------------- */}
+
+          <div className="lg:col-span-4">
+
+            <Reveal>
+              <SectionTag>
+                Behind the Work
+              </SectionTag>
+            </Reveal>
+
             <Reveal delay={0.05}>
-              <h2 className="mt-6 font-display uppercase leading-[0.85] tracking-tight text-display-xl text-balance">
-                Ideas. <br /> <span className="text-brand-orange">Process.</span> <br /> Impact.
+              <h2
+                className="
+                  mt-6
+                  font-display
+                  text-[clamp(3.6rem,6vw,6.5rem)]
+                  font-black
+                  uppercase
+                  leading-[0.78]
+                  tracking-[-0.055em]
+                "
+              >
+                IDEAS
+                <span className="text-brand-orange">.</span>
+
+                <br />
+
+                PROCESS
+                <span className="text-brand-orange">.</span>
+
+                <br />
+
+                IMPACT
+                <span className="text-brand-orange">.</span>
               </h2>
             </Reveal>
+
             <Reveal delay={0.12}>
-              <p className="mt-6 opacity-80 max-w-xl text-body-lg">
-                Great work doesn’t happen by chance. Explore the ideas, decisions, process, and craft that turn concepts into results that matter.
+              <p
+                className="
+                  mt-6
+                  max-w-[410px]
+                  text-[0.82rem]
+                  leading-[1.6]
+                  text-white/70
+                  md:text-[0.9rem]
+                "
+              >
+                Great work doesn’t happen by chance. Explore
+                the ideas, decisions, process, and craft that
+                turn concepts into results that matter.
               </p>
             </Reveal>
-            <Reveal delay={0.2} className="mt-8">
-              <MagneticButton href="/agency/behind-the-work" variant="ghost">Explore Behind the Work <ArrowRight size={16} /></MagneticButton>
+
+            <Reveal
+              delay={0.2}
+              className="mt-7"
+            >
+              <MagneticButton
+                href="/agency/behind-the-work"
+                variant="ghost"
+              >
+                Explore Behind the Work
+                <ArrowRight size={16} />
+              </MagneticButton>
             </Reveal>
+
           </div>
 
-          <div className="md:col-span-6">
+
+          {/* -----------------------------------------------
+              RIGHT — EDITORIAL WORKBOARD
+          ----------------------------------------------- */}
+
+          <div className="lg:col-span-8">
+
             <Reveal delay={0.1}>
-              <div className="grid grid-cols-6 grid-rows-4 gap-3 h-[380px] md:h-[500px]">
-                <div className="col-span-4 row-span-3 relative rounded-card overflow-hidden">
-                  <Image src="https://images.unsplash.com/photo-1602645803535-45caec9f2a3c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600" alt="" fill sizes="50vw" className="object-cover" />
+
+              <div
+                className="
+                  relative
+                  aspect-[1.35/1]
+                  w-full
+                  overflow-hidden
+                  rounded-[8px]
+                  bg-[#111]
+                "
+              >
+
+                {/* Main image */}
+
+                <Image
+                  src="https://images.unsplash.com/photo-1602645803535-45caec9f2a3c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600"
+                  alt="Creative process workspace"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 65vw"
+                  className="
+                    object-cover
+                    transition-transform
+                    duration-1000
+                    ease-out
+                    hover:scale-[1.025]
+                  "
+                />
+
+                {/* Dark cinematic overlay */}
+
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    bg-gradient-to-t
+                    from-black/65
+                    via-transparent
+                    to-black/10
+                  "
+                />
+
+                {/* -----------------------------------------
+                    FLOATING PROCESS CARDS
+                ----------------------------------------- */}
+
+                <div
+                  className="
+                    absolute
+                    left-[7%]
+                    top-[8%]
+                    hidden
+                    w-[25%]
+                    rotate-[-3deg]
+                    overflow-hidden
+                    rounded-[3px]
+                    shadow-[0_15px_35px_rgba(0,0,0,0.35)]
+                    sm:block
+                  "
+                >
+                  <Image
+                    src="https://images.unsplash.com/photo-1604888989902-6c8d8617e02a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
+                    alt=""
+                    width={600}
+                    height={400}
+                    className="h-auto w-full object-cover"
+                  />
                 </div>
-                <div className="col-span-2 row-span-2 relative rounded-card overflow-hidden">
-                  <Image src="https://images.unsplash.com/photo-1604888989902-6c8d8617e02a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="" fill sizes="25vw" className="object-cover" />
+
+                <div
+                  className="
+                    absolute
+                    right-[7%]
+                    top-[7%]
+                    w-[28%]
+                    rotate-[2deg]
+                    overflow-hidden
+                    rounded-[3px]
+                    shadow-[0_15px_35px_rgba(0,0,0,0.35)]
+                  "
+                >
+                  <Image
+                    src="https://images.unsplash.com/photo-1656588360305-095657d15c6f?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
+                    alt=""
+                    width={600}
+                    height={400}
+                    className="h-auto w-full object-cover"
+                  />
                 </div>
-                <div className="col-span-2 row-span-2 relative rounded-card overflow-hidden">
-                  <Image src="https://images.unsplash.com/photo-1656588360305-095657d15c6f?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="" fill sizes="25vw" className="object-cover" />
+
+                <div
+                  className="
+                    absolute
+                    bottom-[8%]
+                    left-[12%]
+                    w-[27%]
+                    rotate-[2deg]
+                    overflow-hidden
+                    rounded-[3px]
+                    shadow-[0_15px_35px_rgba(0,0,0,0.4)]
+                  "
+                >
+                  <Image
+                    src="https://images.unsplash.com/photo-1573867607590-361ea324975e?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
+                    alt=""
+                    width={700}
+                    height={450}
+                    className="h-auto w-full object-cover"
+                  />
                 </div>
-                <div className="col-span-4 row-span-1 relative rounded-card overflow-hidden">
-                  <Image src="https://images.unsplash.com/photo-1573867607590-361ea324975e?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400" alt="" fill sizes="50vw" className="object-cover" />
+
+                {/* Orange process note */}
+
+                <div
+                  className="
+                    absolute
+                    bottom-[12%]
+                    right-[10%]
+                    hidden
+                    rotate-[-2deg]
+                    bg-[#d9a875]
+                    px-4
+                    py-3
+                    text-black
+                    shadow-[0_15px_30px_rgba(0,0,0,0.3)]
+                    md:block
+                  "
+                >
+                  <p className="text-[8px] font-bold uppercase tracking-[0.15em]">
+                    We create.
+                  </p>
+
+                  <p className="mt-1 text-[9px] font-medium">
+                    We concept.
+                  </p>
+
+                  <p className="text-[9px] font-bold text-brand-orange">
+                    We deliver.
+                  </p>
                 </div>
+
               </div>
+
             </Reveal>
+
           </div>
+
         </div>
 
-        {/* Explore other services strip */}
-        <div className="mt-24">
-          <Reveal className="mb-8">
-            <p className="eyebrow"><span className="eyebrow-dot" /> Explore what else we do</p>
+
+        {/* =====================================================
+            OTHER SERVICES
+        ===================================================== */}
+
+        <div className="mt-14 md:mt-16">
+
+          <Reveal>
+            <div className="mb-5 flex items-center justify-center gap-3">
+
+              <span
+                className="
+                  h-px
+                  w-8
+                  bg-brand-orange
+                "
+              />
+
+              <p
+                className="
+                  text-[9px]
+                  font-bold
+                  uppercase
+                  tracking-[0.12em]
+                  text-white/80
+                "
+              >
+                Explore what else we do
+              </p>
+
+              <span
+                className="
+                  h-px
+                  w-8
+                  bg-brand-orange
+                "
+              />
+
+            </div>
           </Reveal>
-          <Stagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {others.map((s) => {
-              const Icon = ICONS[s.icon] || Film
+
+
+          <Stagger
+            className="
+              grid
+              gap-3
+              sm:grid-cols-2
+              lg:grid-cols-4
+            "
+          >
+            {others.map((service) => {
+              const Icon =
+                ICONS[service.icon] || Film
+
               return (
-                <StaggerItem key={s.slug}>
-                  <Link href={`/agency/${s.slug}`} className="brand-card block group !bg-transparent border-white/10 hover:!bg-white/[0.03]">
-                    <Icon size={26} strokeWidth={1.6} className="text-brand-orange" />
-                    <h4 className="mt-6 font-display text-2xl uppercase leading-tight">{s.title}</h4>
-                    <p className="mt-2 text-sm opacity-70">{s.blurb}</p>
-                    <div className="mt-6 flex items-center gap-2 text-brand-orange text-sm font-medium">
-                      <span>Explore</span>
-                      <ArrowRight size={16} className="transition-transform duration-500 ease-apple group-hover:translate-x-2" />
+                <StaggerItem key={service.slug}>
+
+                  <Link
+                    href={`/agency/${service.slug}`}
+                    className="
+                      group
+                      flex
+                      min-h-[120px]
+                      flex-col
+                      rounded-[5px]
+                      border
+                      border-white/10
+                      bg-white/[0.015]
+                      p-4
+                      transition-all
+                      duration-500
+                      hover:-translate-y-1
+                      hover:border-brand-orange/50
+                      hover:bg-white/[0.035]
+                    "
+                  >
+
+                    <div className="flex items-start justify-between">
+
+                      <Icon
+                        size={25}
+                        strokeWidth={1.5}
+                        className="
+                          text-brand-orange
+                        "
+                      />
+
+                      <ArrowRight
+                        size={16}
+                        strokeWidth={1.5}
+                        className="
+                          text-white/60
+                          transition-transform
+                          duration-500
+                          group-hover:translate-x-1
+                          group-hover:text-brand-orange
+                        "
+                      />
+
                     </div>
+
+                    <div className="mt-auto">
+
+                      <h4
+                        className="
+                          mt-4
+                          font-display
+                          text-[1.05rem]
+                          font-black
+                          uppercase
+                          leading-none
+                        "
+                      >
+                        {service.title}
+                      </h4>
+
+                      <p
+                        className="
+                          mt-2
+                          max-w-[190px]
+                          text-[0.65rem]
+                          leading-[1.45]
+                          text-white/55
+                        "
+                      >
+                        {service.blurb}
+                      </p>
+
+                    </div>
+
                   </Link>
+
                 </StaggerItem>
               )
             })}
           </Stagger>
+
         </div>
+
       </div>
     </SectionWrapper>
   )

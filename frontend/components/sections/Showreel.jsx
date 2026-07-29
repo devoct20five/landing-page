@@ -14,95 +14,194 @@ export default function Showreel({
     <SectionWrapper id={id} theme={theme}>
       <div className="container">
 
-        <Reveal className="flex justify-center mb-10">
-          <SectionTag>Showreel</SectionTag>
+        {/* =========================================
+            SECTION LABEL
+        ========================================= */}
+
+        <Reveal className="flex justify-center">
+          <SectionTag>SHOWREEL</SectionTag>
         </Reveal>
 
-        <Reveal delay={0.1}>
+
+        {/* =========================================
+            SHOWREEL BLOCK
+        ========================================= */}
+
+        <Reveal delay={0.08}>
           <motion.button
-            whileHover={{ scale: 1.015 }}
-            whileTap={{ scale: 0.99 }}
+            type="button"
+            whileHover={{
+              scale: 1.008,
+              y: -2,
+            }}
+            whileTap={{
+              scale: 0.995,
+            }}
             transition={{
               duration: 0.45,
               ease: [0.22, 1, 0.36, 1],
             }}
             className="
+              group
               relative
+              mt-5
+              block
               w-full
               overflow-hidden
-              rounded-[28px]
+              rounded-[9px]
               bg-brand-orange
-              py-16
-              md:py-24
-              shadow-[0_30px_70px_rgba(0,0,0,0.18)]
+              shadow-[0_18px_40px_rgba(0,0,0,0.14)]
+              focus:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-brand-orange
+              focus-visible:ring-offset-4
             "
           >
 
-            {/* subtle texture */}
-            <div className="absolute inset-0 opacity-[0.04] grain" />
+            {/* -----------------------------------------
+                SUBTLE TEXTURE
+            ----------------------------------------- */}
 
-            {/* play button */}
+            <div
+              className="
+                grain
+                absolute
+                inset-0
+                z-0
+                opacity-[0.035]
+              "
+            />
+
+
+            {/* -----------------------------------------
+                SUBTLE ORANGE GRADIENT
+            ----------------------------------------- */}
+
+            <div
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-br
+                from-white/[0.025]
+                via-transparent
+                to-black/[0.06]
+              "
+            />
+
+
+            {/* -----------------------------------------
+                SHOWREEL TITLE
+            ----------------------------------------- */}
+
+            <div
+              className="
+                relative
+                z-10
+                flex
+                min-h-[255px]
+                items-center
+                justify-center
+                px-5
+                py-12
+                sm:min-h-[275px]
+                sm:px-8
+                md:min-h-[315px]
+                md:px-12
+                lg:min-h-[350px]
+                lg:px-16
+              "
+            >
+
+              <h2
+                className="
+                  max-w-[1100px]
+                  text-center
+                  font-display
+                  text-[clamp(3.2rem,10vw,9rem)]
+                  font-black
+                  uppercase
+                  leading-[0.78]
+                  tracking-[-0.065em]
+                  text-white
+                "
+              >
+                <span className="block">
+                  WATCH OUR
+                </span>
+
+                <span className="block">
+                  SHOWREEL
+                </span>
+              </h2>
+
+            </div>
+
+
+            {/* -----------------------------------------
+                PLAY BUTTON
+            ----------------------------------------- */}
+
             <motion.div
-              animate={{
-                scale: [1, 1.08, 1],
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{
+                once: true,
+                amount: 0.5,
               }}
               transition={{
-                duration: 2.2,
-                repeat: Infinity,
+                duration: 0.7,
+                delay: 0.15,
+                ease: [0.22, 1, 0.36, 1],
               }}
               className="
                 absolute
                 left-1/2
                 top-1/2
+                z-20
                 -translate-x-1/2
                 -translate-y-1/2
-                z-20
               "
             >
-              <div
+
+              <motion.div
+                animate={{
+                  scale: [1, 1.045, 1],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="
-                  w-20
-                  h-20
-                  md:w-28
-                  md:h-28
-                  rounded-full
-                  bg-white
-                  shadow-2xl
                   flex
+                  h-[68px]
+                  w-[68px]
                   items-center
                   justify-center
+                  rounded-full
+                  bg-white
+                  shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+                  transition-transform
+                  duration-500
+                  group-hover:scale-105
+                  sm:h-[74px]
+                  sm:w-[74px]
+                  md:h-[82px]
+                  md:w-[82px]
                 "
               >
+
                 <Play
-                  fill="#ff5a1f"
-                  color="#ff5a1f"
-                  className="translate-x-[3px]"
-                  size={36}
+                  size={29}
+                  strokeWidth={0}
+                  fill="var(--brand-orange)"
+                  color="var(--brand-orange)"
+                  className="translate-x-[2px]"
                 />
-              </div>
+
+              </motion.div>
+
             </motion.div>
-
-            {/* text */}
-            <div className="relative z-10">
-
-              <h2
-                className="
-                  font-display
-                  font-black
-                  uppercase
-                  text-white
-                  leading-[0.82]
-                  tracking-[-0.06em]
-                  text-[clamp(3rem,11vw,9rem)]
-                  text-center
-                "
-              >
-                WATCH OUR
-                <br />
-                SHOWREEL
-              </h2>
-
-            </div>
 
           </motion.button>
         </Reveal>
