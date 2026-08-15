@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Bell,
   Check,
@@ -83,7 +84,7 @@ const TYPE_CONFIG = {
 };
 
 export default function NotificationDropdown({
-  variant = "default",
+  variant = "topbar",
   onNavigate,
 }) {
   const [open, setOpen] = useState(false);
@@ -226,6 +227,7 @@ export default function NotificationDropdown({
 
         {open && (
           <NotificationPanel
+            variant={variant}
             triggerRef={triggerRef}
             panelRef={panelRef}
             notifications={notifications}
@@ -242,7 +244,7 @@ export default function NotificationDropdown({
 
   /*
    * ---------------------------------------------------------
-   * DEFAULT / TOPBAR TRIGGER
+   * TOPBAR / DEFAULT TRIGGER
    * ---------------------------------------------------------
    */
 
@@ -252,13 +254,19 @@ export default function NotificationDropdown({
         ref={triggerRef}
         type="button"
         onClick={() => setOpen((current) => !current)}
+        aria-label="Notifications"
         className={cn(
-          "relative flex h-10 w-10 items-center justify-center rounded-xl",
-          "border border-surface-border bg-surface-card",
-          "text-surface-muted transition hover:text-surface-fg"
+          "relative flex h-9 w-9 items-center justify-center rounded-full sm:h-10 sm:w-10",
+          "text-[color-mix(in_srgb,var(--surface-fg)_70%,transparent)] transition",
+          "hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] hover:text-surface-fg",
+          open &&
+            "bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] text-surface-fg"
         )}
       >
-        <Bell className="h-4.5 w-4.5" />
+        <Bell
+          className="h-[18px] w-[18px]"
+          strokeWidth={2}
+        />
 
         {unreadCount > 0 && (
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-orange ring-2 ring-surface-card" />
@@ -267,6 +275,7 @@ export default function NotificationDropdown({
 
       {open && (
         <NotificationPanel
+          variant={variant}
           triggerRef={triggerRef}
           panelRef={panelRef}
           notifications={notifications}
@@ -283,9 +292,15 @@ export default function NotificationDropdown({
 
 /* ============================================================
    NOTIFICATION PANEL
+   Rendered via portal into document.body so its `fixed`
+   positioning is always relative to the viewport — not to
+   any ancestor with a filter/backdrop-filter/transform
+   (like the topbar's backdrop-blur), which would otherwise
+   create a new containing block and throw off the math.
 ============================================================ */
 
 function NotificationPanel({
+  variant,
   triggerRef,
   panelRef,
   notifications,
@@ -295,10 +310,7 @@ function NotificationPanel({
   onClose,
   onNavigate,
 }) {
-  const [position, setPosition] = useState({
-    top: 0,
-    left: 0,
-  });
+  const [position, setPosition] = useState(null);
 
   useEffect(() => {
     function updatePosition() {
@@ -308,34 +320,51 @@ function NotificationPanel({
 
       const panelWidth = 380;
       const gap = 10;
+      const edgePadding = 16;
 
       let left;
+      let top;
 
-      /*
-       * Sidebar:
-       * Open panel to the RIGHT of the sidebar.
-       */
-      left = rect.right + gap;
-
-      /*
-       * Prevent panel from going outside viewport.
-       */
-      if (left + panelWidth > window.innerWidth - 16) {
-        left = window.innerWidth - panelWidth - 16;
+      if (variant === "sidebar") {
+        /*
+         * Sidebar: open panel to the RIGHT of the trigger,
+         * vertically aligned with it.
+         */
+        left = rect.right + gap;
+        top = Math.max(
+          edgePadding,
+          Math.min(rect.top, window.innerHeight - 600)
+        );
+      } else {
+        /*
+         * Topbar: open panel BELOW the trigger, right-aligned
+         * to the trigger's right edge (standard dropdown).
+         */
+        left = rect.right - panelWidth;
+        top = rect.bottom + gap;
       }
 
-      const top = Math.max(
-        16,
-        Math.min(
-          rect.top,
-          window.innerHeight - 600
-        )
-      );
+      /*
+       * Keep panel inside the viewport horizontally.
+       */
+      if (left + panelWidth > window.innerWidth - edgePadding) {
+        left = window.innerWidth - panelWidth - edgePadding;
+      }
 
-      setPosition({
-        top,
-        left,
-      });
+      if (left < edgePadding) {
+        left = edgePadding;
+      }
+
+      /*
+       * Keep panel inside the viewport vertically.
+       */
+      const maxTop = window.innerHeight - edgePadding - 200;
+
+      if (top > maxTop) {
+        top = Math.max(edgePadding, maxTop);
+      }
+
+      setPosition({ top, left });
     }
 
     updatePosition();
@@ -355,9 +384,15 @@ function NotificationPanel({
         true
       );
     };
-  }, [triggerRef]);
+  }, [triggerRef, variant]);
 
-  return (
+  /*
+   * Don't render (or portal) until we've measured the trigger,
+   * otherwise it briefly flashes at (0,0).
+   */
+  if (!position) return null;
+
+  return createPortal(
     <div
       ref={panelRef}
       className="
@@ -467,7 +502,8 @@ function NotificationPanel({
           View all notifications
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

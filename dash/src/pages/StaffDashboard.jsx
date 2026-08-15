@@ -165,9 +165,7 @@ export default function StaffDashboard() {
       ====================================================== */}
       <section className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="mb-2 text-sm font-medium text-brand-orange">
-            Staff Workspace
-          </p>
+      
 
           <h1 className="font-display text-3xl font-bold tracking-[-0.03em] text-surface-fg md:text-4xl">
             Good morning, {currentStaff.name.split(" ")[0]}.

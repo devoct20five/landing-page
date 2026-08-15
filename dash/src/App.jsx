@@ -46,6 +46,9 @@ import AdminActivity from "./pages/admin/AdminActivity";
 import AdminPayments from "./pages/admin/AdminPayments";
 
 import NoAccess from "./pages/NoAccess";
+import AdminClientDetail from "./pages/admin/AdminClientDetail";
+import AdminApprovals from "./pages/admin/AdminApprovals";
+import AdminEvents from "./pages/admin/AdminEvents";
 
 export default function App() {
   return (
@@ -259,7 +262,18 @@ export default function App() {
             path="/admin/services"
             element={<AdminServices />}
           />
-
+<Route
+  path="/admin/client/:clientId"
+  element={<AdminClientDetail />}
+/>
+<Route
+  path="/admin/approvals"
+  element={<AdminApprovals />}
+/>
+<Route
+  path="/admin/events"
+  element={<AdminEvents />}
+/>
         </Route>
 
         {/* =====================================================

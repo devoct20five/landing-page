@@ -484,10 +484,7 @@ export default function StaffActivity() {
 
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-brand-orange">
-            <Activity className="h-3.5 w-3.5" />
-            My Workspace
-          </div>
+        
 
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             My Activity
@@ -719,31 +716,7 @@ export default function StaffActivity() {
             </div>
           </section>
 
-          {/* ACTIVITY INFO */}
-
-          <section className="brand-card">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10">
-                <CalendarDays className="h-4 w-4 text-brand-orange" />
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold text-surface-fg">
-                  Activity tracking
-                </p>
-
-                <p className="mt-0.5 text-xs text-surface-muted">
-                  Your actions are automatically recorded.
-                </p>
-              </div>
-            </div>
-
-            <p className="mt-4 text-xs leading-5 text-surface-muted">
-              Task updates, project changes, comments, uploads
-              and other important actions will appear in this
-              timeline.
-            </p>
-          </section>
+      
         </aside>
       </div>
     </div>

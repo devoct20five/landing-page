@@ -121,9 +121,7 @@ export default function ClientServices() {
 
       <div className="border-b border-surface-border">
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-orange">
-            Account
-          </p>
+       
 
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>

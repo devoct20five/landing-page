@@ -7,11 +7,9 @@ import {
   FolderOpen,
   CheckCircle2,
   Activity,
-  Settings,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { currentStaff } from "@/data/mockData";
 
 const primaryNav = [
   {
@@ -58,7 +56,7 @@ const secondaryNav = [
     label: "Activity",
     to: "/staff/activity",
     icon: Activity,
-     enabled: true,
+    enabled: true,
   },
 ];
 
@@ -167,37 +165,6 @@ export default function StaffSidebar({ onNavigate }) {
             />
           ))}
         </nav>
-      </div>
-
-      {/* Bottom */}
-      <div className="mt-4 flex shrink-0 flex-col gap-1 border-t border-surface-border pt-4">
-        <button
-          type="button"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-[0.9rem] font-medium text-[color-mix(in_srgb,var(--surface-fg)_70%,transparent)] transition-all duration-300 hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] hover:text-surface-fg"
-        >
-          <Settings
-            className="h-[18px] w-[18px]"
-            strokeWidth={2}
-          />
-
-          Settings
-        </button>
-
-        <div className="flex items-center gap-3 rounded-xl px-3.5 py-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange/10 text-[0.65rem] font-bold text-brand-orange">
-            {currentStaff.initials}
-          </div>
-
-          <div className="min-w-0">
-            <p className="truncate text-[0.85rem] font-semibold text-surface-fg">
-              {currentStaff.name}
-            </p>
-
-            <p className="truncate text-[0.7rem] text-surface-muted">
-              {currentStaff.role}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

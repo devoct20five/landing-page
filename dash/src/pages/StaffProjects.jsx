@@ -319,10 +319,7 @@ export default function StaffProjects() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-6 sm:mb-9 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="mb-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-brand-orange">
-            Delivery
-          </p>
-
+      
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Projects
           </h1>

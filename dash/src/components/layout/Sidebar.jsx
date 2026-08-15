@@ -3,14 +3,10 @@ import {
   LayoutDashboard,
   FolderKanban,
   BriefcaseBusiness,
-  Activity,
-  FolderOpen,
-  Bell,
-  User,
-  Settings, MessageSquareText
+  Settings,
+  MessageSquareText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { currentClient } from "@/data/mockData";
 
 const navItems = [
   {
@@ -31,19 +27,18 @@ const navItems = [
     icon: BriefcaseBusiness,
     enabled: true,
   },
-    {
+  {
     label: "Events",
     to: "/client/Events",
     icon: MessageSquareText,
     enabled: true,
   },
-    {
+  {
     label: "Settings",
     to: "/client/settings",
     icon: Settings,
     enabled: true,
   },
-
 ];
 
 export default function Sidebar({ onNavigate }) {
@@ -113,35 +108,6 @@ export default function Sidebar({ onNavigate }) {
           );
         })}
       </nav>
-
-      {/* Bottom navigation */}
-      <div className="mt-auto flex flex-col gap-1 border-t border-surface-border pt-4">
-        <button
-          type="button"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-[0.9rem] font-medium text-[color-mix(in_srgb,var(--surface-fg)_70%,transparent)] transition-all duration-300 hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] hover:text-surface-fg"
-        >
-          <Bell
-            className="h-[18px] w-[18px]"
-            strokeWidth={2}
-          />
-
-          Notifications
-        </button>
-
-        <button
-          type="button"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-[0.9rem] font-medium text-[color-mix(in_srgb,var(--surface-fg)_70%,transparent)] transition-all duration-300 hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] hover:text-surface-fg"
-        >
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--surface-muted)_15%,transparent)]">
-            <User
-              className="h-3.5 w-3.5"
-              strokeWidth={2}
-            />
-          </div>
-
-          {currentClient.shortName}
-        </button>
-      </div>
     </div>
   );
 }

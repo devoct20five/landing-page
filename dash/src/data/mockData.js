@@ -550,3 +550,243 @@ export function getProjectById(projectId) {
 export function getTeamMemberById(teamMemberId) {
   return teamMembers.find((t) => t.id === teamMemberId);
 }
+export const events = [
+  {
+    id: "event-001",
+    title: "Brand Strategy Review",
+    description:
+      "Review the latest brand direction, campaign concepts, and upcoming deliverables with the client.",
+    type: "meeting",
+    date: "2026-08-17",
+    month: "AUG",
+    day: "17",
+    time: "11:00 AM – 12:00 PM",
+    location: "OCT20FIVE Studio",
+    meetingLink: null,
+    attendees: 5,
+
+    clientId: "client-001",
+    clientName: "Northstar Technologies",
+
+    projectId: "project-001",
+    projectName: "Northstar Brand Refresh",
+
+    createdBy: "staff-001",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-002",
+    title: "Website Design Approval",
+    description:
+      "Client review and approval session for the final website design direction.",
+    type: "review",
+    date: "2026-08-18",
+    month: "AUG",
+    day: "18",
+    time: "3:00 PM – 4:00 PM",
+    location: null,
+    meetingLink: "https://meet.google.com/example",
+    attendees: 4,
+
+    clientId: "client-002",
+    clientName: "Asteria Foods",
+
+    projectId: "project-002",
+    projectName: "Asteria Digital Experience",
+
+    createdBy: "staff-002",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-003",
+    title: "Campaign Launch Deadline",
+    description:
+      "Final deadline for delivering all campaign assets and launch-ready materials.",
+    type: "deadline",
+    date: "2026-08-20",
+    month: "AUG",
+    day: "20",
+    time: "6:00 PM",
+    location: null,
+    meetingLink: null,
+    attendees: 0,
+
+    clientId: "client-003",
+    clientName: "Vanta Living",
+
+    projectId: "project-003",
+    projectName: "Vanta Festive Campaign",
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-004",
+    title: "Weekly Production Sync",
+    description:
+      "Internal production meeting covering project progress, blockers, upcoming deadlines, and resource allocation.",
+    type: "internal",
+    date: "2026-08-21",
+    month: "AUG",
+    day: "21",
+    time: "10:00 AM – 10:45 AM",
+    location: "OCT20FIVE Studio",
+    meetingLink: null,
+    attendees: 8,
+
+    clientId: null,
+    clientName: null,
+
+    projectId: null,
+    projectName: null,
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-005",
+    title: "Photography Direction Meeting",
+    description:
+      "Discussion around the visual direction, shot list, locations, and production requirements.",
+    type: "meeting",
+    date: "2026-08-24",
+    month: "AUG",
+    day: "24",
+    time: "12:30 PM – 1:30 PM",
+    location: "Studio B",
+    meetingLink: null,
+    attendees: 6,
+
+    clientId: "client-001",
+    clientName: "Northstar Technologies",
+
+    projectId: "project-004",
+    projectName: "Northstar Product Campaign",
+
+    createdBy: "staff-003",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-006",
+    title: "Social Campaign Review",
+    description:
+      "Review upcoming social media creatives, content calendar, and campaign messaging.",
+    type: "review",
+    date: "2026-08-25",
+    month: "AUG",
+    day: "25",
+    time: "2:00 PM – 3:00 PM",
+    location: null,
+    meetingLink: "https://meet.google.com/example",
+    attendees: 5,
+
+    clientId: "client-004",
+    clientName: "Mosaic Hospitality",
+
+    projectId: "project-005",
+    projectName: "Mosaic Social Campaign",
+
+    createdBy: "staff-001",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-007",
+    title: "Website Development Deadline",
+    description:
+      "Target completion date for the current website development sprint.",
+    type: "deadline",
+    date: "2026-08-27",
+    month: "AUG",
+    day: "27",
+    time: "7:00 PM",
+    location: null,
+    meetingLink: null,
+    attendees: 0,
+
+    clientId: "client-002",
+    clientName: "Asteria Foods",
+
+    projectId: "project-002",
+    projectName: "Asteria Digital Experience",
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-008",
+    title: "Monthly Client Review",
+    description:
+      "Monthly account review covering active projects, performance, upcoming work, and outstanding approvals.",
+    type: "meeting",
+    date: "2026-08-28",
+    month: "AUG",
+    day: "28",
+    time: "4:00 PM – 5:00 PM",
+    location: null,
+    meetingLink: "https://meet.google.com/example",
+    attendees: 7,
+
+    clientId: "client-003",
+    clientName: "Vanta Living",
+
+    projectId: null,
+    projectName: "Multiple Projects",
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-009",
+    title: "Internal Creative Review",
+    description:
+      "Creative team review of work currently in production before client presentation.",
+    type: "internal",
+    date: "2026-08-29",
+    month: "AUG",
+    day: "29",
+    time: "11:30 AM – 12:30 PM",
+    location: "Creative Room",
+    meetingLink: null,
+    attendees: 6,
+
+    clientId: null,
+    clientName: null,
+
+    projectId: null,
+    projectName: null,
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+
+  {
+    id: "event-010",
+    title: "Final Campaign Delivery",
+    description: "Final delivery of approved campaign assets to the client.",
+    type: "deadline",
+    date: "2026-09-02",
+    month: "SEP",
+    day: "02",
+    time: "5:00 PM",
+    location: null,
+    meetingLink: null,
+    attendees: 0,
+
+    clientId: "client-004",
+    clientName: "Mosaic Hospitality",
+
+    projectId: "project-005",
+    projectName: "Mosaic Social Campaign",
+
+    createdBy: "admin",
+    status: "scheduled",
+  },
+];

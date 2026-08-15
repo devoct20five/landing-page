@@ -211,9 +211,7 @@ export default function AdminTasks() {
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="mb-1 text-sm font-medium text-brand-orange">
-            Operations
-          </p>
+       
 
           <h1 className="font-display text-3xl font-bold tracking-tight text-surface-fg">
             Tasks

@@ -774,10 +774,7 @@ export default function AdminTeam() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-brand-orange">
-            <Users className="h-3.5 w-3.5" />
-            Administration
-          </div>
+      
 
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Team

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, Settings } from "lucide-react";
 import {
   Sheet,
   SheetTrigger,
@@ -9,6 +9,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 import StaffSidebar from "./StaffSidebar";
 import NotificationDropdown from "@/components/shared/NotificationDropdown";
+import { currentStaff } from "@/data/mockData";
 
 export default function StaffTopbar() {
   const [open, setOpen] = useState(false);
@@ -24,11 +25,12 @@ export default function StaffTopbar() {
           bg-[color-mix(in_srgb,var(--surface-bg)_85%,transparent)]
           px-5 py-4
           backdrop-blur-md
-          lg:hidden
+          sm:px-8
+          lg:px-10
         "
       >
-        {/* BRAND */}
-        <div className="flex items-center gap-2">
+        {/* BRAND — mobile only, desktop already shows it in the sidebar */}
+        <div className="flex items-center gap-2 lg:hidden">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-orange font-display text-xs font-bold text-white">
             O5
           </div>
@@ -44,16 +46,20 @@ export default function StaffTopbar() {
           </div>
         </div>
 
+        {/* Spacer on desktop so actions sit to the right */}
+        <div className="hidden lg:block" />
+
         {/* RIGHT SIDE ACTIONS */}
         <div className="ml-auto flex items-center gap-1">
-          {/* NOTIFICATIONS */}
+       {/* NOTIFICATION DROPDOWN */}
+      <NotificationDropdown
+        open={notificationsOpen}
+        onClose={() => setNotificationsOpen(false)}
+      />
+          {/* SETTINGS */}
           <button
             type="button"
-            onClick={() =>
-              setNotificationsOpen((value) => !value)
-            }
             className="
-              relative
               flex h-10 w-10
               items-center justify-center
               rounded-full
@@ -62,18 +68,41 @@ export default function StaffTopbar() {
               hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)]
               hover:text-surface-fg
             "
-            aria-label="Notifications"
+            aria-label="Settings"
           >
-            <Bell
-              className="h-[19px] w-[19px]"
+            <Settings
+              className="h-[18px] w-[18px]"
               strokeWidth={2}
             />
-
-            {/* Unread indicator */}
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-brand-orange" />
           </button>
 
-          {/* MENU */}
+          {/* PROFILE */}
+          <button
+            type="button"
+            className="
+              flex items-center gap-2
+              rounded-full
+              py-1.5 pl-2 pr-3
+              text-left text-[0.85rem] font-medium text-surface-fg
+              transition
+              hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)]
+            "
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange/10 text-[0.65rem] font-bold text-brand-orange">
+              {currentStaff.initials}
+            </div>
+
+            <div className="hidden min-w-0 sm:block">
+              <p className="truncate text-[0.8rem] font-semibold leading-tight text-surface-fg">
+                {currentStaff.name}
+              </p>
+              <p className="truncate text-[0.65rem] leading-tight text-surface-muted">
+                {currentStaff.role}
+              </p>
+            </div>
+          </button>
+
+          {/* MENU — mobile only */}
           <Sheet
             open={open}
             onOpenChange={setOpen}
@@ -88,6 +117,7 @@ export default function StaffTopbar() {
                   text-surface-fg
                   transition
                   hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)]
+                  lg:hidden
                 "
                 aria-label="Open navigation"
               >
@@ -106,19 +136,13 @@ export default function StaffTopbar() {
                 Staff navigation menu
               </DialogPrimitive.Title>
 
-              <StaffSidebar
-                onNavigate={() => setOpen(false)}
-              />
+              <StaffSidebar onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </header>
 
-      {/* NOTIFICATION DROPDOWN */}
-      <NotificationDropdown
-        open={notificationsOpen}
-        onClose={() => setNotificationsOpen(false)}
-      />
+     
     </>
   );
 }

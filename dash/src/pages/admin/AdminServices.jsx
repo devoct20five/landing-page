@@ -559,9 +559,7 @@ export default function AdminServices() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brand-orange">
-            Administration
-          </div>
+         
 
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Services

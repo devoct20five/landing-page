@@ -243,13 +243,7 @@ export default function AdminDashboard() {
 
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <div className="mb-2 flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-orange" />
-
-            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-brand-orange">
-              Admin Overview
-            </span>
-          </div>
+      
 
           <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
             Agency at a glance.
@@ -825,66 +819,7 @@ export default function AdminDashboard() {
         </section>
       </div>
 
-      {/* =====================================================
-          QUICK ACTIONS
-      ====================================================== */}
 
-      <section>
-        <SectionHeader
-          title="Quick actions"
-          description="Common administrative actions."
-        />
-
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              label: "Create project",
-              description: "Start a new client project",
-              icon: FolderKanban,
-            },
-            {
-              label: "Add client",
-              description: "Create a new client account",
-              icon: Users,
-            },
-            {
-              label: "Assign task",
-              description: "Assign work to a team member",
-              icon: ListTodo,
-            },
-            {
-              label: "Manage team",
-              description: "View team and workload",
-              icon: UserRound,
-            },
-          ].map((action) => {
-            const Icon = action.icon;
-
-            return (
-              <button
-                key={action.label}
-                className="group flex items-center gap-4 rounded-2xl border border-surface-border bg-surface-bg p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-orange/30 hover:shadow-sm"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted/10 text-surface-fg transition-colors group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
-                  <Icon className="h-4.5 w-4.5" />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-surface-fg">
-                    {action.label}
-                  </p>
-
-                  <p className="mt-1 text-[0.65rem] text-surface-muted">
-                    {action.description}
-                  </p>
-                </div>
-
-                <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-surface-muted transition-transform group-hover:translate-x-1 group-hover:text-brand-orange" />
-              </button>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }

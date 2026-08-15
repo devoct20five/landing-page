@@ -260,9 +260,7 @@ export default function AdminQueries() {
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-orange">
-                Administration
-              </p>
+        
 
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
                 Queries
@@ -274,19 +272,7 @@ export default function AdminQueries() {
               </p>
             </div>
 
-            <button
-              className={cn(
-                "inline-flex items-center justify-center gap-2 rounded-xl",
-                "bg-brand-orange px-4 py-2.5",
-                "text-sm font-semibold text-white",
-                "shadow-[0_10px_24px_-8px_rgba(255,90,31,0.45)]",
-                "transition-all duration-200",
-                "hover:brightness-95"
-              )}
-            >
-              <MessageSquare className="h-4 w-4" />
-              New Query
-            </button>
+    
           </div>
         </div>
       </div>

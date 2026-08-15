@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { currentStaff } from "@/data/mockData";
 import NotificationDropdown from "@/components/shared/NotificationDropdown";
 
 const primaryNav = [
@@ -85,13 +84,13 @@ const operationsNav = [
     label: "Files",
     to: "/admin/files",
     icon: FolderOpen,
-       enabled: true,
+    enabled: true,
   },
   {
     label: "Activity",
     to: "/admin/activity",
     icon: Activity,
-       enabled: true,
+    enabled: true,
   },
 ];
 
@@ -111,12 +110,6 @@ const contentNav = [
 ];
 
 const accountNav = [
-  {
-    label: "Profile",
-    to: "/admin/profile",
-    icon: UserCircle,
-    enabled: true,
-  },
   {
     label: "Payments",
     to: "/admin/payments",
@@ -272,35 +265,9 @@ export default function AdminSidebar({ onNavigate }) {
           items={accountNav}
           onNavigate={onNavigate}
         />
-
-      
       </div>
 
-      {/* =====================================================
-          BOTTOM
-      ===================================================== */}
-
-      <div className="mt-4 flex shrink-0 flex-col gap-1 border-t border-surface-border pt-4">
-       <NotificationDropdown
-            variant="sidebar"
-            onNavigate={onNavigate}
-          />
-        <div className="flex items-center gap-3 rounded-xl px-3.5 py-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange/10 text-[0.65rem] font-bold text-brand-orange">
-            {currentStaff.initials}
-          </div>
-
-          <div className="min-w-0">
-            <p className="truncate text-[0.85rem] font-semibold text-surface-fg">
-              {currentStaff.name}
-            </p>
-
-            <p className="truncate text-[0.7rem] text-surface-muted">
-              Administrator
-            </p>
-          </div>
-        </div>
-      </div>
+   
     </div>
   );
 }
