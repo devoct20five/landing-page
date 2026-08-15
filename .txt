@@ -1,0 +1,13 @@
+payment card in project detail page DONE
+deadline to be showed under outstanding payment
+attendance for staff DONE
+client card in staff to have a managed by tag
+staff team, services page not needed DONE
+merge project and client page in staff as table and card view DONE
+attendance page in admin DONE
+admin services page should have + new service and custom service feature 
+performance review in team  page in admin 
+staff salary payout page in team section DONE
+staff profile page should have documents and other payout secitons 
+projects page should have table card timeline
+payment page in client portal DONE

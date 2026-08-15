@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   ArrowRight,
@@ -19,15 +19,12 @@ import {
   Clapperboard,
   Scale,
   Gem,
-} from 'lucide-react'
+} from "lucide-react";
 
-import SectionWrapper from '@/components/layout/SectionWrapper'
-import SectionTag from '@/components/ui/SectionTag'
-import Reveal, {
-  Stagger,
-  StaggerItem,
-} from '@/components/motion/Reveal'
-import MagneticButton from '@/components/motion/MagneticButton'
+import SectionWrapper from "@/components/layout/SectionWrapper";
+import SectionTag from "@/components/ui/SectionTag";
+import Reveal, { Stagger, StaggerItem } from "@/components/motion/Reveal";
+import MagneticButton from "@/components/motion/MagneticButton";
 
 const ICONS = {
   Rocket,
@@ -45,55 +42,43 @@ const ICONS = {
   Compass,
   Atom,
   Clapperboard,
-}
+};
 
 export default function FeaturesGrid({
-  theme = 'light',
+  theme = "light",
   id,
 
   /* FEATURES */
-  eyebrow = 'Features',
+  eyebrow = "Features",
   headline,
   subline,
   features = [],
   ctaLabel,
-  ctaHref = '/agency/get-in-touch',
+  ctaHref = "/agency/get-in-touch",
 
   /* PRICING */
-  pricingEyebrow = 'Pricing',
+  pricingEyebrow = "Pricing",
   pricingHeadline,
   pricingSubline,
   plans = [],
   signature,
-  compareLabel = 'Compare Plans',
-  compareHref = '#compare',
+  compareLabel = "Compare Plans",
+  compareHref = "#compare",
 }) {
   return (
-    <SectionWrapper
-      theme={theme}
-      id={id}
-      className="!py-16 md:!py-20"
-    >
+    <SectionWrapper theme={theme} id={id} className="!py-16 md:!py-20">
       <div className="container">
-
-      
-
-       {/* =====================================================
+        {/* =====================================================
             PRICING SECTION
         ===================================================== */}
 
         {plans.length > 0 && (
-          <div
-            id="pricing"
-            className="mt-28 md:mt-36"
-          >
-
+          <div id="pricing" className="mt-28 md:mt-36">
             {/* -----------------------------------------------
                 PRICING HEADER
             ----------------------------------------------- */}
 
             <div className="mx-auto max-w-[760px] text-center">
-
               <Reveal>
                 <div className="flex justify-center">
                   <SectionTag>{pricingEyebrow}</SectionTag>
@@ -136,9 +121,7 @@ export default function FeaturesGrid({
                   </p>
                 </Reveal>
               )}
-
             </div>
-
 
             {/* -----------------------------------------------
                 PRICING CARDS
@@ -155,17 +138,12 @@ export default function FeaturesGrid({
                 md:grid-cols-3
               "
             >
-
               {plans.slice(0, 3).map((plan, i) => {
-                const Icon = ICONS[plan.icon] || Sparkles
-                const featured = plan.featured
+                const Icon = ICONS[plan.icon] || Sparkles;
+                const featured = plan.featured;
 
                 return (
-                  <StaggerItem
-                    key={plan.id || i}
-                    className="h-full"
-                  >
-
+                  <StaggerItem key={plan.id || i} className="h-full">
                     <article
                       className={`
                         group
@@ -198,7 +176,6 @@ export default function FeaturesGrid({
                         }
                       `}
                     >
-
                       {/* FEATURED TOP LINE */}
 
                       {featured && (
@@ -214,20 +191,15 @@ export default function FeaturesGrid({
                         />
                       )}
 
-
                       {/* PLAN HEADER */}
 
                       <div className="flex items-center justify-between px-2 py-1">
-
                         <div className="flex items-center gap-2">
-
                           <Icon
                             size={16}
                             strokeWidth={1.25}
                             className={
-                              featured
-                                ? 'text-brand-orange'
-                                : 'text-white/80'
+                              featured ? "text-brand-orange" : "text-white/80"
                             }
                           />
 
@@ -241,7 +213,6 @@ export default function FeaturesGrid({
                           >
                             {plan.name}
                           </span>
-
                         </div>
 
                         {plan.discount && (
@@ -261,16 +232,12 @@ export default function FeaturesGrid({
                             Save {plan.discount}
                           </span>
                         )}
-
                       </div>
-
 
                       {/* PRICE */}
 
                       <div className="mt-4 px-2">
-
                         <div className="flex items-end gap-1">
-
                           <span
                             className="
                               font-display
@@ -292,11 +259,8 @@ export default function FeaturesGrid({
                           >
                             /project
                           </span>
-
                         </div>
-
                       </div>
-
 
                       {/* PACKAGE SELECTOR */}
 
@@ -311,20 +275,15 @@ export default function FeaturesGrid({
                           border-white/10
                         "
                       >
+                        {(plan.packages || ["3 Pack", "7 Pack", "15 Pack"]).map(
+                          (pack, packIndex) => {
+                            const selected =
+                              packIndex === (plan.selectedPackage ?? 1);
 
-                        {(plan.packages || [
-                          '3 Pack',
-                          '7 Pack',
-                          '15 Pack',
-                        ]).map((pack, packIndex) => {
-
-                          const selected =
-                            packIndex === (plan.selectedPackage ?? 1)
-
-                          return (
-                            <div
-                              key={pack}
-                              className={`
+                            return (
+                              <div
+                                key={pack}
+                                className={`
                                 flex
                                 h-5
                                 items-center
@@ -334,24 +293,22 @@ export default function FeaturesGrid({
                                 ${
                                   selected
                                     ? featured
-                                      ? 'bg-brand-orange text-white'
-                                      : 'bg-white text-black'
-                                    : 'text-white/55'
+                                      ? "bg-brand-orange text-white"
+                                      : "bg-white text-black"
+                                    : "text-white/55"
                                 }
                               `}
-                            >
-                              {pack}
-                            </div>
-                          )
-                        })}
-
+                              >
+                                {pack}
+                              </div>
+                            );
+                          },
+                        )}
                       </div>
-
 
                       {/* TOTAL */}
 
                       <div className="mt-3 px-2">
-
                         <div
                           className="
                             text-[6px]
@@ -366,9 +323,7 @@ export default function FeaturesGrid({
                         <div className="mt-1 text-[0.8rem] font-medium">
                           {plan.total}
                         </div>
-
                       </div>
-
 
                       {/* PLAN FEATURES */}
 
@@ -382,9 +337,7 @@ export default function FeaturesGrid({
                           pt-2
                         "
                       >
-
                         <ul className="space-y-[4px]">
-
                           {(plan.features || [])
                             .slice(0, 6)
                             .map((feature, index) => (
@@ -403,24 +356,17 @@ export default function FeaturesGrid({
                                   ✦
                                 </span>
 
-                                <span>
-                                  {feature}
-                                </span>
-
+                                <span>{feature}</span>
                               </li>
                             ))}
-
                         </ul>
-
                       </div>
-
 
                       {/* ACTIONS */}
 
                       <div className="mt-3 space-y-1">
-
                         <a
-                          href={plan.href || '#'}
+                          href={plan.href || "#"}
                           className={`
                             flex
                             h-6
@@ -436,8 +382,8 @@ export default function FeaturesGrid({
 
                             ${
                               featured
-                                ? 'bg-brand-orange text-white'
-                                : 'bg-white text-black'
+                                ? "bg-brand-orange text-white"
+                                : "bg-white text-black"
                             }
                           `}
                         >
@@ -446,10 +392,7 @@ export default function FeaturesGrid({
                         </a>
 
                         <a
-                          href={
-                            plan.callHref ||
-                            '/agency/get-in-touch'
-                          }
+                          href={plan.callHref || "/agency/get-in-touch"}
                           className="
                             flex
                             h-6
@@ -467,17 +410,12 @@ export default function FeaturesGrid({
                         >
                           Book a Call
                         </a>
-
                       </div>
-
                     </article>
-
                   </StaggerItem>
-                )
+                );
               })}
-
             </Stagger>
-
 
             {/* -----------------------------------------------
                 SIGNATURE PACKAGE
@@ -485,7 +423,6 @@ export default function FeaturesGrid({
 
             {signature && (
               <Reveal delay={0.2}>
-
                 <div
                   className="
                     mx-auto
@@ -506,9 +443,7 @@ export default function FeaturesGrid({
                     md:justify-between
                   "
                 >
-
                   <div className="flex min-w-0 items-center gap-4">
-
                     <Gem
                       size={17}
                       strokeWidth={1.25}
@@ -516,7 +451,6 @@ export default function FeaturesGrid({
                     />
 
                     <div className="min-w-0">
-
                       <div className="text-[6px] font-bold uppercase text-brand-orange">
                         Signature
                       </div>
@@ -530,14 +464,10 @@ export default function FeaturesGrid({
                           {signature.body}
                         </p>
                       )}
-
                     </div>
-
                   </div>
 
-
                   <div className="flex items-center gap-4 md:gap-6">
-
                     <div>
                       <div className="text-[6px] uppercase opacity-40">
                         From
@@ -570,10 +500,7 @@ export default function FeaturesGrid({
                     )}
 
                     <a
-                      href={
-                        signature.callHref ||
-                        '/agency/get-in-touch'
-                      }
+                      href={signature.callHref || "/agency/get-in-touch"}
                       className="
                         flex
                         h-6
@@ -589,21 +516,16 @@ export default function FeaturesGrid({
                       Book a Call
                       <ArrowRight size={9} />
                     </a>
-
                   </div>
-
                 </div>
-
               </Reveal>
             )}
-
 
             {/* -----------------------------------------------
                 COMPARE PLANS
             ----------------------------------------------- */}
 
             <Reveal delay={0.25}>
-
               <a
                 href={compareHref}
                 className="
@@ -625,9 +547,7 @@ export default function FeaturesGrid({
                   hover:border-white/25
                 "
               >
-
                 <div className="flex items-center gap-3">
-
                   <Scale
                     size={15}
                     strokeWidth={1.25}
@@ -635,7 +555,6 @@ export default function FeaturesGrid({
                   />
 
                   <div>
-
                     <div className="text-[6px] font-bold uppercase text-brand-orange">
                       Compare plans
                     </div>
@@ -647,11 +566,8 @@ export default function FeaturesGrid({
                     <div className="mt-1 text-[6px] opacity-40">
                       Compare prices, plans and features all in one place.
                     </div>
-
                   </div>
-
                 </div>
-
 
                 <div
                   className="
@@ -672,11 +588,8 @@ export default function FeaturesGrid({
                   {compareLabel}
                   <ArrowRight size={9} />
                 </div>
-
               </a>
-
             </Reveal>
-
           </div>
         )}
         {/* =====================================================
@@ -684,13 +597,11 @@ export default function FeaturesGrid({
         ===================================================== */}
 
         <div className="mx-auto mt-28 max-w-[1080px] md:mt-36">
-
           {/* -------------------------------------------------
               FEATURES HEADER
           ------------------------------------------------- */}
 
           <div className="mx-auto max-w-[760px] text-center">
-
             <Reveal>
               <div className="flex justify-center">
                 <SectionTag>{eyebrow}</SectionTag>
@@ -734,9 +645,7 @@ export default function FeaturesGrid({
                 </p>
               </Reveal>
             )}
-
           </div>
-
 
           {/* -------------------------------------------------
               FEATURE CARDS
@@ -755,16 +664,11 @@ export default function FeaturesGrid({
                 lg:grid-cols-3
               "
             >
-
               {features.slice(0, 6).map((feature, i) => {
-                const Icon = ICONS[feature.icon] || Sparkles
+                const Icon = ICONS[feature.icon] || Sparkles;
 
                 return (
-                  <StaggerItem
-                    key={feature.id || i}
-                    className="h-full"
-                  >
-
+                  <StaggerItem key={feature.id || i} className="h-full">
                     <article
                       className="
                         group
@@ -789,10 +693,9 @@ export default function FeaturesGrid({
                         md:py-5
                       "
                       style={{
-                        borderColor: 'var(--surface-border)',
+                        borderColor: "var(--surface-border)",
                       }}
                     >
-
                       {/* -------------------------------------------------
                           NUMBER
                       ------------------------------------------------- */}
@@ -820,9 +723,8 @@ export default function FeaturesGrid({
                           md:top-5
                         "
                       >
-                        {String(i + 1).padStart(2, '0')}
+                        {String(i + 1).padStart(2, "0")}
                       </div>
-
 
                       {/* -------------------------------------------------
                           ICON
@@ -852,7 +754,6 @@ export default function FeaturesGrid({
                         />
                       </div>
 
-
                       {/* -------------------------------------------------
                           CONTENT
                       ------------------------------------------------- */}
@@ -865,7 +766,6 @@ export default function FeaturesGrid({
                           pt-3
                         "
                       >
-
                         <h3
                           className="
                             max-w-[190px]
@@ -880,7 +780,6 @@ export default function FeaturesGrid({
                         >
                           {feature.title}
                         </h3>
-
 
                         {/* ORANGE DIVIDER */}
 
@@ -897,7 +796,6 @@ export default function FeaturesGrid({
                           "
                         />
 
-
                         {/* BODY */}
 
                         <p
@@ -913,28 +811,20 @@ export default function FeaturesGrid({
                         >
                           {feature.body}
                         </p>
-
                       </div>
-
                     </article>
-
                   </StaggerItem>
-                )
+                );
               })}
-
             </Stagger>
           )}
-
 
           {/* -------------------------------------------------
               FEATURES CTA
           ------------------------------------------------- */}
 
           {ctaLabel && (
-            <Reveal
-              delay={0.2}
-              className="mt-4 flex justify-center"
-            >
+            <Reveal delay={0.2} className="mt-4 flex justify-center">
               <MagneticButton
                 href={ctaHref}
                 variant="primary"
@@ -953,12 +843,8 @@ export default function FeaturesGrid({
               </MagneticButton>
             </Reveal>
           )}
-
         </div>
-
- 
-
       </div>
     </SectionWrapper>
-  )
+  );
 }

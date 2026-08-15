@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import Navbar from '@/components/navigation/Navbar'
-import Footer from '@/components/layout/Footer'
+import Navbar from "@/components/navigation/Navbar";
+import Footer from "@/components/layout/Footer";
 
-import Hero from '@/components/sections/Hero'
-import Solution from '@/components/sections/Solution'
-import TrustedBy from '@/components/sections/TrustedBy'
-import Showreel from '@/components/sections/Showreel'
-import CollectionRail from './CollectionRail'
-import Workflow from '@/components/sections/Workflow'
-import BehindTheWork from '@/components/sections/BehindTheWork'
-import FeaturesGrid from '@/components/sections/FeaturesGrid'
-import FAQ from '@/components/sections/FAQ'
+import Hero from "@/components/sections/Hero";
+import Solution from "@/components/sections/Solution";
+import TrustedBy from "@/components/sections/TrustedBy";
+import Showreel from "@/components/sections/Showreel";
+import CollectionRail from "./CollectionRail";
+import Workflow from "@/components/sections/Workflow";
+import BehindTheWork from "@/components/sections/BehindTheWork";
+import FeaturesGrid from "@/components/sections/FeaturesGrid";
+import FAQ from "@/components/sections/FAQ";
 
 /*
   ============================================================
@@ -42,45 +42,20 @@ import FAQ from '@/components/sections/FAQ'
 */
 
 export default function ServicePageTemplate({ data }) {
-  const {
-    hero,
-    solution,
-    workflow,
-    pricing,
-    collections,
-    slug,
-    title,
-  } = data
+  const { hero, solution, workflow, pricing, collections, slug, title } = data;
 
-  /*
-    ------------------------------------------------------------
-    COLLECTIONS
-    ------------------------------------------------------------
-
-    Supports:
-
-    collections: {
-      eyebrow: 'Selected Editing Work',
-      headline: 'CUTS THAT MAKE THE STORY HIT HARDER.',
-      items: [...]
-    }
-
-    OR:
-
-    collections: [...]
-  */
 
   const collectionItems = Array.isArray(collections)
     ? collections
-    : collections?.items || []
+    : collections?.items || [];
 
   const collectionEyebrow = Array.isArray(collections)
     ? `${title} Work`
-    : collections?.eyebrow || `${title} Work`
+    : collections?.eyebrow || `${title} Work`;
 
   const collectionHeadline = Array.isArray(collections)
-    ? 'Work made to make an impact.'
-    : collections?.headline || 'Work made to make an impact.'
+    ? "Work made to make an impact."
+    : collections?.headline || "Work made to make an impact.";
 
   return (
     <>
@@ -88,13 +63,9 @@ export default function ServicePageTemplate({ data }) {
           NAVBAR
           ===================================================== */}
 
-      <Navbar
-        variant="service"
-        initialTheme="dark"
-      />
+      <Navbar variant="service" initialTheme="dark" />
 
       <main>
-
         {/* =====================================================
             HERO
             ===================================================== */}
@@ -105,7 +76,6 @@ export default function ServicePageTemplate({ data }) {
           subline={hero.tag}
           image={hero.image}
         />
-
 
         {/* =====================================================
             SOLUTION
@@ -118,20 +88,17 @@ export default function ServicePageTemplate({ data }) {
           formats={solution.formats}
         />
 
-
         {/* =====================================================
             TRUSTED BY
             ===================================================== */}
 
         <TrustedBy />
 
-
         {/* =====================================================
             SHOWREEL
             ===================================================== */}
 
         <Showreel />
-
 
         {/* =====================================================
             SELECTED WORK / COLLECTIONS
@@ -146,7 +113,6 @@ export default function ServicePageTemplate({ data }) {
           />
         )}
 
-
         {/* =====================================================
             WORKFLOW
             ===================================================== */}
@@ -159,49 +125,41 @@ export default function ServicePageTemplate({ data }) {
           ctaHref="/agency/get-in-touch"
         />
 
-
         {/* =====================================================
             BEHIND THE WORK
             ===================================================== */}
 
-        <BehindTheWork
-          currentSlug={slug}
-        />
-
+        <BehindTheWork currentSlug={slug} />
 
         {/* =====================================================
             PRICING
             ===================================================== */}
 
-<FeaturesGrid
-  id="pricing"
-  theme="dark"
-  eyebrow={pricing.eyebrow || 'Pricing'}
-  headline={pricing.headline}
-  subline={pricing.subline}
-  plans={pricing.plans}
-  features={pricing.features}
-  signature={pricing.signature}
-  compareLabel={pricing.compareLabel || 'Compare Plans'}
-  compareHref={pricing.compareHref || '#compare'}
-/>
+        <FeaturesGrid
+          id="pricing"
+          theme="dark"
+          eyebrow={pricing.eyebrow || "Pricing"}
+          headline={pricing.headline}
+          subline={pricing.subline}
+          plans={pricing.plans}
+          features={pricing.features}
+          signature={pricing.signature}
+          compareLabel={pricing.compareLabel || "Compare Plans"}
+          compareHref={pricing.compareHref || "#compare"}
+        />
 
         {/* =====================================================
             FAQ
             ===================================================== */}
 
         <FAQ />
-
       </main>
-
 
       {/* =====================================================
           FOOTER
           ===================================================== */}
 
-      <Footer
-        variant="service"
-      />
+      <Footer variant="service" />
     </>
-  )
+  );
 }

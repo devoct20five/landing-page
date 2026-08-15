@@ -1,0 +1,1248 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import {
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  Lock,
+  ShieldCheck,
+  Tag,
+  Pencil,
+  User,
+  Mail,
+  Phone,
+  Building2,
+  MapPin,
+  CreditCard,
+  Wallet,
+  Landmark,
+  BadgeIndianRupee,
+  Calendar,
+  Clock,
+  Info,
+  Sparkles,
+  X,
+} from "lucide-react";
+import Navbar from "@/components/navigation/Navbar";
+import Footer from "@/components/layout/Footer";
+import SectionWrapper from "@/components/layout/SectionWrapper";
+import SectionTag from "@/components/ui/SectionTag";
+
+/* =========================================================
+   PLAN CATALOG
+   Swap this for a shared /data/plans.js import so pricing
+   stays in sync between the Pricing section and Checkout.
+========================================================= */
+const PLAN_CATALOG = {
+  starter: {
+    name: "Starter",
+    packages: [
+      { id: "3", label: "3 Pack", price: 9000, unitLabel: "3 videos" },
+      { id: "7", label: "7 Pack", price: 18000, unitLabel: "7 videos" },
+      { id: "15", label: "15 Pack", price: 33000, unitLabel: "15 videos" },
+    ],
+    features: [
+      "Short-form video editing",
+      "2 revisions per video",
+      "48hr turnaround",
+      "Custom captions & sound design",
+    ],
+  },
+  growth: {
+    name: "Growth",
+    packages: [
+      { id: "3", label: "3 Pack", price: 21000, unitLabel: "3 videos" },
+      { id: "7", label: "7 Pack", price: 42000, unitLabel: "7 videos" },
+      { id: "15", label: "15 Pack", price: 78000, unitLabel: "15 videos" },
+    ],
+    features: [
+      "Long + short form editing",
+      "Unlimited revisions",
+      "24hr turnaround",
+      "Dedicated editor",
+      "Thumbnail design included",
+    ],
+  },
+  scale: {
+    name: "Scale",
+    packages: [
+      { id: "3", label: "3 Pack", price: 45000, unitLabel: "3 videos" },
+      { id: "7", label: "7 Pack", price: 88000, unitLabel: "7 videos" },
+      { id: "15", label: "15 Pack", price: 160000, unitLabel: "15 videos" },
+    ],
+    features: [
+      "Full production pipeline",
+      "Unlimited revisions",
+      "Same-day turnaround",
+      "Dedicated pod (editor + designer)",
+      "Priority Slack support",
+    ],
+  },
+};
+
+const ADDONS = [
+  { id: "rush", label: "Rush delivery (12hr)", price: 4000 },
+  { id: "thumbnails", label: "Extra thumbnail set", price: 1500 },
+  { id: "captions", label: "Multi-language captions", price: 2500 },
+];
+
+const PAYMENT_METHODS = [
+  {
+    id: "card",
+    label: "Card",
+    icon: CreditCard,
+    desc: "Visa, Mastercard, Amex",
+  },
+  {
+    id: "upi",
+    label: "UPI",
+    icon: BadgeIndianRupee,
+    desc: "GPay, PhonePe, Paytm",
+  },
+  {
+    id: "netbanking",
+    label: "Netbanking",
+    icon: Landmark,
+    desc: "All major banks",
+  },
+  {
+    id: "wallet",
+    label: "Wallet",
+    icon: Wallet,
+    desc: "Amazon Pay, Paytm Wallet",
+  },
+];
+
+function formatINR(n) {
+  return `₹${n.toLocaleString("en-IN")}`;
+}
+
+export default function CheckoutPage() {
+  const params = useSearchParams();
+
+  const planKey = params.get("plan") || "growth";
+  const initialPackage = params.get("package") || "7";
+  const plan = PLAN_CATALOG[planKey] || PLAN_CATALOG.growth;
+
+  const [step, setStep] = useState(1);
+  const [confirmed, setConfirmed] = useState(false);
+  const [orderId] = useState(
+    () => `OCT-${Math.floor(100000 + Math.random() * 900000)}`,
+  );
+
+  const [selectedPackage, setSelectedPackage] = useState(
+    plan.packages.find((p) => p.id === initialPackage)?.id ||
+      plan.packages[1]?.id,
+  );
+  const [addons, setAddons] = useState([]);
+  const [promo, setPromo] = useState("");
+  const [promoApplied, setPromoApplied] = useState(null);
+  const [promoError, setPromoError] = useState("");
+
+  const [details, setDetails] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    gst: "",
+    address: "",
+    notes: "",
+  });
+
+  const [payment, setPayment] = useState("card");
+  const [card, setCard] = useState({
+    number: "",
+    expiry: "",
+    cvv: "",
+    name: "",
+  });
+  const [agree, setAgree] = useState(false);
+
+  const setDetail = (k, v) => setDetails((s) => ({ ...s, [k]: v }));
+  const setCardField = (k, v) => setCard((s) => ({ ...s, [k]: v }));
+
+  const toggleAddon = (id) =>
+    setAddons((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+
+  const activePackage = plan.packages.find((p) => p.id === selectedPackage);
+
+  const addonTotal = useMemo(
+    () =>
+      addons.reduce(
+        (sum, id) => sum + (ADDONS.find((a) => a.id === id)?.price || 0),
+        0,
+      ),
+    [addons],
+  );
+
+  const subtotal = (activePackage?.price || 0) + addonTotal;
+  const discount = promoApplied ? Math.round(subtotal * promoApplied.pct) : 0;
+  const taxable = subtotal - discount;
+  const gst = Math.round(taxable * 0.18);
+  const total = taxable + gst;
+
+  const applyPromo = () => {
+    const code = promo.trim().toUpperCase();
+    if (!code) return;
+    if (code === "OCT10") {
+      setPromoApplied({ code, pct: 0.1 });
+      setPromoError("");
+    } else if (code === "OCT20") {
+      setPromoApplied({ code, pct: 0.2 });
+      setPromoError("");
+    } else {
+      setPromoApplied(null);
+      setPromoError("Invalid promo code");
+    }
+  };
+
+  const removePromo = () => {
+    setPromoApplied(null);
+    setPromo("");
+    setPromoError("");
+  };
+
+  const canContinueStep1 = !!selectedPackage;
+  const canContinueStep2 =
+    details.name && details.email && details.phone && details.address;
+  const canConfirmPayment =
+    agree &&
+    (payment !== "card" ||
+      (card.number.replace(/\s/g, "").length >= 12 &&
+        card.expiry &&
+        card.cvv.length >= 3 &&
+        card.name));
+
+  const goToStep2 = () => canContinueStep1 && setStep(2);
+  const goToStep3 = () => canContinueStep2 && setStep(3);
+
+  const submitPayment = (e) => {
+    e.preventDefault();
+    if (canConfirmPayment) setConfirmed(true);
+  };
+
+  return (
+    <>
+      <Navbar variant="utility" initialTheme="dark" />
+      <main>
+        <SectionWrapper theme="dark" className="!pt-40 !pb-20">
+          <div className="container">
+            <AnimatePresence mode="wait">
+              {/* ================= STEP 1 — CART / PLAN REVIEW ================= */}
+              {!confirmed && step === 1 && (
+                <motion.div
+                  key="s1"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <StepHeader step={1} />
+                  <div className="grid lg:grid-cols-12 gap-10 mt-10">
+                    <div className="lg:col-span-4">
+                      <SectionTag>Checkout</SectionTag>
+                      <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
+                        Review your{" "}
+                        <span className="text-brand-orange">order</span> before
+                        you continue.
+                      </h1>
+                      <p className="mt-6 text-body-lg opacity-70 max-w-md">
+                        Confirm your package, add anything extra, and apply a
+                        promo code if you have one.
+                      </p>
+
+                      <div className="mt-10 space-y-3">
+                        <InfoRow
+                          icon={ShieldCheck}
+                          title="Secure checkout"
+                          desc="Encrypted payment, always."
+                        />
+                        <InfoRow
+                          icon={Sparkles}
+                          title="No hidden fees"
+                          desc="What you see is what you pay."
+                        />
+                        <InfoRow
+                          icon={Clock}
+                          title="Instant confirmation"
+                          desc="Kickoff starts right after payment."
+                        />
+                      </div>
+
+                      <p className="mt-10 text-sm opacity-60">
+                        Not sure this is the right fit?{" "}
+                        <Link
+                          href="/agency/book-a-call"
+                          className="text-brand-orange underline underline-offset-4"
+                        >
+                          Book a call
+                        </Link>{" "}
+                        instead.
+                      </p>
+                    </div>
+
+                    <div className="lg:col-span-8 space-y-4">
+                      {/* Plan card */}
+                      <div className="brand-card !p-6 md:!p-8 space-y-6">
+                        <div className="flex items-center justify-between">
+                          <p className="eyebrow">
+                            <span className="eyebrow-dot" /> 1. Your package
+                          </p>
+                          <span className="text-[11px] uppercase opacity-50">
+                            {plan.name} plan
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2">
+                          {plan.packages.map((p) => {
+                            const selected = p.id === selectedPackage;
+                            return (
+                              <button
+                                key={p.id}
+                                onClick={() => setSelectedPackage(p.id)}
+                                className={`pill !flex-col !items-center !justify-center !py-4 gap-1 text-center ${
+                                  selected ? "pill-active" : ""
+                                }`}
+                              >
+                                <span className="text-xs uppercase tracking-tight font-semibold">
+                                  {p.label}
+                                </span>
+                                <span className="text-[11px] opacity-60">
+                                  {formatINR(p.price)}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        <div
+                          className="pt-4 border-t"
+                          style={{ borderColor: "var(--surface-border)" }}
+                        >
+                          <p className="text-[11px] uppercase opacity-50 mb-3">
+                            Includes
+                          </p>
+                          <ul className="space-y-2">
+                            {plan.features.map((f) => (
+                              <li
+                                key={f}
+                                className="flex items-start gap-2 text-sm opacity-80"
+                              >
+                                <Check
+                                  size={14}
+                                  className="shrink-0 mt-0.5 text-brand-orange"
+                                />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Add-ons */}
+                      <div className="brand-card !p-6 md:!p-8 space-y-4">
+                        <p className="eyebrow">
+                          <span className="eyebrow-dot" /> 2. Add-ons{" "}
+                          <span className="ml-2 text-[11px] opacity-50 normal-case">
+                            (Optional)
+                          </span>
+                        </p>
+                        <div className="space-y-2">
+                          {ADDONS.map((a) => {
+                            const active = addons.includes(a.id);
+                            return (
+                              <button
+                                key={a.id}
+                                onClick={() => toggleAddon(a.id)}
+                                className={`w-full flex items-center justify-between rounded-card border px-4 py-3 text-left transition-colors ${
+                                  active ? "border-brand-orange" : ""
+                                }`}
+                                style={{
+                                  borderColor: active
+                                    ? undefined
+                                    : "var(--surface-border)",
+                                }}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span
+                                    className={`w-5 h-5 rounded-md border flex items-center justify-center ${
+                                      active
+                                        ? "bg-brand-orange border-brand-orange"
+                                        : ""
+                                    }`}
+                                    style={{
+                                      borderColor: active
+                                        ? undefined
+                                        : "var(--surface-border)",
+                                    }}
+                                  >
+                                    {active && (
+                                      <Check size={12} className="text-white" />
+                                    )}
+                                  </span>
+                                  <span className="text-sm font-medium">
+                                    {a.label}
+                                  </span>
+                                </div>
+                                <span className="text-sm opacity-70">
+                                  +{formatINR(a.price)}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Promo + summary */}
+                      <div className="brand-card !p-6 md:!p-8 space-y-5">
+                        <p className="eyebrow">
+                          <span className="eyebrow-dot" /> 3. Promo code{" "}
+                          <span className="ml-2 text-[11px] opacity-50 normal-case">
+                            (Optional)
+                          </span>
+                        </p>
+
+                        {!promoApplied ? (
+                          <div className="flex gap-2">
+                            <div className="relative flex-1">
+                              <Tag
+                                size={16}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                              />
+                              <input
+                                value={promo}
+                                onChange={(e) => setPromo(e.target.value)}
+                                className="brand-input !pl-10"
+                                placeholder="Enter promo code"
+                              />
+                            </div>
+                            <button
+                              onClick={applyPromo}
+                              className="btn btn-outline !w-auto !py-0 px-5"
+                            >
+                              Apply
+                            </button>
+                          </div>
+                        ) : (
+                          <div
+                            className="flex items-center justify-between rounded-card border px-4 py-3"
+                            style={{ borderColor: "var(--surface-border)" }}
+                          >
+                            <div className="flex items-center gap-2 text-sm">
+                              <Tag size={14} className="text-brand-orange" />
+                              <span className="font-medium">
+                                {promoApplied.code}
+                              </span>
+                              <span className="opacity-60">
+                                — {Math.round(promoApplied.pct * 100)}% off
+                                applied
+                              </span>
+                            </div>
+                            <button
+                              onClick={removePromo}
+                              className="opacity-60 hover:opacity-100"
+                              aria-label="Remove promo"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        )}
+                        {promoError && (
+                          <p className="text-xs text-red-400 -mt-2">
+                            {promoError}
+                          </p>
+                        )}
+
+                        <div
+                          className="pt-4 border-t space-y-2"
+                          style={{ borderColor: "var(--surface-border)" }}
+                        >
+                          <SummaryLine
+                            label={`${plan.name} — ${activePackage?.label}`}
+                            value={formatINR(activePackage?.price || 0)}
+                          />
+                          {addons.map((id) => {
+                            const a = ADDONS.find((x) => x.id === id);
+                            return (
+                              <SummaryLine
+                                key={id}
+                                label={a.label}
+                                value={`+${formatINR(a.price)}`}
+                                muted
+                              />
+                            );
+                          })}
+                          {promoApplied && (
+                            <SummaryLine
+                              label={`Promo (${promoApplied.code})`}
+                              value={`−${formatINR(discount)}`}
+                              accent
+                            />
+                          )}
+                          <SummaryLine
+                            label="GST (18%)"
+                            value={formatINR(gst)}
+                            muted
+                          />
+                          <div
+                            className="pt-3 mt-2 border-t flex items-center justify-between"
+                            style={{ borderColor: "var(--surface-border)" }}
+                          >
+                            <span className="font-display uppercase text-sm tracking-tight">
+                              Total due
+                            </span>
+                            <span className="font-display text-2xl uppercase tracking-tight text-brand-orange">
+                              {formatINR(total)}
+                            </span>
+                          </div>
+                        </div>
+
+                        <button
+                          disabled={!canContinueStep1}
+                          onClick={goToStep2}
+                          className="btn btn-primary w-full justify-center"
+                        >
+                          Continue to details <ArrowRight size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ================= STEP 2 — DETAILS ================= */}
+              {!confirmed && step === 2 && (
+                <motion.div
+                  key="s2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <StepHeader step={2} />
+                  <div className="grid lg:grid-cols-12 gap-10 mt-10">
+                    <div className="lg:col-span-4">
+                      <SectionTag>Checkout</SectionTag>
+                      <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
+                        Where should we{" "}
+                        <span className="text-brand-orange">send</span> the
+                        invoice?
+                      </h1>
+                      <p className="mt-6 text-body-lg opacity-70 max-w-md">
+                        We&rsquo;ll use these details for your invoice, project
+                        kickoff, and all future communication.
+                      </p>
+
+                      <OrderMini
+                        plan={plan}
+                        activePackage={activePackage}
+                        total={total}
+                        onEdit={() => setStep(1)}
+                      />
+                    </div>
+
+                    <div className="lg:col-span-8">
+                      <form
+                        className="brand-card !p-6 md:!p-8 space-y-8"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          goToStep3();
+                        }}
+                      >
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FieldGroup label="Full name" required>
+                            <div className="relative">
+                              <User
+                                size={16}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                              />
+                              <input
+                                required
+                                value={details.name}
+                                onChange={(e) =>
+                                  setDetail("name", e.target.value)
+                                }
+                                className="brand-input !pl-10"
+                                placeholder="Enter your full name"
+                              />
+                            </div>
+                          </FieldGroup>
+                          <FieldGroup label="Email address" required>
+                            <div className="relative">
+                              <Mail
+                                size={16}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                              />
+                              <input
+                                required
+                                type="email"
+                                value={details.email}
+                                onChange={(e) =>
+                                  setDetail("email", e.target.value)
+                                }
+                                className="brand-input !pl-10"
+                                placeholder="you@example.com"
+                              />
+                            </div>
+                          </FieldGroup>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FieldGroup label="Phone number" required>
+                            <div className="relative">
+                              <Phone
+                                size={16}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                              />
+                              <input
+                                required
+                                type="tel"
+                                value={details.phone}
+                                onChange={(e) =>
+                                  setDetail("phone", e.target.value)
+                                }
+                                className="brand-input !pl-10"
+                                placeholder="+91 00000 00000"
+                              />
+                            </div>
+                          </FieldGroup>
+                          <FieldGroup label="Company name" tag="Optional">
+                            <div className="relative">
+                              <Building2
+                                size={16}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                              />
+                              <input
+                                value={details.company}
+                                onChange={(e) =>
+                                  setDetail("company", e.target.value)
+                                }
+                                className="brand-input !pl-10"
+                                placeholder="Business or brand name"
+                              />
+                            </div>
+                          </FieldGroup>
+                        </div>
+
+                        <FieldGroup label="Billing address" required>
+                          <div className="relative">
+                            <MapPin
+                              size={16}
+                              className="absolute left-4 top-4 opacity-50"
+                            />
+                            <textarea
+                              required
+                              value={details.address}
+                              onChange={(e) =>
+                                setDetail("address", e.target.value)
+                              }
+                              className="brand-textarea !pl-10"
+                              placeholder="Address, city, state, PIN code"
+                              rows={3}
+                            />
+                          </div>
+                        </FieldGroup>
+
+                        <FieldGroup
+                          label="GSTIN"
+                          tag="Optional, for business invoice"
+                        >
+                          <input
+                            value={details.gst}
+                            onChange={(e) => setDetail("gst", e.target.value)}
+                            className="brand-input"
+                            placeholder="22AAAAA0000A1Z5"
+                          />
+                        </FieldGroup>
+
+                        <FieldGroup
+                          label="Anything we should know before kickoff?"
+                          tag="Optional"
+                          hint={`${details.notes.length}/500`}
+                        >
+                          <textarea
+                            maxLength={500}
+                            value={details.notes}
+                            onChange={(e) => setDetail("notes", e.target.value)}
+                            className="brand-textarea"
+                            placeholder="Brand guidelines, references, deadlines..."
+                            rows={3}
+                          />
+                        </FieldGroup>
+
+                        <div className="flex gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setStep(1)}
+                            className="btn btn-outline !w-auto !px-5"
+                          >
+                            <ArrowLeft size={16} /> Back
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={!canContinueStep2}
+                            className="btn btn-primary flex-1 justify-center"
+                          >
+                            Continue to payment <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ================= STEP 3 — PAYMENT ================= */}
+              {!confirmed && step === 3 && (
+                <motion.div
+                  key="s3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <StepHeader step={3} />
+                  <div className="grid lg:grid-cols-12 gap-10 mt-10">
+                    <div className="lg:col-span-4">
+                      <SectionTag>Checkout</SectionTag>
+                      <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
+                        Last step.{" "}
+                        <span className="text-brand-orange">
+                          Secure payment.
+                        </span>
+                      </h1>
+                      <p className="mt-6 text-body-lg opacity-70 max-w-md">
+                        Your payment is encrypted and processed securely. We
+                        never store your card details.
+                      </p>
+
+                      <OrderMini
+                        plan={plan}
+                        activePackage={activePackage}
+                        total={total}
+                        onEdit={() => setStep(1)}
+                      />
+
+                      <div className="mt-4 flex items-center gap-2 text-xs opacity-50">
+                        <Lock size={12} /> 256-bit SSL encrypted checkout
+                      </div>
+                    </div>
+
+                    <div className="lg:col-span-8">
+                      <form
+                        onSubmit={submitPayment}
+                        className="brand-card !p-6 md:!p-8 space-y-8"
+                      >
+                        <FieldGroup label="Payment method" required>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            {PAYMENT_METHODS.map(
+                              ({ id, label, icon: Icon, desc }) => (
+                                <button
+                                  key={id}
+                                  type="button"
+                                  onClick={() => setPayment(id)}
+                                  className={`pill !flex-col !items-center !justify-center !py-4 gap-1 text-center ${
+                                    payment === id ? "pill-active" : ""
+                                  }`}
+                                >
+                                  <Icon size={18} />
+                                  <span className="text-xs uppercase tracking-tight font-semibold">
+                                    {label}
+                                  </span>
+                                  <span className="text-[10px] opacity-50 normal-case">
+                                    {desc}
+                                  </span>
+                                </button>
+                              ),
+                            )}
+                          </div>
+                        </FieldGroup>
+
+                        <AnimatePresence mode="wait">
+                          {payment === "card" && (
+                            <motion.div
+                              key="card"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="space-y-4 overflow-hidden"
+                            >
+                              <FieldGroup label="Card number" required>
+                                <div className="relative">
+                                  <CreditCard
+                                    size={16}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                                  />
+                                  <input
+                                    required
+                                    value={card.number}
+                                    onChange={(e) =>
+                                      setCardField("number", e.target.value)
+                                    }
+                                    className="brand-input !pl-10"
+                                    placeholder="1234 5678 9012 3456"
+                                    maxLength={19}
+                                  />
+                                </div>
+                              </FieldGroup>
+                              <div className="grid grid-cols-2 gap-4">
+                                <FieldGroup label="Expiry" required>
+                                  <input
+                                    required
+                                    value={card.expiry}
+                                    onChange={(e) =>
+                                      setCardField("expiry", e.target.value)
+                                    }
+                                    className="brand-input"
+                                    placeholder="MM/YY"
+                                    maxLength={5}
+                                  />
+                                </FieldGroup>
+                                <FieldGroup label="CVV" required>
+                                  <input
+                                    required
+                                    type="password"
+                                    value={card.cvv}
+                                    onChange={(e) =>
+                                      setCardField("cvv", e.target.value)
+                                    }
+                                    className="brand-input"
+                                    placeholder="•••"
+                                    maxLength={4}
+                                  />
+                                </FieldGroup>
+                              </div>
+                              <FieldGroup label="Name on card" required>
+                                <input
+                                  required
+                                  value={card.name}
+                                  onChange={(e) =>
+                                    setCardField("name", e.target.value)
+                                  }
+                                  className="brand-input"
+                                  placeholder="As it appears on your card"
+                                />
+                              </FieldGroup>
+                            </motion.div>
+                          )}
+
+                          {payment === "upi" && (
+                            <motion.div
+                              key="upi"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <FieldGroup label="UPI ID" required>
+                                <input
+                                  className="brand-input"
+                                  placeholder="yourname@upi"
+                                />
+                              </FieldGroup>
+                              <p className="mt-3 text-xs opacity-60 flex items-center gap-2">
+                                <Info size={12} /> You&rsquo;ll receive a
+                                payment request on your UPI app.
+                              </p>
+                            </motion.div>
+                          )}
+
+                          {payment === "netbanking" && (
+                            <motion.div
+                              key="nb"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <FieldGroup label="Select your bank" required>
+                                <select className="brand-input">
+                                  <option>HDFC Bank</option>
+                                  <option>ICICI Bank</option>
+                                  <option>State Bank of India</option>
+                                  <option>Axis Bank</option>
+                                  <option>Kotak Mahindra Bank</option>
+                                </select>
+                              </FieldGroup>
+                            </motion.div>
+                          )}
+
+                          {payment === "wallet" && (
+                            <motion.div
+                              key="wallet"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <FieldGroup label="Select wallet" required>
+                                <select className="brand-input">
+                                  <option>Paytm Wallet</option>
+                                  <option>Amazon Pay</option>
+                                  <option>Mobikwik</option>
+                                </select>
+                              </FieldGroup>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        <div
+                          className="pt-4 border-t space-y-2"
+                          style={{ borderColor: "var(--surface-border)" }}
+                        >
+                          <SummaryLine
+                            label={`${plan.name} — ${activePackage?.label}`}
+                            value={formatINR(activePackage?.price || 0)}
+                            muted
+                          />
+                          {addons.length > 0 && (
+                            <SummaryLine
+                              label={`${addons.length} add-on${addons.length > 1 ? "s" : ""}`}
+                              value={`+${formatINR(addonTotal)}`}
+                              muted
+                            />
+                          )}
+                          {promoApplied && (
+                            <SummaryLine
+                              label={`Promo (${promoApplied.code})`}
+                              value={`−${formatINR(discount)}`}
+                              accent
+                            />
+                          )}
+                          <SummaryLine
+                            label="GST (18%)"
+                            value={formatINR(gst)}
+                            muted
+                          />
+                          <div
+                            className="pt-3 mt-2 border-t flex items-center justify-between"
+                            style={{ borderColor: "var(--surface-border)" }}
+                          >
+                            <span className="font-display uppercase text-sm tracking-tight">
+                              Total due
+                            </span>
+                            <span className="font-display text-2xl uppercase tracking-tight text-brand-orange">
+                              {formatINR(total)}
+                            </span>
+                          </div>
+                        </div>
+
+                        <label className="flex items-start gap-3 text-xs opacity-70 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={agree}
+                            onChange={(e) => setAgree(e.target.checked)}
+                            className="mt-0.5"
+                          />
+                          I agree to the{" "}
+                          <Link
+                            href="/terms"
+                            className="text-brand-orange underline underline-offset-4"
+                          >
+                            Terms of Service
+                          </Link>{" "}
+                          and{" "}
+                          <Link
+                            href="/refund-policy"
+                            className="text-brand-orange underline underline-offset-4"
+                          >
+                            Refund Policy
+                          </Link>
+                          .
+                        </label>
+
+                        <div className="flex gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setStep(2)}
+                            className="btn btn-outline !w-auto !px-5"
+                          >
+                            <ArrowLeft size={16} /> Back
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={!canConfirmPayment}
+                            className="btn btn-primary flex-1 justify-center"
+                          >
+                            Pay {formatINR(total)} <Lock size={14} />
+                          </button>
+                        </div>
+                        <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
+                          <ShieldCheck size={12} />
+                          Payments are processed securely. Your card details are
+                          never stored on our servers.
+                        </p>
+                      </form>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ================= CONFIRMATION ================= */}
+              {confirmed && (
+                <motion.div
+                  key="conf"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="max-w-3xl mx-auto text-center py-6"
+                >
+                  <motion.div
+                    initial={{ scale: 0, rotate: -30 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      duration: 0.7,
+                      delay: 0.1,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="relative w-20 h-20 mx-auto"
+                  >
+                    <span className="absolute inset-0 rounded-full border border-brand-orange/30 animate-ping" />
+                    <div className="relative w-20 h-20 rounded-full border-2 border-brand-orange text-brand-orange flex items-center justify-center shadow-brand-glow">
+                      <Check size={32} strokeWidth={2.6} />
+                    </div>
+                  </motion.div>
+
+                  <p className="mt-8 eyebrow mx-auto w-fit">
+                    <span className="eyebrow-dot" /> Payment successful
+                  </p>
+                  <h1 className="mt-4 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
+                    Order confirmed. <br />
+                    <span className="text-brand-orange">
+                      Let&rsquo;s get started.
+                    </span>
+                  </h1>
+                  <p className="mt-6 text-body-lg opacity-70 max-w-xl mx-auto">
+                    Thanks{details.name ? `, ${details.name}` : ""}. Your
+                    receipt and next steps have been sent to{" "}
+                    <span className="text-brand-orange font-medium">
+                      {details.email}
+                    </span>
+                    .
+                  </p>
+
+                  <div className="mt-12 grid md:grid-cols-2 gap-5 text-left">
+                    <div className="brand-card !p-0 overflow-hidden">
+                      <ConfRow
+                        icon={Tag}
+                        title={`Order ${orderId}`}
+                        subtitle={`${plan.name} — ${activePackage?.label}`}
+                      />
+                      <ConfRow
+                        icon={BadgeIndianRupee}
+                        title={formatINR(total)}
+                        subtitle="Paid in full"
+                      />
+                      <ConfRow
+                        icon={Calendar}
+                        title={new Date().toLocaleDateString("en-US", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                        subtitle="Order date"
+                        noBorder
+                      />
+                    </div>
+                    <div className="brand-card">
+                      <p className="eyebrow">
+                        <Mail size={14} className="text-brand-orange" /> What
+                        happens next?
+                      </p>
+                      <ul className="mt-5 space-y-3 text-sm">
+                        {[
+                          "You'll receive an invoice & receipt by email",
+                          "Our team will reach out within 24 hours",
+                          "We'll kick off with an onboarding brief",
+                        ].map((s) => (
+                          <li key={s} className="flex items-start gap-3">
+                            <Check
+                              size={16}
+                              className="shrink-0 mt-0.5 text-brand-orange"
+                            />
+                            <span className="opacity-85">{s}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 brand-card !flex !flex-col sm:!flex-row items-center justify-between gap-4 !py-4">
+                    <p className="text-sm opacity-70 text-left">
+                      Need help or want to make changes to your order?{" "}
+                      <a
+                        href="mailto:hello@oct20five.com"
+                        className="text-brand-orange underline underline-offset-4"
+                      >
+                        hello@oct20five.com
+                      </a>
+                    </p>
+                    <Link href="/" className="btn btn-outline !w-auto shrink-0">
+                      Back to OCT20FIVE <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </SectionWrapper>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+/* =========================================================
+   SHARED SUBCOMPONENTS (match book-a-call / get-in-touch)
+========================================================= */
+
+function StepHeader({ step }) {
+  const steps = [
+    { n: "01", label: "Review Order" },
+    { n: "02", label: "Your Details" },
+    { n: "03", label: "Payment" },
+  ];
+  return (
+    <div className="flex items-center gap-4 flex-wrap">
+      {steps.map((s, i) => {
+        const idx = i + 1;
+        const active = step === idx;
+        const done = step > idx;
+        return (
+          <div key={s.n} className="flex items-center gap-4">
+            <div
+              className={`flex items-center gap-2 ${
+                active || done ? "text-brand-orange" : "opacity-40"
+              }`}
+            >
+              <span
+                className={`w-7 h-7 rounded-full border flex items-center justify-center text-xs font-semibold ${
+                  active || done ? "border-brand-orange" : ""
+                }`}
+                style={{
+                  borderColor:
+                    active || done ? undefined : "var(--surface-border)",
+                }}
+              >
+                {done ? <Check size={12} /> : s.n}
+              </span>
+              <span className="text-xs uppercase tracking-widest font-medium">
+                {s.label}
+              </span>
+            </div>
+            {idx < steps.length && (
+              <span
+                className="h-px w-10 sm:w-16"
+                style={{ background: "var(--surface-border)" }}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function InfoRow({ icon: Icon, title, desc }) {
+  return (
+    <div className="brand-card !p-5 flex items-start gap-4">
+      <div
+        className="w-10 h-10 rounded-icon border flex items-center justify-center text-brand-orange shrink-0"
+        style={{ borderColor: "var(--surface-border)" }}
+      >
+        <Icon size={16} />
+      </div>
+      <div>
+        <p className="font-display text-sm uppercase tracking-tight">{title}</p>
+        <p className="mt-1 text-sm opacity-60">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function ConfRow({ icon: Icon, title, subtitle, noBorder }) {
+  return (
+    <div
+      className={`flex items-center gap-4 p-5 ${noBorder ? "" : "border-b"}`}
+      style={{ borderColor: "var(--surface-border)" }}
+    >
+      <div
+        className="w-10 h-10 rounded-icon border flex items-center justify-center text-brand-orange shrink-0"
+        style={{ borderColor: "var(--surface-border)" }}
+      >
+        <Icon size={16} />
+      </div>
+      <div>
+        <p className="font-display text-sm uppercase tracking-tight">{title}</p>
+        {subtitle && <p className="text-xs opacity-60 mt-0.5">{subtitle}</p>}
+      </div>
+    </div>
+  );
+}
+
+function FieldGroup({ label, hint, tag, required, children }) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <label className="eyebrow">
+          <span className="eyebrow-dot" /> {label}
+          {required && <span className="text-brand-orange"> *</span>}
+          {tag && (
+            <span className="ml-2 text-[11px] opacity-50 normal-case">
+              ({tag})
+            </span>
+          )}
+        </label>
+        {hint && <span className="text-xs opacity-60">{hint}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function SummaryLine({ label, value, muted, accent }) {
+  return (
+    <div className="flex items-center justify-between text-sm">
+      <span className={muted ? "opacity-60" : "opacity-85"}>{label}</span>
+      <span
+        className={`font-medium ${
+          accent ? "text-brand-orange" : muted ? "opacity-60" : ""
+        }`}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function OrderMini({ plan, activePackage, total, onEdit }) {
+  return (
+    <div className="mt-10 brand-card !p-5 flex items-center justify-between gap-4">
+      <div className="flex items-center gap-4 min-w-0">
+        <div
+          className="w-11 h-11 rounded-icon border flex items-center justify-center text-brand-orange shrink-0"
+          style={{ borderColor: "var(--surface-border)" }}
+        >
+          <Tag size={18} />
+        </div>
+        <div className="min-w-0">
+          <p className="text-[11px] uppercase opacity-50">Your order</p>
+          <p className="font-display text-base uppercase leading-tight truncate">
+            {plan.name} — {activePackage?.label}
+          </p>
+          <p className="text-xs opacity-60 mt-0.5">{formatINR(total)} total</p>
+        </div>
+      </div>
+      <button
+        onClick={onEdit}
+        className="btn btn-outline !w-auto !py-2 !px-3 text-xs shrink-0"
+      >
+        <Pencil size={12} /> Edit
+      </button>
+    </div>
+  );
+}

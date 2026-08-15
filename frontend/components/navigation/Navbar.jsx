@@ -39,7 +39,7 @@ const cta = {
   href: '/agency/get-in-touch',
 }
 
-const contactHref = '/agency/get-in-touch'
+const contactHref = '/agency/book-a-call'
 
 export default function Navbar() {
   const pathname = usePathname()
