@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   FolderKanban,
   BriefcaseBusiness,
-  Settings,
   MessageSquareText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -33,12 +32,7 @@ const navItems = [
     icon: MessageSquareText,
     enabled: true,
   },
-  {
-    label: "Settings",
-    to: "/client/settings",
-    icon: Settings,
-    enabled: true,
-  },
+
 ];
 
 export default function Sidebar({ onNavigate }) {

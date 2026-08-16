@@ -1,0 +1,210 @@
+
+--------------------------------------------------------------------------------
+0. AUTHENTICATION & ACCESS
+--------------------------------------------------------------------------------
+- Role-based login screen (Client / Staff selector)
+- Email + password login form
+- No-access / restricted page for unauthorized routes
+- Public profile page (shareable, /u/:id) showing user/company summary,
+  contact info, projects, activity
+
+--------------------------------------------------------------------------------
+1. CLIENT PORTAL
+--------------------------------------------------------------------------------
+1.1 Dashboard
+    - Summary stats: active projects, in progress, needs input, completed
+    - "Action Required" cards (pending reviews, pending file/info uploads)
+    - Current work highlight card (what the team is actively doing)
+    - Projects needing attention (blocked / review pending / deadline soon)
+    - Recent activity feed (status changes, approvals, uploads) grouped by day
+    - Upcoming items / deadlines list
+
+1.2 Projects
+    - Project list with progress bar, status badge, service tags
+    - Filter/search projects
+    - Project detail page:
+        - Description, services involved, deadline, team size
+        - Progress percentage & deliverables completed/total
+        - Current work in progress (title, service, description)
+        - Status (in-progress, client-review, blocked, completed)
+        - Link to pay for project / view invoice
+
+1.3 Project Payment
+    - Invoice summary (invoice ID, total, amount paid, due date)
+    - Online payment flow (card/UPI/bank transfer selection)
+    - Payment confirmation screen
+    - Payment/invoice history per project
+
+1.4 Approvals (embedded in project flow)
+    - Review and approve/reject deliverable versions
+    - "Changes requested" feedback flow
+    - Version history per approval item
+
+1.5 Events / Calendar
+    - Upcoming meetings, reviews, deadlines, internal events
+    - Event details: date, time, location or meeting link, attendees
+    - Filter events by type (meeting / review / deadline)
+
+1.6 Services (Catalog / Browse)
+    - Browse service categories (Editing, Design, 3D, Web Development)
+    - Tiered package plans (Standard / Advance / Black) with pricing,
+      feature lists, and pack-size selection
+    - Featured plan highlighting
+    - Service workflow / process explainer content
+
+1.7 Settings
+    - Profile settings (first name, last name, email, phone, role)
+    - Company settings (company name, short name, email, phone, website)
+    - Notification preferences (project updates, task updates, approvals,
+      messages, deadlines, weekly summary toggles)
+    - Security settings (change password)
+
+1.8 Notifications
+    - Notification bell/dropdown with unread indicator
+    - Mark as read
+
+--------------------------------------------------------------------------------
+2. STAFF PORTAL
+--------------------------------------------------------------------------------
+2.1 Dashboard
+    - Personal stats: active projects, tasks in progress, due today, blocked,
+      pending approvals
+    - Recent staff activity feed
+    - Quick access to assigned projects/tasks
+
+2.2 Projects
+    - List of projects staff is assigned to
+    - Project cards/rows with progress, status, client, service tags
+
+2.3 Tasks
+    - Task list with title, project, client, service, assignee, priority,
+      status, due date/label (Due Today, Overdue, etc.)
+    - Comment count indicator per task
+    - Filter by status/priority/assignee
+
+2.4 Approvals
+    - List of items sent to client awaiting/received approval
+    - Status tracking (pending, approved, changes requested)
+    - Waiting-time indicator
+
+2.5 Clients
+    - List of clients staff works with
+    - Quick view of client's active projects/tasks/approvals
+
+2.6 Files
+    - Browse/upload project files and folders
+    - Grid/list view toggle
+    - File type icons (pdf, image, video, spreadsheet)
+    - Rename, move, download, delete files
+    - Folder-based organization
+
+2.7 Attendance
+    - Personal check-in/check-out
+    - Attendance status (present, late, remote, on leave, absent)
+    - Hours worked summary
+    - Work mode (Office/Remote)
+
+2.8 Activity
+    - Personal/team activity log (uploads, status changes, approvals)
+
+--------------------------------------------------------------------------------
+3. ADMIN PORTAL
+--------------------------------------------------------------------------------
+3.1 Dashboard
+    - Agency-wide KPIs (active projects, tasks, approvals, revenue, etc.)
+    - Cross-module recent activity feed
+
+3.2 Clients
+    - Client list with stats: active/completed/at-risk projects, open/overdue
+      tasks, pending approvals, average progress
+    - Search/filter clients
+    - Client detail page: full project, task, approval, and payment history
+      for a single client
+
+3.3 Projects
+    - Full project management: create/edit/delete projects
+    - Assign services, team members, deadlines
+    - Track progress, deliverables, status across all clients
+
+3.4 Tasks
+    - Full task management across all projects/staff
+    - Assign tasks to staff, set priority/due dates
+    - Track status and comments
+
+3.5 Approvals
+    - Manage all pending/approved/changes-requested items across clients
+    - Filter by status
+
+3.6 Team (multi-tab module)
+    - Team: staff directory (name, role, department)
+    - Users: user accounts, role, status (active/invited/suspended), access
+      level, edit/reset-password/delete actions
+    - Roles: role definitions (Administrator, Manager, Staff) with
+      permission/access-level summary and user counts
+    - Onboarding: pending invitations, resend invite, invite new user
+    - Salary & Payouts: monthly payroll overview, per-staff salary, payout
+      status (paid/pending/overdue), process payouts action
+
+3.7 Attendance
+    - Company-wide attendance dashboard
+    - Per-staff daily status, check-in/out times, hours worked
+    - Date navigation (previous/next day)
+    - Filter/search by staff member
+
+3.8 Files
+    - Company/project file repository (admin-level access)
+    - Folder management, upload, search, grid/list views
+    - File actions: rename, move, delete, download
+
+3.9 Payments
+    - Invoice management: create, view, filter by status
+      (paid / pending / overdue)
+    - Payment method & reference tracking (Bank Transfer, UPI, etc.)
+    - Revenue stats (total paid, pending, overdue)
+    - Export/download reports
+
+3.10 Queries (Support Tickets)
+    - Client query inbox: subject, message, category, priority
+    - Assign query to staff member
+    - Status tracking (open, in-progress, resolved)
+    - Response-time tracking
+    - Filter/search by client, project, status, priority
+
+3.11 Careers (Recruitment)
+    - Job postings management: title, department, type, location, status
+      (open/paused/closed), applicant counts, post/deadline dates
+    - Candidate pipeline: name, email, experience, applied role, stage
+      (new -> review -> shortlisted -> interview -> hired/rejected)
+    - Search/filter candidates and jobs
+
+3.12 Behind the Work (Studio Showcase / BTS Content)
+    - Publish photo/video/YouTube BTS content linked to a project & client
+    - Draft/published status workflow
+    - Author attribution, creation date
+    - Edit/delete/publish-toggle actions
+
+3.13 Events (Calendar Management)
+    - Create/manage meetings, reviews, deadlines, internal events
+    - Link events to clients/projects
+    - Attendee count, location or meeting link
+    - Filter by event type
+
+3.14 Services (Catalog Management)
+    - Manage service categories and tiered plans (Standard/Advance/Black)
+    - Edit plan pricing, features, package sizes
+    - Duplicate/delete plans
+    - Active/Draft status toggle for each plan
+
+3.15 Activity
+    - Org-wide activity/audit feed across all modules
+
+--------------------------------------------------------------------------------
+4. SHARED / CROSS-CUTTING FEATURES
+--------------------------------------------------------------------------------
+- Responsive layouts per portal (Client / Staff / Admin) with dedicated
+  sidebar & topbar navigation
+- Status badges, priority badges, progress bars (shared UI components)
+- Command center / global search & quick actions
+- Empty-state handling across list views
+- Role-based routing and layout switching (Auth / Client / Staff / Admin)
+
