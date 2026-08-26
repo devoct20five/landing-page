@@ -28,11 +28,28 @@ const navItems = [
   },
   {
     label: "Events",
-    to: "/client/Events",
+    to: "/client/events",
     icon: MessageSquareText,
     enabled: true,
   },
-
+  {
+  label: "Approvals",
+    to: "/approvals",
+    icon: MessageSquareText,
+    enabled: true,
+  },
+  {
+      label: "Support",
+    to: "/support",
+    icon: MessageSquareText,
+    enabled: true,
+  }
+, {
+    label: "Queries",
+    to: "/queries",
+    icon: MessageSquareText,
+    enabled: true,
+}
 ];
 
 export default function Sidebar({ onNavigate }) {

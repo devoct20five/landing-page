@@ -11,3 +11,14 @@ staff salary payout page in team section DONE
 staff profile page should have documents and other payout secitons 
 projects page should have table card timeline
 payment page in client portal DONE
+
+CLIENT PROJECT LIST PAGE: SORT dropdown
+CLIENT PAYMENT PAGE + INVOICE WITH PAYMENT ROW + DOWNLOAD INVOICE (BILLING PAGE)
+ACTIVITY LOGS : 
+APPROVLAS PAGE FOR CLIENT
+Queries page in client
+behind the work 
+PRIVACY POLICY 
+REFUND POLICY TERMS AND CONDITIONS 
+ATTENDANCE: FULL TIME OR PART TIME . FOR STAFF
+PICK TEAM PERFORMS FROM TASK IN ADMIN AND PUT IT IN TEAM PAGE IN ADMIN TAB

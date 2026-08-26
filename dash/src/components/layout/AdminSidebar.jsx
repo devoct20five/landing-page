@@ -35,6 +35,12 @@ const primaryNav = [
     icon: FolderKanban,
     enabled: true,
   },
+    {
+    label: "Invoices",
+    to: "/admin/invoice/all",
+    icon: FolderKanban,
+    enabled: true,
+  },
   {
     label: "Clients",
     to: "/admin/clients",
@@ -59,6 +65,12 @@ const operationsNav = [
   {
     label: "Tasks",
     to: "/admin/tasks",
+    icon: ListChecks,
+    enabled: true,
+  },
+    {
+    label: "Attendance",
+    to: "/admin/attendance",
     icon: ListChecks,
     enabled: true,
   },

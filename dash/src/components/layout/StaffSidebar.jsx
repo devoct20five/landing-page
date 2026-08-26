@@ -37,6 +37,12 @@ const primaryNav = [
     icon: UserSquare2,
     enabled: true,
   },
+   {
+    label: "Attendance",
+    to: "/staff/attendance",
+    icon: UserSquare2,
+    enabled: true,
+  },
 ];
 
 const secondaryNav = [
