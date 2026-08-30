@@ -15,12 +15,8 @@ export default function TaskList({ tasks = mockTasks }) {
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl font-bold text-surface-fg">
-              Tasks
-            </h1>
-            <p className="mt-1 text-sm text-surface-muted">
-              Manage and track project tasks.
-            </p>
+            <h1 className="font-display text-2xl font-bold text-surface-fg">Tasks</h1>
+            <p className="mt-1 text-sm text-surface-muted">Manage and track project tasks.</p>
           </div>
 
           <button
@@ -46,13 +42,9 @@ export default function TaskList({ tasks = mockTasks }) {
       {/* Page Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold text-surface-fg">
-            Tasks
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-surface-fg">Tasks</h1>
 
-          <p className="mt-1 text-sm text-surface-muted">
-            Manage and track project tasks.
-          </p>
+          <p className="mt-1 text-sm text-surface-muted">Manage and track project tasks.</p>
         </div>
 
         <button

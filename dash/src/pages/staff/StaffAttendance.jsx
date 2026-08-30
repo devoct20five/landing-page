@@ -153,8 +153,7 @@ const STATUS_CONFIG = {
 ============================================================ */
 
 function AttendanceStatus({ status }) {
-  const config =
-    STATUS_CONFIG[status] || STATUS_CONFIG.absent;
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.absent;
 
   return (
     <span
@@ -163,12 +162,7 @@ function AttendanceStatus({ status }) {
         config.className
       )}
     >
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          config.dot
-        )}
-      />
+      <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
 
       {config.label}
     </span>
@@ -179,12 +173,7 @@ function AttendanceStatus({ status }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-}) {
+function StatCard({ icon: Icon, label, value, description }) {
   return (
     <div className="brand-card">
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -199,9 +188,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -215,13 +202,9 @@ function AttendanceRow({ record }) {
     <div className="grid gap-4 border-b border-surface-border px-6 py-5 last:border-b-0 lg:grid-cols-[1.4fr_1fr_1fr_1fr_0.8fr] lg:items-center">
       {/* Date */}
       <div>
-        <p className="text-sm font-bold text-surface-fg">
-          {record.date}
-        </p>
+        <p className="text-sm font-bold text-surface-fg">{record.date}</p>
 
-        <p className="mt-0.5 text-xs text-surface-muted">
-          {record.day}
-        </p>
+        <p className="mt-0.5 text-xs text-surface-muted">{record.day}</p>
       </div>
 
       {/* Status */}
@@ -238,9 +221,7 @@ function AttendanceRow({ record }) {
         <div className="mt-1 flex items-center gap-1.5">
           <LogIn className="h-3.5 w-3.5 text-emerald-600" />
 
-          <span className="text-sm font-medium text-surface-fg">
-            {record.checkIn || "—"}
-          </span>
+          <span className="text-sm font-medium text-surface-fg">{record.checkIn || "—"}</span>
         </div>
       </div>
 
@@ -253,9 +234,7 @@ function AttendanceRow({ record }) {
         <div className="mt-1 flex items-center gap-1.5">
           <LogOut className="h-3.5 w-3.5 text-surface-muted" />
 
-          <span className="text-sm font-medium text-surface-fg">
-            {record.checkOut || "—"}
-          </span>
+          <span className="text-sm font-medium text-surface-fg">{record.checkOut || "—"}</span>
         </div>
       </div>
 
@@ -265,13 +244,9 @@ function AttendanceRow({ record }) {
           Hours
         </p>
 
-        <p className="mt-1 text-sm font-bold text-surface-fg">
-          {record.hours}
-        </p>
+        <p className="mt-1 text-sm font-bold text-surface-fg">{record.hours}</p>
 
-        <p className="mt-0.5 text-[0.65rem] text-surface-muted">
-          {record.workMode}
-        </p>
+        <p className="mt-0.5 text-[0.65rem] text-surface-muted">{record.workMode}</p>
       </div>
     </div>
   );
@@ -282,41 +257,26 @@ function AttendanceRow({ record }) {
 ============================================================ */
 
 export default function StaffAttendance() {
-  const [selectedMonth, setSelectedMonth] = useState(
-    "August 2026"
-  );
+  const [selectedMonth, setSelectedMonth] = useState("August 2026");
 
-  const currentAttendance =
-    attendanceRecords[0];
+  const currentAttendance = attendanceRecords[0];
 
   const monthlyStats = useMemo(() => {
     return {
       present: attendanceRecords.filter(
-        (record) =>
-          record.status === "present" ||
-          record.status === "remote"
+        (record) => record.status === "present" || record.status === "remote"
       ).length,
 
-      late: attendanceRecords.filter(
-        (record) => record.status === "late"
-      ).length,
+      late: attendanceRecords.filter((record) => record.status === "late").length,
 
-      leave: attendanceRecords.filter(
-        (record) => record.status === "leave"
-      ).length,
+      leave: attendanceRecords.filter((record) => record.status === "leave").length,
 
-      absent: attendanceRecords.filter(
-        (record) => record.status === "absent"
-      ).length,
+      absent: attendanceRecords.filter((record) => record.status === "absent").length,
     };
   }, []);
 
   function changeMonth(direction) {
-    setSelectedMonth(
-      direction > 0
-        ? "September 2026"
-        : "July 2026"
-    );
+    setSelectedMonth(direction > 0 ? "September 2026" : "July 2026");
   }
 
   return (
@@ -337,8 +297,7 @@ export default function StaffAttendance() {
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            View your attendance, working hours, check-ins,
-            and monthly attendance history.
+            View your attendance, working hours, check-ins, and monthly attendance history.
           </p>
         </div>
 
@@ -355,9 +314,7 @@ export default function StaffAttendance() {
           <div className="flex h-10 items-center gap-2 rounded-xl border border-surface-border bg-surface-card px-4">
             <CalendarDays className="h-4 w-4 text-brand-orange" />
 
-            <span className="text-sm font-semibold text-surface-fg">
-              {selectedMonth}
-            </span>
+            <span className="text-sm font-semibold text-surface-fg">{selectedMonth}</span>
           </div>
 
           <button
@@ -380,9 +337,7 @@ export default function StaffAttendance() {
             Today
           </p>
 
-          <h2 className="mt-1 font-display text-xl font-bold text-surface-fg">
-            Your attendance
-          </h2>
+          <h2 className="mt-1 font-display text-xl font-bold text-surface-fg">Your attendance</h2>
         </div>
 
         <div className="grid divide-y divide-surface-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
@@ -397,9 +352,7 @@ export default function StaffAttendance() {
             </div>
 
             <div className="mt-3">
-              <AttendanceStatus
-                status={currentAttendance.status}
-              />
+              <AttendanceStatus status={currentAttendance.status} />
             </div>
           </div>
 
@@ -501,9 +454,7 @@ export default function StaffAttendance() {
           </p>
 
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="font-display text-xl font-bold text-surface-fg">
-              {selectedMonth}
-            </h2>
+            <h2 className="font-display text-xl font-bold text-surface-fg">{selectedMonth}</h2>
 
             <span className="text-xs text-surface-muted">
               {attendanceRecords.length} recorded days
@@ -522,10 +473,7 @@ export default function StaffAttendance() {
 
         <div>
           {attendanceRecords.map((record) => (
-            <AttendanceRow
-              key={record.id}
-              record={record}
-            />
+            <AttendanceRow key={record.id} record={record} />
           ))}
         </div>
       </section>
@@ -538,10 +486,8 @@ export default function StaffAttendance() {
         <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-surface-muted" />
 
         <p className="text-xs leading-5 text-surface-muted">
-          Attendance records are maintained by OCT20FIVE.
-          If you notice an incorrect check-in, check-out,
-          leave status, or work mode, please contact your
-          manager or administrator.
+          Attendance records are maintained by OCT20FIVE. If you notice an incorrect check-in,
+          check-out, leave status, or work mode, please contact your manager or administrator.
         </p>
       </div>
     </div>

@@ -20,10 +20,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
-import {
-  projects,
-  clients,
-} from "@/data/mockData";
+import { projects, clients } from "@/data/mockData";
 
 import EmptyState from "@/components/shared/EmptyState";
 import { cn } from "@/lib/utils";
@@ -158,15 +155,11 @@ const STATUS_CONFIG = {
 ============================================================ */
 
 function getClient(clientId) {
-  return clients?.find(
-    (client) => client.id === clientId
-  );
+  return clients?.find((client) => client.id === clientId);
 }
 
 function getProject(projectId) {
-  return projects?.find(
-    (project) => project.id === projectId
-  );
+  return projects?.find((project) => project.id === projectId);
 }
 
 function formatCurrency(amount) {
@@ -182,9 +175,7 @@ function formatCurrency(amount) {
 ============================================================ */
 
 function PaymentStatus({ status }) {
-  const config =
-    STATUS_CONFIG[status] ||
-    STATUS_CONFIG.pending;
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
 
   const Icon = config.icon;
 
@@ -206,12 +197,7 @@ function PaymentStatus({ status }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-}) {
+function StatCard({ icon: Icon, label, value, description }) {
   return (
     <div className="brand-card">
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -226,9 +212,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -246,13 +230,9 @@ function PaymentRow({ payment }) {
       {/* Invoice */}
       <td className="px-6 py-5">
         <div>
-          <p className="text-sm font-bold text-surface-fg">
-            {payment.invoiceId}
-          </p>
+          <p className="text-sm font-bold text-surface-fg">{payment.invoiceId}</p>
 
-          <p className="mt-1 text-xs text-surface-muted">
-            {payment.description}
-          </p>
+          <p className="mt-1 text-xs text-surface-muted">{payment.description}</p>
         </div>
       </td>
 
@@ -260,11 +240,7 @@ function PaymentRow({ payment }) {
       <td className="py-5 pr-5">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
-            {client?.shortName ||
-              client?.name
-                ?.slice(0, 2)
-                .toUpperCase() ||
-              "CL"}
+            {client?.shortName || client?.name?.slice(0, 2).toUpperCase() || "CL"}
           </div>
 
           <div className="min-w-0">
@@ -288,16 +264,12 @@ function PaymentRow({ payment }) {
 
       {/* Amount */}
       <td className="py-5 pr-5">
-        <p className="text-sm font-bold text-surface-fg">
-          {formatCurrency(payment.amount)}
-        </p>
+        <p className="text-sm font-bold text-surface-fg">{formatCurrency(payment.amount)}</p>
       </td>
 
       {/* Method */}
       <td className="py-5 pr-5">
-        <span className="text-xs font-medium text-surface-muted">
-          {payment.method}
-        </span>
+        <span className="text-xs font-medium text-surface-muted">{payment.method}</span>
       </td>
 
       {/* Status */}
@@ -343,13 +315,9 @@ function FilterBar({
   method,
   setMethod,
 }) {
-  const [showFilters, setShowFilters] =
-    useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const hasFilters =
-    status !== "all" ||
-    clientId !== "all" ||
-    method !== "all";
+  const hasFilters = status !== "all" || clientId !== "all" || method !== "all";
 
   function clearFilters() {
     setStatus("all");
@@ -366,9 +334,7 @@ function FilterBar({
 
           <input
             value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
+            onChange={(event) => setSearch(event.target.value)}
             placeholder="Search payments, clients, invoices..."
             className="brand-input w-full pl-9"
           />
@@ -377,9 +343,7 @@ function FilterBar({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() =>
-              setShowFilters((value) => !value)
-            }
+            onClick={() => setShowFilters((value) => !value)}
             className={cn(
               "inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition",
               showFilters || hasFilters
@@ -388,9 +352,7 @@ function FilterBar({
             )}
           >
             <Filter className="h-4 w-4" />
-
             Filters
-
             {hasFilters && (
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[0.65rem] text-white">
                 {(status !== "all" ? 1 : 0) +
@@ -424,30 +386,18 @@ function FilterBar({
             <div className="relative">
               <select
                 value={status}
-                onChange={(event) =>
-                  setStatus(event.target.value)
-                }
+                onChange={(event) => setStatus(event.target.value)}
                 className="brand-input w-full appearance-none pr-9"
               >
-                <option value="all">
-                  All statuses
-                </option>
+                <option value="all">All statuses</option>
 
-                <option value="paid">
-                  Paid
-                </option>
+                <option value="paid">Paid</option>
 
-                <option value="pending">
-                  Pending
-                </option>
+                <option value="pending">Pending</option>
 
-                <option value="overdue">
-                  Overdue
-                </option>
+                <option value="overdue">Overdue</option>
 
-                <option value="refunded">
-                  Refunded
-                </option>
+                <option value="refunded">Refunded</option>
               </select>
 
               <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-muted" />
@@ -463,20 +413,13 @@ function FilterBar({
             <div className="relative">
               <select
                 value={clientId}
-                onChange={(event) =>
-                  setClientId(event.target.value)
-                }
+                onChange={(event) => setClientId(event.target.value)}
                 className="brand-input w-full appearance-none pr-9"
               >
-                <option value="all">
-                  All clients
-                </option>
+                <option value="all">All clients</option>
 
                 {clients?.map((client) => (
-                  <option
-                    key={client.id}
-                    value={client.id}
-                  >
+                  <option key={client.id} value={client.id}>
                     {client.name}
                   </option>
                 ))}
@@ -495,30 +438,18 @@ function FilterBar({
             <div className="relative">
               <select
                 value={method}
-                onChange={(event) =>
-                  setMethod(event.target.value)
-                }
+                onChange={(event) => setMethod(event.target.value)}
                 className="brand-input w-full appearance-none pr-9"
               >
-                <option value="all">
-                  All methods
-                </option>
+                <option value="all">All methods</option>
 
-                <option value="Bank Transfer">
-                  Bank Transfer
-                </option>
+                <option value="Bank Transfer">Bank Transfer</option>
 
-                <option value="UPI">
-                  UPI
-                </option>
+                <option value="UPI">UPI</option>
 
-                <option value="Card">
-                  Card
-                </option>
+                <option value="Card">Card</option>
 
-                <option value="Cash">
-                  Cash
-                </option>
+                <option value="Cash">Cash</option>
               </select>
 
               <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-muted" />
@@ -541,59 +472,29 @@ export default function AdminPayments() {
   const [method, setMethod] = useState("all");
 
   const filteredPayments = useMemo(() => {
-    const query = search
-      .trim()
-      .toLowerCase();
+    const query = search.trim().toLowerCase();
 
     return payments.filter((payment) => {
-      const client = getClient(
-        payment.clientId
-      );
+      const client = getClient(payment.clientId);
 
-      const project = getProject(
-        payment.projectId
-      );
+      const project = getProject(payment.projectId);
 
       const matchesSearch =
         !query ||
-        payment.invoiceId
-          ?.toLowerCase()
-          .includes(query) ||
-        payment.reference
-          ?.toLowerCase()
-          .includes(query) ||
-        client?.name
-          ?.toLowerCase()
-          .includes(query) ||
-        project?.name
-          ?.toLowerCase()
-          .includes(query);
+        payment.invoiceId?.toLowerCase().includes(query) ||
+        payment.reference?.toLowerCase().includes(query) ||
+        client?.name?.toLowerCase().includes(query) ||
+        project?.name?.toLowerCase().includes(query);
 
-      const matchesStatus =
-        status === "all" ||
-        payment.status === status;
+      const matchesStatus = status === "all" || payment.status === status;
 
-      const matchesClient =
-        clientId === "all" ||
-        payment.clientId === clientId;
+      const matchesClient = clientId === "all" || payment.clientId === clientId;
 
-      const matchesMethod =
-        method === "all" ||
-        payment.method === method;
+      const matchesMethod = method === "all" || payment.method === method;
 
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesClient &&
-        matchesMethod
-      );
+      return matchesSearch && matchesStatus && matchesClient && matchesMethod;
     });
-  }, [
-    search,
-    status,
-    clientId,
-    method,
-  ]);
+  }, [search, status, clientId, method]);
 
   /* ============================================================
      FINANCIAL STATS
@@ -601,43 +502,19 @@ export default function AdminPayments() {
 
   const totalReceived = payments
     .filter((payment) => payment.status === "paid")
-    .reduce(
-      (total, payment) =>
-        total + payment.amount,
-      0
-    );
+    .reduce((total, payment) => total + payment.amount, 0);
 
   const pendingAmount = payments
-    .filter(
-      (payment) => payment.status === "pending"
-    )
-    .reduce(
-      (total, payment) =>
-        total + payment.amount,
-      0
-    );
+    .filter((payment) => payment.status === "pending")
+    .reduce((total, payment) => total + payment.amount, 0);
 
   const overdueAmount = payments
-    .filter(
-      (payment) => payment.status === "overdue"
-    )
-    .reduce(
-      (total, payment) =>
-        total + payment.amount,
-      0
-    );
+    .filter((payment) => payment.status === "overdue")
+    .reduce((total, payment) => total + payment.amount, 0);
 
   const thisMonthReceived = payments
-    .filter(
-      (payment) =>
-        payment.status === "paid" &&
-        payment.date?.includes("Aug 2026")
-    )
-    .reduce(
-      (total, payment) =>
-        total + payment.amount,
-      0
-    );
+    .filter((payment) => payment.status === "paid" && payment.date?.includes("Aug 2026"))
+    .reduce((total, payment) => total + payment.amount, 0);
 
   return (
     <div className="mx-auto max-w-[1400px] animate-fade-up">
@@ -647,15 +524,12 @@ export default function AdminPayments() {
 
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-         
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Payments
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Track payments received from clients
-            across all OCT20FIVE projects.
+            Track payments received from clients across all OCT20FIVE projects.
           </p>
         </div>
 
@@ -707,9 +581,7 @@ export default function AdminPayments() {
         <StatCard
           icon={CalendarDays}
           label="This Month"
-          value={formatCurrency(
-            thisMonthReceived
-          )}
+          value={formatCurrency(thisMonthReceived)}
           description="Payments received in August"
         />
       </div>
@@ -737,20 +609,13 @@ export default function AdminPayments() {
 
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="font-display text-lg font-bold text-surface-fg">
-            Payment Ledger
-          </h2>
+          <h2 className="font-display text-lg font-bold text-surface-fg">Payment Ledger</h2>
 
-          <p className="mt-1 text-sm text-surface-muted">
-            Client payments across all projects.
-          </p>
+          <p className="mt-1 text-sm text-surface-muted">Client payments across all projects.</p>
         </div>
 
         <span className="text-xs font-medium text-surface-muted">
-          {filteredPayments.length}{" "}
-          {filteredPayments.length === 1
-            ? "payment"
-            : "payments"}
+          {filteredPayments.length} {filteredPayments.length === 1 ? "payment" : "payments"}
         </span>
       </div>
 
@@ -768,47 +633,28 @@ export default function AdminPayments() {
           <table className="w-full min-w-[1100px] border-collapse">
             <thead>
               <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                <th className="px-6 py-4">
-                  Invoice
-                </th>
+                <th className="px-6 py-4">Invoice</th>
 
-                <th className="py-4 pr-5">
-                  Client
-                </th>
+                <th className="py-4 pr-5">Client</th>
 
-                <th className="py-4 pr-5">
-                  Project
-                </th>
+                <th className="py-4 pr-5">Project</th>
 
-                <th className="py-4 pr-5">
-                  Amount
-                </th>
+                <th className="py-4 pr-5">Amount</th>
 
-                <th className="py-4 pr-5">
-                  Method
-                </th>
+                <th className="py-4 pr-5">Method</th>
 
-                <th className="py-4 pr-5">
-                  Status
-                </th>
+                <th className="py-4 pr-5">Status</th>
 
-                <th className="py-4 pr-5">
-                  Date
-                </th>
+                <th className="py-4 pr-5">Date</th>
 
                 <th className="py-4 pr-6" />
               </tr>
             </thead>
 
             <tbody>
-              {filteredPayments.map(
-                (payment) => (
-                  <PaymentRow
-                    key={payment.id}
-                    payment={payment}
-                  />
-                )
-              )}
+              {filteredPayments.map((payment) => (
+                <PaymentRow key={payment.id} payment={payment} />
+              ))}
             </tbody>
           </table>
         </div>
@@ -826,19 +672,10 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-xs text-surface-muted">
-                Paid Transactions
-              </p>
+              <p className="text-xs text-surface-muted">Paid Transactions</p>
 
               <p className="mt-0.5 text-sm font-bold text-surface-fg">
-                {
-                  payments.filter(
-                    (payment) =>
-                      payment.status ===
-                      "paid"
-                  ).length
-                }{" "}
-                payments
+                {payments.filter((payment) => payment.status === "paid").length} payments
               </p>
             </div>
           </div>
@@ -851,15 +688,10 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-xs text-surface-muted">
-                Outstanding
-              </p>
+              <p className="text-xs text-surface-muted">Outstanding</p>
 
               <p className="mt-0.5 text-sm font-bold text-surface-fg">
-                {formatCurrency(
-                  pendingAmount +
-                    overdueAmount
-                )}
+                {formatCurrency(pendingAmount + overdueAmount)}
               </p>
             </div>
           </div>
@@ -872,20 +704,10 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-xs text-surface-muted">
-                Paying Clients
-              </p>
+              <p className="text-xs text-surface-muted">Paying Clients</p>
 
               <p className="mt-0.5 text-sm font-bold text-surface-fg">
-                {
-                  new Set(
-                    payments.map(
-                      (payment) =>
-                        payment.clientId
-                    )
-                  ).size
-                }{" "}
-                clients
+                {new Set(payments.map((payment) => payment.clientId)).size} clients
               </p>
             </div>
           </div>

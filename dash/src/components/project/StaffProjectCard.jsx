@@ -7,9 +7,7 @@ export default function StaffProjectCard({ project }) {
     <div className="brand-card">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-display text-base font-bold text-surface-fg">
-            {project.name}
-          </h3>
+          <h3 className="font-display text-base font-bold text-surface-fg">{project.name}</h3>
           <p className="mt-0.5 text-sm text-surface-muted">{project.clientName}</p>
         </div>
         <StatusBadge status={project.status} className="shrink-0" />

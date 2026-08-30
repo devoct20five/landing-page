@@ -105,17 +105,11 @@ export default function Profile() {
    * ----------------------------------------------------------
    */
 
-  const clientProjects = client
-    ? projects.filter((project) => project.clientId === client.id)
-    : [];
+  const clientProjects = client ? projects.filter((project) => project.clientId === client.id) : [];
 
-  const activeProjects = clientProjects.filter(
-    (project) => project.status !== "completed"
-  );
+  const activeProjects = clientProjects.filter((project) => project.status !== "completed");
 
-  const completedProjects = clientProjects.filter(
-    (project) => project.status === "completed"
-  );
+  const completedProjects = clientProjects.filter((project) => project.status === "completed");
 
   /*
    * ----------------------------------------------------------
@@ -123,13 +117,9 @@ export default function Profile() {
    * ----------------------------------------------------------
    */
 
-  const staffTasks = staff
-    ? tasks.filter((task) => task.assigneeId === staff.id)
-    : [];
+  const staffTasks = staff ? tasks.filter((task) => task.assigneeId === staff.id) : [];
 
-  const staffPayout = staff
-    ? STAFF_PAYOUTS[staff.id]
-    : null;
+  const staffPayout = staff ? STAFF_PAYOUTS[staff.id] : null;
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -188,9 +178,7 @@ export default function Profile() {
               {/* Avatar */}
 
               <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-brand-orange font-display text-2xl font-bold text-white shadow-[0_16px_40px_-12px_rgba(255,90,31,0.45)]">
-                {isClient
-                  ? client.shortName?.slice(0, 2).toUpperCase()
-                  : staff.initials}
+                {isClient ? client.shortName?.slice(0, 2).toUpperCase() : staff.initials}
               </div>
 
               <h2 className="mt-5 font-display text-xl font-bold tracking-[-0.03em] text-surface-fg">
@@ -215,29 +203,13 @@ export default function Profile() {
 
             {isClient && (
               <div className="space-y-4">
-                <ProfileMeta
-                  icon={Mail}
-                  label="Email"
-                  value="contact@acmecorp.com"
-                />
+                <ProfileMeta icon={Mail} label="Email" value="contact@acmecorp.com" />
 
-                <ProfileMeta
-                  icon={Phone}
-                  label="Phone"
-                  value="+91 98765 43210"
-                />
+                <ProfileMeta icon={Phone} label="Phone" value="+91 98765 43210" />
 
-                <ProfileMeta
-                  icon={MapPin}
-                  label="Location"
-                  value="New Delhi, India"
-                />
+                <ProfileMeta icon={MapPin} label="Location" value="New Delhi, India" />
 
-                <ProfileMeta
-                  icon={Globe}
-                  label="Website"
-                  value="acmecorp.com"
-                />
+                <ProfileMeta icon={Globe} label="Website" value="acmecorp.com" />
               </div>
             )}
 
@@ -250,22 +222,12 @@ export default function Profile() {
                 <ProfileMeta
                   icon={Mail}
                   label="Email"
-                  value={`${staff.name
-                    .toLowerCase()
-                    .replaceAll(" ", ".")}@oct20five.com`}
+                  value={`${staff.name.toLowerCase().replaceAll(" ", ".")}@oct20five.com`}
                 />
 
-                <ProfileMeta
-                  icon={Phone}
-                  label="Phone"
-                  value="+91 98765 43210"
-                />
+                <ProfileMeta icon={Phone} label="Phone" value="+91 98765 43210" />
 
-                <ProfileMeta
-                  icon={BriefcaseBusiness}
-                  label="Department"
-                  value={staff.role}
-                />
+                <ProfileMeta icon={BriefcaseBusiness} label="Department" value={staff.role} />
               </div>
             )}
           </aside>
@@ -290,10 +252,7 @@ export default function Profile() {
               />
 
               <div className="grid gap-x-8 gap-y-6 p-6 sm:grid-cols-2">
-                <InfoField
-                  label={isClient ? "Company Name" : "Full Name"}
-                  value={profile.name}
-                />
+                <InfoField label={isClient ? "Company Name" : "Full Name"} value={profile.name} />
 
                 <InfoField
                   label={isClient ? "Account Type" : "Role"}
@@ -305,28 +264,17 @@ export default function Profile() {
                   value={
                     isClient
                       ? "contact@acmecorp.com"
-                      : `${staff.name
-                          .toLowerCase()
-                          .replaceAll(" ", ".")}@oct20five.com`
+                      : `${staff.name.toLowerCase().replaceAll(" ", ".")}@oct20five.com`
                   }
                 />
 
-                <InfoField
-                  label="Phone Number"
-                  value="+91 98765 43210"
-                />
+                <InfoField label="Phone Number" value="+91 98765 43210" />
 
                 {isClient && (
                   <>
-                    <InfoField
-                      label="Location"
-                      value="New Delhi, India"
-                    />
+                    <InfoField label="Location" value="New Delhi, India" />
 
-                    <InfoField
-                      label="Website"
-                      value="www.acmecorp.com"
-                    />
+                    <InfoField label="Website" value="www.acmecorp.com" />
                   </>
                 )}
               </div>
@@ -353,23 +301,11 @@ export default function Profile() {
                       value={activeProjects.length}
                     />
 
-                    <Stat
-                      icon={CheckCircle2}
-                      label="Completed"
-                      value={completedProjects.length}
-                    />
+                    <Stat icon={CheckCircle2} label="Completed" value={completedProjects.length} />
 
-                    <Stat
-                      icon={Users}
-                      label="Team"
-                      value={teamMembers.length}
-                    />
+                    <Stat icon={Users} label="Team" value={teamMembers.length} />
 
-                    <Stat
-                      icon={CalendarDays}
-                      label="Member Since"
-                      value="2026"
-                    />
+                    <Stat icon={CalendarDays} label="Member Since" value="2026" />
                   </div>
                 </section>
 
@@ -382,12 +318,7 @@ export default function Profile() {
                   />
 
                   <div className="grid gap-3 p-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {[
-                      "Editing",
-                      "Design",
-                      "3D",
-                      "Web Development",
-                    ].map((service) => (
+                    {["Editing", "Design", "3D", "Web Development"].map((service) => (
                       <div
                         key={service}
                         className="flex items-center gap-3 rounded-xl border border-surface-border bg-surface-bg px-4 py-3"
@@ -396,9 +327,7 @@ export default function Profile() {
                           <CheckCircle2 className="h-4 w-4 text-brand-orange" />
                         </div>
 
-                        <span className="text-sm font-semibold text-surface-fg">
-                          {service}
-                        </span>
+                        <span className="text-sm font-semibold text-surface-fg">{service}</span>
                       </div>
                     ))}
                   </div>
@@ -414,10 +343,7 @@ export default function Profile() {
 
                   <div className="divide-y divide-surface-border">
                     {clientProjects.slice(0, 5).map((project) => (
-                      <ProjectRow
-                        key={project.id}
-                        project={project}
-                      />
+                      <ProjectRow key={project.id} project={project} />
                     ))}
                   </div>
 
@@ -451,35 +377,17 @@ export default function Profile() {
                   />
 
                   <div className="grid gap-6 p-6 sm:grid-cols-2">
-                    <InfoField
-                      label="Employee ID"
-                      value={staff.id}
-                    />
+                    <InfoField label="Employee ID" value={staff.id} />
 
-                    <InfoField
-                      label="Role"
-                      value={staff.role}
-                    />
+                    <InfoField label="Role" value={staff.role} />
 
-                    <InfoField
-                      label="Current Status"
-                      value="Active"
-                    />
+                    <InfoField label="Current Status" value="Active" />
 
-                    <InfoField
-                      label="Joined OCT20FIVE"
-                      value="January 2026"
-                    />
+                    <InfoField label="Joined OCT20FIVE" value="January 2026" />
 
-                    <InfoField
-                      label="Assigned Tasks"
-                      value={staffTasks.length}
-                    />
+                    <InfoField label="Assigned Tasks" value={staffTasks.length} />
 
-                    <InfoField
-                      label="Department"
-                      value={staff.department || staff.role}
-                    />
+                    <InfoField label="Department" value={staff.department || staff.role} />
                   </div>
                 </section>
 
@@ -501,55 +409,30 @@ export default function Profile() {
                         <Stat
                           icon={DollarSign}
                           label="Monthly Salary"
-                          value={`₹${staffPayout.salary.toLocaleString(
-                            "en-IN"
-                          )}`}
+                          value={`₹${staffPayout.salary.toLocaleString("en-IN")}`}
                         />
 
-                        <Stat
-                          icon={CalendarDays}
-                          label="Pay Cycle"
-                          value={staffPayout.payCycle}
-                        />
+                        <Stat icon={CalendarDays} label="Pay Cycle" value={staffPayout.payCycle} />
 
-                        <Stat
-                          icon={Clock3}
-                          label="Next Payout"
-                          value={staffPayout.nextPayout}
-                        />
+                        <Stat icon={Clock3} label="Next Payout" value={staffPayout.nextPayout} />
 
-                        <Stat
-                          icon={CheckCircle2}
-                          label="Status"
-                          value="Scheduled"
-                        />
+                        <Stat icon={CheckCircle2} label="Status" value="Scheduled" />
                       </div>
 
                       {/* PAYOUT DETAILS */}
 
                       <div className="border-t border-surface-border">
                         <div className="grid gap-6 p-6 sm:grid-cols-2">
-                          <InfoField
-                            label="Last Payout"
-                            value={staffPayout.lastPayout}
-                          />
+                          <InfoField label="Last Payout" value={staffPayout.lastPayout} />
 
                           <InfoField
                             label="Last Payout Amount"
-                            value={`₹${staffPayout.lastPayoutAmount.toLocaleString(
-                              "en-IN"
-                            )}`}
+                            value={`₹${staffPayout.lastPayoutAmount.toLocaleString("en-IN")}`}
                           />
 
-                          <InfoField
-                            label="Payment Method"
-                            value={staffPayout.paymentMethod}
-                          />
+                          <InfoField label="Payment Method" value={staffPayout.paymentMethod} />
 
-                          <InfoField
-                            label="Currency"
-                            value={staffPayout.currency}
-                          />
+                          <InfoField label="Currency" value={staffPayout.currency} />
                         </div>
                       </div>
 
@@ -562,8 +445,7 @@ export default function Profile() {
                           </p>
 
                           <p className="mt-0.5 text-xs text-surface-muted">
-                            Update salary, payout schedule or payment
-                            details.
+                            Update salary, payout schedule or payment details.
                           </p>
                         </div>
 
@@ -590,8 +472,7 @@ export default function Profile() {
                         </p>
 
                         <p className="mx-auto mt-1 max-w-md text-xs leading-5 text-surface-muted">
-                          Salary and payout details have not been
-                          configured for this team member.
+                          Salary and payout details have not been configured for this team member.
                         </p>
 
                         <button
@@ -627,9 +508,7 @@ export default function Profile() {
                             <Clock3 className="h-4 w-4 text-brand-orange" />
                           </div>
 
-                          <span className="text-sm font-medium text-surface-fg">
-                            {item.text}
-                          </span>
+                          <span className="text-sm font-medium text-surface-fg">{item.text}</span>
                         </div>
 
                         <span className="shrink-0 text-xs text-surface-muted">
@@ -715,9 +594,7 @@ function SectionHeader({ title, description }) {
         {title}
       </h2>
 
-      <p className="mt-1 text-sm text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-sm text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -730,10 +607,7 @@ function ProfileMeta({ icon: Icon, label, value }) {
   return (
     <div className="flex gap-3">
       <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-bg">
-        <Icon
-          className="h-4 w-4 text-surface-muted"
-          strokeWidth={2}
-        />
+        <Icon className="h-4 w-4 text-surface-muted" strokeWidth={2} />
       </div>
 
       <div className="min-w-0">
@@ -741,9 +615,7 @@ function ProfileMeta({ icon: Icon, label, value }) {
           {label}
         </p>
 
-        <p className="mt-0.5 truncate text-sm font-medium text-surface-fg">
-          {value}
-        </p>
+        <p className="mt-0.5 truncate text-sm font-medium text-surface-fg">{value}</p>
       </div>
     </div>
   );
@@ -756,13 +628,9 @@ function ProfileMeta({ icon: Icon, label, value }) {
 function InfoField({ label, value }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-surface-muted">
-        {label}
-      </p>
+      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-surface-muted">{label}</p>
 
-      <p className="mt-2 text-sm font-semibold text-surface-fg">
-        {value}
-      </p>
+      <p className="mt-2 text-sm font-semibold text-surface-fg">{value}</p>
     </div>
   );
 }
@@ -777,9 +645,7 @@ function Stat({ icon: Icon, label, value }) {
       <div className="flex items-center gap-2">
         <Icon className="h-4 w-4 text-brand-orange" />
 
-        <span className="text-xs font-medium text-surface-muted">
-          {label}
-        </span>
+        <span className="text-xs font-medium text-surface-muted">{label}</span>
       </div>
 
       <p className="mt-2 font-display text-2xl font-bold tracking-[-0.04em] text-surface-fg">
@@ -829,22 +695,16 @@ function ProjectRow({ project }) {
         </div>
 
         <div className="min-w-0">
-          <h3 className="truncate text-sm font-bold text-surface-fg">
-            {project.name}
-          </h3>
+          <h3 className="truncate text-sm font-bold text-surface-fg">{project.name}</h3>
 
-          <p className="mt-1 truncate text-xs text-surface-muted">
-            {project.services.join(" · ")}
-          </p>
+          <p className="mt-1 truncate text-xs text-surface-muted">{project.services.join(" · ")}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-4 sm:shrink-0">
         <div className="hidden w-24 sm:block">
           <div className="mb-1 flex justify-between">
-            <span className="text-[0.65rem] text-surface-muted">
-              Progress
-            </span>
+            <span className="text-[0.65rem] text-surface-muted">Progress</span>
 
             <span className="text-[0.65rem] font-semibold text-surface-fg">
               {project.progress}%
@@ -860,10 +720,7 @@ function ProjectRow({ project }) {
         </div>
 
         <span
-          className={cn(
-            "rounded-full px-2.5 py-1 text-[0.65rem] font-semibold",
-            status.className
-          )}
+          className={cn("rounded-full px-2.5 py-1 text-[0.65rem] font-semibold", status.className)}
         >
           {status.label}
         </span>
@@ -876,12 +733,7 @@ function ProjectRow({ project }) {
    SETTINGS ROW
 ============================================================ */
 
-function SettingsRow({
-  icon: Icon,
-  title,
-  description,
-  action,
-}) {
+function SettingsRow({ icon: Icon, title, description, action }) {
   return (
     <div className="flex items-center justify-between gap-4 px-6 py-5">
       <div className="flex items-center gap-3">
@@ -890,20 +742,13 @@ function SettingsRow({
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-surface-fg">
-            {title}
-          </p>
+          <p className="text-sm font-semibold text-surface-fg">{title}</p>
 
-          <p className="mt-0.5 text-xs text-surface-muted">
-            {description}
-          </p>
+          <p className="mt-0.5 text-xs text-surface-muted">{description}</p>
         </div>
       </div>
 
-      <button
-        type="button"
-        className="text-xs font-semibold text-brand-orange hover:underline"
-      >
+      <button type="button" className="text-xs font-semibold text-brand-orange hover:underline">
         {action}
       </button>
     </div>
@@ -922,13 +767,10 @@ function ProfileNotFound() {
           <AlertCircle className="h-6 w-6 text-red-500" />
         </div>
 
-        <h1 className="mt-5 font-display text-xl font-bold text-surface-fg">
-          Profile not found
-        </h1>
+        <h1 className="mt-5 font-display text-xl font-bold text-surface-fg">Profile not found</h1>
 
         <p className="mt-2 text-sm leading-6 text-surface-muted">
-          The user or client associated with this profile could not
-          be found.
+          The user or client associated with this profile could not be found.
         </p>
       </div>
     </div>

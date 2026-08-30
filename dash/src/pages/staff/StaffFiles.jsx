@@ -122,9 +122,7 @@ export default function StaffFiles() {
 
   const filteredFiles = useMemo(() => {
     return MOCK_FILES.filter((file) => {
-      const matchesSearch = file.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesSearch = file.name.toLowerCase().includes(search.toLowerCase());
 
       if (!matchesSearch) {
         return false;
@@ -156,9 +154,7 @@ export default function StaffFiles() {
 
   const toggleSelection = (id) => {
     setSelectedFiles((current) =>
-      current.includes(id)
-        ? current.filter((fileId) => fileId !== id)
-        : [...current, id],
+      current.includes(id) ? current.filter((fileId) => fileId !== id) : [...current, id]
     );
   };
 
@@ -175,9 +171,7 @@ export default function StaffFiles() {
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-surface-fg">
-            Files
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-surface-fg">Files</h1>
 
           <p className="mt-1 text-sm text-surface-muted">
             Manage files and assets for your projects.
@@ -207,20 +201,14 @@ export default function StaffFiles() {
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-surface-muted">
-        <span className="font-medium text-surface-fg">
-          Files
-        </span>
+        <span className="font-medium text-surface-fg">Files</span>
 
         {selectedFolder !== "all" && (
           <>
             <ChevronRight size={14} />
 
             <span className="font-medium text-surface-fg">
-              {
-                FOLDERS.find(
-                  (folder) => folder.id === selectedFolder,
-                )?.name
-              }
+              {FOLDERS.find((folder) => folder.id === selectedFolder)?.name}
             </span>
           </>
         )}
@@ -261,9 +249,7 @@ export default function StaffFiles() {
                     {folder.name}
                   </span>
 
-                  <span className="text-xs">
-                    {folder.count}
-                  </span>
+                  <span className="text-xs">{folder.count}</span>
                 </button>
               );
             })}
@@ -295,22 +281,16 @@ export default function StaffFiles() {
           {/* Storage */}
           <div className="mt-5 border-t border-surface-border p-3">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-medium text-surface-muted">
-                My Storage
-              </span>
+              <span className="text-xs font-medium text-surface-muted">My Storage</span>
 
-              <span className="text-xs font-semibold text-surface-fg">
-                2.8 GB / 10 GB
-              </span>
+              <span className="text-xs font-semibold text-surface-fg">2.8 GB / 10 GB</span>
             </div>
 
             <div className="h-1.5 overflow-hidden rounded-full bg-surface-muted/20">
               <div className="h-full w-[28%] rounded-full bg-brand-orange" />
             </div>
 
-            <p className="mt-2 text-[11px] text-surface-muted">
-              7.2 GB remaining
-            </p>
+            <p className="mt-2 text-[11px] text-surface-muted">7.2 GB remaining</p>
           </div>
         </aside>
 
@@ -353,9 +333,7 @@ export default function StaffFiles() {
                   onClick={() => setView("grid")}
                   className={[
                     "rounded p-1.5",
-                    view === "grid"
-                      ? "bg-surface-muted/10 text-surface-fg"
-                      : "text-surface-muted",
+                    view === "grid" ? "bg-surface-muted/10 text-surface-fg" : "text-surface-muted",
                   ].join(" ")}
                 >
                   <Grid2X2 size={16} />
@@ -366,9 +344,7 @@ export default function StaffFiles() {
                   onClick={() => setView("list")}
                   className={[
                     "rounded p-1.5",
-                    view === "list"
-                      ? "bg-surface-muted/10 text-surface-fg"
-                      : "text-surface-muted",
+                    view === "list" ? "bg-surface-muted/10 text-surface-fg" : "text-surface-muted",
                   ].join(" ")}
                 >
                   <List size={16} />
@@ -459,18 +435,12 @@ export default function StaffFiles() {
 
                     {/* Info */}
                     <div className="border-t border-surface-border p-3">
-                      <p className="truncate text-sm font-semibold text-surface-fg">
-                        {file.name}
-                      </p>
+                      <p className="truncate text-sm font-semibold text-surface-fg">{file.name}</p>
 
-                      <p className="mt-1 truncate text-[11px] text-surface-muted">
-                        {file.project}
-                      </p>
+                      <p className="mt-1 truncate text-[11px] text-surface-muted">{file.project}</p>
 
                       <div className="mt-2 flex items-center justify-between">
-                        <span className="text-[11px] text-surface-muted">
-                          {file.size}
-                        </span>
+                        <span className="text-[11px] text-surface-muted">{file.size}</span>
 
                         {file.shared && (
                           <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-brand-orange">
@@ -511,28 +481,21 @@ export default function StaffFiles() {
                     <FileIcon type={file.type} />
 
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-surface-fg">
-                        {file.name}
-                      </p>
+                      <p className="truncate text-sm font-semibold text-surface-fg">{file.name}</p>
 
                       <p className="truncate text-xs text-surface-muted">
                         {file.project} · {file.folder}
                       </p>
                     </div>
 
-                    <span className="hidden text-xs text-surface-muted sm:block">
-                      {file.size}
-                    </span>
+                    <span className="hidden text-xs text-surface-muted sm:block">{file.size}</span>
 
                     <span className="hidden text-xs text-surface-muted md:block">
                       {file.modified}
                     </span>
 
                     {file.shared && (
-                      <Users
-                        size={14}
-                        className="hidden text-brand-orange sm:block"
-                      />
+                      <Users size={14} className="hidden text-brand-orange sm:block" />
                     )}
 
                     <button
@@ -553,9 +516,7 @@ export default function StaffFiles() {
               <div className="text-center">
                 <File className="mx-auto h-10 w-10 text-surface-muted" />
 
-                <p className="mt-3 text-sm font-semibold text-surface-fg">
-                  No files found
-                </p>
+                <p className="mt-3 text-sm font-semibold text-surface-fg">No files found</p>
 
                 <p className="mt-1 text-xs text-surface-muted">
                   Try changing your search or folder.

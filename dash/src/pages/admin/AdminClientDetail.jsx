@@ -15,12 +15,7 @@ import {
   Phone,
 } from "lucide-react";
 
-import {
-  clients,
-  projects,
-  tasks,
-  approvals,
-} from "@/data/mockData";
+import { clients, projects, tasks, approvals } from "@/data/mockData";
 
 import { cn } from "@/lib/utils";
 import EmptyState from "@/components/shared/EmptyState";
@@ -62,20 +57,12 @@ function StatCard({ icon: Icon, label, value, description }) {
     <div className="brand-card">
       <div className="flex items-center gap-2 text-surface-muted">
         <Icon className="h-4 w-4" />
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em]">
-          {label}
-        </span>
+        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em]">{label}</span>
       </div>
 
-      <p className="mt-3 font-display text-2xl font-bold text-surface-fg">
-        {value}
-      </p>
+      <p className="mt-3 font-display text-2xl font-bold text-surface-fg">{value}</p>
 
-      {description && (
-        <p className="mt-1 text-xs text-surface-muted">
-          {description}
-        </p>
-      )}
+      {description && <p className="mt-1 text-xs text-surface-muted">{description}</p>}
     </div>
   );
 }
@@ -88,9 +75,7 @@ function ProjectRow({ project }) {
     <div className="group flex flex-col gap-4 border-b border-surface-border py-5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="font-display text-sm font-bold text-surface-fg">
-            {project.name}
-          </h3>
+          <h3 className="font-display text-sm font-bold text-surface-fg">{project.name}</h3>
 
           <span
             className={cn(
@@ -114,8 +99,7 @@ function ProjectRow({ project }) {
           </span>
 
           <span>
-            {project.completedDeliverables}/
-            {project.totalDeliverables} deliverables
+            {project.completedDeliverables}/{project.totalDeliverables} deliverables
           </span>
         </div>
       </div>
@@ -126,9 +110,7 @@ function ProjectRow({ project }) {
             Progress
           </span>
 
-          <span className="text-xs font-bold text-surface-fg">
-            {project.progress}%
-          </span>
+          <span className="text-xs font-bold text-surface-fg">{project.progress}%</span>
         </div>
 
         <div className="h-1.5 overflow-hidden rounded-full bg-surface-border">
@@ -175,9 +157,7 @@ export default function AdminClientDetail() {
   const { clientId } = useParams();
   const navigate = useNavigate();
 
-  const client = clients.find(
-    (item) => String(item.id) === String(clientId)
-  );
+  const client = clients.find((item) => String(item.id) === String(clientId));
 
   const stats = useMemo(() => {
     if (!client) {
@@ -194,47 +174,29 @@ export default function AdminClientDetail() {
       };
     }
 
-    const clientProjects = projects.filter(
-      (project) => project.clientId === client.id
-    );
+    const clientProjects = projects.filter((project) => project.clientId === client.id);
 
-    const clientTasks = tasks.filter(
-      (task) => task.clientId === client.id
-    );
+    const clientTasks = tasks.filter((task) => task.clientId === client.id);
 
-    const clientApprovals = approvals.filter(
-      (approval) => approval.clientId === client.id
-    );
+    const clientApprovals = approvals.filter((approval) => approval.clientId === client.id);
 
-    const activeProjects = clientProjects.filter(
-      (project) => project.status !== "completed"
-    );
+    const activeProjects = clientProjects.filter((project) => project.status !== "completed");
 
-    const completedProjects = clientProjects.filter(
-      (project) => project.status === "completed"
-    );
+    const completedProjects = clientProjects.filter((project) => project.status === "completed");
 
     const atRiskProjects = clientProjects.filter(
-      (project) =>
-        project.status === "blocked" ||
-        Boolean(project.attentionReason)
+      (project) => project.status === "blocked" || Boolean(project.attentionReason)
     );
 
-    const pendingApprovals = clientApprovals.filter(
-      (approval) => approval.status === "pending"
-    );
+    const pendingApprovals = clientApprovals.filter((approval) => approval.status === "pending");
 
-    const overdueTasks = clientTasks.filter(
-      (task) => task.dueLabel === "Overdue"
-    );
+    const overdueTasks = clientTasks.filter((task) => task.dueLabel === "Overdue");
 
     const totalProgress =
       activeProjects.length > 0
         ? Math.round(
-            activeProjects.reduce(
-              (sum, project) => sum + project.progress,
-              0
-            ) / activeProjects.length
+            activeProjects.reduce((sum, project) => sum + project.progress, 0) /
+              activeProjects.length
           )
         : 100;
 
@@ -304,9 +266,7 @@ export default function AdminClientDetail() {
                 </span>
               </div>
 
-              <p className="mt-1 text-sm text-surface-muted">
-                {client.shortName}
-              </p>
+              <p className="mt-1 text-sm text-surface-muted">{client.shortName}</p>
 
               <div className="mt-4 flex flex-wrap gap-4 text-xs text-surface-muted">
                 {client.email && (
@@ -378,9 +338,7 @@ export default function AdminClientDetail() {
           icon={AlertTriangle}
           label="Attention"
           value={
-            stats.atRiskProjects.length +
-            stats.pendingApprovals.length +
-            stats.overdueTasks.length
+            stats.atRiskProjects.length + stats.pendingApprovals.length + stats.overdueTasks.length
           }
           description="Items requiring attention"
         />
@@ -398,9 +356,7 @@ export default function AdminClientDetail() {
                   Delivery
                 </p>
 
-                <h2 className="mt-1 font-display text-lg font-bold text-surface-fg">
-                  Projects
-                </h2>
+                <h2 className="mt-1 font-display text-lg font-bold text-surface-fg">Projects</h2>
 
                 <p className="mt-1 text-sm text-surface-muted">
                   All projects associated with this client.
@@ -425,10 +381,7 @@ export default function AdminClientDetail() {
             ) : (
               <div className="mt-4">
                 {stats.projects.map((project) => (
-                  <ProjectRow
-                    key={project.id}
-                    project={project}
-                  />
+                  <ProjectRow key={project.id} project={project} />
                 ))}
               </div>
             )}
@@ -441,9 +394,7 @@ export default function AdminClientDetail() {
                 Operations
               </p>
 
-              <h2 className="mt-1 font-display text-lg font-bold text-surface-fg">
-                Tasks
-              </h2>
+              <h2 className="mt-1 font-display text-lg font-bold text-surface-fg">Tasks</h2>
 
               <p className="mt-1 text-sm text-surface-muted">
                 Work currently assigned across this client's projects.
@@ -451,16 +402,11 @@ export default function AdminClientDetail() {
             </div>
 
             {stats.tasks.length === 0 ? (
-              <p className="py-6 text-sm text-surface-muted">
-                No tasks available for this client.
-              </p>
+              <p className="py-6 text-sm text-surface-muted">No tasks available for this client.</p>
             ) : (
               <div className="divide-y divide-surface-border">
                 {stats.tasks.slice(0, 8).map((task) => (
-                  <div
-                    key={task.id}
-                    className="flex items-center justify-between gap-4 py-4"
-                  >
+                  <div key={task.id} className="flex items-center justify-between gap-4 py-4">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-surface-fg">
                         {task.title || task.name}
@@ -468,9 +414,7 @@ export default function AdminClientDetail() {
 
                       <p className="mt-1 text-xs text-surface-muted">
                         {task.projectName || "Client project"}
-                        {task.dueLabel
-                          ? ` · ${task.dueLabel}`
-                          : ""}
+                        {task.dueLabel ? ` · ${task.dueLabel}` : ""}
                       </p>
                     </div>
 
@@ -489,40 +433,26 @@ export default function AdminClientDetail() {
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-brand-orange" />
 
-              <h2 className="font-display text-base font-bold text-surface-fg">
-                Attention
-              </h2>
+              <h2 className="font-display text-base font-bold text-surface-fg">Attention</h2>
             </div>
 
             <div className="mt-5 space-y-3">
               <div className="flex items-center justify-between rounded-xl bg-surface-muted/5 p-3">
-                <span className="text-xs text-surface-muted">
-                  At-risk projects
-                </span>
+                <span className="text-xs text-surface-muted">At-risk projects</span>
 
-                <span className="font-bold text-surface-fg">
-                  {stats.atRiskProjects.length}
-                </span>
+                <span className="font-bold text-surface-fg">{stats.atRiskProjects.length}</span>
               </div>
 
               <div className="flex items-center justify-between rounded-xl bg-surface-muted/5 p-3">
-                <span className="text-xs text-surface-muted">
-                  Pending approvals
-                </span>
+                <span className="text-xs text-surface-muted">Pending approvals</span>
 
-                <span className="font-bold text-surface-fg">
-                  {stats.pendingApprovals.length}
-                </span>
+                <span className="font-bold text-surface-fg">{stats.pendingApprovals.length}</span>
               </div>
 
               <div className="flex items-center justify-between rounded-xl bg-surface-muted/5 p-3">
-                <span className="text-xs text-surface-muted">
-                  Overdue tasks
-                </span>
+                <span className="text-xs text-surface-muted">Overdue tasks</span>
 
-                <span className="font-bold text-surface-fg">
-                  {stats.overdueTasks.length}
-                </span>
+                <span className="font-bold text-surface-fg">{stats.overdueTasks.length}</span>
               </div>
             </div>
           </section>
@@ -532,41 +462,29 @@ export default function AdminClientDetail() {
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-brand-orange" />
 
-              <h2 className="font-display text-base font-bold text-surface-fg">
-                Approvals
-              </h2>
+              <h2 className="font-display text-base font-bold text-surface-fg">Approvals</h2>
             </div>
 
             <div className="mt-5">
               {stats.pendingApprovals.length === 0 ? (
-                <p className="text-sm text-surface-muted">
-                  No pending approvals.
-                </p>
+                <p className="text-sm text-surface-muted">No pending approvals.</p>
               ) : (
                 <div className="space-y-3">
-                  {stats.pendingApprovals
-                    .slice(0, 5)
-                    .map((approval) => (
-                      <div
-                        key={approval.id}
-                        className="rounded-xl border border-surface-border p-3"
-                      >
-                        <p className="text-sm font-semibold text-surface-fg">
-                          {approval.title ||
-                            approval.name ||
-                            "Approval request"}
-                        </p>
+                  {stats.pendingApprovals.slice(0, 5).map((approval) => (
+                    <div key={approval.id} className="rounded-xl border border-surface-border p-3">
+                      <p className="text-sm font-semibold text-surface-fg">
+                        {approval.title || approval.name || "Approval request"}
+                      </p>
 
-                        <p className="mt-1 text-xs text-surface-muted">
-                          {approval.projectName ||
-                            "Client project"}
-                        </p>
+                      <p className="mt-1 text-xs text-surface-muted">
+                        {approval.projectName || "Client project"}
+                      </p>
 
-                        <span className="mt-3 inline-flex rounded-full bg-brand-orange/10 px-2.5 py-1 text-[0.65rem] font-semibold text-brand-orange">
-                          Pending
-                        </span>
-                      </div>
-                    ))}
+                      <span className="mt-3 inline-flex rounded-full bg-brand-orange/10 px-2.5 py-1 text-[0.65rem] font-semibold text-brand-orange">
+                        Pending
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -578,9 +496,7 @@ export default function AdminClientDetail() {
               Client Management
             </p>
 
-            <h2 className="mt-1 font-display text-base font-bold text-surface-fg">
-              Quick Actions
-            </h2>
+            <h2 className="mt-1 font-display text-base font-bold text-surface-fg">Quick Actions</h2>
 
             <div className="mt-5 space-y-2">
               <button

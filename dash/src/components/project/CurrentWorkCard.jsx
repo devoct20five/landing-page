@@ -3,8 +3,6 @@ import { Sparkles } from "lucide-react";
 export default function CurrentWorkCard({ work, updatedAt }) {
   return (
     <div className="theme-dark section rounded-card p-7 sm:p-9">
-  
-
       <h3 className="mt-4 font-display text-display-sm font-bold text-surface-fg sm:text-3xl">
         {work.title}
       </h3>
@@ -17,7 +15,9 @@ export default function CurrentWorkCard({ work, updatedAt }) {
         {work.description}
       </p>
 
-      <p className="mt-5 text-xs text-[color-mix(in_srgb,var(--surface-muted)_70%,transparent)]">Updated {updatedAt}</p>
+      <p className="mt-5 text-xs text-[color-mix(in_srgb,var(--surface-muted)_70%,transparent)]">
+        Updated {updatedAt}
+      </p>
     </div>
   );
 }

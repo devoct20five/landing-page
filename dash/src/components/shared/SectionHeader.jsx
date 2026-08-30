@@ -8,9 +8,7 @@ export default function SectionHeader({ eyebrow, title, action }) {
           </p>
         )}
         {title && (
-          <h2 className="font-display text-display-sm font-bold text-surface-fg">
-            {title}
-          </h2>
+          <h2 className="font-display text-display-sm font-bold text-surface-fg">{title}</h2>
         )}
       </div>
       {action}

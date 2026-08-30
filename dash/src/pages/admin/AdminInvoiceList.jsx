@@ -153,12 +153,7 @@ function InvoiceStatus({ status }) {
         config.className
       )}
     >
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          config.dot
-        )}
-      />
+      <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
 
       {config.label}
     </span>
@@ -169,21 +164,13 @@ function InvoiceStatus({ status }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-  warning = false,
-}) {
+function StatCard({ icon: Icon, label, value, description, warning = false }) {
   return (
     <div className="brand-card">
       <div
         className={cn(
           "flex h-9 w-9 items-center justify-center rounded-lg",
-          warning
-            ? "bg-red-500/10 text-red-600"
-            : "bg-brand-orange/10 text-brand-orange"
+          warning ? "bg-red-500/10 text-red-600" : "bg-brand-orange/10 text-brand-orange"
         )}
       >
         <Icon className="h-4 w-4" />
@@ -202,9 +189,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -219,13 +204,9 @@ function InvoiceRow({ invoice }) {
       {/* Invoice */}
       <td className="px-6 py-5">
         <div>
-          <p className="font-display text-sm font-bold text-surface-fg">
-            {invoice.invoiceNumber}
-          </p>
+          <p className="font-display text-sm font-bold text-surface-fg">{invoice.invoiceNumber}</p>
 
-          <p className="mt-0.5 text-xs text-surface-muted">
-            {invoice.project}
-          </p>
+          <p className="mt-0.5 text-xs text-surface-muted">{invoice.project}</p>
         </div>
       </td>
 
@@ -236,9 +217,7 @@ function InvoiceRow({ invoice }) {
             {invoice.clientInitials}
           </div>
 
-          <span className="text-sm font-medium text-surface-fg">
-            {invoice.client}
-          </span>
+          <span className="text-sm font-medium text-surface-fg">{invoice.client}</span>
         </div>
       </td>
 
@@ -247,9 +226,7 @@ function InvoiceRow({ invoice }) {
         <div className="flex items-center gap-2">
           <CalendarDays className="h-3.5 w-3.5 text-surface-muted" />
 
-          <span className="text-sm text-surface-muted">
-            {invoice.issueDate}
-          </span>
+          <span className="text-sm text-surface-muted">{invoice.issueDate}</span>
         </div>
       </td>
 
@@ -258,9 +235,7 @@ function InvoiceRow({ invoice }) {
         <span
           className={cn(
             "text-sm",
-            invoice.status === "overdue"
-              ? "font-semibold text-red-600"
-              : "text-surface-muted"
+            invoice.status === "overdue" ? "font-semibold text-red-600" : "text-surface-muted"
           )}
         >
           {invoice.dueDate}
@@ -269,9 +244,7 @@ function InvoiceRow({ invoice }) {
 
       {/* Amount */}
       <td className="py-5 pr-5">
-        <span className="text-sm font-bold text-surface-fg">
-          {formatCurrency(invoice.amount)}
-        </span>
+        <span className="text-sm font-bold text-surface-fg">{formatCurrency(invoice.amount)}</span>
       </td>
 
       {/* Status */}
@@ -328,9 +301,7 @@ export default function AdminInvoiceList() {
         invoice.client.toLowerCase().includes(query) ||
         invoice.project.toLowerCase().includes(query);
 
-      const matchesFilter =
-        filter === "all" ||
-        invoice.status === filter;
+      const matchesFilter = filter === "all" || invoice.status === filter;
 
       return matchesSearch && matchesFilter;
     });
@@ -342,11 +313,7 @@ export default function AdminInvoiceList() {
       .reduce((total, invoice) => total + invoice.amount, 0);
 
     const pending = invoiceData
-      .filter(
-        (invoice) =>
-          invoice.status === "pending" ||
-          invoice.status === "sent"
-      )
+      .filter((invoice) => invoice.status === "pending" || invoice.status === "sent")
       .reduce((total, invoice) => total + invoice.amount, 0);
 
     const overdue = invoiceData
@@ -379,8 +346,8 @@ export default function AdminInvoiceList() {
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Manage invoices, track payments, and monitor outstanding
-            client balances across OCT20FIVE.
+            Manage invoices, track payments, and monitor outstanding client balances across
+            OCT20FIVE.
           </p>
         </div>
 
@@ -502,9 +469,7 @@ export default function AdminInvoiceList() {
       <section>
         <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              All Invoices
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">All Invoices</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
               View and manage invoices issued to your clients.
@@ -519,9 +484,7 @@ export default function AdminInvoiceList() {
 
               <input
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search invoices..."
                 className="brand-input w-full pl-9"
               />
@@ -531,9 +494,7 @@ export default function AdminInvoiceList() {
 
             <select
               value={filter}
-              onChange={(event) =>
-                setFilter(event.target.value)
-              }
+              onChange={(event) => setFilter(event.target.value)}
               className="brand-input min-w-[150px]"
             >
               <option value="all">All Status</option>
@@ -556,29 +517,17 @@ export default function AdminInvoiceList() {
             <table className="w-full min-w-[1100px] border-collapse">
               <thead>
                 <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                  <th className="px-6 py-4">
-                    Invoice
-                  </th>
+                  <th className="px-6 py-4">Invoice</th>
 
-                  <th className="py-4 pr-5">
-                    Client
-                  </th>
+                  <th className="py-4 pr-5">Client</th>
 
-                  <th className="py-4 pr-5">
-                    Issue Date
-                  </th>
+                  <th className="py-4 pr-5">Issue Date</th>
 
-                  <th className="py-4 pr-5">
-                    Due Date
-                  </th>
+                  <th className="py-4 pr-5">Due Date</th>
 
-                  <th className="py-4 pr-5">
-                    Amount
-                  </th>
+                  <th className="py-4 pr-5">Amount</th>
 
-                  <th className="py-4 pr-5">
-                    Status
-                  </th>
+                  <th className="py-4 pr-5">Status</th>
 
                   <th className="py-4 pr-6" />
                 </tr>
@@ -586,10 +535,7 @@ export default function AdminInvoiceList() {
 
               <tbody>
                 {filteredInvoices.map((invoice) => (
-                  <InvoiceRow
-                    key={invoice.id}
-                    invoice={invoice}
-                  />
+                  <InvoiceRow key={invoice.id} invoice={invoice} />
                 ))}
               </tbody>
             </table>
@@ -603,7 +549,6 @@ export default function AdminInvoiceList() {
 
       <div className="mt-6 flex items-center gap-2 text-xs text-surface-muted">
         <IndianRupee className="h-3.5 w-3.5 text-brand-orange" />
-
         Invoice totals are based on the currently available records.
       </div>
     </div>

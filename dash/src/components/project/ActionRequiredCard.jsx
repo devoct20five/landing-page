@@ -26,10 +26,7 @@ export default function ActionRequiredCard({ item }) {
             ) : (
               <ul className="mt-2 space-y-1.5">
                 {item.needs.map((need) => (
-                  <li
-                    key={need}
-                    className="flex items-center gap-2 text-sm text-surface-muted"
-                  >
+                  <li key={need} className="flex items-center gap-2 text-sm text-surface-muted">
                     <span className="h-1 w-1 shrink-0 rounded-full bg-brand-orange" />
                     {need}
                   </li>

@@ -52,10 +52,7 @@ function getProjectStatus(project) {
     };
   }
 
-  if (
-    project.status === "blocked" ||
-    project.attentionReason
-  ) {
+  if (project.status === "blocked" || project.attentionReason) {
     return {
       label: "At Risk",
       className: "bg-red-500/10 text-red-600",
@@ -86,13 +83,9 @@ function TimelineProject({ project, index }) {
     <div className="relative flex gap-5">
       {/* Timeline line */}
       <div className="relative flex w-10 shrink-0 justify-center">
-        {index !== 0 && (
-          <div className="absolute bottom-1/2 top-0 w-px bg-surface-border" />
-        )}
+        {index !== 0 && <div className="absolute bottom-1/2 top-0 w-px bg-surface-border" />}
 
-        {index !== 0 && (
-          <div className="absolute bottom-0 top-1/2 w-px bg-surface-border" />
-        )}
+        {index !== 0 && <div className="absolute bottom-0 top-1/2 w-px bg-surface-border" />}
 
         <div
           className={cn(
@@ -112,9 +105,7 @@ function TimelineProject({ project, index }) {
           <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-display text-base font-bold text-surface-fg">
-                  {project.name}
-                </h3>
+                <h3 className="font-display text-base font-bold text-surface-fg">{project.name}</h3>
 
                 <span
                   className={cn(
@@ -127,9 +118,7 @@ function TimelineProject({ project, index }) {
                 </span>
               </div>
 
-              <p className="mt-1 text-xs text-surface-muted">
-                {project.clientName}
-              </p>
+              <p className="mt-1 text-xs text-surface-muted">{project.clientName}</p>
 
               {project.description && (
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-surface-muted">
@@ -157,9 +146,7 @@ function TimelineProject({ project, index }) {
                 Progress
               </span>
 
-              <span className="text-sm font-bold text-surface-fg">
-                {project.progress}%
-              </span>
+              <span className="text-sm font-bold text-surface-fg">{project.progress}%</span>
             </div>
 
             <div className="h-2 overflow-hidden rounded-full bg-surface-border">
@@ -187,8 +174,7 @@ function TimelineProject({ project, index }) {
 
             <div className="flex items-center gap-4 text-xs text-surface-muted">
               <span>
-                {project.completedDeliverables}/
-                {project.totalDeliverables} deliverables
+                {project.completedDeliverables}/{project.totalDeliverables} deliverables
               </span>
 
               <ArrowRight className="h-3.5 w-3.5" />
@@ -225,18 +211,13 @@ function TimelineView({ projects }) {
         </h2>
 
         <p className="mt-1 text-sm text-surface-muted">
-          Follow the progress and deadlines of all projects currently being
-          worked on.
+          Follow the progress and deadlines of all projects currently being worked on.
         </p>
       </div>
 
       <div>
         {sortedProjects.map((project, index) => (
-          <TimelineProject
-            key={project.id}
-            project={project}
-            index={index}
-          />
+          <TimelineProject key={project.id} project={project} index={index} />
         ))}
       </div>
     </div>
@@ -263,9 +244,7 @@ function ViewToggle({ view, setView }) {
             )}
           >
             <Icon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">
-              {mode.label}
-            </span>
+            <span className="hidden sm:inline">{mode.label}</span>
           </button>
         );
       })}
@@ -287,14 +266,10 @@ export default function StaffProjects() {
           : statusFilter === "active"
             ? project.status !== "completed"
             : statusFilter === "at-risk"
-              ? project.status === "blocked" ||
-                Boolean(project.attentionReason)
+              ? project.status === "blocked" || Boolean(project.attentionReason)
               : project.status === statusFilter;
 
-      const matchesClient =
-        clientFilter === "all"
-          ? true
-          : project.clientId === clientFilter;
+      const matchesClient = clientFilter === "all" ? true : project.clientId === clientFilter;
 
       const query = search.toLowerCase();
 
@@ -302,15 +277,9 @@ export default function StaffProjects() {
         !query ||
         project.name?.toLowerCase().includes(query) ||
         project.clientName?.toLowerCase().includes(query) ||
-        project.services?.some((service) =>
-          service.toLowerCase().includes(query)
-        );
+        project.services?.some((service) => service.toLowerCase().includes(query));
 
-      return (
-        matchesStatus &&
-        matchesClient &&
-        matchesSearch
-      );
+      return matchesStatus && matchesClient && matchesSearch;
     });
   }, [statusFilter, clientFilter, search]);
 
@@ -319,7 +288,6 @@ export default function StaffProjects() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-6 sm:mb-9 lg:flex-row lg:items-end lg:justify-between">
         <div>
-      
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Projects
           </h1>
@@ -329,10 +297,7 @@ export default function StaffProjects() {
           </p>
         </div>
 
-        <ViewToggle
-          view={view}
-          setView={setView}
-        />
+        <ViewToggle view={view} setView={setView} />
       </div>
 
       {/* Filters */}
@@ -342,14 +307,8 @@ export default function StaffProjects() {
             <button
               key={filter.id}
               type="button"
-              onClick={() =>
-                setStatusFilter(filter.id)
-              }
-              className={cn(
-                "pill",
-                statusFilter === filter.id &&
-                  "pill-active"
-              )}
+              onClick={() => setStatusFilter(filter.id)}
+              className={cn("pill", statusFilter === filter.id && "pill-active")}
             >
               {filter.label}
             </button>
@@ -363,9 +322,7 @@ export default function StaffProjects() {
 
             <input
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search projects..."
               className="brand-input w-full pl-9"
             />
@@ -374,20 +331,13 @@ export default function StaffProjects() {
           {/* Client */}
           <select
             value={clientFilter}
-            onChange={(event) =>
-              setClientFilter(event.target.value)
-            }
+            onChange={(event) => setClientFilter(event.target.value)}
             className="brand-input w-full min-w-[180px] py-2.5 text-sm sm:w-auto"
           >
-            <option value="all">
-              All Clients
-            </option>
+            <option value="all">All Clients</option>
 
             {clients.map((client) => (
-              <option
-                key={client.id}
-                value={client.id}
-              >
+              <option key={client.id} value={client.id}>
                 {client.name}
               </option>
             ))}
@@ -398,13 +348,8 @@ export default function StaffProjects() {
       {/* Result count */}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-xs text-surface-muted">
-          Showing{" "}
-          <span className="font-semibold text-surface-fg">
-            {filtered.length}
-          </span>{" "}
-          {filtered.length === 1
-            ? "project"
-            : "projects"}
+          Showing <span className="font-semibold text-surface-fg">{filtered.length}</span>{" "}
+          {filtered.length === 1 ? "project" : "projects"}
         </p>
       </div>
 
@@ -422,37 +367,21 @@ export default function StaffProjects() {
               <table className="w-full min-w-[900px] border-collapse">
                 <thead>
                   <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                    <th className="px-6 py-4">
-                      Project
-                    </th>
+                    <th className="px-6 py-4">Project</th>
 
-                    <th className="py-4 pr-4">
-                      Client
-                    </th>
+                    <th className="py-4 pr-4">Client</th>
 
-                    <th className="py-4 pr-4">
-                      Services
-                    </th>
+                    <th className="py-4 pr-4">Services</th>
 
-                    <th className="py-4 pr-4">
-                      Progress
-                    </th>
+                    <th className="py-4 pr-4">Progress</th>
 
-                    <th className="py-4 pr-4">
-                      Status
-                    </th>
+                    <th className="py-4 pr-4">Status</th>
 
-                    <th className="py-4 pr-4">
-                      Team
-                    </th>
+                    <th className="py-4 pr-4">Team</th>
 
-                    <th className="py-4 pr-4">
-                      Deadline
-                    </th>
+                    <th className="py-4 pr-4">Deadline</th>
 
-                    <th className="py-4 pr-4">
-                      Last Update
-                    </th>
+                    <th className="py-4 pr-4">Last Update</th>
 
                     <th className="py-4 pl-2" />
                   </tr>
@@ -460,10 +389,7 @@ export default function StaffProjects() {
 
                 <tbody>
                   {filtered.map((project) => (
-                    <StaffProjectRow
-                      key={project.id}
-                      project={project}
-                    />
+                    <StaffProjectRow key={project.id} project={project} />
                   ))}
                 </tbody>
               </table>
@@ -474,20 +400,13 @@ export default function StaffProjects() {
           {view === "cards" && (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {filtered.map((project) => (
-                <StaffProjectCard
-                  key={project.id}
-                  project={project}
-                />
+                <StaffProjectCard key={project.id} project={project} />
               ))}
             </div>
           )}
 
           {/* TIMELINE */}
-          {view === "timeline" && (
-            <TimelineView
-              projects={filtered}
-            />
-          )}
+          {view === "timeline" && <TimelineView projects={filtered} />}
         </>
       )}
     </div>

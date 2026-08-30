@@ -129,7 +129,7 @@ function RoleBadge({ role }) {
     <span
       className={cn(
         "inline-flex rounded-full px-2.5 py-1 text-[0.65rem] font-semibold",
-        config.className,
+        config.className
       )}
     >
       {config.label}
@@ -144,15 +144,10 @@ function StatusBadge({ status }) {
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold",
-        config.className,
+        config.className
       )}
     >
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          config.dot,
-        )}
-      />
+      <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
 
       {config.label}
     </span>
@@ -160,14 +155,13 @@ function StatusBadge({ status }) {
 }
 
 function PayoutBadge({ status }) {
-  const config =
-    PAYOUT_CONFIG[status] || PAYOUT_CONFIG.pending;
+  const config = PAYOUT_CONFIG[status] || PAYOUT_CONFIG.pending;
 
   return (
     <span
       className={cn(
         "inline-flex rounded-full px-2.5 py-1 text-[0.65rem] font-semibold",
-        config.className,
+        config.className
       )}
     >
       {config.label}
@@ -250,9 +244,7 @@ function TeamRow({ member }) {
           </div>
 
           <div className="min-w-0">
-            <p className="font-display text-sm font-bold text-surface-fg">
-              {member.name}
-            </p>
+            <p className="font-display text-sm font-bold text-surface-fg">{member.name}</p>
 
             <p className="mt-0.5 truncate text-xs text-surface-muted">
               {member.email || member.role}
@@ -266,9 +258,7 @@ function TeamRow({ member }) {
       </td>
 
       <td className="py-5 pr-5">
-        <span className="text-sm text-surface-muted">
-          {member.department || "—"}
-        </span>
+        <span className="text-sm text-surface-muted">{member.department || "—"}</span>
       </td>
 
       <td className="py-5 pr-5">
@@ -276,9 +266,7 @@ function TeamRow({ member }) {
       </td>
 
       <td className="py-5 pr-5">
-        <span className="text-xs text-surface-muted">
-          {member.lastActive || "Recently"}
-        </span>
+        <span className="text-xs text-surface-muted">{member.lastActive || "Recently"}</span>
       </td>
 
       <td className="py-5 pr-6 text-right">
@@ -288,12 +276,7 @@ function TeamRow({ member }) {
   );
 }
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-}) {
+function StatCard({ icon: Icon, label, value, description }) {
   return (
     <div className="brand-card">
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -308,9 +291,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -319,29 +300,20 @@ function RolesView() {
   const roles = [
     {
       name: "Administrator",
-      description:
-        "Full access to the OCT20FIVE administration system.",
-      users: teamMembers.filter(
-        (member) => getRole(member) === "admin",
-      ).length,
+      description: "Full access to the OCT20FIVE administration system.",
+      users: teamMembers.filter((member) => getRole(member) === "admin").length,
       permissions: "Full access",
     },
     {
       name: "Manager",
-      description:
-        "Manage projects, clients, tasks and team delivery.",
-      users: teamMembers.filter(
-        (member) => getRole(member) === "manager",
-      ).length,
+      description: "Manage projects, clients, tasks and team delivery.",
+      users: teamMembers.filter((member) => getRole(member) === "manager").length,
       permissions: "Management",
     },
     {
       name: "Staff",
-      description:
-        "Work on assigned projects and operational tasks.",
-      users: teamMembers.filter(
-        (member) => getRole(member) === "staff",
-      ).length,
+      description: "Work on assigned projects and operational tasks.",
+      users: teamMembers.filter((member) => getRole(member) === "staff").length,
       permissions: "Operational",
     },
   ];
@@ -349,49 +321,31 @@ function RolesView() {
   return (
     <div className="grid gap-4 lg:grid-cols-3">
       {roles.map((role) => (
-        <div
-          key={role.name}
-          className="brand-card"
-        >
+        <div key={role.name} className="brand-card">
           <div className="flex items-start justify-between">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange/10 text-brand-orange">
               <ShieldCheck className="h-5 w-5" />
             </div>
 
-            <button
-              type="button"
-              className="text-surface-muted hover:text-surface-fg"
-            >
+            <button type="button" className="text-surface-muted hover:text-surface-fg">
               <MoreHorizontal className="h-4 w-4" />
             </button>
           </div>
 
-          <h3 className="mt-5 font-display text-lg font-bold text-surface-fg">
-            {role.name}
-          </h3>
+          <h3 className="mt-5 font-display text-lg font-bold text-surface-fg">{role.name}</h3>
 
-          <p className="mt-1 text-sm leading-6 text-surface-muted">
-            {role.description}
-          </p>
+          <p className="mt-1 text-sm leading-6 text-surface-muted">{role.description}</p>
 
           <div className="mt-6 flex items-center justify-between border-t border-surface-border pt-4">
-            <span className="text-xs text-surface-muted">
-              Users
-            </span>
+            <span className="text-xs text-surface-muted">Users</span>
 
-            <span className="text-sm font-bold text-surface-fg">
-              {role.users}
-            </span>
+            <span className="text-sm font-bold text-surface-fg">{role.users}</span>
           </div>
 
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-xs text-surface-muted">
-              Access level
-            </span>
+            <span className="text-xs text-surface-muted">Access level</span>
 
-            <span className="text-xs font-semibold text-surface-fg">
-              {role.permissions}
-            </span>
+            <span className="text-xs font-semibold text-surface-fg">{role.permissions}</span>
           </div>
         </div>
       ))}
@@ -400,17 +354,13 @@ function RolesView() {
 }
 
 function OnboardingView() {
-  const invited = teamMembers.filter(
-    (member) => getStatus(member) === "invited",
-  );
+  const invited = teamMembers.filter((member) => getStatus(member) === "invited");
 
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="font-display text-lg font-bold text-surface-fg">
-            Pending Onboarding
-          </h2>
+          <h2 className="font-display text-lg font-bold text-surface-fg">Pending Onboarding</h2>
 
           <p className="mt-1 text-sm text-surface-muted">
             People who have been invited but have not completed setup.
@@ -444,9 +394,7 @@ function OnboardingView() {
                 </div>
 
                 <div>
-                  <p className="font-display text-sm font-bold text-surface-fg">
-                    {member.name}
-                  </p>
+                  <p className="font-display text-sm font-bold text-surface-fg">{member.name}</p>
 
                   <p className="mt-0.5 text-xs text-surface-muted">
                     {member.email || "Invitation pending"}
@@ -457,9 +405,7 @@ function OnboardingView() {
               <div className="flex items-center gap-3">
                 <Clock3 className="h-4 w-4 text-brand-orange" />
 
-                <span className="text-xs text-surface-muted">
-                  Invitation pending
-                </span>
+                <span className="text-xs text-surface-muted">Invitation pending</span>
 
                 <button
                   type="button"
@@ -497,10 +443,7 @@ function UsersView() {
             const status = getStatus(member);
 
             return (
-              <tr
-                key={member.id}
-                className="border-b border-surface-border last:border-b-0"
-              >
+              <tr key={member.id} className="border-b border-surface-border last:border-b-0">
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
@@ -508,9 +451,7 @@ function UsersView() {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-surface-fg">
-                        {member.name}
-                      </p>
+                      <p className="text-sm font-semibold text-surface-fg">{member.name}</p>
 
                       <p className="text-xs text-surface-muted">
                         {member.email || "Internal user"}
@@ -529,11 +470,7 @@ function UsersView() {
 
                 <td className="py-5 pr-5">
                   <span className="text-xs font-medium text-surface-muted">
-                    {role === "admin"
-                      ? "Full"
-                      : role === "manager"
-                        ? "Management"
-                        : "Standard"}
+                    {role === "admin" ? "Full" : role === "manager" ? "Management" : "Standard"}
                   </span>
                 </td>
 
@@ -555,49 +492,26 @@ function UsersView() {
 
 const PAYOUTS = teamMembers.map((member, index) => ({
   ...member,
-  salary:
-    member.salary ||
-    [65000, 52000, 42000, 38000, 35000][index % 5],
-  payout:
-    index === 2
-      ? "pending"
-      : index === 4
-        ? "overdue"
-        : "paid",
-  payoutDate:
-    index === 2
-      ? "Aug 31, 2026"
-      : index === 4
-        ? "Aug 28, 2026"
-        : "Aug 31, 2026",
+  salary: member.salary || [65000, 52000, 42000, 38000, 35000][index % 5],
+  payout: index === 2 ? "pending" : index === 4 ? "overdue" : "paid",
+  payoutDate: index === 2 ? "Aug 31, 2026" : index === 4 ? "Aug 28, 2026" : "Aug 31, 2026",
 }));
 
 function PayoutsView() {
-  const totalPayroll = PAYOUTS.reduce(
-    (sum, member) => sum + member.salary,
-    0,
-  );
+  const totalPayroll = PAYOUTS.reduce((sum, member) => sum + member.salary, 0);
 
-  const paidCount = PAYOUTS.filter(
-    (member) => member.payout === "paid",
-  ).length;
+  const paidCount = PAYOUTS.filter((member) => member.payout === "paid").length;
 
-  const pendingCount = PAYOUTS.filter(
-    (member) => member.payout === "pending",
-  ).length;
+  const pendingCount = PAYOUTS.filter((member) => member.payout === "pending").length;
 
-  const overdueCount = PAYOUTS.filter(
-    (member) => member.payout === "overdue",
-  ).length;
+  const overdueCount = PAYOUTS.filter((member) => member.payout === "overdue").length;
 
   return (
     <div className="space-y-6">
       {/* Payout Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="font-display text-lg font-bold text-surface-fg">
-            Salary & Payouts
-          </h2>
+          <h2 className="font-display text-lg font-bold text-surface-fg">Salary & Payouts</h2>
 
           <p className="mt-1 text-sm text-surface-muted">
             Manage staff compensation and monthly payouts.
@@ -649,29 +563,17 @@ function PayoutsView() {
         <table className="w-full min-w-[950px] border-collapse">
           <thead>
             <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-              <th className="px-6 py-4">
-                Staff Member
-              </th>
+              <th className="px-6 py-4">Staff Member</th>
 
-              <th className="py-4 pr-5">
-                Role
-              </th>
+              <th className="py-4 pr-5">Role</th>
 
-              <th className="py-4 pr-5">
-                Monthly Salary
-              </th>
+              <th className="py-4 pr-5">Monthly Salary</th>
 
-              <th className="py-4 pr-5">
-                Next Payout
-              </th>
+              <th className="py-4 pr-5">Next Payout</th>
 
-              <th className="py-4 pr-5">
-                Status
-              </th>
+              <th className="py-4 pr-5">Status</th>
 
-              <th className="py-4 pr-6 text-right">
-                Actions
-              </th>
+              <th className="py-4 pr-6 text-right">Actions</th>
             </tr>
           </thead>
 
@@ -680,10 +582,7 @@ function PayoutsView() {
               const role = getRole(member);
 
               return (
-                <tr
-                  key={member.id}
-                  className="border-b border-surface-border last:border-b-0"
-                >
+                <tr key={member.id} className="border-b border-surface-border last:border-b-0">
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
@@ -691,13 +590,9 @@ function PayoutsView() {
                       </div>
 
                       <div>
-                        <p className="text-sm font-semibold text-surface-fg">
-                          {member.name}
-                        </p>
+                        <p className="text-sm font-semibold text-surface-fg">{member.name}</p>
 
-                        <p className="text-xs text-surface-muted">
-                          {member.email}
-                        </p>
+                        <p className="text-xs text-surface-muted">{member.email}</p>
                       </div>
                     </div>
                   </td>
@@ -757,32 +652,23 @@ export default function AdminTeam() {
     });
   }, [search]);
 
-  const activeCount = teamMembers.filter(
-    (member) => getStatus(member) === "active",
-  ).length;
+  const activeCount = teamMembers.filter((member) => getStatus(member) === "active").length;
 
-  const invitedCount = teamMembers.filter(
-    (member) => getStatus(member) === "invited",
-  ).length;
+  const invitedCount = teamMembers.filter((member) => getStatus(member) === "invited").length;
 
-  const adminCount = teamMembers.filter(
-    (member) => getRole(member) === "admin",
-  ).length;
+  const adminCount = teamMembers.filter((member) => getRole(member) === "admin").length;
 
   return (
     <div className="mx-auto max-w-[1400px] animate-fade-up">
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-      
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Team
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Manage people, user access, roles, onboarding, and
-            staff compensation across OCT20FIVE.
+            Manage people, user access, roles, onboarding, and staff compensation across OCT20FIVE.
           </p>
         </div>
 
@@ -841,7 +727,7 @@ export default function AdminTeam() {
                   "flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition",
                   activeTab === tab.id
                     ? "border-brand-orange text-brand-orange"
-                    : "border-transparent text-surface-muted hover:text-surface-fg",
+                    : "border-transparent text-surface-muted hover:text-surface-fg"
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -857,9 +743,7 @@ export default function AdminTeam() {
         <>
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-lg font-bold text-surface-fg">
-                Team Members
-              </h2>
+              <h2 className="font-display text-lg font-bold text-surface-fg">Team Members</h2>
 
               <p className="mt-1 text-sm text-surface-muted">
                 Internal people working across OCT20FIVE.
@@ -871,9 +755,7 @@ export default function AdminTeam() {
 
               <input
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search team..."
                 className="brand-input w-full pl-9"
               />
@@ -881,34 +763,21 @@ export default function AdminTeam() {
           </div>
 
           {filteredMembers.length === 0 ? (
-            <EmptyState
-              title="No Team Members Found"
-              description="Try changing your search."
-            />
+            <EmptyState title="No Team Members Found" description="Try changing your search." />
           ) : (
             <div className="brand-card overflow-x-auto p-0">
               <table className="w-full min-w-[900px] border-collapse">
                 <thead>
                   <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                    <th className="px-6 py-4">
-                      Team Member
-                    </th>
+                    <th className="px-6 py-4">Team Member</th>
 
-                    <th className="py-4 pr-5">
-                      Role
-                    </th>
+                    <th className="py-4 pr-5">Role</th>
 
-                    <th className="py-4 pr-5">
-                      Department
-                    </th>
+                    <th className="py-4 pr-5">Department</th>
 
-                    <th className="py-4 pr-5">
-                      Status
-                    </th>
+                    <th className="py-4 pr-5">Status</th>
 
-                    <th className="py-4 pr-5">
-                      Last Active
-                    </th>
+                    <th className="py-4 pr-5">Last Active</th>
 
                     <th className="py-4 pr-6" />
                   </tr>
@@ -916,10 +785,7 @@ export default function AdminTeam() {
 
                 <tbody>
                   {filteredMembers.map((member) => (
-                    <TeamRow
-                      key={member.id}
-                      member={member}
-                    />
+                    <TeamRow key={member.id} member={member} />
                   ))}
                 </tbody>
               </table>

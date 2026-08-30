@@ -30,33 +30,27 @@ import {
 const statusConfig = {
   "in-progress": {
     label: "In Progress",
-    className:
-      "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    className: "bg-blue-500/10 text-blue-600 border-blue-500/20",
   },
   "client-review": {
     label: "Client Review",
-    className:
-      "bg-orange-500/10 text-orange-600 border-orange-500/20",
+    className: "bg-orange-500/10 text-orange-600 border-orange-500/20",
   },
   blocked: {
     label: "Blocked",
-    className:
-      "bg-red-500/10 text-red-600 border-red-500/20",
+    className: "bg-red-500/10 text-red-600 border-red-500/20",
   },
   completed: {
     label: "Completed",
-    className:
-      "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+    className: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
   },
   planned: {
     label: "Planned",
-    className:
-      "bg-purple-500/10 text-purple-600 border-purple-500/20",
+    className: "bg-purple-500/10 text-purple-600 border-purple-500/20",
   },
   "not-started": {
     label: "Not Started",
-    className:
-      "bg-surface-muted/10 text-surface-muted border-surface-border",
+    className: "bg-surface-muted/10 text-surface-muted border-surface-border",
   },
 };
 
@@ -95,13 +89,7 @@ function ProgressBar({ progress }) {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  description,
-  icon: Icon,
-  tone = "default",
-}) {
+function StatCard({ label, value, description, icon: Icon, tone = "default" }) {
   const tones = {
     default: "bg-surface-muted/10 text-surface-fg",
     orange: "bg-brand-orange/10 text-brand-orange",
@@ -122,17 +110,10 @@ function StatCard({
             {value}
           </p>
 
-          <p className="mt-1 text-xs text-surface-muted">
-            {description}
-          </p>
+          <p className="mt-1 text-xs text-surface-muted">{description}</p>
         </div>
 
-        <div
-          className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-xl",
-            tones[tone]
-          )}
-        >
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl", tones[tone])}>
           <Icon className="h-5 w-5" strokeWidth={2} />
         </div>
       </div>
@@ -148,11 +129,7 @@ function SectionHeader({ title, description, action }) {
           {title}
         </h2>
 
-        {description && (
-          <p className="mt-1 text-xs text-surface-muted">
-            {description}
-          </p>
-        )}
+        {description && <p className="mt-1 text-xs text-surface-muted">{description}</p>}
       </div>
 
       {action && (
@@ -166,61 +143,36 @@ function SectionHeader({ title, description, action }) {
 }
 
 export default function AdminDashboard() {
-  const activeProjects = projects.filter(
-    (project) => project.status !== "completed"
-  );
+  const activeProjects = projects.filter((project) => project.status !== "completed");
 
-  const inProgressTasks = tasks.filter(
-    (task) => task.status === "in-progress"
-  );
+  const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
 
-  const dueToday = tasks.filter(
-    (task) => task.dueLabel === "Due Today"
-  );
+  const dueToday = tasks.filter((task) => task.dueLabel === "Due Today");
 
-  const blockedProjects = projects.filter(
-    (project) => project.status === "blocked"
-  );
+  const blockedProjects = projects.filter((project) => project.status === "blocked");
 
-  const blockedTasks = tasks.filter(
-    (task) => task.status === "blocked"
-  );
+  const blockedTasks = tasks.filter((task) => task.status === "blocked");
 
-  const pendingApprovals = approvals.filter(
-    (approval) => approval.status === "pending"
-  );
+  const pendingApprovals = approvals.filter((approval) => approval.status === "pending");
 
-  const overdueTasks = tasks.filter(
-    (task) => task.dueLabel === "Overdue"
-  );
+  const overdueTasks = tasks.filter((task) => task.dueLabel === "Overdue");
 
   const atRiskProjects = projects
     .filter(
-      (project) =>
-        project.status === "blocked" ||
-        project.attentionReason ||
-        project.progress < 35
+      (project) => project.status === "blocked" || project.attentionReason || project.progress < 35
     )
     .slice(0, 5);
 
-  const projectHealth = activeProjects
-    .sort((a, b) => a.progress - b.progress)
-    .slice(0, 5);
+  const projectHealth = activeProjects.sort((a, b) => a.progress - b.progress).slice(0, 5);
 
   const teamWorkload = teamMembers.map((member) => {
-    const assignedTasks = tasks.filter(
-      (task) => task.assigneeId === member.id
-    );
+    const assignedTasks = tasks.filter((task) => task.assigneeId === member.id);
 
     const activeTasks = assignedTasks.filter(
-      (task) =>
-        task.status !== "completed" &&
-        task.status !== "not-started"
+      (task) => task.status !== "completed" && task.status !== "not-started"
     );
 
-    const overdue = assignedTasks.filter(
-      (task) => task.dueLabel === "Overdue"
-    );
+    const overdue = assignedTasks.filter((task) => task.dueLabel === "Overdue");
 
     return {
       ...member,
@@ -230,10 +182,7 @@ export default function AdminDashboard() {
     };
   });
 
-  const maxWorkload = Math.max(
-    ...teamWorkload.map((member) => member.active),
-    1
-  );
+  const maxWorkload = Math.max(...teamWorkload.map((member) => member.active), 1);
 
   return (
     <div className="space-y-8 pb-10">
@@ -243,15 +192,13 @@ export default function AdminDashboard() {
 
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-      
-
           <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
             Agency at a glance.
           </h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-            Monitor projects, team workload, client activity and
-            anything that needs attention across OCT20FIVE.
+            Monitor projects, team workload, client activity and anything that needs attention
+            across OCT20FIVE.
           </p>
         </div>
 
@@ -292,11 +239,7 @@ export default function AdminDashboard() {
         <StatCard
           label="Due Today"
           value={dueToday.length}
-          description={
-            dueToday.length
-              ? "Requires attention today"
-              : "Nothing due today"
-          }
+          description={dueToday.length ? "Requires attention today" : "Nothing due today"}
           icon={Clock3}
           tone={dueToday.length ? "orange" : "green"}
         />
@@ -306,11 +249,7 @@ export default function AdminDashboard() {
           value={blockedProjects.length + blockedTasks.length}
           description={`${blockedProjects.length} projects · ${blockedTasks.length} tasks`}
           icon={ShieldAlert}
-          tone={
-            blockedProjects.length + blockedTasks.length
-              ? "red"
-              : "green"
-          }
+          tone={blockedProjects.length + blockedTasks.length ? "red" : "green"}
         />
 
         <StatCard
@@ -318,9 +257,7 @@ export default function AdminDashboard() {
           value={pendingApprovals.length}
           description="Waiting on clients"
           icon={CheckCircle2}
-          tone={
-            pendingApprovals.length ? "orange" : "green"
-          }
+          tone={pendingApprovals.length ? "orange" : "green"}
         />
       </div>
 
@@ -355,9 +292,7 @@ export default function AdminDashboard() {
                     )}
                   </div>
 
-                  <p className="mt-1 text-xs text-surface-muted">
-                    {project.clientName}
-                  </p>
+                  <p className="mt-1 text-xs text-surface-muted">{project.clientName}</p>
 
                   <div className="mt-3 flex items-center gap-3">
                     <ProgressBar progress={project.progress} />
@@ -373,9 +308,7 @@ export default function AdminDashboard() {
                     <p className="text-[0.65rem] uppercase tracking-wider text-surface-muted">
                       Deadline
                     </p>
-                    <p className="mt-1 text-xs font-medium text-surface-fg">
-                      {project.deadline}
-                    </p>
+                    <p className="mt-1 text-xs font-medium text-surface-fg">{project.deadline}</p>
                   </div>
 
                   <StatusBadge status={project.status} />
@@ -398,8 +331,7 @@ export default function AdminDashboard() {
 
           <div className="space-y-5">
             {teamWorkload.map((member) => {
-              const percentage =
-                (member.active / maxWorkload) * 100;
+              const percentage = (member.active / maxWorkload) * 100;
 
               return (
                 <div key={member.id}>
@@ -414,20 +346,14 @@ export default function AdminDashboard() {
                           {member.name}
                         </p>
 
-                        <p className="truncate text-[0.68rem] text-surface-muted">
-                          {member.role}
-                        </p>
+                        <p className="truncate text-[0.68rem] text-surface-muted">{member.role}</p>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs font-semibold text-surface-fg">
-                        {member.active}
-                      </p>
+                      <p className="text-xs font-semibold text-surface-fg">{member.active}</p>
 
-                      <p className="text-[0.62rem] text-surface-muted">
-                        active
-                      </p>
+                      <p className="text-[0.62rem] text-surface-muted">active</p>
                     </div>
                   </div>
 
@@ -435,9 +361,7 @@ export default function AdminDashboard() {
                     <div
                       className={cn(
                         "h-full rounded-full transition-all",
-                        member.active >= 3
-                          ? "bg-brand-orange"
-                          : "bg-surface-fg/40"
+                        member.active >= 3 ? "bg-brand-orange" : "bg-surface-fg/40"
                       )}
                       style={{
                         width: `${percentage}%`,
@@ -489,9 +413,7 @@ export default function AdminDashboard() {
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate text-xs font-semibold text-surface-fg">
-                      {project.name}
-                    </p>
+                    <p className="truncate text-xs font-semibold text-surface-fg">{project.name}</p>
 
                     <span className="shrink-0 text-[0.65rem] font-semibold text-surface-muted">
                       {project.progress}%
@@ -499,8 +421,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <p className="mt-1 truncate text-[0.68rem] text-surface-muted">
-                    {project.attentionReason ||
-                      "Project progress requires review"}
+                    {project.attentionReason || "Project progress requires review"}
                   </p>
                 </div>
 
@@ -615,37 +536,25 @@ export default function AdminDashboard() {
 
             <tbody>
               {clients.map((client) => {
-                const clientProjects = projects.filter(
-                  (project) => project.clientId === client.id
-                );
+                const clientProjects = projects.filter((project) => project.clientId === client.id);
 
                 const clientApprovals = approvals.filter(
-                  (approval) =>
-                    approval.clientId === client.id &&
-                    approval.status === "pending"
+                  (approval) => approval.clientId === client.id && approval.status === "pending"
                 );
 
                 const clientIssues = clientProjects.filter(
-                  (project) =>
-                    project.status === "blocked" ||
-                    project.attentionReason
+                  (project) => project.status === "blocked" || project.attentionReason
                 );
 
                 const averageProgress = Math.round(
-                  clientProjects.reduce(
-                    (sum, project) => sum + project.progress,
-                    0
-                  ) / Math.max(clientProjects.length, 1)
+                  clientProjects.reduce((sum, project) => sum + project.progress, 0) /
+                    Math.max(clientProjects.length, 1)
                 );
 
-                const isHealthy =
-                  clientIssues.length === 0;
+                const isHealthy = clientIssues.length === 0;
 
                 return (
-                  <tr
-                    key={client.id}
-                    className="border-b border-surface-border last:border-0"
-                  >
+                  <tr key={client.id} className="border-b border-surface-border last:border-0">
                     <td className="py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-muted/10 text-[0.65rem] font-bold text-surface-fg">
@@ -653,9 +562,7 @@ export default function AdminDashboard() {
                         </div>
 
                         <div>
-                          <p className="text-xs font-semibold text-surface-fg">
-                            {client.name}
-                          </p>
+                          <p className="text-xs font-semibold text-surface-fg">{client.name}</p>
 
                           <p className="mt-0.5 text-[0.65rem] text-surface-muted">
                             {clientProjects.length} projects
@@ -689,9 +596,7 @@ export default function AdminDashboard() {
                           {clientIssues.length}
                         </span>
                       ) : (
-                        <span className="text-xs text-surface-muted">
-                          —
-                        </span>
+                        <span className="text-xs text-surface-muted">—</span>
                       )}
                     </td>
 
@@ -740,13 +645,9 @@ export default function AdminDashboard() {
                   <Activity className="h-3.5 w-3.5 text-surface-muted" />
                 </div>
 
-                <p className="min-w-0 flex-1 text-xs text-surface-fg">
-                  {item.text}
-                </p>
+                <p className="min-w-0 flex-1 text-xs text-surface-fg">{item.text}</p>
 
-                <span className="shrink-0 text-[0.65rem] text-surface-muted">
-                  {item.timestamp}
-                </span>
+                <span className="shrink-0 text-[0.65rem] text-surface-muted">{item.timestamp}</span>
               </div>
             ))}
           </div>
@@ -762,9 +663,7 @@ export default function AdminDashboard() {
 
           <div className="space-y-2">
             {[...overdueTasks, ...dueToday].slice(0, 5).map((task) => {
-              const assignee = getTeamMemberById(
-                task.assigneeId
-              );
+              const assignee = getTeamMemberById(task.assigneeId);
 
               return (
                 <div
@@ -783,9 +682,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-semibold text-surface-fg">
-                      {task.title}
-                    </p>
+                    <p className="truncate text-xs font-semibold text-surface-fg">{task.title}</p>
 
                     <p className="mt-1 truncate text-[0.65rem] text-surface-muted">
                       {assignee?.name}
@@ -795,9 +692,7 @@ export default function AdminDashboard() {
                   <span
                     className={cn(
                       "shrink-0 text-[0.65rem] font-semibold",
-                      task.dueLabel === "Overdue"
-                        ? "text-red-500"
-                        : "text-brand-orange"
+                      task.dueLabel === "Overdue" ? "text-red-500" : "text-brand-orange"
                     )}
                   >
                     {task.dueLabel}
@@ -810,16 +705,12 @@ export default function AdminDashboard() {
               <div className="py-8 text-center">
                 <CheckCircle2 className="mx-auto h-7 w-7 text-emerald-500" />
 
-                <p className="mt-2 text-xs font-semibold text-surface-fg">
-                  No deadline issues
-                </p>
+                <p className="mt-2 text-xs font-semibold text-surface-fg">No deadline issues</p>
               </div>
             )}
           </div>
         </section>
       </div>
-
-
     </div>
   );
 }

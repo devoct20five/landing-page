@@ -1,18 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Menu,
-  Search,
-  User,
-  Settings,
-  LogOut,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, Search, User, Settings, LogOut, ChevronDown } from "lucide-react";
 
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 import {
   DropdownMenu,
@@ -36,10 +25,7 @@ export default function Topbar() {
   // Command Center shortcut
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (
-        (event.metaKey || event.ctrlKey) &&
-        event.key.toLowerCase() === "k"
-      ) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setCommandOpen(true);
       }
@@ -112,9 +98,7 @@ export default function Topbar() {
         >
           <Search className="h-4 w-4 shrink-0 text-surface-muted" />
 
-          <span className="flex-1 text-xs text-surface-muted">
-            Search anything...
-          </span>
+          <span className="flex-1 text-xs text-surface-muted">Search anything...</span>
 
           <kbd className="rounded-md border border-surface-border px-2 py-1 text-[0.6rem] font-semibold text-surface-muted">
             ⌘ K
@@ -123,7 +107,6 @@ export default function Topbar() {
 
         {/* RIGHT SIDE ACTIONS */}
         <div className="ml-auto flex items-center gap-2">
-
           {/* PROFILE DROPDOWN */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -155,16 +138,11 @@ export default function Topbar() {
                     bg-[color-mix(in_srgb,var(--surface-muted)_15%,transparent)]
                   "
                 >
-                  <User
-                    className="h-3.5 w-3.5"
-                    strokeWidth={2}
-                  />
+                  <User className="h-3.5 w-3.5" strokeWidth={2} />
                 </div>
 
                 {/* Client name */}
-                <span className="hidden sm:block">
-                  {currentClient.shortName}
-                </span>
+                <span className="hidden sm:block">{currentClient.shortName}</span>
 
                 {/* Chevron */}
                 <ChevronDown className="hidden h-3.5 w-3.5 text-surface-muted sm:block" />
@@ -195,10 +173,7 @@ export default function Topbar() {
                       bg-[color-mix(in_srgb,var(--surface-muted)_15%,transparent)]
                     "
                   >
-                    <User
-                      className="h-4 w-4"
-                      strokeWidth={2}
-                    />
+                    <User className="h-4 w-4" strokeWidth={2} />
                   </div>
 
                   <div className="min-w-0">
@@ -206,9 +181,7 @@ export default function Topbar() {
                       {currentClient.shortName}
                     </p>
 
-                    <p className="truncate text-xs text-surface-muted">
-                      Client
-                    </p>
+                    <p className="truncate text-xs text-surface-muted">Client</p>
                   </div>
                 </div>
               </div>
@@ -281,10 +254,7 @@ export default function Topbar() {
           </DropdownMenu>
 
           {/* MOBILE MENU */}
-          <Sheet
-            open={open}
-            onOpenChange={setOpen}
-          >
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
                 type="button"
@@ -299,31 +269,21 @@ export default function Topbar() {
                 "
                 aria-label="Open navigation"
               >
-                <Menu
-                  className="h-5 w-5"
-                  strokeWidth={2}
-                />
+                <Menu className="h-5 w-5" strokeWidth={2} />
               </button>
             </SheetTrigger>
 
             <SheetContent>
-              <DialogPrimitive.Title className="sr-only">
-                Navigation menu
-              </DialogPrimitive.Title>
+              <DialogPrimitive.Title className="sr-only">Navigation menu</DialogPrimitive.Title>
 
-              <Sidebar
-                onNavigate={() => setOpen(false)}
-              />
+              <Sidebar onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </header>
 
       {/* COMMAND CENTER */}
-      <CommandCenter
-        open={commandOpen}
-        onClose={() => setCommandOpen(false)}
-      />
+      <CommandCenter open={commandOpen} onClose={() => setCommandOpen(false)} />
     </>
   );
 }

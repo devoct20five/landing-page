@@ -76,9 +76,7 @@ export default function ClientQueries() {
 
   const filteredQueries = useMemo(() => {
     return queries.filter((query) => {
-      const matchesStatus =
-        statusFilter === "all" ||
-        query.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || query.status === statusFilter;
 
       const searchTerm = search.toLowerCase().trim();
 
@@ -115,9 +113,8 @@ export default function ClientQueries() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Raise questions, report concerns or formally escalate an
-                issue relating to your project, deliverables, billing or
-                agreement.
+                Raise questions, report concerns or formally escalate an issue relating to your
+                project, deliverables, billing or agreement.
               </p>
             </div>
 
@@ -153,10 +150,7 @@ export default function ClientQueries() {
               active={activeTab === "queries"}
               onClick={() => setActiveTab("queries")}
               label="My Queries"
-              count={queries.filter(
-                (query) =>
-                  query.status !== "resolved"
-              ).length}
+              count={queries.filter((query) => query.status !== "resolved").length}
             />
 
             <Tab
@@ -185,11 +179,7 @@ export default function ClientQueries() {
             RAISE QUERY
         ================================================== */}
 
-        {activeTab === "raise" && (
-          <RaiseQueryForm
-            onCancel={() => setActiveTab("queries")}
-          />
-        )}
+        {activeTab === "raise" && <RaiseQueryForm onCancel={() => setActiveTab("queries")} />}
       </main>
     </div>
   );
@@ -208,15 +198,12 @@ function InfoBanner() {
         </div>
 
         <div>
-          <h2 className="text-sm font-bold text-surface-fg">
-            Need help with something?
-          </h2>
+          <h2 className="text-sm font-bold text-surface-fg">Need help with something?</h2>
 
           <p className="mt-1 max-w-3xl text-xs leading-5 text-surface-muted">
-            For general questions, use Support. Use this section when you
-            need an issue formally recorded, require clarification about
-            project work or want to raise a dispute regarding a deliverable,
-            payment, timeline or agreement.
+            For general questions, use Support. Use this section when you need an issue formally
+            recorded, require clarification about project work or want to raise a dispute regarding
+            a deliverable, payment, timeline or agreement.
           </p>
 
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[0.6rem] font-semibold text-surface-muted">
@@ -246,9 +233,7 @@ function Tab({ active, onClick, label, count }) {
       onClick={onClick}
       className={cn(
         "relative pb-3 text-xs font-bold transition-colors",
-        active
-          ? "text-brand-orange"
-          : "text-surface-muted hover:text-surface-fg"
+        active ? "text-brand-orange" : "text-surface-muted hover:text-surface-fg"
       )}
     >
       <span className="flex items-center gap-2">
@@ -258,9 +243,7 @@ function Tab({ active, onClick, label, count }) {
           <span
             className={cn(
               "rounded-full px-1.5 py-0.5 text-[0.55rem]",
-              active
-                ? "bg-brand-orange/10 text-brand-orange"
-                : "bg-surface-bg text-surface-muted"
+              active ? "bg-brand-orange/10 text-brand-orange" : "bg-surface-bg text-surface-muted"
             )}
           >
             {count}
@@ -279,13 +262,7 @@ function Tab({ active, onClick, label, count }) {
    QUERIES LIST
 ============================================================ */
 
-function QueriesList({
-  queries,
-  search,
-  setSearch,
-  statusFilter,
-  setStatusFilter,
-}) {
+function QueriesList({ queries, search, setSearch, statusFilter, setStatusFilter }) {
   return (
     <section className="pt-6">
       {/* FILTER BAR */}
@@ -296,9 +273,7 @@ function QueriesList({
 
           <input
             value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
+            onChange={(event) => setSearch(event.target.value)}
             placeholder="Search queries..."
             className="w-full rounded-xl border border-surface-border bg-surface-card py-2.5 pl-9 pr-4 text-xs font-medium text-surface-fg outline-none placeholder:text-surface-muted focus:border-brand-orange/50"
           />
@@ -306,16 +281,12 @@ function QueriesList({
 
         <select
           value={statusFilter}
-          onChange={(event) =>
-            setStatusFilter(event.target.value)
-          }
+          onChange={(event) => setStatusFilter(event.target.value)}
           className="rounded-xl border border-surface-border bg-surface-card px-4 py-2.5 text-xs font-semibold text-surface-fg outline-none focus:border-brand-orange/50"
         >
           <option value="all">All statuses</option>
           <option value="open">Open</option>
-          <option value="awaiting_client">
-            Awaiting your response
-          </option>
+          <option value="awaiting_client">Awaiting your response</option>
           <option value="resolved">Resolved</option>
         </select>
       </div>
@@ -325,10 +296,7 @@ function QueriesList({
       {queries.length > 0 ? (
         <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-card">
           {queries.map((query) => (
-            <QueryRow
-              key={query.id}
-              query={query}
-            />
+            <QueryRow key={query.id} query={query} />
           ))}
         </div>
       ) : (
@@ -357,12 +325,7 @@ function QueryRow({ query }) {
               status.iconBackground
             )}
           >
-            <status.icon
-              className={cn(
-                "h-5 w-5",
-                status.iconColor
-              )}
-            />
+            <status.icon className={cn("h-5 w-5", status.iconColor)} />
           </div>
         </div>
 
@@ -393,9 +356,7 @@ function QueryRow({ query }) {
                 )}
               </div>
 
-              <h3 className="mt-2 text-sm font-bold text-surface-fg">
-                {query.subject}
-              </h3>
+              <h3 className="mt-2 text-sm font-bold text-surface-fg">{query.subject}</h3>
 
               <p className="mt-1 max-w-3xl text-xs leading-5 text-surface-muted">
                 {query.description}
@@ -408,9 +369,7 @@ function QueryRow({ query }) {
           {/* META */}
 
           <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span className="text-[0.6rem] font-semibold text-surface-muted">
-              {query.project}
-            </span>
+            <span className="text-[0.6rem] font-semibold text-surface-muted">{query.project}</span>
 
             <span className="rounded-md bg-surface-bg px-2 py-1 text-[0.55rem] font-semibold text-surface-muted">
               {query.category}
@@ -421,9 +380,7 @@ function QueryRow({ query }) {
               {query.replies} replies
             </span>
 
-            <span className="text-[0.6rem] text-surface-muted">
-              Updated {query.updatedAt}
-            </span>
+            <span className="text-[0.6rem] text-surface-muted">Updated {query.updatedAt}</span>
           </div>
         </div>
       </div>
@@ -447,8 +404,8 @@ function RaiseQueryForm({ onCancel }) {
         </h2>
 
         <p className="mt-1 text-sm leading-6 text-surface-muted">
-          Provide enough information for our team to understand and resolve
-          the issue without unnecessary back-and-forth.
+          Provide enough information for our team to understand and resolve the issue without
+          unnecessary back-and-forth.
         </p>
       </div>
 
@@ -462,13 +419,10 @@ function RaiseQueryForm({ onCancel }) {
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-surface-fg">
-                Issue details
-              </h3>
+              <h3 className="text-sm font-bold text-surface-fg">Issue details</h3>
 
               <p className="mt-1 text-xs text-surface-muted">
-                This submission will create a formal query with a unique
-                reference number.
+                This submission will create a formal query with a unique reference number.
               </p>
             </div>
           </div>
@@ -552,10 +506,7 @@ function RaiseQueryForm({ onCancel }) {
           {/* SUBJECT */}
 
           <Field label="Subject" required>
-            <input
-              placeholder="Briefly describe the issue"
-              className="form-input"
-            />
+            <input placeholder="Briefly describe the issue" className="form-input" />
           </Field>
 
           {/* DESCRIPTION */}
@@ -578,10 +529,7 @@ function RaiseQueryForm({ onCancel }) {
             label="Related reference"
             description="Optional — approval, invoice, task or file reference."
           >
-            <input
-              placeholder="e.g. INV-2026-006 or approval-001"
-              className="form-input"
-            />
+            <input placeholder="e.g. INV-2026-006 or approval-001" className="form-input" />
           </Field>
 
           {/* ATTACHMENT */}
@@ -593,19 +541,13 @@ function RaiseQueryForm({ onCancel }) {
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-surface-border bg-surface-bg px-6 py-8 text-center transition-colors hover:border-brand-orange/50">
               <FileText className="h-5 w-5 text-surface-muted" />
 
-              <p className="mt-2 text-xs font-bold text-surface-fg">
-                Attach supporting files
-              </p>
+              <p className="mt-2 text-xs font-bold text-surface-fg">Attach supporting files</p>
 
               <p className="mt-1 text-[0.6rem] text-surface-muted">
                 PDF, JPG, PNG or common document formats
               </p>
 
-              <input
-                type="file"
-                multiple
-                className="hidden"
-              />
+              <input type="file" multiple className="hidden" />
             </label>
           </Field>
 
@@ -617,14 +559,12 @@ function RaiseQueryForm({ onCancel }) {
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
 
                 <div>
-                  <p className="text-xs font-bold text-surface-fg">
-                    Formal conflict submission
-                  </p>
+                  <p className="text-xs font-bold text-surface-fg">Formal conflict submission</p>
 
                   <p className="mt-1 text-[0.65rem] leading-5 text-surface-muted">
-                    Formal conflicts are recorded against your account and
-                    may be reviewed against the applicable project brief,
-                    agreement, approvals, invoices and communication history.
+                    Formal conflicts are recorded against your account and may be reviewed against
+                    the applicable project brief, agreement, approvals, invoices and communication
+                    history.
                   </p>
                 </div>
               </div>
@@ -660,13 +600,7 @@ function RaiseQueryForm({ onCancel }) {
    TYPE CARD
 ============================================================ */
 
-function TypeCard({
-  selected,
-  onClick,
-  icon: Icon,
-  title,
-  description,
-}) {
+function TypeCard({ selected, onClick, icon: Icon, title, description }) {
   return (
     <button
       type="button"
@@ -682,29 +616,16 @@ function TypeCard({
         <div
           className={cn(
             "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-            selected
-              ? "bg-brand-orange/10"
-              : "bg-surface-bg"
+            selected ? "bg-brand-orange/10" : "bg-surface-bg"
           )}
         >
-          <Icon
-            className={cn(
-              "h-4 w-4",
-              selected
-                ? "text-brand-orange"
-                : "text-surface-muted"
-            )}
-          />
+          <Icon className={cn("h-4 w-4", selected ? "text-brand-orange" : "text-surface-muted")} />
         </div>
 
         <div>
-          <p className="text-xs font-bold text-surface-fg">
-            {title}
-          </p>
+          <p className="text-xs font-bold text-surface-fg">{title}</p>
 
-          <p className="mt-1 text-[0.6rem] leading-4 text-surface-muted">
-            {description}
-          </p>
+          <p className="mt-1 text-[0.6rem] leading-4 text-surface-muted">{description}</p>
         </div>
       </div>
     </button>
@@ -715,26 +636,17 @@ function TypeCard({
    FIELD
 ============================================================ */
 
-function Field({
-  label,
-  required,
-  description,
-  children,
-}) {
+function Field({ label, required, description, children }) {
   return (
     <div>
       <label className="mb-2 block text-xs font-bold text-surface-fg">
         {label}
 
-        {required && (
-          <span className="ml-1 text-brand-orange">*</span>
-        )}
+        {required && <span className="ml-1 text-brand-orange">*</span>}
       </label>
 
       {description && (
-        <p className="mb-2 text-[0.6rem] leading-4 text-surface-muted">
-          {description}
-        </p>
+        <p className="mb-2 text-[0.6rem] leading-4 text-surface-muted">{description}</p>
       )}
 
       {children}
@@ -753,9 +665,7 @@ function EmptyQueries() {
         <MessageSquare className="h-5 w-5 text-surface-muted" />
       </div>
 
-      <h2 className="mt-4 font-display text-lg font-bold text-surface-fg">
-        No queries found
-      </h2>
+      <h2 className="mt-4 font-display text-lg font-bold text-surface-fg">No queries found</h2>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-surface-muted">
         You don't have any queries matching the selected filters.

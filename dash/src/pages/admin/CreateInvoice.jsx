@@ -76,25 +76,9 @@ const STATUS_CONFIG = {
    EDITABLE FIELD
 ============================================================ */
 
-function EditableField({
-  value,
-  onChange,
-  editing,
-  className,
-  placeholder,
-  type = "text",
-}) {
+function EditableField({ value, onChange, editing, className, placeholder, type = "text" }) {
   if (!editing) {
-    return (
-      <span
-        className={cn(
-          "block min-h-[24px]",
-          className
-        )}
-      >
-        {value || "—"}
-      </span>
-    );
+    return <span className={cn("block min-h-[24px]", className)}>{value || "—"}</span>;
   }
 
   return (
@@ -160,8 +144,7 @@ export default function CreateInvoice() {
       gst: "",
     },
 
-    notes:
-      "Thank you for working with OCT20FIVE. Please make the payment before the due date.",
+    notes: "Thank you for working with OCT20FIVE. Please make the payment before the due date.",
 
     taxRate: 18,
   });
@@ -188,15 +171,10 @@ export default function CreateInvoice() {
 
   const calculations = useMemo(() => {
     const subtotal = items.reduce((total, item) => {
-      return (
-        total +
-        Number(item.quantity || 0) *
-          Number(item.rate || 0)
-      );
+      return total + Number(item.quantity || 0) * Number(item.rate || 0);
     }, 0);
 
-    const tax =
-      subtotal * (Number(invoice.taxRate || 0) / 100);
+    const tax = subtotal * (Number(invoice.taxRate || 0) / 100);
 
     const total = subtotal + tax;
 
@@ -243,10 +221,7 @@ export default function CreateInvoice() {
   ============================================================ */
 
   function addItem() {
-    setItems((current) => [
-      ...current,
-      createLineItem(),
-    ]);
+    setItems((current) => [...current, createLineItem()]);
   }
 
   function updateItem(id, field, value) {
@@ -263,9 +238,7 @@ export default function CreateInvoice() {
   }
 
   function deleteItem(id) {
-    setItems((current) =>
-      current.filter((item) => item.id !== id)
-    );
+    setItems((current) => current.filter((item) => item.id !== id));
   }
 
   /* ============================================================
@@ -416,9 +389,7 @@ export default function CreateInvoice() {
               <EditableField
                 editing={editing}
                 value={invoice.company.name}
-                onChange={(value) =>
-                  updateCompany("name", value)
-                }
+                onChange={(value) => updateCompany("name", value)}
                 className="font-display text-2xl font-bold text-surface-fg"
               />
 
@@ -426,25 +397,19 @@ export default function CreateInvoice() {
                 <EditableField
                   editing={editing}
                   value={invoice.company.email}
-                  onChange={(value) =>
-                    updateCompany("email", value)
-                  }
+                  onChange={(value) => updateCompany("email", value)}
                 />
 
                 <EditableField
                   editing={editing}
                   value={invoice.company.address}
-                  onChange={(value) =>
-                    updateCompany("address", value)
-                  }
+                  onChange={(value) => updateCompany("address", value)}
                 />
 
                 <EditableField
                   editing={editing}
                   value={invoice.company.gst}
-                  onChange={(value) =>
-                    updateCompany("gst", value)
-                  }
+                  onChange={(value) => updateCompany("gst", value)}
                 />
               </div>
             </div>
@@ -466,12 +431,7 @@ export default function CreateInvoice() {
                     <EditableField
                       editing={editing}
                       value={invoice.invoiceNumber}
-                      onChange={(value) =>
-                        updateInvoice(
-                          "invoiceNumber",
-                          value
-                        )
-                      }
+                      onChange={(value) => updateInvoice("invoiceNumber", value)}
                       className="text-sm font-bold text-surface-fg"
                     />
                   </div>
@@ -486,30 +446,18 @@ export default function CreateInvoice() {
                     {editing ? (
                       <select
                         value={status}
-                        onChange={(event) =>
-                          setStatus(event.target.value)
-                        }
+                        onChange={(event) => setStatus(event.target.value)}
                         className="brand-input h-9 w-full"
                       >
-                        <option value="draft">
-                          Draft
-                        </option>
+                        <option value="draft">Draft</option>
 
-                        <option value="sent">
-                          Sent
-                        </option>
+                        <option value="sent">Sent</option>
 
-                        <option value="pending">
-                          Pending
-                        </option>
+                        <option value="pending">Pending</option>
 
-                        <option value="paid">
-                          Paid
-                        </option>
+                        <option value="paid">Paid</option>
 
-                        <option value="overdue">
-                          Overdue
-                        </option>
+                        <option value="overdue">Overdue</option>
                       </select>
                     ) : (
                       <InvoiceStatus status={status} />
@@ -527,18 +475,11 @@ export default function CreateInvoice() {
                       <input
                         type="date"
                         value={invoice.issueDate}
-                        onChange={(event) =>
-                          updateInvoice(
-                            "issueDate",
-                            event.target.value
-                          )
-                        }
+                        onChange={(event) => updateInvoice("issueDate", event.target.value)}
                         className="brand-input h-9 w-full"
                       />
                     ) : (
-                      <p className="text-sm font-semibold text-surface-fg">
-                        {invoice.issueDate}
-                      </p>
+                      <p className="text-sm font-semibold text-surface-fg">{invoice.issueDate}</p>
                     )}
                   </div>
                 </div>
@@ -553,18 +494,11 @@ export default function CreateInvoice() {
                       <input
                         type="date"
                         value={invoice.dueDate}
-                        onChange={(event) =>
-                          updateInvoice(
-                            "dueDate",
-                            event.target.value
-                          )
-                        }
+                        onChange={(event) => updateInvoice("dueDate", event.target.value)}
                         className="brand-input h-9 w-full"
                       />
                     ) : (
-                      <p className="text-sm font-semibold text-surface-fg">
-                        {invoice.dueDate}
-                      </p>
+                      <p className="text-sm font-semibold text-surface-fg">{invoice.dueDate}</p>
                     )}
                   </div>
                 </div>
@@ -587,9 +521,7 @@ export default function CreateInvoice() {
               <EditableField
                 editing={editing}
                 value={invoice.client.name}
-                onChange={(value) =>
-                  updateClient("name", value)
-                }
+                onChange={(value) => updateClient("name", value)}
                 placeholder="Client or company name"
                 className="font-display text-xl font-bold text-surface-fg"
               />
@@ -599,27 +531,21 @@ export default function CreateInvoice() {
               <EditableField
                 editing={editing}
                 value={invoice.client.email}
-                onChange={(value) =>
-                  updateClient("email", value)
-                }
+                onChange={(value) => updateClient("email", value)}
                 placeholder="Client email"
               />
 
               <EditableField
                 editing={editing}
                 value={invoice.client.address}
-                onChange={(value) =>
-                  updateClient("address", value)
-                }
+                onChange={(value) => updateClient("address", value)}
                 placeholder="Client address"
               />
 
               <EditableField
                 editing={editing}
                 value={invoice.client.gst}
-                onChange={(value) =>
-                  updateClient("gst", value)
-                }
+                onChange={(value) => updateClient("gst", value)}
                 placeholder="GSTIN"
               />
             </div>
@@ -633,9 +559,7 @@ export default function CreateInvoice() {
         <div className="px-6 py-8 md:px-10">
           <div className="mb-5 flex items-center justify-between">
             <div>
-              <h2 className="font-display text-lg font-bold text-surface-fg">
-                Invoice Items
-              </h2>
+              <h2 className="font-display text-lg font-bold text-surface-fg">Invoice Items</h2>
 
               <p className="mt-1 text-sm text-surface-muted">
                 Services and deliverables included in this invoice.
@@ -658,39 +582,24 @@ export default function CreateInvoice() {
             <table className="w-full min-w-[800px]">
               <thead>
                 <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                  <th className="pb-4 pr-4">
-                    Description
-                  </th>
+                  <th className="pb-4 pr-4">Description</th>
 
-                  <th className="w-[120px] pb-4 pr-4">
-                    Qty
-                  </th>
+                  <th className="w-[120px] pb-4 pr-4">Qty</th>
 
-                  <th className="w-[160px] pb-4 pr-4">
-                    Rate
-                  </th>
+                  <th className="w-[160px] pb-4 pr-4">Rate</th>
 
-                  <th className="w-[160px] pb-4 text-right">
-                    Amount
-                  </th>
+                  <th className="w-[160px] pb-4 text-right">Amount</th>
 
-                  {editing && (
-                    <th className="w-[60px] pb-4" />
-                  )}
+                  {editing && <th className="w-[60px] pb-4" />}
                 </tr>
               </thead>
 
               <tbody>
                 {items.map((item) => {
-                  const amount =
-                    Number(item.quantity || 0) *
-                    Number(item.rate || 0);
+                  const amount = Number(item.quantity || 0) * Number(item.rate || 0);
 
                   return (
-                    <tr
-                      key={item.id}
-                      className="border-b border-surface-border last:border-b-0"
-                    >
+                    <tr key={item.id} className="border-b border-surface-border last:border-b-0">
                       {/* DESCRIPTION */}
 
                       <td className="py-4 pr-4">
@@ -698,11 +607,7 @@ export default function CreateInvoice() {
                           <input
                             value={item.description}
                             onChange={(event) =>
-                              updateItem(
-                                item.id,
-                                "description",
-                                event.target.value
-                              )
+                              updateItem(item.id, "description", event.target.value)
                             }
                             placeholder="Service or deliverable"
                             className="brand-input w-full"
@@ -723,18 +628,12 @@ export default function CreateInvoice() {
                             min="1"
                             value={item.quantity}
                             onChange={(event) =>
-                              updateItem(
-                                item.id,
-                                "quantity",
-                                event.target.value
-                              )
+                              updateItem(item.id, "quantity", event.target.value)
                             }
                             className="brand-input w-full"
                           />
                         ) : (
-                          <span className="text-sm text-surface-muted">
-                            {item.quantity}
-                          </span>
+                          <span className="text-sm text-surface-muted">{item.quantity}</span>
                         )}
                       </td>
 
@@ -746,13 +645,7 @@ export default function CreateInvoice() {
                             type="number"
                             min="0"
                             value={item.rate}
-                            onChange={(event) =>
-                              updateItem(
-                                item.id,
-                                "rate",
-                                event.target.value
-                              )
-                            }
+                            onChange={(event) => updateItem(item.id, "rate", event.target.value)}
                             className="brand-input w-full"
                           />
                         ) : (
@@ -776,9 +669,7 @@ export default function CreateInvoice() {
                         <td className="py-4 pl-3 text-right">
                           <button
                             type="button"
-                            onClick={() =>
-                              deleteItem(item.id)
-                            }
+                            onClick={() => deleteItem(item.id)}
                             className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-surface-muted transition hover:bg-red-500/10 hover:text-red-600"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -799,21 +690,15 @@ export default function CreateInvoice() {
           <div className="ml-auto mt-8 max-w-md">
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-surface-muted">
-                  Subtotal
-                </span>
+                <span className="text-surface-muted">Subtotal</span>
 
                 <span className="font-semibold text-surface-fg">
-                  {formatCurrency(
-                    calculations.subtotal
-                  )}
+                  {formatCurrency(calculations.subtotal)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between gap-5 text-sm">
-                <span className="text-surface-muted">
-                  Tax
-                </span>
+                <span className="text-surface-muted">Tax</span>
 
                 <div className="flex items-center gap-3">
                   {editing ? (
@@ -823,43 +708,28 @@ export default function CreateInvoice() {
                         min="0"
                         max="100"
                         value={invoice.taxRate}
-                        onChange={(event) =>
-                          updateInvoice(
-                            "taxRate",
-                            event.target.value
-                          )
-                        }
+                        onChange={(event) => updateInvoice("taxRate", event.target.value)}
                         className="brand-input h-8 w-20 text-right"
                       />
 
-                      <span className="text-xs text-surface-muted">
-                        %
-                      </span>
+                      <span className="text-xs text-surface-muted">%</span>
                     </div>
                   ) : (
-                    <span className="text-surface-muted">
-                      {invoice.taxRate}%
-                    </span>
+                    <span className="text-surface-muted">{invoice.taxRate}%</span>
                   )}
 
                   <span className="w-[120px] text-right font-semibold text-surface-fg">
-                    {formatCurrency(
-                      calculations.tax
-                    )}
+                    {formatCurrency(calculations.tax)}
                   </span>
                 </div>
               </div>
 
               <div className="border-t border-surface-border pt-5">
                 <div className="flex items-center justify-between">
-                  <span className="font-display text-lg font-bold text-surface-fg">
-                    Total
-                  </span>
+                  <span className="font-display text-lg font-bold text-surface-fg">Total</span>
 
                   <span className="font-display text-2xl font-bold text-brand-orange">
-                    {formatCurrency(
-                      calculations.total
-                    )}
+                    {formatCurrency(calculations.total)}
                   </span>
                 </div>
               </div>
@@ -880,12 +750,7 @@ export default function CreateInvoice() {
             {editing ? (
               <textarea
                 value={invoice.notes}
-                onChange={(event) =>
-                  updateInvoice(
-                    "notes",
-                    event.target.value
-                  )
-                }
+                onChange={(event) => updateInvoice("notes", event.target.value)}
                 rows={4}
                 className="brand-input w-full resize-none"
               />
@@ -905,13 +770,10 @@ export default function CreateInvoice() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 text-xs text-surface-muted">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-
               Invoice managed securely through OCT20FIVE.
             </div>
 
-            <div className="text-xs text-surface-muted">
-              {invoice.invoiceNumber}
-            </div>
+            <div className="text-xs text-surface-muted">{invoice.invoiceNumber}</div>
           </div>
         </div>
       </div>

@@ -18,8 +18,7 @@ const events = [
   {
     id: "event-001",
     title: "Summer Campaign — Final Review",
-    description:
-      "Final discussion and approval for the Hero Campaign Film before delivery.",
+    description: "Final discussion and approval for the Hero Campaign Film before delivery.",
     project: "Summer Campaign 2026",
     date: "18 Aug 2026",
     day: "18",
@@ -56,8 +55,7 @@ const events = [
   {
     id: "event-002",
     title: "Website Redesign — Final QA Discussion",
-    description:
-      "Walkthrough of the final website QA findings and remaining approval.",
+    description: "Walkthrough of the final website QA findings and remaining approval.",
     project: "Website Redesign",
     date: "20 Aug 2026",
     day: "20",
@@ -94,8 +92,7 @@ const events = [
   {
     id: "event-003",
     title: "Product Launch — Asset Requirements",
-    description:
-      "Discussion regarding product photographs, dimensions and brand guidelines.",
+    description: "Discussion regarding product photographs, dimensions and brand guidelines.",
     project: "Product Launch",
     date: "22 Aug 2026",
     day: "22",
@@ -132,8 +129,7 @@ const events = [
   {
     id: "event-004",
     title: "August Retainer — Content Planning",
-    description:
-      "Monthly planning session for the upcoming social content batch.",
+    description: "Monthly planning session for the upcoming social content batch.",
     project: "Social Content Retainer",
     date: "05 Aug 2026",
     day: "05",
@@ -164,8 +160,7 @@ const events = [
   {
     id: "event-005",
     title: "Hero Film — Creative Direction",
-    description:
-      "Creative direction discussion for the campaign film.",
+    description: "Creative direction discussion for the campaign film.",
     project: "Summer Campaign 2026",
     date: "29 Jul 2026",
     day: "29",
@@ -201,13 +196,9 @@ const events = [
 ];
 
 export default function ClientEvents() {
-  const upcomingEvents = events.filter(
-    (event) => event.status === "upcoming"
-  );
+  const upcomingEvents = events.filter((event) => event.status === "upcoming");
 
-  const pastEvents = events.filter(
-    (event) => event.status === "completed"
-  );
+  const pastEvents = events.filter((event) => event.status === "completed");
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -218,15 +209,13 @@ export default function ClientEvents() {
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-           
-
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
                 Events & Meetings
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Join scheduled discussions with the OCT20FIVE team, review
-                project progress and stay aligned on upcoming deliverables.
+                Join scheduled discussions with the OCT20FIVE team, review project progress and stay
+                aligned on upcoming deliverables.
               </p>
             </div>
 
@@ -273,11 +262,7 @@ export default function ClientEvents() {
 
             <div className="space-y-4">
               {upcomingEvents.map((event, index) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  featured={index === 0}
-                />
+                <EventCard key={event.id} event={event} featured={index === 0} />
               ))}
             </div>
           </section>
@@ -300,10 +285,7 @@ export default function ClientEvents() {
 
             <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-card">
               {pastEvents.map((event) => (
-                <PastEventRow
-                  key={event.id}
-                  event={event}
-                />
+                <PastEventRow key={event.id} event={event} />
               ))}
             </div>
           </section>
@@ -374,13 +356,9 @@ function EventCard({ event, featured = false }) {
           <div className="h-px flex-1 bg-surface-border lg:h-px lg:w-10 lg:flex-none" />
 
           <div className="text-left lg:text-center">
-            <p className="text-xs font-semibold text-surface-fg">
-              {event.time}
-            </p>
+            <p className="text-xs font-semibold text-surface-fg">{event.time}</p>
 
-            <p className="mt-0.5 text-[0.65rem] text-surface-muted">
-              {event.duration}
-            </p>
+            <p className="mt-0.5 text-[0.65rem] text-surface-muted">{event.duration}</p>
           </div>
         </div>
 
@@ -410,20 +388,11 @@ function EventCard({ event, featured = false }) {
 
               {/* MEETING META */}
               <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3">
-                <Meta
-                  icon={CalendarDays}
-                  text={event.date}
-                />
+                <Meta icon={CalendarDays} text={event.date} />
 
-                <Meta
-                  icon={Clock3}
-                  text={`${event.time} · ${event.duration}`}
-                />
+                <Meta icon={Clock3} text={`${event.time} · ${event.duration}`} />
 
-                <Meta
-                  icon={Video}
-                  text={event.platform}
-                />
+                <Meta icon={Video} text={event.platform} />
               </div>
             </div>
 
@@ -461,10 +430,7 @@ function EventCard({ event, featured = false }) {
 
               <div className="flex flex-wrap items-center gap-2">
                 {event.attendees.map((attendee) => (
-                  <Attendee
-                    key={`${event.id}-${attendee.name}`}
-                    attendee={attendee}
-                  />
+                  <Attendee key={`${event.id}-${attendee.name}`} attendee={attendee} />
                 ))}
               </div>
             </div>
@@ -472,9 +438,7 @@ function EventCard({ event, featured = false }) {
             <div className="flex items-center gap-2 text-xs text-surface-muted">
               <span>Organized by</span>
 
-              <span className="font-semibold text-surface-fg">
-                {event.organizer}
-              </span>
+              <span className="font-semibold text-surface-fg">{event.organizer}</span>
             </div>
           </div>
         </div>
@@ -497,28 +461,20 @@ function PastEventRow({ event }) {
             {event.month}
           </span>
 
-          <span className="font-display text-sm font-bold text-surface-fg">
-            {event.day}
-          </span>
+          <span className="font-display text-sm font-bold text-surface-fg">{event.day}</span>
         </div>
 
         <div className="sm:hidden">
-          <p className="text-sm font-semibold text-surface-fg">
-            {event.date}
-          </p>
+          <p className="text-sm font-semibold text-surface-fg">{event.date}</p>
 
-          <p className="text-xs text-surface-muted">
-            {event.time}
-          </p>
+          <p className="text-xs text-surface-muted">{event.time}</p>
         </div>
       </div>
 
       {/* CONTENT */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="truncate text-sm font-bold text-surface-fg">
-            {event.title}
-          </h3>
+          <h3 className="truncate text-sm font-bold text-surface-fg">{event.title}</h3>
 
           <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[0.6rem] font-semibold text-emerald-600">
             Completed
@@ -587,13 +543,9 @@ function Attendee({ attendee }) {
       </div>
 
       <div>
-        <p className="text-[0.65rem] font-semibold leading-none text-surface-fg">
-          {attendee.name}
-        </p>
+        <p className="text-[0.65rem] font-semibold leading-none text-surface-fg">{attendee.name}</p>
 
-        <p className="mt-0.5 text-[0.55rem] leading-none text-surface-muted">
-          {attendee.role}
-        </p>
+        <p className="mt-0.5 text-[0.55rem] leading-none text-surface-muted">{attendee.role}</p>
       </div>
     </div>
   );

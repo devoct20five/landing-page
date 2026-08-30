@@ -10,13 +10,7 @@ import {
   Command,
 } from "lucide-react";
 
-import {
-  projects,
-  clients,
-  teamMembers,
-  tasks,
-  approvals,
-} from "@/data/mockData";
+import { projects, clients, teamMembers, tasks, approvals } from "@/data/mockData";
 
 import { cn } from "@/lib/utils";
 
@@ -57,12 +51,7 @@ function buildResults(query) {
   const results = [];
 
   projects.forEach((project) => {
-    const haystack = [
-      project.name,
-      project.description,
-      project.clientName,
-      project.status,
-    ]
+    const haystack = [project.name, project.description, project.clientName, project.status]
       .map(normalize)
       .join(" ");
 
@@ -79,13 +68,7 @@ function buildResults(query) {
   });
 
   clients.forEach((client) => {
-    const haystack = [
-      client.name,
-      client.shortName,
-      client.email,
-    ]
-      .map(normalize)
-      .join(" ");
+    const haystack = [client.name, client.shortName, client.email].map(normalize).join(" ");
 
     if (haystack.includes(search)) {
       results.push({
@@ -99,12 +82,7 @@ function buildResults(query) {
   });
 
   teamMembers.forEach((member) => {
-    const haystack = [
-      member.name,
-      member.email,
-      member.role,
-      member.department,
-    ]
+    const haystack = [member.name, member.email, member.role, member.department]
       .map(normalize)
       .join(" ");
 
@@ -121,12 +99,7 @@ function buildResults(query) {
   });
 
   tasks.forEach((task) => {
-    const haystack = [
-      task.title,
-      task.description,
-      task.status,
-      task.clientName,
-    ]
+    const haystack = [task.title, task.description, task.status, task.clientName]
       .map(normalize)
       .join(" ");
 
@@ -143,12 +116,7 @@ function buildResults(query) {
   });
 
   approvals.forEach((approval) => {
-    const haystack = [
-      approval.title,
-      approval.description,
-      approval.status,
-      approval.clientName,
-    ]
+    const haystack = [approval.title, approval.description, approval.status, approval.clientName]
       .map(normalize)
       .join(" ");
 
@@ -177,17 +145,13 @@ function ResultItem({ result, active, onSelect }) {
       onClick={onSelect}
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition",
-        active
-          ? "bg-brand-orange/10"
-          : "hover:bg-surface-muted/10"
+        active ? "bg-brand-orange/10" : "hover:bg-surface-muted/10"
       )}
     >
       <div
         className={cn(
           "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-          active
-            ? "bg-brand-orange/15 text-brand-orange"
-            : "bg-surface-muted/10 text-surface-muted"
+          active ? "bg-brand-orange/15 text-brand-orange" : "bg-surface-muted/10 text-surface-muted"
         )}
       >
         <Icon className="h-4 w-4" />
@@ -195,9 +159,7 @@ function ResultItem({ result, active, onSelect }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate text-sm font-semibold text-surface-fg">
-            {result.title}
-          </p>
+          <p className="truncate text-sm font-semibold text-surface-fg">{result.title}</p>
 
           {result.meta && (
             <span className="shrink-0 rounded-full bg-surface-muted/10 px-2 py-0.5 text-[0.6rem] font-semibold text-surface-muted">
@@ -206,27 +168,17 @@ function ResultItem({ result, active, onSelect }) {
           )}
         </div>
 
-        <p className="mt-0.5 truncate text-xs text-surface-muted">
-          {result.description}
-        </p>
+        <p className="mt-0.5 truncate text-xs text-surface-muted">{result.description}</p>
       </div>
 
       <ArrowUpRight
-        className={cn(
-          "h-4 w-4 shrink-0",
-          active
-            ? "text-brand-orange"
-            : "text-surface-muted"
-        )}
+        className={cn("h-4 w-4 shrink-0", active ? "text-brand-orange" : "text-surface-muted")}
       />
     </button>
   );
 }
 
-export default function CommandCenter({
-  open,
-  onOpenChange,
-}) {
+export default function CommandCenter({ open, onOpenChange }) {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
@@ -234,10 +186,7 @@ export default function CommandCenter({
 
   const inputRef = useRef(null);
 
-  const results = useMemo(
-    () => buildResults(query),
-    [query]
-  );
+  const results = useMemo(() => buildResults(query), [query]);
 
   const groupedResults = useMemo(() => {
     return results.reduce((groups, result) => {
@@ -277,21 +226,13 @@ export default function CommandCenter({
       if (event.key === "ArrowDown") {
         event.preventDefault();
 
-        setActiveIndex((current) =>
-          current < results.length - 1
-            ? current + 1
-            : 0
-        );
+        setActiveIndex((current) => (current < results.length - 1 ? current + 1 : 0));
       }
 
       if (event.key === "ArrowUp") {
         event.preventDefault();
 
-        setActiveIndex((current) =>
-          current > 0
-            ? current - 1
-            : results.length - 1
-        );
+        setActiveIndex((current) => (current > 0 ? current - 1 : results.length - 1));
       }
 
       if (event.key === "Enter") {
@@ -311,13 +252,7 @@ export default function CommandCenter({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    open,
-    results,
-    activeIndex,
-    navigate,
-    onOpenChange,
-  ]);
+  }, [open, results, activeIndex, navigate, onOpenChange]);
 
   if (!open) {
     return null;
@@ -365,22 +300,14 @@ export default function CommandCenter({
                 <Command className="h-5 w-5" />
               </div>
 
-              <p className="mt-4 text-sm font-semibold text-surface-fg">
-                Command Center
-              </p>
+              <p className="mt-4 text-sm font-semibold text-surface-fg">Command Center</p>
 
               <p className="mt-1 text-xs text-surface-muted">
                 Search anything across your administration workspace.
               </p>
 
               <div className="mt-5 flex flex-wrap justify-center gap-2">
-                {[
-                  "Projects",
-                  "Clients",
-                  "Team",
-                  "Tasks",
-                  "Approvals",
-                ].map((item) => (
+                {["Projects", "Clients", "Team", "Tasks", "Approvals"].map((item) => (
                   <span
                     key={item}
                     className="rounded-full bg-surface-muted/10 px-3 py-1.5 text-[0.65rem] font-semibold text-surface-muted"
@@ -394,48 +321,44 @@ export default function CommandCenter({
             <div className="py-12 text-center">
               <Search className="mx-auto h-6 w-6 text-surface-muted" />
 
-              <p className="mt-3 text-sm font-semibold text-surface-fg">
-                No results found
-              </p>
+              <p className="mt-3 text-sm font-semibold text-surface-fg">No results found</p>
 
               <p className="mt-1 text-xs text-surface-muted">
                 Try searching for a project, client, person, task or approval.
               </p>
             </div>
           ) : (
-            Object.entries(groupedResults).map(
-              ([type, typeResults]) => {
-                const config = TYPE_CONFIG[type];
+            Object.entries(groupedResults).map(([type, typeResults]) => {
+              const config = TYPE_CONFIG[type];
 
-                return (
-                  <div key={type} className="mb-4 last:mb-0">
-                    <div className="px-3 pb-2 pt-1">
-                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-surface-muted">
-                        {config.label}
-                      </p>
-                    </div>
-
-                    <div className="space-y-0.5">
-                      {typeResults.map((result) => {
-                        const index = resultCounter++;
-
-                        return (
-                          <ResultItem
-                            key={result.id}
-                            result={result}
-                            active={index === activeIndex}
-                            onSelect={() => {
-                              navigate(result.href);
-                              onOpenChange(false);
-                            }}
-                          />
-                        );
-                      })}
-                    </div>
+              return (
+                <div key={type} className="mb-4 last:mb-0">
+                  <div className="px-3 pb-2 pt-1">
+                    <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-surface-muted">
+                      {config.label}
+                    </p>
                   </div>
-                );
-              }
-            )
+
+                  <div className="space-y-0.5">
+                    {typeResults.map((result) => {
+                      const index = resultCounter++;
+
+                      return (
+                        <ResultItem
+                          key={result.id}
+                          result={result}
+                          active={index === activeIndex}
+                          onSelect={() => {
+                            navigate(result.href);
+                            onOpenChange(false);
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
 
@@ -444,19 +367,13 @@ export default function CommandCenter({
           <div className="flex items-center justify-between border-t border-surface-border px-4 py-3">
             <div className="flex items-center gap-3 text-[0.65rem] text-surface-muted">
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-surface-border px-1.5 py-0.5">
-                  ↑
-                </kbd>
-                <kbd className="rounded border border-surface-border px-1.5 py-0.5">
-                  ↓
-                </kbd>
+                <kbd className="rounded border border-surface-border px-1.5 py-0.5">↑</kbd>
+                <kbd className="rounded border border-surface-border px-1.5 py-0.5">↓</kbd>
                 Navigate
               </span>
 
               <span className="hidden sm:flex items-center gap-1">
-                <kbd className="rounded border border-surface-border px-1.5 py-0.5">
-                  Enter
-                </kbd>
+                <kbd className="rounded border border-surface-border px-1.5 py-0.5">Enter</kbd>
                 Open
               </span>
             </div>

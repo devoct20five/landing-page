@@ -1,19 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Menu,
-  ShieldCheck,
-  Search,
-  User,
-  Settings,
-  LogOut,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, ShieldCheck, Search, User, Settings, LogOut, ChevronDown } from "lucide-react";
 
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 import {
   DropdownMenu,
@@ -38,10 +26,7 @@ export default function AdminTopbar() {
   // ⌘ K / Ctrl K
   useEffect(() => {
     function handleShortcut(event) {
-      if (
-        (event.metaKey || event.ctrlKey) &&
-        event.key.toLowerCase() === "k"
-      ) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setCommandOpen(true);
       }
@@ -72,7 +57,6 @@ export default function AdminTopbar() {
   return (
     <>
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-surface-border bg-[color-mix(in_srgb,var(--surface-bg)_85%,transparent)] px-5 py-4 backdrop-blur-md sm:px-8 lg:px-10">
-
         {/* Brand — mobile only */}
         <div className="flex items-center gap-2 lg:hidden">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-orange font-display text-xs font-bold text-white">
@@ -104,14 +88,12 @@ export default function AdminTopbar() {
           </span>
 
           <kbd className="flex items-center gap-1 rounded-md border border-surface-border bg-surface-muted/5 px-2 py-1 text-[0.6rem] font-semibold text-surface-muted">
-            <span>⌘</span>
-            K
+            <span>⌘</span>K
           </kbd>
         </button>
 
         {/* Right side */}
         <div className="ml-auto flex items-center gap-2">
-
           {/* Search — mobile */}
           <button
             type="button"
@@ -170,9 +152,7 @@ export default function AdminTopbar() {
                       {currentStaff.name}
                     </p>
 
-                    <p className="truncate text-xs text-surface-muted">
-                      Administrator
-                    </p>
+                    <p className="truncate text-xs text-surface-muted">Administrator</p>
                   </div>
                 </div>
               </div>
@@ -214,20 +194,14 @@ export default function AdminTopbar() {
           </DropdownMenu>
 
           {/* Mobile navigation */}
-          <Sheet
-            open={open}
-            onOpenChange={setOpen}
-          >
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
                 type="button"
                 className="flex h-9 w-9 items-center justify-center rounded-full text-surface-fg transition hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] lg:hidden"
                 aria-label="Open navigation menu"
               >
-                <Menu
-                  className="h-5 w-5"
-                  strokeWidth={2}
-                />
+                <Menu className="h-5 w-5" strokeWidth={2} />
               </button>
             </SheetTrigger>
 
@@ -236,19 +210,14 @@ export default function AdminTopbar() {
                 Admin navigation menu
               </DialogPrimitive.Title>
 
-              <AdminSidebar
-                onNavigate={() => setOpen(false)}
-              />
+              <AdminSidebar onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </header>
 
       {/* Command Center */}
-      <CommandCenter
-        open={commandOpen}
-        onOpenChange={setCommandOpen}
-      />
+      <CommandCenter open={commandOpen} onOpenChange={setCommandOpen} />
     </>
   );
 }

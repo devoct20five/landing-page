@@ -11,9 +11,7 @@ export default function ProjectCard({ project }) {
           <h3 className="font-display text-xl font-bold text-surface-fg sm:text-[1.4rem]">
             {project.name}
           </h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-surface-muted">
-            {project.description}
-          </p>
+          <p className="mt-1.5 text-sm leading-relaxed text-surface-muted">{project.description}</p>
         </div>
         <StatusBadge status={project.status} className="shrink-0" />
       </div>
@@ -62,10 +60,7 @@ export default function ProjectCard({ project }) {
           </span>
         </div>
 
-        <Link
-          to={`/project/${project.id}`}
-          className="link-arrow shrink-0"
-        >
+        <Link to={`/project/${project.id}`} className="link-arrow shrink-0">
           View Project
           <ArrowRight className="arrow h-4 w-4" strokeWidth={2.25} />
         </Link>

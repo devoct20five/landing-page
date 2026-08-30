@@ -9,12 +9,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
-import {
-  projects,
-  clients,
-  getClientById,
-  getTeamMemberById,
-} from "@/data/mockData";
+import { projects, clients, getClientById, getTeamMemberById } from "@/data/mockData";
 
 import EmptyState from "@/components/shared/EmptyState";
 import { cn } from "@/lib/utils";
@@ -65,10 +60,7 @@ function getProjectStatus(project) {
     return "completed";
   }
 
-  if (
-    project.status === "blocked" ||
-    project.attentionReason
-  ) {
+  if (project.status === "blocked" || project.attentionReason) {
     return "at-risk";
   }
 
@@ -81,8 +73,7 @@ function getProjectStatus(project) {
 
 function StatusBadge({ project }) {
   const status = getProjectStatus(project);
-  const config =
-    STATUS_CONFIG[status] || STATUS_CONFIG.active;
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.active;
 
   return (
     <span
@@ -91,33 +82,20 @@ function StatusBadge({ project }) {
         config.className
       )}
     >
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          config.dot
-        )}
-      />
+      <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
 
       {config.label}
     </span>
   );
 }
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-  alert = false,
-}) {
+function StatCard({ icon: Icon, label, value, description, alert = false }) {
   return (
     <div className="brand-card">
       <div
         className={cn(
           "flex h-9 w-9 items-center justify-center rounded-lg",
-          alert
-            ? "bg-red-500/10 text-red-600"
-            : "bg-brand-orange/10 text-brand-orange"
+          alert ? "bg-red-500/10 text-red-600" : "bg-brand-orange/10 text-brand-orange"
         )}
       >
         <Icon className="h-4 w-4" strokeWidth={2} />
@@ -130,17 +108,13 @@ function StatCard({
       <p
         className={cn(
           "mt-1 font-display text-2xl font-bold tracking-[-0.02em]",
-          alert
-            ? "text-red-600"
-            : "text-surface-fg"
+          alert ? "text-red-600" : "text-surface-fg"
         )}
       >
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -163,16 +137,11 @@ function ProjectRow({ project }) {
         <div className="min-w-[230px]">
           <div className="flex items-start gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
-              <FolderKanban
-                className="h-4 w-4"
-                strokeWidth={2}
-              />
+              <FolderKanban className="h-4 w-4" strokeWidth={2} />
             </div>
 
             <div className="min-w-0">
-              <p className="font-display text-sm font-bold text-surface-fg">
-                {project.name}
-              </p>
+              <p className="font-display text-sm font-bold text-surface-fg">{project.name}</p>
 
               {project.description && (
                 <p className="mt-0.5 max-w-[280px] truncate text-xs text-surface-muted">
@@ -187,14 +156,10 @@ function ProjectRow({ project }) {
       {/* Client */}
       <td className="py-5 pr-5">
         <div className="min-w-[130px]">
-          <p className="text-sm font-semibold text-surface-fg">
-            {client?.name || "—"}
-          </p>
+          <p className="text-sm font-semibold text-surface-fg">{client?.name || "—"}</p>
 
           {client?.shortName && (
-            <p className="mt-0.5 text-xs text-surface-muted">
-              {client.shortName}
-            </p>
+            <p className="mt-0.5 text-xs text-surface-muted">{client.shortName}</p>
           )}
         </div>
       </td>
@@ -203,23 +168,16 @@ function ProjectRow({ project }) {
       <td className="py-5 pr-5">
         <div className="min-w-[140px]">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs text-surface-muted">
-              Progress
-            </span>
+            <span className="text-xs text-surface-muted">Progress</span>
 
-            <span className="text-xs font-bold text-surface-fg">
-              {project.progress ?? 0}%
-            </span>
+            <span className="text-xs font-bold text-surface-fg">{project.progress ?? 0}%</span>
           </div>
 
           <div className="h-1.5 overflow-hidden rounded-full bg-surface-border">
             <div
               className="h-full rounded-full bg-brand-orange transition-all"
               style={{
-                width: `${Math.min(
-                  100,
-                  Math.max(0, project.progress ?? 0)
-                )}%`,
+                width: `${Math.min(100, Math.max(0, project.progress ?? 0))}%`,
               }}
             />
           </div>
@@ -234,14 +192,10 @@ function ProjectRow({ project }) {
               {owner.initials}
             </div>
 
-            <span className="text-xs font-medium text-surface-fg">
-              {owner.name}
-            </span>
+            <span className="text-xs font-medium text-surface-fg">{owner.name}</span>
           </div>
         ) : (
-          <span className="text-xs text-surface-muted">
-            Unassigned
-          </span>
+          <span className="text-xs text-surface-muted">Unassigned</span>
         )}
       </td>
 
@@ -255,15 +209,10 @@ function ProjectRow({ project }) {
         <span
           className={cn(
             "text-xs font-semibold",
-            project.deadlineStatus === "overdue"
-              ? "text-red-600"
-              : "text-surface-muted"
+            project.deadlineStatus === "overdue" ? "text-red-600" : "text-surface-muted"
           )}
         >
-          {project.deadline ||
-            project.deadlineLabel ||
-            project.dueLabel ||
-            "—"}
+          {project.deadline || project.deadlineLabel || project.dueLabel || "—"}
         </span>
       </td>
 
@@ -273,14 +222,10 @@ function ProjectRow({ project }) {
           <div className="flex max-w-[180px] items-start gap-1.5 text-xs text-red-600">
             <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
 
-            <span className="line-clamp-2">
-              {project.attentionReason}
-            </span>
+            <span className="line-clamp-2">{project.attentionReason}</span>
           </div>
         ) : (
-          <span className="text-xs text-surface-muted">
-            —
-          </span>
+          <span className="text-xs text-surface-muted">—</span>
         )}
       </td>
 
@@ -304,39 +249,25 @@ export default function AdminProjects() {
   const [search, setSearch] = useState("");
 
   const portfolioStats = useMemo(() => {
-    const active = projects.filter(
-      (project) =>
-        getProjectStatus(project) === "active"
-    );
+    const active = projects.filter((project) => getProjectStatus(project) === "active");
 
-    const atRisk = projects.filter(
-      (project) =>
-        getProjectStatus(project) === "at-risk"
-    );
+    const atRisk = projects.filter((project) => getProjectStatus(project) === "at-risk");
 
     const clientReview = projects.filter(
-      (project) =>
-        getProjectStatus(project) === "client-review"
+      (project) => getProjectStatus(project) === "client-review"
     );
 
-    const completed = projects.filter(
-      (project) =>
-        getProjectStatus(project) === "completed"
-    );
+    const completed = projects.filter((project) => getProjectStatus(project) === "completed");
 
     const progressProjects = projects.filter(
-      (project) =>
-        getProjectStatus(project) !== "completed"
+      (project) => getProjectStatus(project) !== "completed"
     );
 
     const averageProgress =
       progressProjects.length > 0
         ? Math.round(
-            progressProjects.reduce(
-              (sum, project) =>
-                sum + (project.progress ?? 0),
-              0
-            ) / progressProjects.length
+            progressProjects.reduce((sum, project) => sum + (project.progress ?? 0), 0) /
+              progressProjects.length
           )
         : 0;
 
@@ -357,57 +288,34 @@ export default function AdminProjects() {
       const status = getProjectStatus(project);
 
       const matchesSearch =
-        project.name
-          ?.toLowerCase()
-          .includes(query) ||
-        client?.name
-          ?.toLowerCase()
-          .includes(query);
+        project.name?.toLowerCase().includes(query) || client?.name?.toLowerCase().includes(query);
 
-      const matchesStatus =
-        statusFilter === "all"
-          ? true
-          : statusFilter === statusFilter;
+      const matchesStatus = statusFilter === "all" ? true : statusFilter === statusFilter;
 
-      const matchesClient =
-        clientFilter === "all"
-          ? true
-          : project.clientId === clientFilter;
+      const matchesClient = clientFilter === "all" ? true : project.clientId === clientFilter;
 
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesClient
-      );
+      return matchesSearch && matchesStatus && matchesClient;
     });
-  }, [
-    search,
-    statusFilter,
-    clientFilter,
-  ]);
+  }, [search, statusFilter, clientFilter]);
 
   return (
     <div className="mx-auto max-w-[1500px] animate-fade-up">
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-       
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Projects
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Monitor the entire project portfolio, delivery health,
-            ownership, and areas requiring management attention.
+            Monitor the entire project portfolio, delivery health, ownership, and areas requiring
+            management attention.
           </p>
         </div>
 
         <div className="text-sm text-surface-muted">
-          <span className="font-semibold text-surface-fg">
-            {projects.length}
-          </span>{" "}
-          projects in portfolio
+          <span className="font-semibold text-surface-fg">{projects.length}</span> projects in
+          portfolio
         </div>
       </div>
 
@@ -459,14 +367,8 @@ export default function AdminProjects() {
               <button
                 key={filter.id}
                 type="button"
-                onClick={() =>
-                  setStatusFilter(filter.id)
-                }
-                className={cn(
-                  "pill",
-                  statusFilter === filter.id &&
-                    "pill-active"
-                )}
+                onClick={() => setStatusFilter(filter.id)}
+                className={cn("pill", statusFilter === filter.id && "pill-active")}
               >
                 {filter.label}
               </button>
@@ -479,9 +381,7 @@ export default function AdminProjects() {
 
             <input
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search projects..."
               className="brand-input w-full pl-9"
             />
@@ -492,30 +392,20 @@ export default function AdminProjects() {
         <div className="flex items-center justify-between">
           <select
             value={clientFilter}
-            onChange={(event) =>
-              setClientFilter(event.target.value)
-            }
+            onChange={(event) => setClientFilter(event.target.value)}
             className="brand-input w-auto min-w-[190px] py-2.5 text-sm"
           >
-            <option value="all">
-              All Clients
-            </option>
+            <option value="all">All Clients</option>
 
             {clients.map((client) => (
-              <option
-                key={client.id}
-                value={client.id}
-              >
+              <option key={client.id} value={client.id}>
                 {client.name}
               </option>
             ))}
           </select>
 
           <span className="text-xs text-surface-muted">
-            Showing{" "}
-            <span className="font-semibold text-surface-fg">
-              {filteredProjects.length}
-            </span>{" "}
+            Showing <span className="font-semibold text-surface-fg">{filteredProjects.length}</span>{" "}
             projects
           </span>
         </div>
@@ -532,33 +422,19 @@ export default function AdminProjects() {
           <table className="w-full min-w-[1200px] border-collapse">
             <thead>
               <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                <th className="px-6 py-4">
-                  Project
-                </th>
+                <th className="px-6 py-4">Project</th>
 
-                <th className="py-4 pr-5">
-                  Client
-                </th>
+                <th className="py-4 pr-5">Client</th>
 
-                <th className="py-4 pr-5">
-                  Progress
-                </th>
+                <th className="py-4 pr-5">Progress</th>
 
-                <th className="py-4 pr-5">
-                  Owner
-                </th>
+                <th className="py-4 pr-5">Owner</th>
 
-                <th className="py-4 pr-5">
-                  Status
-                </th>
+                <th className="py-4 pr-5">Status</th>
 
-                <th className="py-4 pr-5">
-                  Deadline
-                </th>
+                <th className="py-4 pr-5">Deadline</th>
 
-                <th className="py-4 pr-5">
-                  Attention
-                </th>
+                <th className="py-4 pr-5">Attention</th>
 
                 <th className="py-4 pr-6" />
               </tr>
@@ -566,10 +442,7 @@ export default function AdminProjects() {
 
             <tbody>
               {filteredProjects.map((project) => (
-                <ProjectRow
-                  key={project.id}
-                  project={project}
-                />
+                <ProjectRow key={project.id} project={project} />
               ))}
             </tbody>
           </table>

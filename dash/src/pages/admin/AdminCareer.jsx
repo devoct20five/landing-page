@@ -134,27 +134,15 @@ const candidates = [
 ];
 
 export default function AdminCareer() {
-  const openJobs = jobs.filter(
-    (job) => job.status === "open"
-  );
+  const openJobs = jobs.filter((job) => job.status === "open");
 
-  const totalApplicants = jobs.reduce(
-    (sum, job) => sum + job.applicants,
-    0
-  );
+  const totalApplicants = jobs.reduce((sum, job) => sum + job.applicants, 0);
 
-  const newApplicants = candidates.filter(
-    (candidate) => candidate.stage === "new"
-  ).length;
+  const newApplicants = candidates.filter((candidate) => candidate.stage === "new").length;
 
-  const interviews = candidates.filter(
-    (candidate) => candidate.stage === "interview"
-  ).length;
+  const interviews = candidates.filter((candidate) => candidate.stage === "interview").length;
 
-  const hired = jobs.reduce(
-    (sum, job) => sum + job.hired,
-    0
-  );
+  const hired = jobs.reduce((sum, job) => sum + job.hired, 0);
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -166,15 +154,12 @@ export default function AdminCareer() {
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
-           
-
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
                 Careers
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Manage open positions, applications and the OCT20FIVE hiring
-                pipeline.
+                Manage open positions, applications and the OCT20FIVE hiring pipeline.
               </p>
             </div>
 
@@ -192,7 +177,6 @@ export default function AdminCareer() {
 
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
         <div className="space-y-6">
-
           {/* =================================================
               OVERVIEW
           ================================================= */}
@@ -239,41 +223,17 @@ export default function AdminCareer() {
             />
 
             <div className="grid grid-cols-2 divide-x divide-y divide-surface-border sm:grid-cols-3 lg:grid-cols-6 lg:divide-y-0">
-              <PipelineStat
-                label="New"
-                value={8}
-                icon={UserPlus}
-              />
+              <PipelineStat label="New" value={8} icon={UserPlus} />
 
-              <PipelineStat
-                label="Under Review"
-                value={14}
-                icon={Search}
-              />
+              <PipelineStat label="Under Review" value={14} icon={Search} />
 
-              <PipelineStat
-                label="Shortlisted"
-                value={9}
-                icon={CheckCircle2}
-              />
+              <PipelineStat label="Shortlisted" value={9} icon={CheckCircle2} />
 
-              <PipelineStat
-                label="Interview"
-                value={6}
-                icon={CalendarDays}
-              />
+              <PipelineStat label="Interview" value={6} icon={CalendarDays} />
 
-              <PipelineStat
-                label="Offer"
-                value={2}
-                icon={BriefcaseBusiness}
-              />
+              <PipelineStat label="Offer" value={2} icon={BriefcaseBusiness} />
 
-              <PipelineStat
-                label="Hired"
-                value={1}
-                icon={CheckCircle2}
-              />
+              <PipelineStat label="Hired" value={1} icon={CheckCircle2} />
             </div>
           </section>
 
@@ -296,10 +256,7 @@ export default function AdminCareer() {
               {jobs
                 .filter((job) => job.status === "open")
                 .map((job) => (
-                  <JobRow
-                    key={job.id}
-                    job={job}
-                  />
+                  <JobRow key={job.id} job={job} />
                 ))}
             </div>
           </section>
@@ -340,10 +297,7 @@ export default function AdminCareer() {
 
             <div className="divide-y divide-surface-border">
               {candidates.map((candidate) => (
-                <CandidateRow
-                  key={candidate.id}
-                  candidate={candidate}
-                />
+                <CandidateRow key={candidate.id} candidate={candidate} />
               ))}
             </div>
           </section>
@@ -360,10 +314,7 @@ export default function AdminCareer() {
 
             <div className="divide-y divide-surface-border">
               {jobs.map((job) => (
-                <AllJobRow
-                  key={job.id}
-                  job={job}
-                />
+                <AllJobRow key={job.id} job={job} />
               ))}
             </div>
           </section>
@@ -377,13 +328,7 @@ export default function AdminCareer() {
    CAREER STAT
 ============================================================ */
 
-function CareerStat({
-  icon: Icon,
-  label,
-  value,
-  description,
-  highlight = false,
-}) {
+function CareerStat({ icon: Icon, label, value, description, highlight = false }) {
   return (
     <div className="rounded-2xl border border-surface-border bg-surface-card p-5">
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-orange/10">
@@ -397,17 +342,13 @@ function CareerStat({
       <p
         className={cn(
           "mt-1 font-display text-2xl font-bold tracking-[-0.04em]",
-          highlight
-            ? "text-brand-orange"
-            : "text-surface-fg"
+          highlight ? "text-brand-orange" : "text-surface-fg"
         )}
       >
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -416,19 +357,13 @@ function CareerStat({
    PIPELINE STAT
 ============================================================ */
 
-function PipelineStat({
-  label,
-  value,
-  icon: Icon,
-}) {
+function PipelineStat({ label, value, icon: Icon }) {
   return (
     <div className="px-5 py-5">
       <div className="flex items-center gap-2">
         <Icon className="h-4 w-4 text-surface-muted" />
 
-        <span className="text-xs font-medium text-surface-muted">
-          {label}
-        </span>
+        <span className="text-xs font-medium text-surface-muted">{label}</span>
       </div>
 
       <p className="mt-2 font-display text-2xl font-bold tracking-[-0.04em] text-surface-fg">
@@ -452,9 +387,7 @@ function JobRow({ job }) {
 
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-bold text-surface-fg">
-              {job.title}
-            </h3>
+            <h3 className="text-sm font-bold text-surface-fg">{job.title}</h3>
 
             <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[0.6rem] font-semibold text-emerald-600">
               Hiring
@@ -484,29 +417,19 @@ function JobRow({ job }) {
             Applicants
           </p>
 
-          <p className="mt-1 text-sm font-bold text-surface-fg">
-            {job.applicants}
-          </p>
+          <p className="mt-1 text-sm font-bold text-surface-fg">{job.applicants}</p>
         </div>
 
         <div>
-          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">
-            New
-          </p>
+          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">New</p>
 
-          <p className="mt-1 text-sm font-bold text-brand-orange">
-            {job.newApplicants}
-          </p>
+          <p className="mt-1 text-sm font-bold text-brand-orange">{job.newApplicants}</p>
         </div>
 
         <div className="hidden sm:block">
-          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">
-            Deadline
-          </p>
+          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">Deadline</p>
 
-          <p className="mt-1 text-sm font-semibold text-surface-fg">
-            {job.deadline}
-          </p>
+          <p className="mt-1 text-sm font-semibold text-surface-fg">{job.deadline}</p>
         </div>
 
         <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-surface-border text-surface-muted transition hover:border-brand-orange hover:text-brand-orange">
@@ -545,8 +468,7 @@ function CandidateRow({ candidate }) {
     },
   };
 
-  const stage =
-    stageMap[candidate.stage] || stageMap.new;
+  const stage = stageMap[candidate.stage] || stageMap.new;
 
   const initials = candidate.name
     .split(" ")
@@ -562,36 +484,25 @@ function CandidateRow({ candidate }) {
         </div>
 
         <div className="min-w-0">
-          <h3 className="text-sm font-bold text-surface-fg">
-            {candidate.name}
-          </h3>
+          <h3 className="text-sm font-bold text-surface-fg">{candidate.name}</h3>
 
           <p className="mt-1 text-xs text-surface-muted">
             {candidate.role} · {candidate.experience}
           </p>
 
-          <p className="mt-0.5 truncate text-xs text-surface-muted">
-            {candidate.email}
-          </p>
+          <p className="mt-0.5 truncate text-xs text-surface-muted">{candidate.email}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-4 sm:shrink-0">
         <div className="hidden text-right md:block">
-          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">
-            Applied
-          </p>
+          <p className="text-[0.65rem] uppercase tracking-[0.08em] text-surface-muted">Applied</p>
 
-          <p className="mt-1 text-xs font-medium text-surface-fg">
-            {candidate.applied}
-          </p>
+          <p className="mt-1 text-xs font-medium text-surface-fg">{candidate.applied}</p>
         </div>
 
         <span
-          className={cn(
-            "rounded-full px-3 py-1.5 text-[0.65rem] font-semibold",
-            stage.className
-          )}
+          className={cn("rounded-full px-3 py-1.5 text-[0.65rem] font-semibold", stage.className)}
         >
           {stage.label}
         </span>
@@ -624,8 +535,7 @@ function AllJobRow({ job }) {
     },
   };
 
-  const status =
-    statusMap[job.status] || statusMap.closed;
+  const status = statusMap[job.status] || statusMap.closed;
 
   return (
     <div className="flex flex-col gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
@@ -635,9 +545,7 @@ function AllJobRow({ job }) {
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-surface-fg">
-            {job.title}
-          </p>
+          <p className="text-sm font-semibold text-surface-fg">{job.title}</p>
 
           <p className="mt-0.5 text-xs text-surface-muted">
             {job.department} · Posted {job.posted}
@@ -647,32 +555,21 @@ function AllJobRow({ job }) {
 
       <div className="flex items-center gap-5">
         <div className="hidden sm:block">
-          <p className="text-[0.6rem] uppercase tracking-[0.08em] text-surface-muted">
-            Applicants
-          </p>
+          <p className="text-[0.6rem] uppercase tracking-[0.08em] text-surface-muted">Applicants</p>
 
-          <p className="mt-1 text-xs font-bold text-surface-fg">
-            {job.applicants}
-          </p>
+          <p className="mt-1 text-xs font-bold text-surface-fg">{job.applicants}</p>
         </div>
 
         {job.hired > 0 && (
           <div className="hidden sm:block">
-            <p className="text-[0.6rem] uppercase tracking-[0.08em] text-surface-muted">
-              Hired
-            </p>
+            <p className="text-[0.6rem] uppercase tracking-[0.08em] text-surface-muted">Hired</p>
 
-            <p className="mt-1 text-xs font-bold text-emerald-600">
-              {job.hired}
-            </p>
+            <p className="mt-1 text-xs font-bold text-emerald-600">{job.hired}</p>
           </div>
         )}
 
         <span
-          className={cn(
-            "rounded-full px-3 py-1.5 text-[0.65rem] font-semibold",
-            status.className
-          )}
+          className={cn("rounded-full px-3 py-1.5 text-[0.65rem] font-semibold", status.className)}
         >
           {status.label}
         </span>
@@ -689,11 +586,7 @@ function AllJobRow({ job }) {
    SECTION HEADER
 ============================================================ */
 
-function SectionHeader({
-  title,
-  description,
-  action,
-}) {
+function SectionHeader({ title, description, action }) {
   return (
     <div className="flex flex-col gap-3 border-b border-surface-border px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -701,9 +594,7 @@ function SectionHeader({
           {title}
         </h2>
 
-        <p className="mt-1 text-sm text-surface-muted">
-          {description}
-        </p>
+        <p className="mt-1 text-sm text-surface-muted">{description}</p>
       </div>
 
       {action}

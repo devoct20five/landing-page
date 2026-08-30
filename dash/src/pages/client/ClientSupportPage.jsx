@@ -103,8 +103,8 @@ export default function ClientSupport() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Find your agreements, project documents, policies and
-                information about your engagement with us.
+                Find your agreements, project documents, policies and information about your
+                engagement with us.
               </p>
             </div>
 
@@ -141,17 +141,13 @@ export default function ClientSupport() {
             </h2>
 
             <p className="mt-1 text-sm text-surface-muted">
-              Access important documents associated with your account and
-              engagement.
+              Access important documents associated with your account and engagement.
             </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             {documents.map((document) => (
-              <DocumentCard
-                key={document.id}
-                document={document}
-              />
+              <DocumentCard key={document.id} document={document} />
             ))}
           </div>
         </section>
@@ -197,8 +193,8 @@ function SupportBanner() {
             </h2>
 
             <p className="mt-1 max-w-2xl text-sm leading-6 text-surface-muted">
-              If you have questions about your project, billing, agreements
-              or anything else in your workspace, reach out to our team.
+              If you have questions about your project, billing, agreements or anything else in your
+              workspace, reach out to our team.
             </p>
           </div>
         </div>
@@ -246,9 +242,7 @@ function DocumentCard({ document }) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-sm font-bold text-surface-fg">
-                  {document.title}
-                </h3>
+                <h3 className="text-sm font-bold text-surface-fg">{document.title}</h3>
 
                 {document.signed && (
                   <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[0.5rem] font-bold text-emerald-600">
@@ -266,14 +260,10 @@ function DocumentCard({ document }) {
             <ArrowUpRight className="h-4 w-4 shrink-0 text-surface-muted transition-colors group-hover:text-brand-orange" />
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-surface-muted">
-            {document.description}
-          </p>
+          <p className="mt-3 text-xs leading-5 text-surface-muted">{document.description}</p>
 
           <div className="mt-4 flex items-center justify-between">
-            <span className="text-[0.6rem] font-medium text-surface-muted">
-              {document.updated}
-            </span>
+            <span className="text-[0.6rem] font-medium text-surface-muted">{document.updated}</span>
 
             <span className="inline-flex items-center gap-1 text-[0.6rem] font-bold text-surface-muted group-hover:text-brand-orange">
               View Document
@@ -338,13 +328,7 @@ function AgreementStatus() {
    STATUS ITEM
 ============================================================ */
 
-function StatusItem({
-  icon: Icon,
-  label,
-  value,
-  description,
-  status,
-}) {
+function StatusItem({ icon: Icon, label, value, description, status }) {
   return (
     <div className="border-b border-surface-border p-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
       <div className="flex items-start gap-3">
@@ -357,13 +341,9 @@ function StatusItem({
             {label}
           </p>
 
-          <p className="mt-1 text-sm font-bold text-surface-fg">
-            {value}
-          </p>
+          <p className="mt-1 text-sm font-bold text-surface-fg">{value}</p>
 
-          <p className="mt-0.5 text-[0.65rem] text-surface-muted">
-            {description}
-          </p>
+          <p className="mt-0.5 text-[0.65rem] text-surface-muted">{description}</p>
         </div>
       </div>
     </div>
@@ -389,8 +369,8 @@ function NeedHelp() {
             </h2>
 
             <p className="mt-1 text-xs leading-5 text-surface-muted">
-              Contact our support team for questions about your project,
-              payments, agreements or account.
+              Contact our support team for questions about your project, payments, agreements or
+              account.
             </p>
           </div>
         </div>
@@ -420,13 +400,7 @@ function MailIcon() {
       strokeWidth="2"
       className="h-3.5 w-3.5"
     >
-      <rect
-        width="20"
-        height="16"
-        x="2"
-        y="4"
-        rx="2"
-      />
+      <rect width="20" height="16" x="2" y="4" rx="2" />
 
       <path d="m22 7-8.97 5.7a2 2 0 0 1-2.06 0L2 7" />
     </svg>

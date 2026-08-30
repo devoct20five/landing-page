@@ -31,8 +31,7 @@ const activities = [
     type: "approval",
     action: "submitted",
     title: "Hero Campaign Film — Final Cut submitted for approval",
-    description:
-      "Rahul Mehta submitted version v4.2 of the final campaign film for your review.",
+    description: "Rahul Mehta submitted version v4.2 of the final campaign film for your review.",
     actor: "Rahul Mehta",
     role: "Editor",
     initials: "RM",
@@ -47,8 +46,7 @@ const activities = [
     type: "comment",
     action: "commented",
     title: "New comment on Hero Campaign Film",
-    description:
-      "The music has been reduced around 00:42 as requested.",
+    description: "The music has been reduced around 00:42 as requested.",
     actor: "Rahul Mehta",
     role: "Editor",
     initials: "RM",
@@ -63,8 +61,7 @@ const activities = [
     type: "file",
     action: "uploaded",
     title: "Homepage Design — Final uploaded",
-    description:
-      "Priya Nair uploaded the latest homepage design incorporating your feedback.",
+    description: "Priya Nair uploaded the latest homepage design incorporating your feedback.",
     actor: "Priya Nair",
     role: "Designer",
     initials: "PN",
@@ -79,8 +76,7 @@ const activities = [
     type: "approval",
     action: "approved",
     title: "August Social Content Batch approved",
-    description:
-      "You approved the August social content batch.",
+    description: "You approved the August social content batch.",
     actor: "You",
     role: "Client",
     initials: "DV",
@@ -96,8 +92,7 @@ const activities = [
     type: "billing",
     action: "payment",
     title: "Payment received",
-    description:
-      "Payment of ₹95,000 was successfully credited against invoice INV-2026-006.",
+    description: "Payment of ₹95,000 was successfully credited against invoice INV-2026-006.",
     actor: "You",
     role: "Client",
     initials: "DV",
@@ -113,8 +108,7 @@ const activities = [
     type: "file",
     action: "uploaded",
     title: "Campaign storyboard uploaded",
-    description:
-      "Rahul Mehta uploaded a revised storyboard for your review.",
+    description: "Rahul Mehta uploaded a revised storyboard for your review.",
     actor: "Rahul Mehta",
     role: "Editor",
     initials: "RM",
@@ -146,8 +140,7 @@ const activities = [
     type: "approval",
     action: "approved",
     title: "Hero Film — Creative Direction approved",
-    description:
-      "You approved the creative direction and storyboard.",
+    description: "You approved the creative direction and storyboard.",
     actor: "You",
     role: "Client",
     initials: "DV",
@@ -170,11 +163,9 @@ export default function ClientActivityLog() {
 
   const filteredActivities = useMemo(() => {
     return activities.filter((activity) => {
-      const matchesType =
-        filter === "all" || activity.type === filter;
+      const matchesType = filter === "all" || activity.type === filter;
 
-      const matchesProject =
-        project === "all" || activity.project === project;
+      const matchesProject = project === "all" || activity.project === project;
 
       const query = search.toLowerCase().trim();
 
@@ -188,18 +179,15 @@ export default function ClientActivityLog() {
     });
   }, [filter, project, search]);
 
-  const groupedActivities = filteredActivities.reduce(
-    (groups, activity) => {
-      if (!groups[activity.dateGroup]) {
-        groups[activity.dateGroup] = [];
-      }
+  const groupedActivities = filteredActivities.reduce((groups, activity) => {
+    if (!groups[activity.dateGroup]) {
+      groups[activity.dateGroup] = [];
+    }
 
-      groups[activity.dateGroup].push(activity);
+    groups[activity.dateGroup].push(activity);
 
-      return groups;
-    },
-    {}
-  );
+    return groups;
+  }, {});
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -224,8 +212,8 @@ export default function ClientActivityLog() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Follow project updates, deliverables, approvals, comments and
-                billing activity across your workspace.
+                Follow project updates, deliverables, approvals, comments and billing activity
+                across your workspace.
               </p>
             </div>
 
@@ -301,15 +289,9 @@ export default function ClientActivityLog() {
                 className="appearance-none rounded-xl border border-surface-border bg-surface-bg px-4 py-2.5 text-xs font-semibold text-surface-fg outline-none focus:border-brand-orange/50"
               >
                 <option value="all">All projects</option>
-                <option value="Summer Campaign 2026">
-                  Summer Campaign 2026
-                </option>
-                <option value="Website Redesign">
-                  Website Redesign
-                </option>
-                <option value="Social Content Retainer">
-                  Social Content Retainer
-                </option>
+                <option value="Summer Campaign 2026">Summer Campaign 2026</option>
+                <option value="Website Redesign">Website Redesign</option>
+                <option value="Social Content Retainer">Social Content Retainer</option>
               </select>
             </div>
           </div>
@@ -322,15 +304,9 @@ export default function ClientActivityLog() {
         <div className="mt-8">
           {Object.keys(groupedActivities).length > 0 ? (
             <div className="space-y-10">
-              {Object.entries(groupedActivities).map(
-                ([date, items]) => (
-                  <ActivityGroup
-                    key={date}
-                    date={date}
-                    activities={items}
-                  />
-                )
-              )}
+              {Object.entries(groupedActivities).map(([date, items]) => (
+                <ActivityGroup key={date} date={date} activities={items} />
+              ))}
             </div>
           ) : (
             <EmptyActivityState />
@@ -349,15 +325,12 @@ function ActivityGroup({ date, activities }) {
   return (
     <section>
       <div className="mb-5 flex items-center gap-3">
-        <h2 className="font-display text-sm font-bold text-surface-fg">
-          {date}
-        </h2>
+        <h2 className="font-display text-sm font-bold text-surface-fg">{date}</h2>
 
         <div className="h-px flex-1 bg-surface-border" />
 
         <span className="text-[0.6rem] font-medium text-surface-muted">
-          {activities.length}{" "}
-          {activities.length === 1 ? "activity" : "activities"}
+          {activities.length} {activities.length === 1 ? "activity" : "activities"}
         </span>
       </div>
 
@@ -368,10 +341,7 @@ function ActivityGroup({ date, activities }) {
 
         <div className="space-y-3">
           {activities.map((activity) => (
-            <ActivityItem
-              key={activity.id}
-              activity={activity}
-            />
+            <ActivityItem key={activity.id} activity={activity} />
           ))}
         </div>
       </div>
@@ -421,16 +391,12 @@ function ActivityItem({ activity }) {
                 {config.label}
               </span>
 
-              <span className="text-[0.6rem] text-surface-muted">
-                {activity.timestamp}
-              </span>
+              <span className="text-[0.6rem] text-surface-muted">{activity.timestamp}</span>
             </div>
 
             {/* Title */}
 
-            <h3 className="mt-2 text-sm font-bold leading-5 text-surface-fg">
-              {activity.title}
-            </h3>
+            <h3 className="mt-2 text-sm font-bold leading-5 text-surface-fg">{activity.title}</h3>
 
             {/* Description */}
 
@@ -445,9 +411,7 @@ function ActivityItem({ activity }) {
                 <div
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full text-[0.5rem] font-bold",
-                    activity.own
-                      ? "bg-brand-orange text-white"
-                      : "bg-surface-bg text-surface-fg"
+                    activity.own ? "bg-brand-orange text-white" : "bg-surface-bg text-surface-fg"
                   )}
                 >
                   {activity.initials}
@@ -457,14 +421,10 @@ function ActivityItem({ activity }) {
                   {activity.actor}
                 </span>
 
-                <span className="text-[0.6rem] text-surface-muted">
-                  · {activity.role}
-                </span>
+                <span className="text-[0.6rem] text-surface-muted">· {activity.role}</span>
               </div>
 
-              <span className="text-[0.6rem] text-surface-muted">
-                {activity.project}
-              </span>
+              <span className="text-[0.6rem] text-surface-muted">{activity.project}</span>
 
               <span className="rounded-md bg-surface-bg px-2 py-1 text-[0.55rem] font-semibold text-surface-muted">
                 {activity.metadata}
@@ -596,13 +556,10 @@ function EmptyActivityState() {
         <Activity className="h-5 w-5 text-surface-muted" />
       </div>
 
-      <h2 className="mt-4 font-display text-lg font-bold text-surface-fg">
-        No activity found
-      </h2>
+      <h2 className="mt-4 font-display text-lg font-bold text-surface-fg">No activity found</h2>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-surface-muted">
-        Try changing your filters or search terms to find the activity
-        you're looking for.
+        Try changing your filters or search terms to find the activity you're looking for.
       </p>
     </div>
   );

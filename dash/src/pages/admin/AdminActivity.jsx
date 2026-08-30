@@ -101,11 +101,7 @@ function inferActivityType(item) {
 
   const text = item.text?.toLowerCase() || "";
 
-  if (
-    text.includes("task") ||
-    text.includes("completed") ||
-    text.includes("assigned")
-  ) {
+  if (text.includes("task") || text.includes("completed") || text.includes("assigned")) {
     return "task";
   }
 
@@ -117,11 +113,7 @@ function inferActivityType(item) {
     return "project";
   }
 
-  if (
-    text.includes("approval") ||
-    text.includes("approved") ||
-    text.includes("review")
-  ) {
+  if (text.includes("approval") || text.includes("approved") || text.includes("review")) {
     return "approval";
   }
 
@@ -134,19 +126,11 @@ function inferActivityType(item) {
     return "user";
   }
 
-  if (
-    text.includes("file") ||
-    text.includes("upload") ||
-    text.includes("uploaded")
-  ) {
+  if (text.includes("file") || text.includes("upload") || text.includes("uploaded")) {
     return "file";
   }
 
-  if (
-    text.includes("comment") ||
-    text.includes("message") ||
-    text.includes("mentioned")
-  ) {
+  if (text.includes("comment") || text.includes("message") || text.includes("mentioned")) {
     return "comment";
   }
 
@@ -189,12 +173,7 @@ function formatActivityDate(timestamp) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-}) {
+function StatCard({ icon: Icon, label, value, description }) {
   return (
     <div className="brand-card">
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -209,9 +188,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -221,8 +198,7 @@ function StatCard({
 ============================================================ */
 
 function ActivityTypeBadge({ type }) {
-  const config =
-    TYPE_CONFIG[type] || TYPE_CONFIG.system;
+  const config = TYPE_CONFIG[type] || TYPE_CONFIG.system;
 
   const Icon = config.icon;
 
@@ -282,9 +258,7 @@ function ActivityRow({ item }) {
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-sm font-semibold text-surface-fg">
-                {user?.name || "System"}
-              </p>
+              <p className="text-sm font-semibold text-surface-fg">{user?.name || "System"}</p>
 
               <ActivityTypeBadge type={type} />
             </div>
@@ -326,19 +300,10 @@ function ActivityRow({ item }) {
    FILTER BAR
 ============================================================ */
 
-function FilterBar({
-  search,
-  setSearch,
-  activeType,
-  setActiveType,
-  activeUser,
-  setActiveUser,
-}) {
+function FilterBar({ search, setSearch, activeType, setActiveType, activeUser, setActiveUser }) {
   const [showFilters, setShowFilters] = useState(false);
 
-  const hasFilters =
-    activeType !== "all" ||
-    activeUser !== "all";
+  const hasFilters = activeType !== "all" || activeUser !== "all";
 
   function clearFilters() {
     setActiveType("all");
@@ -355,9 +320,7 @@ function FilterBar({
 
           <input
             value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
+            onChange={(event) => setSearch(event.target.value)}
             placeholder="Search activity..."
             className="brand-input w-full pl-9"
           />
@@ -366,9 +329,7 @@ function FilterBar({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() =>
-              setShowFilters((value) => !value)
-            }
+            onClick={() => setShowFilters((value) => !value)}
             className={cn(
               "inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition",
               showFilters || hasFilters
@@ -378,11 +339,9 @@ function FilterBar({
           >
             <Filter className="h-4 w-4" />
             Filters
-
             {hasFilters && (
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[0.65rem] text-white">
-                {(activeType !== "all" ? 1 : 0) +
-                  (activeUser !== "all" ? 1 : 0)}
+                {(activeType !== "all" ? 1 : 0) + (activeUser !== "all" ? 1 : 0)}
               </span>
             )}
           </button>
@@ -411,16 +370,11 @@ function FilterBar({
             <div className="relative">
               <select
                 value={activeType}
-                onChange={(event) =>
-                  setActiveType(event.target.value)
-                }
+                onChange={(event) => setActiveType(event.target.value)}
                 className="brand-input w-full appearance-none pr-9"
               >
                 {ACTIVITY_TYPES.map((type) => (
-                  <option
-                    key={type.id}
-                    value={type.id}
-                  >
+                  <option key={type.id} value={type.id}>
                     {type.label}
                   </option>
                 ))}
@@ -439,20 +393,13 @@ function FilterBar({
             <div className="relative">
               <select
                 value={activeUser}
-                onChange={(event) =>
-                  setActiveUser(event.target.value)
-                }
+                onChange={(event) => setActiveUser(event.target.value)}
                 className="brand-input w-full appearance-none pr-9"
               >
-                <option value="all">
-                  Everyone
-                </option>
+                <option value="all">Everyone</option>
 
                 {teamMembers.map((member) => (
-                  <option
-                    key={member.id}
-                    value={member.id}
-                  >
+                  <option key={member.id} value={member.id}>
                     {member.name}
                   </option>
                 ))}
@@ -481,17 +428,13 @@ export default function AdminActivity() {
    * Normalize the existing mock activity data.
    */
   const activity = useMemo(() => {
-    return [...(staffActivity || [])].map(
-      (item, index) => ({
-        ...item,
-        _id:
-          item.id ||
-          `activity-${index}`,
-        _type: inferActivityType(item),
-        _user: getActivityUser(item),
-        _project: getActivityProject(item),
-      })
-    );
+    return [...(staffActivity || [])].map((item, index) => ({
+      ...item,
+      _id: item.id || `activity-${index}`,
+      _type: inferActivityType(item),
+      _user: getActivityUser(item),
+      _project: getActivityProject(item),
+    }));
   }, []);
 
   /*
@@ -504,36 +447,18 @@ export default function AdminActivity() {
       const matchesSearch =
         !query ||
         item.text?.toLowerCase().includes(query) ||
-        item._user?.name
-          ?.toLowerCase()
-          .includes(query) ||
-        item._project?.name
-          ?.toLowerCase()
-          .includes(query);
+        item._user?.name?.toLowerCase().includes(query) ||
+        item._project?.name?.toLowerCase().includes(query);
 
-      const matchesType =
-        activeType === "all" ||
-        item._type === activeType;
+      const matchesType = activeType === "all" || item._type === activeType;
 
-      const matchesUser =
-        activeUser === "all" ||
-        item._user?.id === activeUser;
+      const matchesUser = activeUser === "all" || item._user?.id === activeUser;
 
-      return (
-        matchesSearch &&
-        matchesType &&
-        matchesUser
-      );
+      return matchesSearch && matchesType && matchesUser;
     });
-  }, [
-    activity,
-    search,
-    activeType,
-    activeUser,
-  ]);
+  }, [activity, search, activeType, activeUser]);
 
-  const visibleActivity =
-    filteredActivity.slice(0, visibleCount);
+  const visibleActivity = filteredActivity.slice(0, visibleCount);
 
   /* ============================================================
      STATS
@@ -541,23 +466,13 @@ export default function AdminActivity() {
 
   const totalActivity = activity.length;
 
-  const taskActivity = activity.filter(
-    (item) => item._type === "task"
-  ).length;
+  const taskActivity = activity.filter((item) => item._type === "task").length;
 
-  const projectActivity = activity.filter(
-    (item) => item._type === "project"
-  ).length;
+  const projectActivity = activity.filter((item) => item._type === "project").length;
 
-  const userActivity = activity.filter(
-    (item) => item._type === "user"
-  ).length;
+  const userActivity = activity.filter((item) => item._type === "user").length;
 
-  const activePeople = new Set(
-    activity
-      .map((item) => item._user?.id)
-      .filter(Boolean)
-  ).size;
+  const activePeople = new Set(activity.map((item) => item._user?.id).filter(Boolean)).size;
 
   return (
     <div className="mx-auto max-w-[1400px] animate-fade-up">
@@ -567,16 +482,13 @@ export default function AdminActivity() {
 
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-        
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Activity
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Monitor activity across the OCT20FIVE
-            workspace, including projects, tasks,
-            users, approvals and files.
+            Monitor activity across the OCT20FIVE workspace, including projects, tasks, users,
+            approvals and files.
           </p>
         </div>
 
@@ -631,21 +543,15 @@ export default function AdminActivity() {
       <section>
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Workspace Activity
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Workspace Activity</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
-              Everything happening across the
-              organisation.
+              Everything happening across the organisation.
             </p>
           </div>
 
           <span className="text-xs font-medium text-surface-muted">
-            {filteredActivity.length}{" "}
-            {filteredActivity.length === 1
-              ? "event"
-              : "events"}
+            {filteredActivity.length} {filteredActivity.length === 1 ? "event" : "events"}
           </span>
         </div>
 
@@ -671,24 +577,16 @@ export default function AdminActivity() {
           <>
             <div className="brand-card overflow-hidden p-0">
               {visibleActivity.map((item) => (
-                <ActivityRow
-                  key={item._id}
-                  item={item}
-                />
+                <ActivityRow key={item._id} item={item} />
               ))}
             </div>
 
             {/* Load more */}
-            {visibleCount <
-              filteredActivity.length && (
+            {visibleCount < filteredActivity.length && (
               <div className="mt-5 flex justify-center">
                 <button
                   type="button"
-                  onClick={() =>
-                    setVisibleCount(
-                      (count) => count + 15
-                    )
-                  }
+                  onClick={() => setVisibleCount((count) => count + 15)}
                   className="inline-flex items-center gap-2 rounded-xl border border-surface-border bg-surface-card px-5 py-2.5 text-sm font-semibold text-surface-fg transition hover:border-brand-orange hover:text-brand-orange"
                 >
                   Load More
@@ -711,15 +609,11 @@ export default function AdminActivity() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-surface-fg">
-              Administrator activity log
-            </p>
+            <p className="text-sm font-semibold text-surface-fg">Administrator activity log</p>
 
             <p className="mt-1 text-xs leading-5 text-surface-muted">
-              This view is intended for administrators
-              and provides organisation-wide visibility.
-              Individual staff members should use their
-              own activity page for personal activity.
+              This view is intended for administrators and provides organisation-wide visibility.
+              Individual staff members should use their own activity page for personal activity.
             </p>
           </div>
         </div>

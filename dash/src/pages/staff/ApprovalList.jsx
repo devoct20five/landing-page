@@ -15,9 +15,7 @@ export default function ApprovalList({ approvals = [] }) {
         {/* Page Header */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl font-bold text-surface-fg">
-              Approvals
-            </h1>
+            <h1 className="font-display text-2xl font-bold text-surface-fg">Approvals</h1>
 
             <p className="mt-1 text-sm text-surface-muted">
               Review, manage, and track client approvals.
@@ -47,9 +45,7 @@ export default function ApprovalList({ approvals = [] }) {
       {/* Page Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-bold text-surface-fg">
-            Approvals
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-surface-fg">Approvals</h1>
 
           <p className="mt-1 text-sm text-surface-muted">
             Review, manage, and track client approvals.
@@ -69,10 +65,7 @@ export default function ApprovalList({ approvals = [] }) {
       {/* Approval List */}
       <div className="space-y-3">
         {approvals.map((approval) => (
-          <ApprovalCard
-            key={approval.id}
-            approval={approval}
-          />
+          <ApprovalCard key={approval.id} approval={approval} />
         ))}
       </div>
     </div>

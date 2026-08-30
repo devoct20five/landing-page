@@ -1,9 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  ShieldX,
-  ArrowLeft,
-  LayoutDashboard,
-} from "lucide-react";
+import { ShieldX, ArrowLeft, LayoutDashboard } from "lucide-react";
 
 export default function NoAccess() {
   const navigate = useNavigate();
@@ -13,10 +9,7 @@ export default function NoAccess() {
       <div className="w-full max-w-md text-center">
         {/* Icon */}
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500/10">
-          <ShieldX
-            className="h-7 w-7 text-red-500"
-            strokeWidth={2}
-          />
+          <ShieldX className="h-7 w-7 text-red-500" strokeWidth={2} />
         </div>
 
         {/* Heading */}
@@ -29,9 +22,8 @@ export default function NoAccess() {
         </h1>
 
         <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-surface-muted">
-          You don't have the required permissions to view this page.
-          If you believe this is a mistake, please contact your
-          administrator.
+          You don't have the required permissions to view this page. If you believe this is a
+          mistake, please contact your administrator.
         </p>
 
         {/* Actions */}
@@ -78,13 +70,9 @@ export default function NoAccess() {
 
         {/* Permission reference */}
         <div className="mt-8 border-t border-surface-border pt-5">
-          <p className="text-xs text-surface-muted">
-            Permission required
-          </p>
+          <p className="text-xs text-surface-muted">Permission required</p>
 
-          <p className="mt-1 font-mono text-[0.7rem] text-surface-muted">
-            ACCESS_DENIED
-          </p>
+          <p className="mt-1 font-mono text-[0.7rem] text-surface-muted">ACCESS_DENIED</p>
         </div>
       </div>
     </div>

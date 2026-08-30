@@ -13,18 +13,13 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-import {
-  currentClient,
-  projects,
-} from "@/data/mockData";
+import { currentClient, projects } from "@/data/mockData";
 
 export default function ProjectPayment() {
   const { projectId } = useParams();
 
   const project = projects.find(
-    (item) =>
-      item.id === projectId &&
-      item.clientId === currentClient.id
+    (item) => item.id === projectId && item.clientId === currentClient.id
   );
 
   /*
@@ -41,13 +36,10 @@ export default function ProjectPayment() {
             <AlertCircle className="h-6 w-6 text-red-500" />
           </div>
 
-          <h1 className="mt-5 font-display text-xl font-bold text-surface-fg">
-            Project not found
-          </h1>
+          <h1 className="mt-5 font-display text-xl font-bold text-surface-fg">Project not found</h1>
 
           <p className="mt-2 text-sm leading-6 text-surface-muted">
-            We couldn't find this project or you don't have access
-            to it.
+            We couldn't find this project or you don't have access to it.
           </p>
 
           <Link
@@ -120,18 +112,10 @@ export default function ProjectPayment() {
     dueDate: "—",
   };
 
-  const remaining = Math.max(
-    invoice.total - invoice.paid,
-    0
-  );
+  const remaining = Math.max(invoice.total - invoice.paid, 0);
 
   const paymentPercentage =
-    invoice.total > 0
-      ? Math.min(
-          Math.round((invoice.paid / invoice.total) * 100),
-          100
-        )
-      : 0;
+    invoice.total > 0 ? Math.min(Math.round((invoice.paid / invoice.total) * 100), 100) : 0;
 
   /*
    * If nothing is left to pay.
@@ -153,29 +137,20 @@ export default function ProjectPayment() {
             </h2>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-surface-muted">
-              This project has been fully paid. There is no
-              outstanding balance at the moment.
+              This project has been fully paid. There is no outstanding balance at the moment.
             </p>
 
             <div className="mx-auto mt-8 max-w-sm rounded-xl border border-surface-border bg-surface-bg p-5">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-surface-muted">
-                  Total project amount
-                </span>
+                <span className="text-surface-muted">Total project amount</span>
 
-                <span className="font-bold text-surface-fg">
-                  {formatCurrency(invoice.total)}
-                </span>
+                <span className="font-bold text-surface-fg">{formatCurrency(invoice.total)}</span>
               </div>
 
               <div className="mt-3 flex items-center justify-between text-sm">
-                <span className="text-surface-muted">
-                  Amount paid
-                </span>
+                <span className="text-surface-muted">Amount paid</span>
 
-                <span className="font-bold text-emerald-600">
-                  {formatCurrency(invoice.paid)}
-                </span>
+                <span className="font-bold text-emerald-600">{formatCurrency(invoice.paid)}</span>
               </div>
             </div>
 
@@ -232,9 +207,7 @@ export default function ProjectPayment() {
                         {formatCurrency(remaining)}
                       </p>
 
-                      <p className="mt-1 text-sm text-surface-muted">
-                        Remaining balance
-                      </p>
+                      <p className="mt-1 text-sm text-surface-muted">Remaining balance</p>
                     </div>
 
                     <span className="rounded-full bg-brand-orange/10 px-3 py-1.5 text-xs font-bold text-brand-orange">
@@ -246,24 +219,13 @@ export default function ProjectPayment() {
                 {/* Amount breakdown */}
 
                 <div className="mt-6 space-y-4">
-                  <PaymentLine
-                    label="Project Total"
-                    value={formatCurrency(invoice.total)}
-                  />
+                  <PaymentLine label="Project Total" value={formatCurrency(invoice.total)} />
 
-                  <PaymentLine
-                    label="Already Paid"
-                    value={formatCurrency(invoice.paid)}
-                    positive
-                  />
+                  <PaymentLine label="Already Paid" value={formatCurrency(invoice.paid)} positive />
 
                   <div className="h-px bg-surface-border" />
 
-                  <PaymentLine
-                    label="Remaining"
-                    value={formatCurrency(remaining)}
-                    strong
-                  />
+                  <PaymentLine label="Remaining" value={formatCurrency(remaining)} strong />
                 </div>
               </div>
             </section>
@@ -288,9 +250,7 @@ export default function ProjectPayment() {
                     </div>
 
                     <div>
-                      <p className="text-sm font-bold text-surface-fg">
-                        Card / UPI
-                      </p>
+                      <p className="text-sm font-bold text-surface-fg">Card / UPI</p>
 
                       <p className="mt-1 text-xs text-surface-muted">
                         Secure payment via payment gateway
@@ -312,13 +272,9 @@ export default function ProjectPayment() {
                   </div>
 
                   <div>
-                    <p className="text-sm font-bold text-surface-fg">
-                      Bank Transfer
-                    </p>
+                    <p className="text-sm font-bold text-surface-fg">Bank Transfer</p>
 
-                    <p className="mt-1 text-xs text-surface-muted">
-                      View OCT20FIVE bank details
-                    </p>
+                    <p className="mt-1 text-xs text-surface-muted">View OCT20FIVE bank details</p>
                   </div>
                 </button>
               </div>
@@ -330,13 +286,11 @@ export default function ProjectPayment() {
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
 
               <div>
-                <p className="text-sm font-semibold text-surface-fg">
-                  Secure payment
-                </p>
+                <p className="text-sm font-semibold text-surface-fg">Secure payment</p>
 
                 <p className="mt-1 text-xs leading-5 text-surface-muted">
-                  Your payment will be processed securely. OCT20FIVE
-                  does not store your card details.
+                  Your payment will be processed securely. OCT20FIVE does not store your card
+                  details.
                 </p>
               </div>
 
@@ -359,16 +313,12 @@ export default function ProjectPayment() {
                   {project.name}
                 </h2>
 
-                <p className="mt-1 text-xs text-surface-muted">
-                  {invoice.invoiceId}
-                </p>
+                <p className="mt-1 text-xs text-surface-muted">{invoice.invoiceId}</p>
               </div>
 
               <div className="p-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-surface-muted">
-                    Project total
-                  </span>
+                  <span className="text-sm text-surface-muted">Project total</span>
 
                   <span className="text-sm font-bold text-surface-fg">
                     {formatCurrency(invoice.total)}
@@ -376,9 +326,7 @@ export default function ProjectPayment() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
-                  <span className="text-sm text-surface-muted">
-                    Paid
-                  </span>
+                  <span className="text-sm text-surface-muted">Paid</span>
 
                   <span className="text-sm font-semibold text-emerald-600">
                     {formatCurrency(invoice.paid)}
@@ -421,8 +369,7 @@ export default function ProjectPayment() {
                 </button>
 
                 <p className="mt-3 text-center text-[0.65rem] leading-4 text-surface-muted">
-                  You will be redirected to our secure payment
-                  gateway.
+                  You will be redirected to our secure payment gateway.
                 </p>
               </div>
             </section>
@@ -440,28 +387,16 @@ export default function ProjectPayment() {
                     Invoice
                   </p>
 
-                  <p className="mt-0.5 text-sm font-bold text-surface-fg">
-                    {invoice.invoiceId}
-                  </p>
+                  <p className="mt-0.5 text-sm font-bold text-surface-fg">{invoice.invoiceId}</p>
                 </div>
               </div>
 
               <div className="mt-5 space-y-3">
-                <InfoRow
-                  label="Issued for"
-                  value={currentClient.name}
-                />
+                <InfoRow label="Issued for" value={currentClient.name} />
 
-                <InfoRow
-                  label="Due date"
-                  value={invoice.dueDate}
-                />
+                <InfoRow label="Due date" value={invoice.dueDate} />
 
-                <InfoRow
-                  label="Status"
-                  value="Payment due"
-                  warning
-                />
+                <InfoRow label="Status" value="Payment due" warning />
               </div>
             </section>
 
@@ -506,10 +441,7 @@ function PageHeader({ project }) {
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
             Make a secure payment toward your{" "}
-            <span className="font-semibold text-surface-fg">
-              {project.name}
-            </span>{" "}
-            project.
+            <span className="font-semibold text-surface-fg">{project.name}</span> project.
           </p>
         </div>
       </div>
@@ -521,11 +453,7 @@ function PageHeader({ project }) {
    SECTION HEADER
 ============================================================ */
 
-function SectionHeader({
-  icon: Icon,
-  title,
-  description,
-}) {
+function SectionHeader({ icon: Icon, title, description }) {
   return (
     <div className="flex items-start gap-3 border-b border-surface-border px-6 py-5">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange/10">
@@ -537,9 +465,7 @@ function SectionHeader({
           {title}
         </h2>
 
-        <p className="mt-1 text-sm text-surface-muted">
-          {description}
-        </p>
+        <p className="mt-1 text-sm text-surface-muted">{description}</p>
       </div>
     </div>
   );
@@ -549,33 +475,17 @@ function SectionHeader({
    PAYMENT LINE
 ============================================================ */
 
-function PaymentLine({
-  label,
-  value,
-  positive = false,
-  strong = false,
-}) {
+function PaymentLine({ label, value, positive = false, strong = false }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span
-        className={cn(
-          "text-sm",
-          strong
-            ? "font-bold text-surface-fg"
-            : "text-surface-muted"
-        )}
-      >
+      <span className={cn("text-sm", strong ? "font-bold text-surface-fg" : "text-surface-muted")}>
         {label}
       </span>
 
       <span
         className={cn(
           "text-sm font-bold",
-          positive
-            ? "text-emerald-600"
-            : strong
-              ? "text-brand-orange"
-              : "text-surface-fg"
+          positive ? "text-emerald-600" : strong ? "text-brand-orange" : "text-surface-fg"
         )}
       >
         {value}
@@ -588,24 +498,13 @@ function PaymentLine({
    INFO ROW
 ============================================================ */
 
-function InfoRow({
-  label,
-  value,
-  warning = false,
-}) {
+function InfoRow({ label, value, warning = false }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-xs text-surface-muted">
-        {label}
-      </span>
+      <span className="text-xs text-surface-muted">{label}</span>
 
       <span
-        className={cn(
-          "text-xs font-semibold",
-          warning
-            ? "text-brand-orange"
-            : "text-surface-fg"
-        )}
+        className={cn("text-xs font-semibold", warning ? "text-brand-orange" : "text-surface-fg")}
       >
         {value}
       </span>

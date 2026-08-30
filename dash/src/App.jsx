@@ -62,7 +62,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* =====================================================
             AUTH
         ===================================================== */}
@@ -75,99 +74,43 @@ export default function App() {
             ACCESS
         ===================================================== */}
 
-        <Route
-          path="/no-access"
-          element={<NoAccess />}
-        />
+        <Route path="/no-access" element={<NoAccess />} />
 
         {/* =====================================================
             PUBLIC PROFILE
         ===================================================== */}
 
-        <Route
-          path="/u/:id"
-          element={<Profile />}
-        />
+        <Route path="/u/:id" element={<Profile />} />
 
         {/* =====================================================
             CLIENT
         ===================================================== */}
 
         <Route element={<ClientLayout />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
 
-          <Route
-            index
-            element={
-              <Navigate
-                to="/dashboard"
-                replace
-              />
-            }
-          />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/approvals" element={<ClientApprovals />} />
+          <Route path="/billing" element={<ClientBilling />} />
+          <Route path="/activities" element={<ClientActivityLog />} />
+          <Route path="/support" element={<ClientSupport />} />
+          <Route path="/queries" element={<ClientQueries />} />
 
-          <Route
-            path="/projects"
-            element={<Projects />}
-          />
-     <Route
-            path="/approvals"
-            element={<ClientApprovals />}
-          />
-             <Route
-            path="/billing"
-            element={<ClientBilling />}
-          />
-               <Route
-            path="/activities"
-            element={<ClientActivityLog />}
-          />
-           <Route
-            path="/support"
-            element={<ClientSupport />}
-          />
-            <Route
-            path="/queries"
-            element={<ClientQueries />}
-          />
-          
-          
-    <Route
-            path="/approval/:id"
-            element={<ClientApprovalViewPage />}
-          />
+          <Route path="/approval/:id" element={<ClientApprovalViewPage />} />
 
-          <Route
-            path="/client/events"
-            element={<ClientEvents />}
-          />
+          <Route path="/client/events" element={<ClientEvents />} />
 
           {/* CLIENT PROJECT DETAIL */}
 
-          <Route
-            path="/project/:projectId"
-            element={<ProjectDetail />}
-          />
+          <Route path="/project/:projectId" element={<ProjectDetail />} />
 
-          <Route
-            path="/project/:projectId/pay"
-            element={<ProjectPayment />}
-          />
+          <Route path="/project/:projectId/pay" element={<ProjectPayment />} />
 
-          <Route
-            path="/client/settings"
-            element={<ClientSettings />}
-          />
+          <Route path="/client/settings" element={<ClientSettings />} />
 
-          <Route
-            path="/client/services"
-            element={<ClientServices />}
-          />
-
+          <Route path="/client/services" element={<ClientServices />} />
         </Route>
 
         {/* =====================================================
@@ -175,55 +118,21 @@ export default function App() {
         ===================================================== */}
 
         <Route element={<StaffLayout />}>
+          <Route path="/staff" element={<StaffDashboard />} />
 
-          <Route
-            path="/staff"
-            element={<StaffDashboard />}
-          />
+          <Route path="/staff/files" element={<StaffFiles />} />
 
-          <Route
-            path="/staff/files"
-            element={<StaffFiles />}
-          />
+          <Route path="/staff/activity" element={<StaffActivity />} />
 
-          <Route
-            path="/staff/activity"
-            element={<StaffActivity />}
-          />
+          <Route path="/staff/projects" element={<StaffProjects />} />
 
-          <Route
-            path="/staff/projects"
-            element={<StaffProjects />}
-          />
+          <Route path="/staff/attendance" element={<StaffAttendance />} />
 
-          <Route
-            path="/staff/attendance"
-            element={<StaffAttendance />}
-          />
+          <Route path="/staff/tasks" element={<TaskList tasks={tasks} />} />
 
-          <Route
-            path="/staff/tasks"
-            element={
-              <TaskList
-                tasks={tasks}
-              />
-            }
-          />
+          <Route path="/staff/clients" element={<ClientList />} />
 
-          <Route
-            path="/staff/clients"
-            element={<ClientList />}
-          />
-
-          <Route
-            path="/staff/approvals"
-            element={
-              <ApprovalList
-                approvals={approvals}
-              />
-            }
-          />
-
+          <Route path="/staff/approvals" element={<ApprovalList approvals={approvals} />} />
         </Route>
 
         {/* =====================================================
@@ -231,100 +140,42 @@ export default function App() {
         ===================================================== */}
 
         <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
 
-          <Route
-            path="/admin"
-            element={<AdminDashboard />}
-          />
+          <Route path="/admin/files" element={<AdminFiles />} />
+          <Route path="/admin/invoice/all" element={<AdminInvoiceList />} />
+          <Route path="/admin/invoice/:id/workspace" element={<CreateInvoice />} />
+          <Route path="/admin/activity" element={<AdminActivity />} />
 
-          <Route
-            path="/admin/files"
-            element={<AdminFiles />}
-          />
-<Route path="/admin/invoice/all" element={<AdminInvoiceList/>}/>
-<Route path="/admin/invoice/:id/workspace" element={<CreateInvoice/>}/>
-          <Route
-            path="/admin/activity"
-            element={<AdminActivity />}
-          />
+          <Route path="/admin/payments" element={<AdminPayments />} />
 
-          <Route
-            path="/admin/payments"
-            element={<AdminPayments />}
-          />
+          <Route path="/admin/clients" element={<AdminClients />} />
 
-          <Route
-            path="/admin/clients"
-            element={<AdminClients />}
-          />
+          <Route path="/admin/attendance" element={<AdminAttendance />} />
 
-          <Route
-            path="/admin/attendance"
-            element={<AdminAttendance />}
-          />
+          <Route path="/admin/behind-the-work" element={<AdminBehindTheWork />} />
 
-          <Route
-            path="/admin/behind-the-work"
-            element={<AdminBehindTheWork />}
-          />
+          <Route path="/admin/careers" element={<AdminCareer />} />
 
-          <Route
-            path="/admin/careers"
-            element={<AdminCareer />}
-          />
+          <Route path="/admin/queries" element={<AdminQueries />} />
 
-          <Route
-            path="/admin/queries"
-            element={<AdminQueries />}
-          />
+          <Route path="/admin/team" element={<AdminTeam />} />
 
-          <Route
-            path="/admin/team"
-            element={<AdminTeam />}
-          />
+          <Route path="/admin/tasks" element={<AdminTasks />} />
 
-          <Route
-            path="/admin/tasks"
-            element={<AdminTasks />}
-          />
+          <Route path="/admin/projects" element={<AdminProjects />} />
 
-          <Route
-            path="/admin/projects"
-            element={<AdminProjects />}
-          />
-
-          <Route
-            path="/admin/services"
-            element={<AdminServices />}
-          />
-<Route
-  path="/admin/client/:clientId"
-  element={<AdminClientDetail />}
-/>
-<Route
-  path="/admin/approvals"
-  element={<AdminApprovals />}
-/>
-<Route
-  path="/admin/events"
-  element={<AdminEvents />}
-/>
+          <Route path="/admin/services" element={<AdminServices />} />
+          <Route path="/admin/client/:clientId" element={<AdminClientDetail />} />
+          <Route path="/admin/approvals" element={<AdminApprovals />} />
+          <Route path="/admin/events" element={<AdminEvents />} />
         </Route>
 
         {/* =====================================================
             FALLBACK
         ===================================================== */}
 
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="/dashboard"
-              replace
-            />
-          }
-        />
-
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );

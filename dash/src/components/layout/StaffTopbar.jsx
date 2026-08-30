@@ -1,18 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Menu,
-  Search,
-  User,
-  Settings,
-  LogOut,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, Search, User, Settings, LogOut, ChevronDown } from "lucide-react";
 
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 import {
   DropdownMenu,
@@ -38,10 +27,7 @@ export default function StaffTopbar() {
   // Command Center shortcut
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (
-        (event.metaKey || event.ctrlKey) &&
-        event.key.toLowerCase() === "k"
-      ) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setCommandOpen(true);
       }
@@ -120,9 +106,7 @@ export default function StaffTopbar() {
         >
           <Search className="h-4 w-4 shrink-0 text-surface-muted" />
 
-          <span className="flex-1 text-xs text-surface-muted">
-            Search anything...
-          </span>
+          <span className="flex-1 text-xs text-surface-muted">Search anything...</span>
 
           <kbd className="rounded-md border border-surface-border px-2 py-1 text-[0.6rem] font-semibold text-surface-muted">
             ⌘ K
@@ -131,7 +115,6 @@ export default function StaffTopbar() {
 
         {/* RIGHT SIDE ACTIONS */}
         <div className="ml-auto flex items-center gap-1">
-
           {/* NOTIFICATIONS */}
           <NotificationDropdown
             open={notificationsOpen}
@@ -204,9 +187,7 @@ export default function StaffTopbar() {
                       {currentStaff.name}
                     </p>
 
-                    <p className="truncate text-xs text-surface-muted">
-                      {currentStaff.role}
-                    </p>
+                    <p className="truncate text-xs text-surface-muted">{currentStaff.role}</p>
                   </div>
                 </div>
               </div>
@@ -279,10 +260,7 @@ export default function StaffTopbar() {
           </DropdownMenu>
 
           {/* MENU — mobile only */}
-          <Sheet
-            open={open}
-            onOpenChange={setOpen}
-          >
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
                 type="button"
@@ -297,34 +275,23 @@ export default function StaffTopbar() {
                 "
                 aria-label="Open navigation"
               >
-                <Menu
-                  className="h-5 w-5"
-                  strokeWidth={2}
-                />
+                <Menu className="h-5 w-5" strokeWidth={2} />
               </button>
             </SheetTrigger>
 
-            <SheetContent
-              side="left"
-              className="w-[280px] p-5"
-            >
+            <SheetContent side="left" className="w-[280px] p-5">
               <DialogPrimitive.Title className="sr-only">
                 Staff navigation menu
               </DialogPrimitive.Title>
 
-              <StaffSidebar
-                onNavigate={() => setOpen(false)}
-              />
+              <StaffSidebar onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </header>
 
       {/* COMMAND CENTER */}
-      <CommandCenter
-        open={commandOpen}
-        onClose={() => setCommandOpen(false)}
-      />
+      <CommandCenter open={commandOpen} onClose={() => setCommandOpen(false)} />
     </>
   );
 }

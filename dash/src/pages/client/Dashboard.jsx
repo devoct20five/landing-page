@@ -1,5 +1,12 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { currentClient, projects, actionItems, activity, upcoming, summaryStats } from "@/data/mockData";
+import {
+  currentClient,
+  projects,
+  actionItems,
+  activity,
+  upcoming,
+  summaryStats,
+} from "@/data/mockData";
 import StatCard from "@/components/shared/StatCard";
 import SectionHeader from "@/components/shared/SectionHeader";
 import ActionRequiredCard from "@/components/project/ActionRequiredCard";
@@ -87,13 +94,8 @@ export default function Dashboard() {
                   (i !== upcoming.length - 1 ? " border-b border-surface-border" : "")
                 }
               >
-                <span className="text-sm font-medium text-surface-fg">
-                  {item.title}
-                </span>
-                <ArrowUpRight
-                  className="h-4 w-4 shrink-0 text-surface-muted"
-                  strokeWidth={2}
-                />
+                <span className="text-sm font-medium text-surface-fg">{item.title}</span>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-surface-muted" strokeWidth={2} />
               </div>
             ))}
           </div>

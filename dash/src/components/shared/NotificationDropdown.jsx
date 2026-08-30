@@ -83,21 +83,14 @@ const TYPE_CONFIG = {
   },
 };
 
-export default function NotificationDropdown({
-  variant = "topbar",
-  onNavigate,
-}) {
+export default function NotificationDropdown({ variant = "topbar", onNavigate }) {
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState(
-    MOCK_NOTIFICATIONS
-  );
+  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
   const triggerRef = useRef(null);
   const panelRef = useRef(null);
 
-  const unreadCount = notifications.filter(
-    (notification) => notification.unread
-  ).length;
+  const unreadCount = notifications.filter((notification) => notification.unread).length;
 
   /*
    * ---------------------------------------------------------
@@ -118,17 +111,11 @@ export default function NotificationDropdown({
     }
 
     if (open) {
-      document.addEventListener(
-        "mousedown",
-        handleClickOutside
-      );
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
 
@@ -210,11 +197,7 @@ export default function NotificationDropdown({
           )}
         >
           <span className="flex items-center gap-3">
-            <Bell
-              className="h-[18px] w-[18px]"
-              strokeWidth={2}
-            />
-
+            <Bell className="h-[18px] w-[18px]" strokeWidth={2} />
             Notifications
           </span>
 
@@ -259,14 +242,10 @@ export default function NotificationDropdown({
           "relative flex h-9 w-9 items-center justify-center rounded-full sm:h-10 sm:w-10",
           "text-[color-mix(in_srgb,var(--surface-fg)_70%,transparent)] transition",
           "hover:bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] hover:text-surface-fg",
-          open &&
-            "bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] text-surface-fg"
+          open && "bg-[color-mix(in_srgb,var(--surface-muted)_10%,transparent)] text-surface-fg"
         )}
       >
-        <Bell
-          className="h-[18px] w-[18px]"
-          strokeWidth={2}
-        />
+        <Bell className="h-[18px] w-[18px]" strokeWidth={2} />
 
         {unreadCount > 0 && (
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-orange ring-2 ring-surface-card" />
@@ -331,10 +310,7 @@ function NotificationPanel({
          * vertically aligned with it.
          */
         left = rect.right + gap;
-        top = Math.max(
-          edgePadding,
-          Math.min(rect.top, window.innerHeight - 600)
-        );
+        top = Math.max(edgePadding, Math.min(rect.top, window.innerHeight - 600));
       } else {
         /*
          * Topbar: open panel BELOW the trigger, right-aligned
@@ -373,16 +349,9 @@ function NotificationPanel({
     window.addEventListener("scroll", updatePosition, true);
 
     return () => {
-      window.removeEventListener(
-        "resize",
-        updatePosition
-      );
+      window.removeEventListener("resize", updatePosition);
 
-      window.removeEventListener(
-        "scroll",
-        updatePosition,
-        true
-      );
+      window.removeEventListener("scroll", updatePosition, true);
     };
   }, [triggerRef, variant]);
 
@@ -417,9 +386,7 @@ function NotificationPanel({
       <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-display text-base font-bold text-surface-fg">
-              Notifications
-            </h3>
+            <h3 className="font-display text-base font-bold text-surface-fg">Notifications</h3>
 
             {unreadCount > 0 && (
               <span className="rounded-full bg-brand-orange/10 px-2 py-0.5 text-[0.6rem] font-bold text-brand-orange">
@@ -428,9 +395,7 @@ function NotificationPanel({
             )}
           </div>
 
-          <p className="mt-0.5 text-xs text-surface-muted">
-            Recent updates across OCT20FIVE
-          </p>
+          <p className="mt-0.5 text-xs text-surface-muted">Recent updates across OCT20FIVE</p>
         </div>
 
         <button
@@ -452,7 +417,6 @@ function NotificationPanel({
             className="flex items-center gap-1.5 text-xs font-semibold text-brand-orange hover:underline"
           >
             <CheckCheck className="h-3.5 w-3.5" />
-
             Mark all as read
           </button>
         </div>
@@ -467,22 +431,16 @@ function NotificationPanel({
               <Bell className="h-5 w-5 text-surface-muted" />
             </div>
 
-            <p className="mt-4 text-sm font-semibold text-surface-fg">
-              You're all caught up
-            </p>
+            <p className="mt-4 text-sm font-semibold text-surface-fg">You're all caught up</p>
 
-            <p className="mt-1 text-xs text-surface-muted">
-              No new notifications.
-            </p>
+            <p className="mt-1 text-xs text-surface-muted">No new notifications.</p>
           </div>
         ) : (
           notifications.map((notification) => (
             <NotificationItem
               key={notification.id}
               notification={notification}
-              onRead={() =>
-                markAsRead(notification.id)
-              }
+              onRead={() => markAsRead(notification.id)}
             />
           ))
         )}
@@ -511,13 +469,8 @@ function NotificationPanel({
    NOTIFICATION ITEM
 ============================================================ */
 
-function NotificationItem({
-  notification,
-  onRead,
-}) {
-  const config =
-    TYPE_CONFIG[notification.type] ||
-    TYPE_CONFIG.system;
+function NotificationItem({ notification, onRead }) {
+  const config = TYPE_CONFIG[notification.type] || TYPE_CONFIG.system;
 
   const Icon = config.icon;
 
@@ -548,9 +501,7 @@ function NotificationItem({
           <p
             className={cn(
               "text-sm text-surface-fg",
-              notification.unread
-                ? "font-bold"
-                : "font-semibold"
+              notification.unread ? "font-bold" : "font-semibold"
             )}
           >
             {notification.title}
@@ -561,13 +512,9 @@ function NotificationItem({
           )}
         </div>
 
-        <p className="mt-1 text-xs leading-5 text-surface-muted">
-          {notification.description}
-        </p>
+        <p className="mt-1 text-xs leading-5 text-surface-muted">{notification.description}</p>
 
-        <p className="mt-2 text-[0.65rem] font-medium text-surface-muted">
-          {notification.time}
-        </p>
+        <p className="mt-2 text-[0.65rem] font-medium text-surface-muted">{notification.time}</p>
       </div>
     </button>
   );

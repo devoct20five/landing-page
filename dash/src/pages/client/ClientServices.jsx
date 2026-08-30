@@ -12,15 +12,10 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import {
-  currentClient,
-  projects,
-} from "@/data/mockData";
+import { currentClient, projects } from "@/data/mockData";
 
 export default function ClientServices() {
-  const clientProjects = projects.filter(
-    (project) => project.clientId === currentClient.id
-  );
+  const clientProjects = projects.filter((project) => project.clientId === currentClient.id);
 
   /*
    * ============================================================
@@ -97,21 +92,13 @@ export default function ClientServices() {
     },
   ];
 
-  const totalBilled = invoices.reduce(
-    (sum, invoice) => sum + invoice.amount,
-    0
-  );
+  const totalBilled = invoices.reduce((sum, invoice) => sum + invoice.amount, 0);
 
-  const totalPaid = invoices.reduce(
-    (sum, invoice) => sum + invoice.paid,
-    0
-  );
+  const totalPaid = invoices.reduce((sum, invoice) => sum + invoice.paid, 0);
 
   const totalPending = totalBilled - totalPaid;
 
-  const pendingInvoices = invoices.filter(
-    (invoice) => invoice.status !== "paid"
-  );
+  const pendingInvoices = invoices.filter((invoice) => invoice.status !== "paid");
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -121,8 +108,6 @@ export default function ClientServices() {
 
       <div className="border-b border-surface-border">
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-       
-
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
@@ -130,8 +115,8 @@ export default function ClientServices() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                See the services you're currently using, the projects they're
-                attached to, and your payment history with OCT20FIVE.
+                See the services you're currently using, the projects they're attached to, and your
+                payment history with OCT20FIVE.
               </p>
             </div>
           </div>
@@ -144,7 +129,6 @@ export default function ClientServices() {
 
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
         <div className="space-y-6">
-
           {/* =================================================
               BILLING OVERVIEW
           ================================================= */}
@@ -160,11 +144,7 @@ export default function ClientServices() {
             <BillingStat
               icon={FolderKanban}
               label="Active Projects"
-              value={
-                clientProjects.filter(
-                  (project) => project.status !== "completed"
-                ).length
-              }
+              value={clientProjects.filter((project) => project.status !== "completed").length}
               description="Across your account"
             />
 
@@ -179,11 +159,7 @@ export default function ClientServices() {
               icon={AlertCircle}
               label="Outstanding"
               value={formatCurrency(totalPending)}
-              description={
-                totalPending > 0
-                  ? "Payment required"
-                  : "Everything is paid"
-              }
+              description={totalPending > 0 ? "Payment required" : "Everything is paid"}
               warning={totalPending > 0}
             />
           </section>
@@ -200,10 +176,7 @@ export default function ClientServices() {
 
             <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3">
               {clientServices.map((service) => (
-                <ServiceCard
-                  key={service.name}
-                  service={service}
-                />
+                <ServiceCard key={service.name} service={service} />
               ))}
             </div>
           </section>
@@ -220,10 +193,7 @@ export default function ClientServices() {
 
             <div className="divide-y divide-surface-border">
               {clientProjects.map((project) => (
-                <ProjectServiceRow
-                  key={project.id}
-                  project={project}
-                />
+                <ProjectServiceRow key={project.id} project={project} />
               ))}
             </div>
           </section>
@@ -311,15 +281,10 @@ export default function ClientServices() {
 
             <div className="divide-y divide-surface-border">
               {invoices.map((invoice) => (
-                <InvoiceRow
-                  key={invoice.id}
-                  invoice={invoice}
-                  projects={clientProjects}
-                />
+                <InvoiceRow key={invoice.id} invoice={invoice} projects={clientProjects} />
               ))}
             </div>
           </section>
-
         </div>
       </div>
     </div>
@@ -330,13 +295,7 @@ export default function ClientServices() {
    BILLING STAT
 ============================================================ */
 
-function BillingStat({
-  icon: Icon,
-  label,
-  value,
-  description,
-  warning = false,
-}) {
+function BillingStat({ icon: Icon, label, value, description, warning = false }) {
   return (
     <div className="rounded-2xl border border-surface-border bg-surface-card p-5">
       <div className="flex items-center justify-between">
@@ -344,9 +303,7 @@ function BillingStat({
           <Icon className="h-4 w-4 text-brand-orange" />
         </div>
 
-        {warning && (
-          <span className="h-2 w-2 rounded-full bg-brand-orange" />
-        )}
+        {warning && <span className="h-2 w-2 rounded-full bg-brand-orange" />}
       </div>
 
       <p className="mt-5 text-xs font-semibold uppercase tracking-[0.1em] text-surface-muted">
@@ -362,9 +319,7 @@ function BillingStat({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -384,8 +339,7 @@ function ServiceCard({ service }) {
         </div>
 
         <span className="rounded-full border border-surface-border px-2.5 py-1 text-[0.65rem] font-semibold text-surface-muted">
-          {projectCount}{" "}
-          {projectCount === 1 ? "project" : "projects"}
+          {projectCount} {projectCount === 1 ? "project" : "projects"}
         </span>
       </div>
 
@@ -394,8 +348,7 @@ function ServiceCard({ service }) {
       </h3>
 
       <p className="mt-1 text-xs leading-5 text-surface-muted">
-        Active across {projectCount}{" "}
-        {projectCount === 1 ? "project" : "projects"}.
+        Active across {projectCount} {projectCount === 1 ? "project" : "projects"}.
       </p>
 
       <div className="mt-4 flex flex-wrap gap-1.5">
@@ -450,9 +403,7 @@ function ProjectServiceRow({ project }) {
 
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-bold text-surface-fg">
-              {project.name}
-            </h3>
+            <h3 className="text-sm font-bold text-surface-fg">{project.name}</h3>
 
             <span
               className={cn(
@@ -465,8 +416,7 @@ function ProjectServiceRow({ project }) {
           </div>
 
           <p className="mt-1 text-xs text-surface-muted">
-            {project.completedDeliverables} of{" "}
-            {project.totalDeliverables} deliverables completed
+            {project.completedDeliverables} of {project.totalDeliverables} deliverables completed
           </p>
         </div>
       </div>
@@ -490,21 +440,11 @@ function ProjectServiceRow({ project }) {
    PAYMENT SUMMARY
 ============================================================ */
 
-function PaymentSummary({
-  icon: Icon,
-  label,
-  value,
-  warning = false,
-}) {
+function PaymentSummary({ icon: Icon, label, value, warning = false }) {
   return (
     <div className="px-6 py-6">
       <div className="flex items-center gap-2">
-        <Icon
-          className={cn(
-            "h-4 w-4",
-            warning ? "text-brand-orange" : "text-surface-muted"
-          )}
-        />
+        <Icon className={cn("h-4 w-4", warning ? "text-brand-orange" : "text-surface-muted")} />
 
         <span className="text-xs font-semibold uppercase tracking-[0.08em] text-surface-muted">
           {label}
@@ -527,14 +467,8 @@ function PaymentSummary({
    INVOICE ROW
 ============================================================ */
 
-function InvoiceRow({
-  invoice,
-  projects,
-  pending = false,
-}) {
-  const project = projects.find(
-    (item) => item.id === invoice.projectId
-  );
+function InvoiceRow({ invoice, projects, pending = false }) {
+  const project = projects.find((item) => item.id === invoice.projectId);
 
   const remaining = invoice.amount - invoice.paid;
 
@@ -544,42 +478,27 @@ function InvoiceRow({
         <div
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-            pending
-              ? "bg-brand-orange/10"
-              : "bg-surface-bg"
+            pending ? "bg-brand-orange/10" : "bg-surface-bg"
           )}
         >
           <CreditCard
-            className={cn(
-              "h-5 w-5",
-              pending
-                ? "text-brand-orange"
-                : "text-surface-muted"
-            )}
+            className={cn("h-5 w-5", pending ? "text-brand-orange" : "text-surface-muted")}
           />
         </div>
 
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-bold text-surface-fg">
-              {invoice.description}
-            </h3>
+            <h3 className="text-sm font-bold text-surface-fg">{invoice.description}</h3>
 
-            <span className="text-[0.65rem] font-medium text-surface-muted">
-              {invoice.id}
-            </span>
+            <span className="text-[0.65rem] font-medium text-surface-muted">{invoice.id}</span>
           </div>
 
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-surface-muted">
-            {project && (
-              <span>{project.name}</span>
-            )}
+            {project && <span>{project.name}</span>}
 
             <span>Issued {invoice.issued}</span>
 
-            <span>
-              Due {invoice.due}
-            </span>
+            <span>Due {invoice.due}</span>
           </div>
         </div>
       </div>
@@ -590,9 +509,7 @@ function InvoiceRow({
             Amount
           </p>
 
-          <p className="mt-1 text-sm font-bold text-surface-fg">
-            {formatCurrency(invoice.amount)}
-          </p>
+          <p className="mt-1 text-sm font-bold text-surface-fg">{formatCurrency(invoice.amount)}</p>
         </div>
 
         {invoice.paid > 0 && invoice.paid < invoice.amount && (
@@ -613,9 +530,7 @@ function InvoiceRow({
               Due
             </p>
 
-            <p className="mt-1 text-sm font-bold text-brand-orange">
-              {formatCurrency(remaining)}
-            </p>
+            <p className="mt-1 text-sm font-bold text-brand-orange">{formatCurrency(remaining)}</p>
           </div>
         )}
 
@@ -677,19 +592,14 @@ function InvoiceStatus({ status }) {
    SECTION HEADER
 ============================================================ */
 
-function SectionHeader({
-  title,
-  description,
-}) {
+function SectionHeader({ title, description }) {
   return (
     <div className="border-b border-surface-border px-6 py-5">
       <h2 className="font-display text-base font-bold tracking-[-0.02em] text-surface-fg">
         {title}
       </h2>
 
-      <p className="mt-1 text-sm text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-sm text-surface-muted">{description}</p>
     </div>
   );
 }

@@ -14,11 +14,7 @@ import {
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
-import {
-  clients,
-  projects,
-  teamMembers,
-} from "@/data/mockData";
+import { clients, projects, teamMembers } from "@/data/mockData";
 
 const queries = [
   {
@@ -28,8 +24,7 @@ const queries = [
     projectId: "project-001",
     projectName: "Summer Campaign 2026",
     subject: "Hero Film — Final Approval",
-    message:
-      "We have a few questions regarding the latest Hero Film version before approving it.",
+    message: "We have a few questions regarding the latest Hero Film version before approving it.",
     category: "Project",
     priority: "high",
     status: "open",
@@ -62,8 +57,7 @@ const queries = [
     projectId: "project-007",
     projectName: "Website Redesign",
     subject: "Homepage content update",
-    message:
-      "We would like to replace the headline and update the CTA copy on the homepage.",
+    message: "We would like to replace the headline and update the CTA copy on the homepage.",
     category: "Web",
     priority: "medium",
     status: "open",
@@ -96,8 +90,7 @@ const queries = [
     projectId: "project-003",
     projectName: "Website Redesign",
     subject: "Website launch timeline",
-    message:
-      "Could we schedule a call to discuss the expected launch date?",
+    message: "Could we schedule a call to discuss the expected launch date?",
     category: "Timeline",
     priority: "low",
     status: "open",
@@ -113,8 +106,7 @@ const queries = [
     projectId: "project-007",
     projectName: "Website Redesign",
     subject: "Invoice clarification",
-    message:
-      "We need clarification regarding the latest invoice and payment milestone.",
+    message: "We need clarification regarding the latest invoice and payment milestone.",
     category: "Billing",
     priority: "high",
     status: "in-progress",
@@ -130,8 +122,7 @@ const queries = [
     projectId: "project-009",
     projectName: "Product Animation",
     subject: "Lighting revision feedback",
-    message:
-      "We have added feedback to the latest product animation version.",
+    message: "We have added feedback to the latest product animation version.",
     category: "Feedback",
     priority: "medium",
     status: "resolved",
@@ -147,8 +138,7 @@ const queries = [
     projectId: null,
     projectName: null,
     subject: "Schedule a project review call",
-    message:
-      "We would like to schedule a review call with the project team.",
+    message: "We would like to schedule a review call with the project team.",
     category: "Meeting",
     priority: "low",
     status: "resolved",
@@ -209,42 +199,21 @@ export default function AdminQueries() {
         item.projectName?.toLowerCase().includes(query) ||
         item.category.toLowerCase().includes(query);
 
-      const matchesStatus =
-        statusFilter === "all" || item.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || item.status === statusFilter;
 
-      const matchesPriority =
-        priorityFilter === "all" ||
-        item.priority === priorityFilter;
+      const matchesPriority = priorityFilter === "all" || item.priority === priorityFilter;
 
-      const matchesClient =
-        clientFilter === "all" ||
-        item.clientId === clientFilter;
+      const matchesClient = clientFilter === "all" || item.clientId === clientFilter;
 
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesPriority &&
-        matchesClient
-      );
+      return matchesSearch && matchesStatus && matchesPriority && matchesClient;
     });
-  }, [
-    search,
-    statusFilter,
-    priorityFilter,
-    clientFilter,
-  ]);
+  }, [search, statusFilter, priorityFilter, clientFilter]);
 
-  const openCount = queries.filter(
-    (item) => item.status === "open"
-  ).length;
+  const openCount = queries.filter((item) => item.status === "open").length;
 
-  const inProgressCount = queries.filter(
-    (item) => item.status === "in-progress"
-  ).length;
+  const inProgressCount = queries.filter((item) => item.status === "in-progress").length;
 
-  const resolvedCount = queries.filter(
-    (item) => item.status === "resolved"
-  ).length;
+  const resolvedCount = queries.filter((item) => item.status === "resolved").length;
 
   const highPriorityCount = queries.filter(
     (item) => item.priority === "high" && item.status !== "resolved"
@@ -260,19 +229,14 @@ export default function AdminQueries() {
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-        
-
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
                 Queries
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Monitor client questions, requests and issues across
-                all active projects.
+                Monitor client questions, requests and issues across all active projects.
               </p>
             </div>
-
-    
           </div>
         </div>
       </div>
@@ -332,9 +296,7 @@ export default function AdminQueries() {
                 type="text"
                 placeholder="Search queries, clients or projects..."
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 className={cn(
                   "h-10 w-full rounded-xl border border-surface-border",
                   "bg-surface-bg pl-10 pr-4",
@@ -377,10 +339,7 @@ export default function AdminQueries() {
                 onChange={setClientFilter}
                 options={[
                   ["all", "All Clients"],
-                  ...clients.map((client) => [
-                    client.id,
-                    client.shortName,
-                  ]),
+                  ...clients.map((client) => [client.id, client.shortName]),
                 ]}
               />
             </div>
@@ -401,8 +360,7 @@ export default function AdminQueries() {
               </h2>
 
               <p className="mt-1 text-sm text-surface-muted">
-                {filteredQueries.length} queries matching the
-                current filters.
+                {filteredQueries.length} queries matching the current filters.
               </p>
             </div>
           </div>
@@ -426,10 +384,7 @@ export default function AdminQueries() {
 
               <tbody className="divide-y divide-surface-border">
                 {filteredQueries.map((item) => (
-                  <QueryTableRow
-                    key={item.id}
-                    query={item}
-                  />
+                  <QueryTableRow key={item.id} query={item} />
                 ))}
               </tbody>
             </table>
@@ -439,16 +394,11 @@ export default function AdminQueries() {
 
           <div className="divide-y divide-surface-border lg:hidden">
             {filteredQueries.map((item) => (
-              <QueryCard
-                key={item.id}
-                query={item}
-              />
+              <QueryCard key={item.id} query={item} />
             ))}
           </div>
 
-          {filteredQueries.length === 0 && (
-            <EmptyState />
-          )}
+          {filteredQueries.length === 0 && <EmptyState />}
         </section>
       </div>
     </div>
@@ -460,9 +410,7 @@ export default function AdminQueries() {
 ============================================================ */
 
 function QueryTableRow({ query }) {
-  const assignedMember = teamMembers.find(
-    (member) => member.id === query.assignedTo
-  );
+  const assignedMember = teamMembers.find((member) => member.id === query.assignedTo);
 
   const status = statusConfig[query.status];
   const priority = priorityConfig[query.priority];
@@ -480,9 +428,7 @@ function QueryTableRow({ query }) {
           </div>
 
           <div>
-            <p className="text-sm font-bold text-surface-fg">
-              {query.subject}
-            </p>
+            <p className="text-sm font-bold text-surface-fg">{query.subject}</p>
 
             <p className="mt-1 line-clamp-1 max-w-[300px] text-xs text-surface-muted">
               {query.message}
@@ -500,9 +446,7 @@ function QueryTableRow({ query }) {
       <td className="px-6 py-5">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-bg text-xs font-bold text-surface-muted">
-            {query.clientName
-              .slice(0, 2)
-              .toUpperCase()}
+            {query.clientName.slice(0, 2).toUpperCase()}
           </div>
 
           <span className="whitespace-nowrap text-sm font-semibold text-surface-fg">
@@ -523,9 +467,7 @@ function QueryTableRow({ query }) {
             </span>
           </div>
         ) : (
-          <span className="text-xs text-surface-muted">
-            General
-          </span>
+          <span className="text-xs text-surface-muted">General</span>
         )}
       </td>
 
@@ -570,18 +512,14 @@ function QueryTableRow({ query }) {
             </span>
           </div>
         ) : (
-          <span className="text-xs text-surface-muted">
-            Unassigned
-          </span>
+          <span className="text-xs text-surface-muted">Unassigned</span>
         )}
       </td>
 
       {/* Updated */}
 
       <td className="px-6 py-5">
-        <span className="whitespace-nowrap text-xs text-surface-muted">
-          {query.updatedAt}
-        </span>
+        <span className="whitespace-nowrap text-xs text-surface-muted">{query.updatedAt}</span>
       </td>
 
       {/* Action */}
@@ -600,9 +538,7 @@ function QueryTableRow({ query }) {
 ============================================================ */
 
 function QueryCard({ query }) {
-  const assignedMember = teamMembers.find(
-    (member) => member.id === query.assignedTo
-  );
+  const assignedMember = teamMembers.find((member) => member.id === query.assignedTo);
 
   const status = statusConfig[query.status];
   const priority = priorityConfig[query.priority];
@@ -618,13 +554,9 @@ function QueryCard({ query }) {
           </div>
 
           <div>
-            <h3 className="text-sm font-bold text-surface-fg">
-              {query.subject}
-            </h3>
+            <h3 className="text-sm font-bold text-surface-fg">{query.subject}</h3>
 
-            <p className="mt-1 text-xs text-surface-muted">
-              {query.clientName}
-            </p>
+            <p className="mt-1 text-xs text-surface-muted">{query.clientName}</p>
           </div>
         </div>
 
@@ -633,9 +565,7 @@ function QueryCard({ query }) {
         </button>
       </div>
 
-      <p className="text-sm leading-6 text-surface-muted">
-        {query.message}
-      </p>
+      <p className="text-sm leading-6 text-surface-muted">{query.message}</p>
 
       <div className="flex flex-wrap gap-2">
         <span
@@ -685,9 +615,7 @@ function QueryCard({ query }) {
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="text-xs text-surface-muted">
-          Updated {query.updatedAt}
-        </span>
+        <span className="text-xs text-surface-muted">Updated {query.updatedAt}</span>
 
         <button className="inline-flex items-center gap-1 text-xs font-semibold text-brand-orange hover:underline">
           Open Query
@@ -702,43 +630,24 @@ function QueryCard({ query }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-  danger = false,
-}) {
+function StatCard({ icon: Icon, label, value, description, danger = false }) {
   return (
     <div className="rounded-2xl border border-surface-border bg-surface-card p-5">
       <div className="flex items-center justify-between">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-bg">
-          <Icon
-            className={cn(
-              "h-4 w-4",
-              danger
-                ? "text-red-500"
-                : "text-brand-orange"
-            )}
-          />
+          <Icon className={cn("h-4 w-4", danger ? "text-red-500" : "text-brand-orange")} />
         </div>
 
-        {danger && (
-          <span className="h-2 w-2 rounded-full bg-red-500" />
-        )}
+        {danger && <span className="h-2 w-2 rounded-full bg-red-500" />}
       </div>
 
-      <p className="mt-4 text-xs font-medium text-surface-muted">
-        {label}
-      </p>
+      <p className="mt-4 text-xs font-medium text-surface-muted">{label}</p>
 
       <p className="mt-1 font-display text-2xl font-bold tracking-[-0.04em] text-surface-fg">
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -747,17 +656,11 @@ function StatCard({
    FILTER SELECT
 ============================================================ */
 
-function FilterSelect({
-  value,
-  onChange,
-  options,
-}) {
+function FilterSelect({ value, onChange, options }) {
   return (
     <select
       value={value}
-      onChange={(event) =>
-        onChange(event.target.value)
-      }
+      onChange={(event) => onChange(event.target.value)}
       className={cn(
         "h-10 rounded-xl border border-surface-border",
         "bg-surface-bg px-3",
@@ -767,10 +670,7 @@ function FilterSelect({
       )}
     >
       {options.map(([optionValue, label]) => (
-        <option
-          key={optionValue}
-          value={optionValue}
-        >
+        <option key={optionValue} value={optionValue}>
           {label}
         </option>
       ))}
@@ -801,13 +701,10 @@ function EmptyState() {
         <MessageSquare className="h-5 w-5 text-surface-muted" />
       </div>
 
-      <h3 className="mt-4 text-sm font-bold text-surface-fg">
-        No queries found
-      </h3>
+      <h3 className="mt-4 text-sm font-bold text-surface-fg">No queries found</h3>
 
       <p className="mt-1 max-w-sm text-xs leading-5 text-surface-muted">
-        Try changing your search or filters to find
-        the query you're looking for.
+        Try changing your search or filters to find the query you're looking for.
       </p>
     </div>
   );

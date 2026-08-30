@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  User,
-  Building2,
-  Bell,
-  Lock,
-  Mail,
-  ShieldCheck,
-  Save,
-} from "lucide-react";
+import { User, Building2, Bell, Lock, Mail, ShieldCheck, Save } from "lucide-react";
 
 import { currentClient } from "@/data/mockData";
 import { cn } from "@/lib/utils";
@@ -53,22 +45,15 @@ function SectionButton({ section, active, onClick }) {
           : "text-surface-muted hover:bg-surface-muted/10 hover:text-surface-fg"
       )}
     >
-      <Icon
-        className="h-[18px] w-[18px] shrink-0"
-        strokeWidth={2}
-      />
+      <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} />
 
       <div className="min-w-0">
-        <p className="text-sm font-semibold">
-          {section.label}
-        </p>
+        <p className="text-sm font-semibold">{section.label}</p>
 
         <p
           className={cn(
             "mt-0.5 truncate text-[0.68rem]",
-            active
-              ? "text-white/75"
-              : "text-surface-muted"
+            active ? "text-white/75" : "text-surface-muted"
           )}
         >
           {section.description}
@@ -78,14 +63,7 @@ function SectionButton({ section, active, onClick }) {
   );
 }
 
-function Field({
-  label,
-  value,
-  onChange,
-  type = "text",
-  placeholder,
-  disabled = false,
-}) {
+function Field({ label, value, onChange, type = "text", placeholder, disabled = false }) {
   return (
     <div>
       <label className="mb-2 block text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-surface-muted">
@@ -98,10 +76,7 @@ function Field({
         onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
-        className={cn(
-          "brand-input w-full",
-          disabled && "cursor-not-allowed opacity-60"
-        )}
+        className={cn("brand-input w-full", disabled && "cursor-not-allowed opacity-60")}
       />
     </div>
   );
@@ -140,13 +115,10 @@ function ProfileSettings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-surface-fg">
-          Profile
-        </h2>
+        <h2 className="font-display text-xl font-bold text-surface-fg">Profile</h2>
 
         <p className="mt-1 text-sm text-surface-muted">
-          Manage the personal information associated with your
-          client account.
+          Manage the personal information associated with your client account.
         </p>
       </div>
 
@@ -157,47 +129,22 @@ function ProfileSettings() {
           </div>
 
           <div>
-            <p className="font-semibold text-surface-fg">
-              {client.name || "Client"}
-            </p>
+            <p className="font-semibold text-surface-fg">{client.name || "Client"}</p>
 
-            <p className="text-sm text-surface-muted">
-              Client account
-            </p>
+            <p className="text-sm text-surface-muted">Client account</p>
           </div>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field
-            label="First Name"
-            value={form.firstName}
-            onChange={update("firstName")}
-          />
+          <Field label="First Name" value={form.firstName} onChange={update("firstName")} />
 
-          <Field
-            label="Last Name"
-            value={form.lastName}
-            onChange={update("lastName")}
-          />
+          <Field label="Last Name" value={form.lastName} onChange={update("lastName")} />
 
-          <Field
-            label="Email Address"
-            type="email"
-            value={form.email}
-            onChange={update("email")}
-          />
+          <Field label="Email Address" type="email" value={form.email} onChange={update("email")} />
 
-          <Field
-            label="Phone"
-            value={form.phone}
-            onChange={update("phone")}
-          />
+          <Field label="Phone" value={form.phone} onChange={update("phone")} />
 
-          <Field
-            label="Role"
-            value={form.role}
-            onChange={update("role")}
-          />
+          <Field label="Role" value={form.role} onChange={update("role")} />
         </div>
 
         <div className="mt-7 flex justify-end border-t border-surface-border pt-5">
@@ -229,9 +176,7 @@ function CompanySettings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-surface-fg">
-          Company
-        </h2>
+        <h2 className="font-display text-xl font-bold text-surface-fg">Company</h2>
 
         <p className="mt-1 text-sm text-surface-muted">
           Manage the company information visible to OCT20FIVE.
@@ -245,41 +190,20 @@ function CompanySettings() {
           </div>
 
           <div>
-            <h3 className="font-display font-bold text-surface-fg">
-              Company Information
-            </h3>
+            <h3 className="font-display font-bold text-surface-fg">Company Information</h3>
 
-            <p className="text-xs text-surface-muted">
-              Basic information about your organisation
-            </p>
+            <p className="text-xs text-surface-muted">Basic information about your organisation</p>
           </div>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field
-            label="Company Name"
-            value={form.companyName}
-            onChange={update("companyName")}
-          />
+          <Field label="Company Name" value={form.companyName} onChange={update("companyName")} />
 
-          <Field
-            label="Short Name"
-            value={form.shortName}
-            onChange={update("shortName")}
-          />
+          <Field label="Short Name" value={form.shortName} onChange={update("shortName")} />
 
-          <Field
-            label="Company Email"
-            type="email"
-            value={form.email}
-            onChange={update("email")}
-          />
+          <Field label="Company Email" type="email" value={form.email} onChange={update("email")} />
 
-          <Field
-            label="Phone"
-            value={form.phone}
-            onChange={update("phone")}
-          />
+          <Field label="Phone" value={form.phone} onChange={update("phone")} />
 
           <Field
             label="Website"
@@ -318,51 +242,41 @@ function NotificationSettings() {
     {
       key: "projectUpdates",
       title: "Project updates",
-      description:
-        "Receive updates when the status or progress of a project changes.",
+      description: "Receive updates when the status or progress of a project changes.",
     },
     {
       key: "taskUpdates",
       title: "Task updates",
-      description:
-        "Get notified about important task changes.",
+      description: "Get notified about important task changes.",
     },
     {
       key: "approvals",
       title: "Approvals",
-      description:
-        "Receive notifications when something requires your approval.",
+      description: "Receive notifications when something requires your approval.",
     },
     {
       key: "messages",
       title: "Messages",
-      description:
-        "Get notified when the OCT20FIVE team sends you a message.",
+      description: "Get notified when the OCT20FIVE team sends you a message.",
     },
     {
       key: "deadlines",
       title: "Deadline reminders",
-      description:
-        "Receive reminders about upcoming project deadlines.",
+      description: "Receive reminders about upcoming project deadlines.",
     },
     {
       key: "weeklySummary",
       title: "Weekly summary",
-      description:
-        "Receive a weekly overview of your active projects.",
+      description: "Receive a weekly overview of your active projects.",
     },
   ];
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-surface-fg">
-          Notifications
-        </h2>
+        <h2 className="font-display text-xl font-bold text-surface-fg">Notifications</h2>
 
-        <p className="mt-1 text-sm text-surface-muted">
-          Choose which updates you want to receive.
-        </p>
+        <p className="mt-1 text-sm text-surface-muted">Choose which updates you want to receive.</p>
       </div>
 
       <div className="brand-card divide-y divide-surface-border p-0">
@@ -372,9 +286,7 @@ function NotificationSettings() {
             className="flex items-center justify-between gap-5 px-5 py-5 sm:px-6"
           >
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-surface-fg">
-                {option.title}
-              </p>
+              <p className="text-sm font-semibold text-surface-fg">{option.title}</p>
 
               <p className="mt-1 max-w-xl text-xs leading-5 text-surface-muted">
                 {option.description}
@@ -387,17 +299,13 @@ function NotificationSettings() {
               aria-pressed={notifications[option.key]}
               className={cn(
                 "relative h-6 w-11 shrink-0 rounded-full transition",
-                notifications[option.key]
-                  ? "bg-brand-orange"
-                  : "bg-surface-border"
+                notifications[option.key] ? "bg-brand-orange" : "bg-surface-border"
               )}
             >
               <span
                 className={cn(
                   "absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-all",
-                  notifications[option.key]
-                    ? "left-6"
-                    : "left-1"
+                  notifications[option.key] ? "left-6" : "left-1"
                 )}
               />
             </button>
@@ -425,9 +333,7 @@ function SecuritySettings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-display text-xl font-bold text-surface-fg">
-          Security
-        </h2>
+        <h2 className="font-display text-xl font-bold text-surface-fg">Security</h2>
 
         <p className="mt-1 text-sm text-surface-muted">
           Keep your account secure and manage your password.
@@ -441,9 +347,7 @@ function SecuritySettings() {
           </div>
 
           <div>
-            <h3 className="font-display font-bold text-surface-fg">
-              Change Password
-            </h3>
+            <h3 className="font-display font-bold text-surface-fg">Change Password</h3>
 
             <p className="text-xs text-surface-muted">
               Use a strong password you don't use elsewhere.
@@ -484,13 +388,10 @@ function SecuritySettings() {
           <Mail className="mt-0.5 h-5 w-5 shrink-0 text-surface-muted" />
 
           <div>
-            <h3 className="font-display font-bold text-surface-fg">
-              Account Email
-            </h3>
+            <h3 className="font-display font-bold text-surface-fg">Account Email</h3>
 
             <p className="mt-1 text-sm text-surface-muted">
-              Your account email is used for login and important
-              account notifications.
+              Your account email is used for login and important account notifications.
             </p>
 
             <p className="mt-3 text-sm font-semibold text-surface-fg">
@@ -504,8 +405,7 @@ function SecuritySettings() {
 }
 
 export default function ClientSettings() {
-  const [activeSection, setActiveSection] =
-    useState("profile");
+  const [activeSection, setActiveSection] = useState("profile");
 
   const renderSection = () => {
     switch (activeSection) {
@@ -533,8 +433,7 @@ export default function ClientSettings() {
         </h1>
 
         <p className="mt-2 text-lead text-surface-muted">
-          Manage your account, company information, notifications,
-          and security.
+          Manage your account, company information, notifications, and security.
         </p>
       </div>
 
@@ -547,12 +446,8 @@ export default function ClientSettings() {
                 <SectionButton
                   key={section.id}
                   section={section}
-                  active={
-                    activeSection === section.id
-                  }
-                  onClick={() =>
-                    setActiveSection(section.id)
-                  }
+                  active={activeSection === section.id}
+                  onClick={() => setActiveSection(section.id)}
                 />
               ))}
             </nav>
@@ -560,9 +455,7 @@ export default function ClientSettings() {
         </aside>
 
         {/* Settings content */}
-        <section className="min-w-0">
-          {renderSection()}
-        </section>
+        <section className="min-w-0">{renderSection()}</section>
       </div>
     </div>
   );

@@ -8,10 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-import {
-  getProjectById,
-  getClientById,
-} from "@/data/mockData";
+import { getProjectById, getClientById } from "@/data/mockData";
 
 import { Button } from "@/components/ui/button";
 
@@ -39,8 +36,7 @@ export default function ApprovalCard({ approval }) {
   const project = getProjectById(approval.projectId);
   const client = getClientById(approval.clientId);
 
-  const config =
-    STATUS_CONFIG[approval.status] || STATUS_CONFIG.pending;
+  const config = STATUS_CONFIG[approval.status] || STATUS_CONFIG.pending;
 
   const Icon = config.icon;
 
@@ -67,8 +63,7 @@ export default function ApprovalCard({ approval }) {
             </h3>
 
             <p className="mt-0.5 text-sm text-surface-muted">
-              Version {approval.version} · {client?.name} ·{" "}
-              {project?.name}
+              Version {approval.version} · {client?.name} · {project?.name}
             </p>
           </div>
 
@@ -79,17 +74,13 @@ export default function ApprovalCard({ approval }) {
         </div>
 
         {/* Status */}
-        <div
-          className={`mt-3 flex items-center gap-1.5 text-sm font-medium ${config.className}`}
-        >
+        <div className={`mt-3 flex items-center gap-1.5 text-sm font-medium ${config.className}`}>
           <Icon className="h-4 w-4" strokeWidth={2} />
 
           {config.label}
 
           {approval.status !== "approved" && approval.waitingSince && (
-            <span className="text-surface-muted">
-              — {approval.waitingSince}
-            </span>
+            <span className="text-surface-muted">— {approval.waitingSince}</span>
           )}
         </div>
       </div>
@@ -97,12 +88,7 @@ export default function ApprovalCard({ approval }) {
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-2">
         {/* Open */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleOpen}
-          className="gap-1.5"
-        >
+        <Button variant="outline" size="sm" onClick={handleOpen} className="gap-1.5">
           <ExternalLink size={14} />
           Open
         </Button>
@@ -110,11 +96,7 @@ export default function ApprovalCard({ approval }) {
         {/* Pending Actions */}
         {approval.status === "pending" && (
           <>
-            <Button
-              size="sm"
-              onClick={handleApprove}
-              className="gap-1.5"
-            >
+            <Button size="sm" onClick={handleApprove} className="gap-1.5">
               <Check size={14} />
               Approve
             </Button>
@@ -133,12 +115,7 @@ export default function ApprovalCard({ approval }) {
 
         {/* Changes Requested */}
         {approval.status === "changes-requested" && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleOpen}
-            className="gap-1.5"
-          >
+          <Button variant="outline" size="sm" onClick={handleOpen} className="gap-1.5">
             <RotateCcw size={14} />
             Review Changes
           </Button>

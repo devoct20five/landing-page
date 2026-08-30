@@ -10,28 +10,14 @@ import {
   Trash2,
 } from "lucide-react";
 
-import {
-  getProjectById,
-  getClientById,
-  getTeamMemberById,
-} from "@/data/mockData";
+import { getProjectById, getClientById, getTeamMemberById } from "@/data/mockData";
 
 import StatusBadge from "@/components/shared/StatusBadge";
 import PriorityBadge from "@/components/shared/PriorityBadge";
 
-const STATUS_OPTIONS = [
-  "Todo",
-  "In Progress",
-  "Review",
-  "Completed",
-];
+const STATUS_OPTIONS = ["Todo", "In Progress", "Review", "Completed"];
 
-const PRIORITY_OPTIONS = [
-  "Low",
-  "Medium",
-  "High",
-  "Urgent",
-];
+const PRIORITY_OPTIONS = ["Low", "Medium", "High", "Urgent"];
 
 export default function TaskRow({ task }) {
   const project = getProjectById(task.projectId);
@@ -110,16 +96,13 @@ export default function TaskRow({ task }) {
 
       {/* Actions / Metadata */}
       <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-
         {/* Assignee */}
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-orange/10 text-[0.6rem] font-bold text-brand-orange">
             {assignee?.initials}
           </div>
 
-          <span className="hidden text-xs text-surface-muted md:inline">
-            {assignee?.name}
-          </span>
+          <span className="hidden text-xs text-surface-muted md:inline">{assignee?.name}</span>
         </div>
 
         {/* Priority */}
@@ -128,8 +111,7 @@ export default function TaskRow({ task }) {
             type="button"
             onClick={() => {
               const index = PRIORITY_OPTIONS.indexOf(priority);
-              const next =
-                PRIORITY_OPTIONS[(index + 1) % PRIORITY_OPTIONS.length];
+              const next = PRIORITY_OPTIONS[(index + 1) % PRIORITY_OPTIONS.length];
 
               setPriority(next);
             }}

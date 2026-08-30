@@ -24,8 +24,7 @@ import { Link, useParams } from "react-router-dom";
 const approval = {
   id: "approval-001",
   title: "Hero Campaign Film — Final Cut",
-  description:
-    "Final edited version of the campaign film is ready for your review and approval.",
+  description: "Final edited version of the campaign film is ready for your review and approval.",
   project: "Summer Campaign 2026",
   type: "Video",
   submittedBy: "Rahul Mehta",
@@ -208,9 +207,7 @@ function ApprovalPreview() {
           <div className="flex items-center gap-2">
             <FileCheck2 className="h-4 w-4 text-brand-orange" />
 
-            <h2 className="text-sm font-bold text-surface-fg">
-              Approval Content
-            </h2>
+            <h2 className="text-sm font-bold text-surface-fg">Approval Content</h2>
           </div>
 
           <p className="mt-1 text-xs text-surface-muted">
@@ -245,11 +242,7 @@ function ApprovalPreview() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="ml-1 h-7 w-7 text-white"
-                  >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="ml-1 h-7 w-7 text-white">
                     <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.84l10.03-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14Z" />
                   </svg>
                 </div>
@@ -258,9 +251,7 @@ function ApprovalPreview() {
                   Hero Campaign Film — Final Cut
                 </p>
 
-                <p className="mt-1 text-[0.65rem] text-white/40">
-                  Click to play preview
-                </p>
+                <p className="mt-1 text-[0.65rem] text-white/40">Click to play preview</p>
               </div>
             </div>
           </div>
@@ -289,13 +280,9 @@ function ApprovalPreview() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-surface-fg">
-              hero-campaign-final-v4.2.mp4
-            </p>
+            <p className="text-xs font-bold text-surface-fg">hero-campaign-final-v4.2.mp4</p>
 
-            <p className="mt-0.5 text-[0.65rem] text-surface-muted">
-              Video · 184 MB · 01:24
-            </p>
+            <p className="mt-0.5 text-[0.65rem] text-surface-muted">Video · 184 MB · 01:24</p>
           </div>
         </div>
 
@@ -329,9 +316,7 @@ function CommentsSection() {
             </span>
           </div>
 
-          <p className="mt-1 text-xs text-surface-muted">
-            Discuss feedback with the project team.
-          </p>
+          <p className="mt-1 text-xs text-surface-muted">Discuss feedback with the project team.</p>
         </div>
       </div>
 
@@ -361,9 +346,7 @@ function Comment({ comment }) {
         <div
           className={cn(
             "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-bold",
-            comment.own
-              ? "bg-brand-orange text-white"
-              : "bg-surface-bg text-surface-fg"
+            comment.own ? "bg-brand-orange text-white" : "bg-surface-bg text-surface-fg"
           )}
         >
           {comment.initials}
@@ -371,9 +354,7 @@ function Comment({ comment }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="text-xs font-bold text-surface-fg">
-              {comment.author}
-            </span>
+            <span className="text-xs font-bold text-surface-fg">{comment.author}</span>
 
             <span className="rounded-full bg-surface-bg px-2 py-0.5 text-[0.55rem] font-semibold text-surface-muted">
               {comment.role}
@@ -384,9 +365,7 @@ function Comment({ comment }) {
             </span>
           </div>
 
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-surface-muted">
-            {comment.message}
-          </p>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-surface-muted">{comment.message}</p>
 
           {comment.author !== "You" && (
             <button className="mt-2 text-[0.65rem] font-bold text-surface-muted transition-colors hover:text-brand-orange">
@@ -438,14 +417,11 @@ function ReviewPanel() {
       <div className="flex items-center gap-2">
         <FileCheck2 className="h-4 w-4 text-brand-orange" />
 
-        <h2 className="text-sm font-bold text-surface-fg">
-          Your Review
-        </h2>
+        <h2 className="text-sm font-bold text-surface-fg">Your Review</h2>
       </div>
 
       <p className="mt-2 text-xs leading-5 text-surface-muted">
-        Once you're happy with this deliverable, approve it to move the
-        project forward.
+        Once you're happy with this deliverable, approve it to move the project forward.
       </p>
 
       <div className="mt-5 space-y-2">
@@ -478,9 +454,7 @@ function ReviewPanel() {
 function SubmissionDetails() {
   return (
     <section className="rounded-2xl border border-surface-border bg-surface-card p-5">
-      <h2 className="text-sm font-bold text-surface-fg">
-        Submission Details
-      </h2>
+      <h2 className="text-sm font-bold text-surface-fg">Submission Details</h2>
 
       <div className="mt-5 space-y-4">
         <DetailRow label="Submitted by">
@@ -490,13 +464,9 @@ function SubmissionDetails() {
             </div>
 
             <div>
-              <p className="text-xs font-semibold text-surface-fg">
-                Rahul Mehta
-              </p>
+              <p className="text-xs font-semibold text-surface-fg">Rahul Mehta</p>
 
-              <p className="text-[0.6rem] text-surface-muted">
-                Editor
-              </p>
+              <p className="text-[0.6rem] text-surface-muted">Editor</p>
             </div>
           </div>
         </DetailRow>
@@ -506,9 +476,7 @@ function SubmissionDetails() {
         </DetailRow>
 
         <DetailRow label="Version">
-          <span className="rounded-md bg-surface-bg px-2 py-1 font-bold">
-            v4.2
-          </span>
+          <span className="rounded-md bg-surface-bg px-2 py-1 font-bold">v4.2</span>
         </DetailRow>
 
         <DetailRow label="Due date">
@@ -549,9 +517,7 @@ function VersionHistory() {
   return (
     <section className="rounded-2xl border border-surface-border bg-surface-card p-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold text-surface-fg">
-          Version History
-        </h2>
+        <h2 className="text-sm font-bold text-surface-fg">Version History</h2>
 
         <button className="text-surface-muted hover:text-surface-fg">
           <ChevronDown className="h-4 w-4" />
@@ -564,17 +530,13 @@ function VersionHistory() {
             key={version.version}
             className={cn(
               "flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors",
-              version.current
-                ? "bg-brand-orange/5"
-                : "hover:bg-surface-bg"
+              version.current ? "bg-brand-orange/5" : "hover:bg-surface-bg"
             )}
           >
             <div
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-lg",
-                version.current
-                  ? "bg-brand-orange/10"
-                  : "bg-surface-bg"
+                version.current ? "bg-brand-orange/10" : "bg-surface-bg"
               )}
             >
               {version.current ? (
@@ -586,9 +548,7 @@ function VersionHistory() {
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <p className="text-xs font-bold text-surface-fg">
-                  {version.version}
-                </p>
+                <p className="text-xs font-bold text-surface-fg">{version.version}</p>
 
                 {version.current && (
                   <span className="rounded-full bg-brand-orange/10 px-1.5 py-0.5 text-[0.5rem] font-bold uppercase text-brand-orange">
@@ -597,9 +557,7 @@ function VersionHistory() {
                 )}
               </div>
 
-              <p className="mt-0.5 text-[0.6rem] text-surface-muted">
-                {version.date}
-              </p>
+              <p className="mt-0.5 text-[0.6rem] text-surface-muted">{version.date}</p>
             </div>
           </button>
         ))}
@@ -619,9 +577,7 @@ function DetailRow({ label, children }) {
         {label}
       </span>
 
-      <div className="text-right text-xs font-semibold text-surface-fg">
-        {children}
-      </div>
+      <div className="text-right text-xs font-semibold text-surface-fg">{children}</div>
     </div>
   );
 }

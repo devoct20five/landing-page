@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  UserRound,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, UserRound, ShieldCheck } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,15 +8,13 @@ const ROLES = [
   {
     id: "client",
     title: "Client",
-    description:
-      "Access your projects, tasks, files and approvals.",
+    description: "Access your projects, tasks, files and approvals.",
     icon: UserRound,
   },
   {
     id: "staff",
     title: "Staff",
-    description:
-      "Manage projects, clients, tasks and internal operations.",
+    description: "Manage projects, clients, tasks and internal operations.",
     icon: BriefcaseBusiness,
   },
 ];
@@ -86,8 +79,7 @@ export default function Login() {
               </h1>
 
               <p className="mt-6 max-w-sm text-sm leading-6 text-white/70">
-                Projects, communication, approvals and
-                everything in between — connected to the
+                Projects, communication, approvals and everything in between — connected to the
                 people doing the work.
               </p>
             </div>
@@ -110,9 +102,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <p className="font-display text-base font-bold text-surface-fg">
-                    OCT20FIVE
-                  </p>
+                  <p className="font-display text-base font-bold text-surface-fg">OCT20FIVE</p>
 
                   <p className="text-[0.55rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
                     Portal
@@ -144,9 +134,7 @@ export default function Login() {
                     <button
                       key={role.id}
                       type="button"
-                      onClick={() =>
-                        setSelectedRole(role.id)
-                      }
+                      onClick={() => setSelectedRole(role.id)}
                       className={cn(
                         "group flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-200",
                         active
@@ -162,10 +150,7 @@ export default function Login() {
                             : "bg-surface-muted/10 text-surface-muted group-hover:text-brand-orange"
                         )}
                       >
-                        <Icon
-                          className="h-5 w-5"
-                          strokeWidth={2}
-                        />
+                        <Icon className="h-5 w-5" strokeWidth={2} />
                       </div>
 
                       <div className="min-w-0 flex-1">
@@ -207,9 +192,7 @@ export default function Login() {
                       <input
                         type="email"
                         value={email}
-                        onChange={(event) =>
-                          setEmail(event.target.value)
-                        }
+                        onChange={(event) => setEmail(event.target.value)}
                         placeholder="you@company.com"
                         className="brand-input w-full"
                       />
@@ -232,9 +215,7 @@ export default function Login() {
                       <input
                         type="password"
                         value={password}
-                        onChange={(event) =>
-                          setPassword(event.target.value)
-                        }
+                        onChange={(event) => setPassword(event.target.value)}
                         placeholder="Enter your password"
                         className="brand-input w-full"
                       />
@@ -251,11 +232,7 @@ export default function Login() {
                           : "cursor-not-allowed bg-surface-muted/10 text-surface-muted"
                       )}
                     >
-                      Sign in as{" "}
-                      {selectedRole === "client"
-                        ? "Client"
-                        : "Staff"}
-
+                      Sign in as {selectedRole === "client" ? "Client" : "Staff"}
                       <ArrowRight className="h-4 w-4" />
                     </button>
                   </div>
@@ -264,10 +241,7 @@ export default function Login() {
 
               <p className="mt-8 text-center text-xs text-surface-muted">
                 Need access?{" "}
-                <button
-                  type="button"
-                  className="font-semibold text-brand-orange hover:underline"
-                >
+                <button type="button" className="font-semibold text-brand-orange hover:underline">
                   Contact OCT20FIVE
                 </button>
               </p>

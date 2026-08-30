@@ -26,28 +26,23 @@ import {
 const statusConfig = {
   "in-progress": {
     label: "In Progress",
-    className:
-      "bg-blue-500/10 text-blue-600 border-blue-500/20",
+    className: "bg-blue-500/10 text-blue-600 border-blue-500/20",
   },
   "client-review": {
     label: "Client Review",
-    className:
-      "bg-purple-500/10 text-purple-600 border-purple-500/20",
+    className: "bg-purple-500/10 text-purple-600 border-purple-500/20",
   },
   blocked: {
     label: "Blocked",
-    className:
-      "bg-red-500/10 text-red-600 border-red-500/20",
+    className: "bg-red-500/10 text-red-600 border-red-500/20",
   },
   planned: {
     label: "Planned",
-    className:
-      "bg-surface-muted/10 text-surface-muted border-surface-border",
+    className: "bg-surface-muted/10 text-surface-muted border-surface-border",
   },
   "not-started": {
     label: "Not Started",
-    className:
-      "bg-surface-muted/10 text-surface-muted border-surface-border",
+    className: "bg-surface-muted/10 text-surface-muted border-surface-border",
   },
 };
 
@@ -79,19 +74,11 @@ function StatCard({ label, value, icon: Icon, description, urgent }) {
       </div>
 
       <div className="mt-5">
-        <p className="font-display text-2xl font-bold tracking-tight text-surface-fg">
-          {value}
-        </p>
+        <p className="font-display text-2xl font-bold tracking-tight text-surface-fg">{value}</p>
 
-        <p className="mt-1 text-sm font-medium text-surface-fg">
-          {label}
-        </p>
+        <p className="mt-1 text-sm font-medium text-surface-fg">{label}</p>
 
-        {description && (
-          <p className="mt-1 text-xs text-surface-muted">
-            {description}
-          </p>
-        )}
+        {description && <p className="mt-1 text-xs text-surface-muted">{description}</p>}
       </div>
     </div>
   );
@@ -139,24 +126,15 @@ function ProgressBar({ value }) {
 }
 
 export default function StaffDashboard() {
-  const myTasks = tasks.filter(
-    (task) => task.assigneeId === currentStaff.id
-  );
+  const myTasks = tasks.filter((task) => task.assigneeId === currentStaff.id);
 
   const urgentTasks = tasks.filter(
-    (task) =>
-      task.status === "blocked" ||
-      task.dueLabel === "Overdue" ||
-      task.priority === "high"
+    (task) => task.status === "blocked" || task.dueLabel === "Overdue" || task.priority === "high"
   );
 
-  const activeProjects = projects.filter(
-    (project) => project.status !== "completed"
-  );
+  const activeProjects = projects.filter((project) => project.status !== "completed");
 
-  const pendingApprovals = approvals.filter(
-    (approval) => approval.status === "pending"
-  );
+  const pendingApprovals = approvals.filter((approval) => approval.status === "pending");
 
   return (
     <div className="space-y-8 pb-10">
@@ -165,8 +143,6 @@ export default function StaffDashboard() {
       ====================================================== */}
       <section className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-      
-
           <h1 className="font-display text-3xl font-bold tracking-[-0.03em] text-surface-fg md:text-4xl">
             Good morning, {currentStaff.name.split(" ")[0]}.
           </h1>
@@ -230,19 +206,12 @@ export default function StaffDashboard() {
         <div className="rounded-2xl border border-surface-border bg-surface-bg">
           <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
             <div>
-              <h2 className="font-display text-base font-bold text-surface-fg">
-                My Work
-              </h2>
+              <h2 className="font-display text-base font-bold text-surface-fg">My Work</h2>
 
-              <p className="mt-0.5 text-xs text-surface-muted">
-                Tasks assigned to you
-              </p>
+              <p className="mt-0.5 text-xs text-surface-muted">Tasks assigned to you</p>
             </div>
 
-            <Link
-              to="/tasks"
-              className="text-xs font-semibold text-brand-orange hover:underline"
-            >
+            <Link to="/tasks" className="text-xs font-semibold text-brand-orange hover:underline">
               View all
             </Link>
           </div>
@@ -252,13 +221,9 @@ export default function StaffDashboard() {
               <div className="px-5 py-10 text-center">
                 <CheckCircle2 className="mx-auto h-8 w-8 text-green-500" />
 
-                <p className="mt-3 text-sm font-semibold text-surface-fg">
-                  All caught up
-                </p>
+                <p className="mt-3 text-sm font-semibold text-surface-fg">All caught up</p>
 
-                <p className="mt-1 text-xs text-surface-muted">
-                  You have no assigned tasks.
-                </p>
+                <p className="mt-1 text-xs text-surface-muted">You have no assigned tasks.</p>
               </div>
             ) : (
               myTasks.slice(0, 5).map((task) => {
@@ -270,10 +235,7 @@ export default function StaffDashboard() {
                     className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-surface-muted/5"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-muted/10">
-                      <ListTodo
-                        className="h-4 w-4 text-surface-muted"
-                        strokeWidth={2}
-                      />
+                      <ListTodo className="h-4 w-4 text-surface-muted" strokeWidth={2} />
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -310,9 +272,7 @@ export default function StaffDashboard() {
                         {task.dueLabel}
                       </p>
 
-                      <p className="mt-0.5 text-[0.65rem] text-surface-muted">
-                        {task.dueDate}
-                      </p>
+                      <p className="mt-0.5 text-[0.65rem] text-surface-muted">{task.dueDate}</p>
                     </div>
 
                     <MoreHorizontal className="h-4 w-4 text-surface-muted opacity-0 transition-opacity group-hover:opacity-100" />
@@ -333,9 +293,7 @@ export default function StaffDashboard() {
                 Pending Approvals
               </h2>
 
-              <p className="mt-0.5 text-xs text-surface-muted">
-                Waiting on clients
-              </p>
+              <p className="mt-0.5 text-xs text-surface-muted">Waiting on clients</p>
             </div>
 
             <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-brand-orange/10 px-2 text-xs font-bold text-brand-orange">
@@ -391,9 +349,7 @@ export default function StaffDashboard() {
         ==================================================== */}
         <div className="rounded-2xl border border-surface-border bg-surface-bg">
           <div className="border-b border-surface-border px-5 py-4">
-            <h2 className="font-display text-base font-bold text-surface-fg">
-              Needs Attention
-            </h2>
+            <h2 className="font-display text-base font-bold text-surface-fg">Needs Attention</h2>
 
             <p className="mt-0.5 text-xs text-surface-muted">
               Items that may need immediate action
@@ -405,32 +361,23 @@ export default function StaffDashboard() {
               const project = getProjectById(task.projectId);
 
               return (
-                <div
-                  key={task.id}
-                  className="flex items-start gap-3 px-5 py-4"
-                >
+                <div key={task.id} className="flex items-start gap-3 px-5 py-4">
                   <div
                     className={cn(
                       "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
-                      task.status === "blocked"
-                        ? "bg-red-500/10"
-                        : "bg-brand-orange/10"
+                      task.status === "blocked" ? "bg-red-500/10" : "bg-brand-orange/10"
                     )}
                   >
                     <AlertCircle
                       className={cn(
                         "h-4 w-4",
-                        task.status === "blocked"
-                          ? "text-red-500"
-                          : "text-brand-orange"
+                        task.status === "blocked" ? "text-red-500" : "text-brand-orange"
                       )}
                     />
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-surface-fg">
-                      {task.title}
-                    </p>
+                    <p className="truncate text-sm font-semibold text-surface-fg">{task.title}</p>
 
                     <p className="mt-1 truncate text-xs text-surface-muted">
                       {project?.name} · {project?.clientName}
@@ -440,9 +387,7 @@ export default function StaffDashboard() {
                       <StatusBadge status={task.status} />
 
                       {task.dueLabel === "Overdue" && (
-                        <span className="text-[0.65rem] font-semibold text-red-500">
-                          Overdue
-                        </span>
+                        <span className="text-[0.65rem] font-semibold text-red-500">Overdue</span>
                       )}
                     </div>
                   </div>
@@ -458,13 +403,9 @@ export default function StaffDashboard() {
         <div className="rounded-2xl border border-surface-border bg-surface-bg">
           <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
             <div>
-              <h2 className="font-display text-base font-bold text-surface-fg">
-                Recent Activity
-              </h2>
+              <h2 className="font-display text-base font-bold text-surface-fg">Recent Activity</h2>
 
-              <p className="mt-0.5 text-xs text-surface-muted">
-                Latest agency activity
-              </p>
+              <p className="mt-0.5 text-xs text-surface-muted">Latest agency activity</p>
             </div>
 
             <Link
@@ -477,22 +418,15 @@ export default function StaffDashboard() {
 
           <div className="divide-y divide-surface-border">
             {staffActivity.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-4 px-5 py-4"
-              >
+              <div key={item.id} className="flex items-center gap-4 px-5 py-4">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-muted/10">
                   <ActivityIcon text={item.text} />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-surface-fg">
-                    {item.text}
-                  </p>
+                  <p className="text-sm text-surface-fg">{item.text}</p>
 
-                  <p className="mt-1 text-[0.7rem] text-surface-muted">
-                    {item.timestamp}
-                  </p>
+                  <p className="mt-1 text-[0.7rem] text-surface-muted">{item.timestamp}</p>
                 </div>
               </div>
             ))}
@@ -506,19 +440,14 @@ export default function StaffDashboard() {
       <section className="rounded-2xl border border-surface-border bg-surface-bg">
         <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
           <div>
-            <h2 className="font-display text-base font-bold text-surface-fg">
-              Active Projects
-            </h2>
+            <h2 className="font-display text-base font-bold text-surface-fg">Active Projects</h2>
 
             <p className="mt-0.5 text-xs text-surface-muted">
               Current project workload across the agency
             </p>
           </div>
 
-          <Link
-            to="/projects"
-            className="text-xs font-semibold text-brand-orange hover:underline"
-          >
+          <Link to="/projects" className="text-xs font-semibold text-brand-orange hover:underline">
             View projects
           </Link>
         </div>
@@ -531,13 +460,9 @@ export default function StaffDashboard() {
             >
               {/* Project */}
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-surface-fg">
-                  {project.name}
-                </p>
+                <p className="truncate text-sm font-semibold text-surface-fg">{project.name}</p>
 
-                <p className="mt-1 truncate text-xs text-surface-muted">
-                  {project.clientName}
-                </p>
+                <p className="mt-1 truncate text-xs text-surface-muted">{project.clientName}</p>
               </div>
 
               {/* Team */}
@@ -546,17 +471,13 @@ export default function StaffDashboard() {
                   <Users className="h-3.5 w-3.5 text-surface-muted" />
                 </div>
 
-                <span className="text-xs text-surface-muted">
-                  {project.teamSize} people
-                </span>
+                <span className="text-xs text-surface-muted">{project.teamSize} people</span>
               </div>
 
               {/* Progress */}
               <div>
                 <div className="mb-1.5 flex items-center justify-between">
-                  <span className="text-[0.65rem] text-surface-muted">
-                    Progress
-                  </span>
+                  <span className="text-[0.65rem] text-surface-muted">Progress</span>
 
                   <span className="text-[0.7rem] font-semibold text-surface-fg">
                     {project.progress}%
@@ -580,30 +501,12 @@ export default function StaffDashboard() {
 
 function ActivityIcon({ text }) {
   if (text.toLowerCase().includes("approved")) {
-    return (
-      <CheckCircle2
-        className="h-4 w-4 text-green-500"
-        strokeWidth={2}
-      />
-    );
+    return <CheckCircle2 className="h-4 w-4 text-green-500" strokeWidth={2} />;
   }
 
-  if (
-    text.toLowerCase().includes("created") ||
-    text.toLowerCase().includes("updated")
-  ) {
-    return (
-      <ListTodo
-        className="h-4 w-4 text-brand-orange"
-        strokeWidth={2}
-      />
-    );
+  if (text.toLowerCase().includes("created") || text.toLowerCase().includes("updated")) {
+    return <ListTodo className="h-4 w-4 text-brand-orange" strokeWidth={2} />;
   }
 
-  return (
-    <FolderKanban
-      className="h-4 w-4 text-surface-muted"
-      strokeWidth={2}
-    />
-  );
+  return <FolderKanban className="h-4 w-4 text-surface-muted" strokeWidth={2} />;
 }

@@ -129,8 +129,7 @@ export default function ClientBilling() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Manage your outstanding payments, invoices and payment
-                history in one place.
+                Manage your outstanding payments, invoices and payment history in one place.
               </p>
             </div>
 
@@ -234,9 +233,7 @@ function BillingSummary() {
           <div className="mt-4 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-brand-orange" />
 
-            <span className="text-xs font-medium text-surface-muted">
-              ₹1,20,000 currently due
-            </span>
+            <span className="text-xs font-medium text-surface-muted">₹1,20,000 currently due</span>
           </div>
         </div>
       </div>
@@ -256,9 +253,7 @@ function BillingSummary() {
           30 Aug 2026
         </p>
 
-        <p className="mt-2 text-xs text-surface-muted">
-          ₹1,20,000 due
-        </p>
+        <p className="mt-2 text-xs text-surface-muted">₹1,20,000 due</p>
       </div>
 
       {/* Grace period */}
@@ -276,9 +271,7 @@ function BillingSummary() {
           10 Days
         </p>
 
-        <p className="mt-2 text-xs text-surface-muted">
-          Until 09 Sep 2026
-        </p>
+        <p className="mt-2 text-xs text-surface-muted">Until 09 Sep 2026</p>
       </div>
     </section>
   );
@@ -297,24 +290,18 @@ function PaymentPolicyAlert() {
         </div>
 
         <div className="min-w-0">
-          <h2 className="text-sm font-bold text-surface-fg">
-            Payment & Project Hold Policy
-          </h2>
+          <h2 className="text-sm font-bold text-surface-fg">Payment & Project Hold Policy</h2>
 
           <p className="mt-1 max-w-4xl text-xs leading-5 text-surface-muted">
             Payments are due on the date shown on each invoice. A{" "}
-            <strong className="text-surface-fg">
-              10-day grace period
-            </strong>{" "}
-            is provided after the due date. If the outstanding amount remains
-            unpaid after this period, the associated project will be placed
-            on hold indefinitely.
+            <strong className="text-surface-fg">10-day grace period</strong> is provided after the
+            due date. If the outstanding amount remains unpaid after this period, the associated
+            project will be placed on hold indefinitely.
           </p>
 
           <p className="mt-2 max-w-4xl text-xs leading-5 text-surface-muted">
-            Work will resume once the overdue amount and any applicable
-            agreed-upon hold/resumption amount have been credited to the
-            account.
+            Work will resume once the overdue amount and any applicable agreed-upon hold/resumption
+            amount have been credited to the account.
           </p>
         </div>
       </div>
@@ -326,20 +313,13 @@ function PaymentPolicyAlert() {
    TABS
 ============================================================ */
 
-function BillingTab({
-  active,
-  onClick,
-  icon: Icon,
-  label,
-}) {
+function BillingTab({ active, onClick, icon: Icon, label }) {
   return (
     <button
       onClick={onClick}
       className={cn(
         "relative inline-flex items-center gap-2 pb-3 text-xs font-bold transition-colors",
-        active
-          ? "text-brand-orange"
-          : "text-surface-muted hover:text-surface-fg"
+        active ? "text-brand-orange" : "text-surface-muted hover:text-surface-fg"
       )}
     >
       <Icon className="h-4 w-4" />
@@ -359,8 +339,7 @@ function BillingTab({
 
 function UpcomingPayments() {
   const upcoming = invoices.filter(
-    (invoice) =>
-      invoice.status === "due" || invoice.status === "overdue"
+    (invoice) => invoice.status === "due" || invoice.status === "overdue"
   );
 
   return (
@@ -372,8 +351,7 @@ function UpcomingPayments() {
           </h2>
 
           <p className="mt-1 text-sm text-surface-muted">
-            Review your outstanding invoices and make payments before their
-            due dates.
+            Review your outstanding invoices and make payments before their due dates.
           </p>
         </div>
 
@@ -385,10 +363,7 @@ function UpcomingPayments() {
 
       <div className="space-y-3">
         {upcoming.map((invoice) => (
-          <InvoiceCard
-            key={invoice.id}
-            invoice={invoice}
-          />
+          <InvoiceCard key={invoice.id} invoice={invoice} />
         ))}
       </div>
     </section>
@@ -406,9 +381,7 @@ function InvoiceCard({ invoice }) {
     <article
       className={cn(
         "rounded-2xl border bg-surface-card p-5 transition-colors",
-        overdue
-          ? "border-red-300/40"
-          : "border-surface-border hover:border-surface-muted"
+        overdue ? "border-red-300/40" : "border-surface-border hover:border-surface-muted"
       )}
     >
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -416,48 +389,27 @@ function InvoiceCard({ invoice }) {
           <div
             className={cn(
               "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
-              overdue
-                ? "bg-red-500/10"
-                : "bg-brand-orange/10"
+              overdue ? "bg-red-500/10" : "bg-brand-orange/10"
             )}
           >
-            <FileText
-              className={cn(
-                "h-5 w-5",
-                overdue
-                  ? "text-red-600"
-                  : "text-brand-orange"
-              )}
-            />
+            <FileText className={cn("h-5 w-5", overdue ? "text-red-600" : "text-brand-orange")} />
           </div>
 
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="truncate text-sm font-bold text-surface-fg">
-                {invoice.title}
-              </h3>
+              <h3 className="truncate text-sm font-bold text-surface-fg">{invoice.title}</h3>
 
               <InvoiceStatus status={invoice.status} />
             </div>
 
-            <p className="mt-1 text-xs text-surface-muted">
-              {invoice.project}
-            </p>
+            <p className="mt-1 text-xs text-surface-muted">{invoice.project}</p>
 
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[0.65rem] text-surface-muted">
               <span>Invoice {invoice.id}</span>
 
-              <span>
-                Issued {invoice.issuedDate}
-              </span>
+              <span>Issued {invoice.issuedDate}</span>
 
-              <span
-                className={cn(
-                  overdue && "font-bold text-red-600"
-                )}
-              >
-                Due {invoice.dueDate}
-              </span>
+              <span className={cn(overdue && "font-bold text-red-600")}>Due {invoice.dueDate}</span>
             </div>
           </div>
         </div>
@@ -512,26 +464,16 @@ function PrePayment() {
         </h2>
 
         <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-          You can make a partial or full payment toward your outstanding
-          balance at any time. Pre-paying reduces your outstanding amount
-          without waiting for the next invoice due date.
+          You can make a partial or full payment toward your outstanding balance at any time.
+          Pre-paying reduces your outstanding amount without waiting for the next invoice due date.
         </p>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <InfoCard
-            label="Outstanding"
-            value="₹1,85,000"
-          />
+          <InfoCard label="Outstanding" value="₹1,85,000" />
 
-          <InfoCard
-            label="Next Due"
-            value="₹1,20,000"
-          />
+          <InfoCard label="Next Due" value="₹1,20,000" />
 
-          <InfoCard
-            label="Due Date"
-            value="30 Aug"
-          />
+          <InfoCard label="Due Date" value="30 Aug" />
         </div>
 
         <div className="mt-6 rounded-xl bg-surface-bg p-4">
@@ -539,9 +481,8 @@ function PrePayment() {
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-surface-muted" />
 
             <p className="text-xs leading-5 text-surface-muted">
-              Pre-payment does not change the original invoice due dates.
-              It simply reduces the balance that remains payable against
-              your account.
+              Pre-payment does not change the original invoice due dates. It simply reduces the
+              balance that remains payable against your account.
             </p>
           </div>
         </div>
@@ -553,9 +494,7 @@ function PrePayment() {
         <div className="flex items-center gap-2">
           <Wallet className="h-4 w-4 text-brand-orange" />
 
-          <h2 className="text-sm font-bold text-surface-fg">
-            Make a Payment
-          </h2>
+          <h2 className="text-sm font-bold text-surface-fg">Make a Payment</h2>
         </div>
 
         <label className="mt-5 block">
@@ -583,10 +522,7 @@ function PrePayment() {
             value={`₹${outstanding.toLocaleString("en-IN")}`}
           />
 
-          <SummaryRow
-            label="This payment"
-            value={`₹${paymentAmount.toLocaleString("en-IN")}`}
-          />
+          <SummaryRow label="This payment" value={`₹${paymentAmount.toLocaleString("en-IN")}`} />
 
           <div className="border-t border-surface-border pt-3">
             <SummaryRow
@@ -645,10 +581,7 @@ function PaymentHistory() {
         </div>
 
         {payments.map((payment) => (
-          <PaymentRow
-            key={payment.id}
-            payment={payment}
-          />
+          <PaymentRow key={payment.id} payment={payment} />
         ))}
       </div>
     </section>
@@ -668,9 +601,7 @@ function PaymentRow({ payment }) {
         </div>
 
         <div className="min-w-0">
-          <p className="truncate text-xs font-bold text-surface-fg">
-            {payment.description}
-          </p>
+          <p className="truncate text-xs font-bold text-surface-fg">{payment.description}</p>
 
           <p className="mt-1 text-[0.6rem] text-surface-muted">
             {payment.id} · {payment.reference}
@@ -683,9 +614,7 @@ function PaymentRow({ payment }) {
           Date
         </p>
 
-        <p className="mt-1 text-xs font-medium text-surface-fg sm:mt-0">
-          {payment.date}
-        </p>
+        <p className="mt-1 text-xs font-medium text-surface-fg sm:mt-0">{payment.date}</p>
       </div>
 
       <div>
@@ -693,9 +622,7 @@ function PaymentRow({ payment }) {
           Method
         </p>
 
-        <p className="mt-1 text-xs font-medium text-surface-fg sm:mt-0">
-          {payment.method}
-        </p>
+        <p className="mt-1 text-xs font-medium text-surface-fg sm:mt-0">{payment.method}</p>
       </div>
 
       <div>
@@ -768,9 +695,7 @@ function InfoCard({ label, value }) {
         {label}
       </p>
 
-      <p className="mt-2 text-sm font-bold text-surface-fg">
-        {value}
-      </p>
+      <p className="mt-2 text-sm font-bold text-surface-fg">{value}</p>
     </div>
   );
 }
@@ -779,25 +704,12 @@ function InfoCard({ label, value }) {
    SUMMARY ROW
 ============================================================ */
 
-function SummaryRow({
-  label,
-  value,
-  strong = false,
-}) {
+function SummaryRow({ label, value, strong = false }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-xs text-surface-muted">
-        {label}
-      </span>
+      <span className="text-xs text-surface-muted">{label}</span>
 
-      <span
-        className={cn(
-          "text-xs text-surface-fg",
-          strong && "font-bold"
-        )}
-      >
-        {value}
-      </span>
+      <span className={cn("text-xs text-surface-fg", strong && "font-bold")}>{value}</span>
     </div>
   );
 }

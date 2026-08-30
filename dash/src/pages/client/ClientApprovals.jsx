@@ -17,8 +17,7 @@ const approvals = [
   {
     id: "approval-001",
     title: "Hero Campaign Film — Final Cut",
-    description:
-      "Final edited version of the campaign film is ready for your review and approval.",
+    description: "Final edited version of the campaign film is ready for your review and approval.",
     project: "Summer Campaign 2026",
     type: "Video",
     submittedBy: "Rahul Mehta",
@@ -34,8 +33,7 @@ const approvals = [
   {
     id: "approval-002",
     title: "Homepage Design — Final",
-    description:
-      "Final homepage design incorporating the latest feedback and content updates.",
+    description: "Final homepage design incorporating the latest feedback and content updates.",
     project: "Website Redesign",
     type: "Design",
     submittedBy: "Priya Nair",
@@ -51,8 +49,7 @@ const approvals = [
   {
     id: "approval-003",
     title: "Product Launch Social Assets",
-    description:
-      "Social media creatives prepared for the upcoming product launch campaign.",
+    description: "Social media creatives prepared for the upcoming product launch campaign.",
     project: "Product Launch",
     type: "Creative",
     submittedBy: "Arjun Rao",
@@ -68,8 +65,7 @@ const approvals = [
   {
     id: "approval-004",
     title: "August Social Content Batch",
-    description:
-      "Monthly social content batch approved for publishing.",
+    description: "Monthly social content batch approved for publishing.",
     project: "Social Content Retainer",
     type: "Content",
     submittedBy: "Sana Iyer",
@@ -85,8 +81,7 @@ const approvals = [
   {
     id: "approval-005",
     title: "Hero Film — Creative Direction",
-    description:
-      "Creative direction and storyboard previously submitted for review.",
+    description: "Creative direction and storyboard previously submitted for review.",
     project: "Summer Campaign 2026",
     type: "Video",
     submittedBy: "Rahul Mehta",
@@ -102,13 +97,9 @@ const approvals = [
 ];
 
 export default function ClientApprovals() {
-  const pendingApprovals = approvals.filter(
-    (approval) => approval.status === "pending"
-  );
+  const pendingApprovals = approvals.filter((approval) => approval.status === "pending");
 
-  const completedApprovals = approvals.filter(
-    (approval) => approval.status === "approved"
-  );
+  const completedApprovals = approvals.filter((approval) => approval.status === "approved");
 
   return (
     <div className="min-h-full bg-surface-bg">
@@ -132,8 +123,8 @@ export default function ClientApprovals() {
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Review submitted work, leave feedback and approve deliverables
-                before they move to the next stage.
+                Review submitted work, leave feedback and approve deliverables before they move to
+                the next stage.
               </p>
             </div>
 
@@ -174,8 +165,7 @@ export default function ClientApprovals() {
                 </h2>
 
                 <p className="mt-1 text-sm text-surface-muted">
-                  Review these deliverables and let the team know how to
-                  proceed.
+                  Review these deliverables and let the team know how to proceed.
                 </p>
               </div>
 
@@ -187,11 +177,7 @@ export default function ClientApprovals() {
 
             <div className="space-y-4">
               {pendingApprovals.map((approval, index) => (
-                <ApprovalCard
-                  key={approval.id}
-                  approval={approval}
-                  featured={index === 0}
-                />
+                <ApprovalCard key={approval.id} approval={approval} featured={index === 0} />
               ))}
             </div>
           </section>
@@ -214,10 +200,7 @@ export default function ClientApprovals() {
 
             <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-card">
               {completedApprovals.map((approval) => (
-                <CompletedApprovalRow
-                  key={approval.id}
-                  approval={approval}
-                />
+                <CompletedApprovalRow key={approval.id} approval={approval} />
               ))}
             </div>
           </section>
@@ -298,20 +281,11 @@ function ApprovalCard({ approval, featured = false }) {
 
             {/* META */}
             <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3">
-              <Meta
-                icon={FileCheck2}
-                text={`Version ${approval.version}`}
-              />
+              <Meta icon={FileCheck2} text={`Version ${approval.version}`} />
 
-              <Meta
-                icon={Clock3}
-                text={`Due ${approval.dueDate}`}
-              />
+              <Meta icon={Clock3} text={`Due ${approval.dueDate}`} />
 
-              <Meta
-                icon={MessageSquare}
-                text={`${approval.comments} comments`}
-              />
+              <Meta icon={MessageSquare} text={`${approval.comments} comments`} />
             </div>
           </div>
 
@@ -351,9 +325,7 @@ function ApprovalCard({ approval, featured = false }) {
                 Submitted by
               </p>
 
-              <p className="mt-0.5 text-sm font-semibold text-surface-fg">
-                {approval.submittedBy}
-              </p>
+              <p className="mt-0.5 text-sm font-semibold text-surface-fg">{approval.submittedBy}</p>
 
               <p className="text-[0.65rem] text-surface-muted">
                 {approval.submittedRole} · {approval.submittedDate}
@@ -396,9 +368,7 @@ function CompletedApprovalRow({ approval }) {
       {/* CONTENT */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="truncate text-sm font-bold text-surface-fg">
-            {approval.title}
-          </h3>
+          <h3 className="truncate text-sm font-bold text-surface-fg">{approval.title}</h3>
 
           <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[0.6rem] font-semibold text-emerald-600">
             Approved
@@ -412,9 +382,7 @@ function CompletedApprovalRow({ approval }) {
             {approval.type} · {approval.version}
           </span>
 
-          <span>
-            Reviewed {approval.submittedDate}
-          </span>
+          <span>Reviewed {approval.submittedDate}</span>
         </div>
       </div>
 

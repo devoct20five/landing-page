@@ -541,8 +541,7 @@ export const SERVICES = {
     pricing: {
       eyebrow: "Pricing",
       headline: "Premium work. Fair pricing. No compromises.",
-      subline:
-        "Choose the plan that fits your needs. Scale up or down as your projects grow.",
+      subline: "Choose the plan that fits your needs. Scale up or down as your projects grow.",
 
       plans: [
         {
@@ -818,14 +817,7 @@ export const SERVICES = {
     solution: {
       headline: "Bigger ideas. Bolder visuals. No real-world limits.",
       copy: "From impossible product shots to scroll-stopping CGI campaigns, we create 3D visuals that make people look twice. Whether you\u2019re launching a product, building a campaign, or need something reality simply can\u2019t deliver, we bring it to life.",
-      audiences: [
-        "Brands",
-        "Agencies",
-        "Fashion",
-        "Food & Beverage",
-        "Tech",
-        "Automotive",
-      ],
+      audiences: ["Brands", "Agencies", "Fashion", "Food & Beverage", "Tech", "Automotive"],
       formats: [
         "Product CGI",
         "3D Animation",
@@ -978,13 +970,7 @@ export const SERVICES = {
     solution: {
       headline: "Better websites. Better business. Built to do more.",
       copy: "From simple landing pages to complete business websites, we build fast, responsive digital experiences designed to look sharp and work even better. Whether you\u2019re launching a brand, growing a business, selling online, or rebuilding something outdated, we make sure your website earns its place on the internet.",
-      audiences: [
-        "Businesses",
-        "Brands",
-        "Startups",
-        "Creators",
-        "Restaurants",
-      ],
+      audiences: ["Businesses", "Brands", "Startups", "Creators", "Restaurants"],
       formats: [
         "Portfolios",
         "Landing Pages",

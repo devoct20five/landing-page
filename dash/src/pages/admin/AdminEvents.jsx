@@ -64,32 +64,23 @@ function EventCard({ event }) {
             {event.month || "AUG"}
           </span>
 
-          <span className="font-display text-lg font-bold leading-none">
-            {event.day || "15"}
-          </span>
+          <span className="font-display text-lg font-bold leading-none">{event.day || "15"}</span>
         </div>
 
         {/* Main */}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-display text-base font-bold text-surface-fg">
-              {event.title}
-            </h3>
+            <h3 className="font-display text-base font-bold text-surface-fg">{event.title}</h3>
 
             <span
-              className={cn(
-                "rounded-full px-2.5 py-1 text-[0.6rem] font-semibold",
-                type.className
-              )}
+              className={cn("rounded-full px-2.5 py-1 text-[0.6rem] font-semibold", type.className)}
             >
               {type.label}
             </span>
           </div>
 
           {event.description && (
-            <p className="mt-1 text-sm leading-6 text-surface-muted">
-              {event.description}
-            </p>
+            <p className="mt-1 text-sm leading-6 text-surface-muted">{event.description}</p>
           )}
 
           {/* Meta */}
@@ -156,10 +147,7 @@ export default function AdminEvents() {
     const query = search.toLowerCase().trim();
 
     return events.filter((event) => {
-      const matchesFilter =
-        filter === "all"
-          ? true
-          : event.type?.toLowerCase() === filter;
+      const matchesFilter = filter === "all" ? true : event.type?.toLowerCase() === filter;
 
       const matchesSearch =
         !query ||
@@ -183,14 +171,13 @@ export default function AdminEvents() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-       
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Events
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Manage and monitor all events, meetings, reviews, deadlines, and
-            internal activities across OCT20FIVE.
+            Manage and monitor all events, meetings, reviews, deadlines, and internal activities
+            across OCT20FIVE.
           </p>
         </div>
 
@@ -198,13 +185,7 @@ export default function AdminEvents() {
           <button
             type="button"
             onClick={() =>
-              setViewDate(
-                new Date(
-                  viewDate.getFullYear(),
-                  viewDate.getMonth() - 1,
-                  1
-                )
-              )
+              setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))
             }
             className="flex h-9 w-9 items-center justify-center rounded-lg border border-surface-border text-surface-muted transition hover:bg-surface-muted/10 hover:text-surface-fg"
           >
@@ -218,13 +199,7 @@ export default function AdminEvents() {
           <button
             type="button"
             onClick={() =>
-              setViewDate(
-                new Date(
-                  viewDate.getFullYear(),
-                  viewDate.getMonth() + 1,
-                  1
-                )
-              )
+              setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))
             }
             className="flex h-9 w-9 items-center justify-center rounded-lg border border-surface-border text-surface-muted transition hover:bg-surface-muted/10 hover:text-surface-fg"
           >
@@ -243,9 +218,7 @@ export default function AdminEvents() {
             </span>
           </div>
 
-          <p className="mt-3 font-display text-2xl font-bold text-surface-fg">
-            {events.length}
-          </p>
+          <p className="mt-3 font-display text-2xl font-bold text-surface-fg">{events.length}</p>
         </div>
 
         <div className="brand-card">
@@ -257,11 +230,7 @@ export default function AdminEvents() {
           </div>
 
           <p className="mt-3 font-display text-2xl font-bold text-surface-fg">
-            {
-              events.filter(
-                (event) => event.clientId || event.clientName
-              ).length
-            }
+            {events.filter((event) => event.clientId || event.clientName).length}
           </p>
         </div>
 
@@ -274,11 +243,7 @@ export default function AdminEvents() {
           </div>
 
           <p className="mt-3 font-display text-2xl font-bold text-surface-fg">
-            {
-              events.filter(
-                (event) => event.type?.toLowerCase() === "meeting"
-              ).length
-            }
+            {events.filter((event) => event.type?.toLowerCase() === "meeting").length}
           </p>
         </div>
 
@@ -291,11 +256,7 @@ export default function AdminEvents() {
           </div>
 
           <p className="mt-3 font-display text-2xl font-bold text-brand-orange">
-            {
-              events.filter(
-                (event) => event.type?.toLowerCase() === "deadline"
-              ).length
-            }
+            {events.filter((event) => event.type?.toLowerCase() === "deadline").length}
           </p>
         </div>
       </div>
@@ -308,10 +269,7 @@ export default function AdminEvents() {
               key={item.id}
               type="button"
               onClick={() => setFilter(item.id)}
-              className={cn(
-                "pill",
-                filter === item.id && "pill-active"
-              )}
+              className={cn("pill", filter === item.id && "pill-active")}
             >
               {item.label}
             </button>
@@ -333,10 +291,7 @@ export default function AdminEvents() {
       {/* Result count */}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-xs text-surface-muted">
-          Showing{" "}
-          <span className="font-semibold text-surface-fg">
-            {filteredEvents.length}
-          </span>{" "}
+          Showing <span className="font-semibold text-surface-fg">{filteredEvents.length}</span>{" "}
           {filteredEvents.length === 1 ? "event" : "events"}
         </p>
       </div>

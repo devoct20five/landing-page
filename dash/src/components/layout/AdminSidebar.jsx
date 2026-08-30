@@ -35,7 +35,7 @@ const primaryNav = [
     icon: FolderKanban,
     enabled: true,
   },
-    {
+  {
     label: "Invoices",
     to: "/admin/invoice/all",
     icon: FolderKanban,
@@ -68,7 +68,7 @@ const operationsNav = [
     icon: ListChecks,
     enabled: true,
   },
-    {
+  {
     label: "Attendance",
     to: "/admin/attendance",
     icon: ListChecks,
@@ -140,10 +140,7 @@ function NavRow({ item, onNavigate }) {
         title="Coming soon"
       >
         <span className="flex items-center gap-3">
-          <Icon
-            className="h-[18px] w-[18px]"
-            strokeWidth={2}
-          />
+          <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
           {item.label}
         </span>
@@ -169,10 +166,7 @@ function NavRow({ item, onNavigate }) {
         )
       }
     >
-      <Icon
-        className="h-[18px] w-[18px]"
-        strokeWidth={2}
-      />
+      <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
       {item.label}
     </NavLink>
@@ -190,11 +184,7 @@ function NavSection({ label, items, onNavigate }) {
 
       <nav className="flex flex-col gap-1">
         {items.map((item) => (
-          <NavRow
-            key={item.label}
-            item={item}
-            onNavigate={onNavigate}
-          />
+          <NavRow key={item.label} item={item} onNavigate={onNavigate} />
         ))}
       </nav>
     </>
@@ -242,44 +232,26 @@ export default function AdminSidebar({ onNavigate }) {
       >
         {/* MANAGEMENT */}
 
-        <NavSection
-          label="Management"
-          items={primaryNav}
-          onNavigate={onNavigate}
-        />
+        <NavSection label="Management" items={primaryNav} onNavigate={onNavigate} />
 
         <div className="my-4 h-px bg-surface-border" />
 
         {/* OPERATIONS */}
 
-        <NavSection
-          label="Operations"
-          items={operationsNav}
-          onNavigate={onNavigate}
-        />
+        <NavSection label="Operations" items={operationsNav} onNavigate={onNavigate} />
 
         <div className="my-4 h-px bg-surface-border" />
 
         {/* CONTENT */}
 
-        <NavSection
-          label="Content"
-          items={contentNav}
-          onNavigate={onNavigate}
-        />
+        <NavSection label="Content" items={contentNav} onNavigate={onNavigate} />
 
         <div className="my-4 h-px bg-surface-border" />
 
         {/* ACCOUNT */}
 
-        <NavSection
-          label="Account"
-          items={accountNav}
-          onNavigate={onNavigate}
-        />
+        <NavSection label="Account" items={accountNav} onNavigate={onNavigate} />
       </div>
-
-   
     </div>
   );
 }

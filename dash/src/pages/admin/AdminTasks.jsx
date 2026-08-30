@@ -26,28 +26,23 @@ import {
 const statusConfig = {
   "in-progress": {
     label: "In Progress",
-    className:
-      "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    className: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   "client-review": {
     label: "Client Review",
-    className:
-      "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    className: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
   },
   blocked: {
     label: "Blocked",
-    className:
-      "bg-red-500/10 text-red-600 dark:text-red-400",
+    className: "bg-red-500/10 text-red-600 dark:text-red-400",
   },
   planned: {
     label: "Planned",
-    className:
-      "bg-slate-500/10 text-slate-600 dark:text-slate-400",
+    className: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
   },
   "not-started": {
     label: "Not Started",
-    className:
-      "bg-slate-500/10 text-slate-600 dark:text-slate-400",
+    className: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
   },
 };
 
@@ -66,21 +61,12 @@ const priorityConfig = {
   },
 };
 
-function StatCard({
-  label,
-  value,
-  description,
-  icon: Icon,
-  trend,
-  trendUp,
-}) {
+function StatCard({ label, value, description, icon: Icon, trend, trendUp }) {
   return (
     <div className="rounded-2xl border border-surface-border bg-surface p-5">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-surface-muted">
-            {label}
-          </p>
+          <p className="text-sm font-medium text-surface-muted">{label}</p>
 
           <p className="mt-2 font-display text-3xl font-bold tracking-tight text-surface-fg">
             {value}
@@ -103,9 +89,7 @@ function StatCard({
               </span>
             )}
 
-            <span className="text-surface-muted">
-              {description}
-            </span>
+            <span className="text-surface-muted">{description}</span>
           </div>
         </div>
 
@@ -126,37 +110,25 @@ function Avatar({ member }) {
 }
 
 function getTaskPerformance(memberId) {
-  const memberTasks = tasks.filter(
-    (task) => task.assigneeId === memberId
-  );
+  const memberTasks = tasks.filter((task) => task.assigneeId === memberId);
 
   const completed = memberTasks.filter(
-    (task) =>
-      task.status === "completed" ||
-      task.status === "client-review"
+    (task) => task.status === "completed" || task.status === "client-review"
   ).length;
 
-  const overdue = memberTasks.filter(
-    (task) => task.dueLabel === "Overdue"
-  ).length;
+  const overdue = memberTasks.filter((task) => task.dueLabel === "Overdue").length;
 
-  const blocked = memberTasks.filter(
-    (task) => task.status === "blocked"
-  ).length;
+  const blocked = memberTasks.filter((task) => task.status === "blocked").length;
 
   const active = memberTasks.filter(
     (task) =>
-      task.status === "in-progress" ||
-      task.status === "planned" ||
-      task.status === "not-started"
+      task.status === "in-progress" || task.status === "planned" || task.status === "not-started"
   ).length;
 
   // Mock performance calculation until actual completion timestamps exist.
   const completionRate =
     memberTasks.length > 0
-      ? Math.round(
-          ((memberTasks.length - overdue) / memberTasks.length) * 100
-        )
+      ? Math.round(((memberTasks.length - overdue) / memberTasks.length) * 100)
       : 100;
 
   return {
@@ -174,26 +146,16 @@ export default function AdminTasks() {
 
   const activeTasks = tasks.filter(
     (task) =>
-      task.status === "in-progress" ||
-      task.status === "planned" ||
-      task.status === "not-started"
+      task.status === "in-progress" || task.status === "planned" || task.status === "not-started"
   ).length;
 
-  const overdueTasks = tasks.filter(
-    (task) => task.dueLabel === "Overdue"
-  );
+  const overdueTasks = tasks.filter((task) => task.dueLabel === "Overdue");
 
-  const blockedTasks = tasks.filter(
-    (task) => task.status === "blocked"
-  );
+  const blockedTasks = tasks.filter((task) => task.status === "blocked");
 
-  const reviewTasks = tasks.filter(
-    (task) => task.status === "client-review"
-  );
+  const reviewTasks = tasks.filter((task) => task.status === "client-review");
 
-  const dueToday = tasks.filter(
-    (task) => task.dueLabel === "Due Today"
-  ).length;
+  const dueToday = tasks.filter((task) => task.dueLabel === "Due Today").length;
 
   const teamPerformance = teamMembers
     .map((member) => ({
@@ -204,22 +166,16 @@ export default function AdminTasks() {
 
   return (
     <div className="space-y-8 pb-10">
-
       {/* =====================================================
           HEADER
       ====================================================== */}
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-       
-
-          <h1 className="font-display text-3xl font-bold tracking-tight text-surface-fg">
-            Tasks
-          </h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-surface-fg">Tasks</h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-            Monitor workload, completion performance and delays
-            across the entire team.
+            Monitor workload, completion performance and delays across the entire team.
           </p>
         </div>
 
@@ -241,7 +197,6 @@ export default function AdminTasks() {
       ====================================================== */}
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-
         <StatCard
           label="Total Tasks"
           value={totalTasks}
@@ -280,12 +235,9 @@ export default function AdminTasks() {
       ====================================================== */}
 
       <section className="rounded-2xl border border-surface-border bg-surface">
-
         <div className="flex flex-col gap-3 border-b border-surface-border p-5 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Team Performance
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Team Performance</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
               Task ownership and completion health by team member.
@@ -299,76 +251,50 @@ export default function AdminTasks() {
         </div>
 
         <div className="divide-y divide-surface-border">
-
           {teamPerformance.map(
-            ({
-              member,
-              total,
-              completed,
-              overdue,
-              blocked,
-              active,
-              completionRate,
-            }) => (
+            ({ member, total, completed, overdue, blocked, active, completionRate }) => (
               <div
                 key={member.id}
                 className="grid gap-5 p-5 transition hover:bg-surface-muted/5 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]"
               >
-
                 {/* Person */}
 
                 <div className="flex items-center gap-3">
                   <Avatar member={member} />
 
                   <div>
-                    <p className="text-sm font-semibold text-surface-fg">
-                      {member.name}
-                    </p>
+                    <p className="text-sm font-semibold text-surface-fg">{member.name}</p>
 
-                    <p className="mt-0.5 text-xs text-surface-muted">
-                      {member.role}
-                    </p>
+                    <p className="mt-0.5 text-xs text-surface-muted">{member.role}</p>
                   </div>
                 </div>
 
                 {/* Assigned */}
 
                 <div>
-                  <p className="text-xs text-surface-muted">
-                    Assigned
-                  </p>
+                  <p className="text-xs text-surface-muted">Assigned</p>
 
-                  <p className="mt-1 text-sm font-semibold text-surface-fg">
-                    {total}
-                  </p>
+                  <p className="mt-1 text-sm font-semibold text-surface-fg">{total}</p>
                 </div>
 
                 {/* Active */}
 
                 <div>
-                  <p className="text-xs text-surface-muted">
-                    Active
-                  </p>
+                  <p className="text-xs text-surface-muted">Active</p>
 
-                  <p className="mt-1 text-sm font-semibold text-surface-fg">
-                    {active}
-                  </p>
+                  <p className="mt-1 text-sm font-semibold text-surface-fg">{active}</p>
                 </div>
 
                 {/* Delayed */}
 
                 <div>
-                  <p className="text-xs text-surface-muted">
-                    Delayed
-                  </p>
+                  <p className="text-xs text-surface-muted">Delayed</p>
 
                   <div className="mt-1 flex items-center gap-2">
                     <span
                       className={cn(
                         "text-sm font-semibold",
-                        overdue > 0
-                          ? "text-red-500"
-                          : "text-surface-fg"
+                        overdue > 0 ? "text-red-500" : "text-surface-fg"
                       )}
                     >
                       {overdue}
@@ -386,9 +312,7 @@ export default function AdminTasks() {
 
                 <div>
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-surface-muted">
-                      On-time
-                    </p>
+                    <p className="text-xs text-surface-muted">On-time</p>
 
                     <span
                       className={cn(
@@ -416,7 +340,6 @@ export default function AdminTasks() {
               </div>
             )
           )}
-
         </div>
       </section>
 
@@ -425,16 +348,12 @@ export default function AdminTasks() {
       ====================================================== */}
 
       <div className="grid gap-6 xl:grid-cols-2">
-
         {/* Delayed Tasks */}
 
         <section className="rounded-2xl border border-surface-border bg-surface">
-
           <div className="flex items-center justify-between border-b border-surface-border p-5">
             <div>
-              <h2 className="font-display text-lg font-bold text-surface-fg">
-                Delayed Tasks
-              </h2>
+              <h2 className="font-display text-lg font-bold text-surface-fg">Delayed Tasks</h2>
 
               <p className="mt-1 text-sm text-surface-muted">
                 Tasks currently affecting delivery timelines.
@@ -447,13 +366,10 @@ export default function AdminTasks() {
           </div>
 
           <div className="divide-y divide-surface-border">
-
             {overdueTasks.length === 0 ? (
               <div className="p-8 text-center">
                 <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-500" />
-                <p className="mt-3 text-sm font-semibold text-surface-fg">
-                  Nothing overdue
-                </p>
+                <p className="mt-3 text-sm font-semibold text-surface-fg">Nothing overdue</p>
               </div>
             ) : (
               overdueTasks.map((task) => {
@@ -462,12 +378,8 @@ export default function AdminTasks() {
                 const client = getClientById(task.clientId);
 
                 return (
-                  <div
-                    key={task.id}
-                    className="p-5 transition hover:bg-surface-muted/5"
-                  >
+                  <div key={task.id} className="p-5 transition hover:bg-surface-muted/5">
                     <div className="flex items-start justify-between gap-4">
-
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4 shrink-0 text-red-500" />
@@ -490,42 +402,32 @@ export default function AdminTasks() {
                     </div>
 
                     <div className="mt-4 flex items-center justify-between">
-
                       <div className="flex items-center gap-2">
                         <Avatar member={member} />
 
                         <div>
-                          <p className="text-xs font-medium text-surface-fg">
-                            {member?.name}
-                          </p>
+                          <p className="text-xs font-medium text-surface-fg">{member?.name}</p>
 
-                          <p className="text-[11px] text-surface-muted">
-                            {task.service}
-                          </p>
+                          <p className="text-[11px] text-surface-muted">{task.service}</p>
                         </div>
                       </div>
 
                       <span className="rounded-full bg-red-500/10 px-2.5 py-1 text-[11px] font-semibold text-red-500">
                         {task.dueLabel}
                       </span>
-
                     </div>
                   </div>
                 );
               })
             )}
-
           </div>
         </section>
 
         {/* Workload */}
 
         <section className="rounded-2xl border border-surface-border bg-surface">
-
           <div className="border-b border-surface-border p-5">
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Current Workload
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Current Workload</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
               Active task distribution across the team.
@@ -533,71 +435,49 @@ export default function AdminTasks() {
           </div>
 
           <div className="space-y-5 p-5">
+            {teamPerformance.map(({ member, total, active, overdue }) => {
+              const maxTasks = Math.max(...teamPerformance.map((item) => item.total), 1);
 
-            {teamPerformance.map(
-              ({ member, total, active, overdue }) => {
+              const percentage = Math.round((total / maxTasks) * 100);
 
-                const maxTasks = Math.max(
-                  ...teamPerformance.map((item) => item.total),
-                  1
-                );
+              return (
+                <div key={member.id}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Avatar member={member} />
 
-                const percentage = Math.round(
-                  (total / maxTasks) * 100
-                );
+                      <div>
+                        <p className="text-sm font-medium text-surface-fg">{member.name}</p>
 
-                return (
-                  <div key={member.id}>
-
-                    <div className="flex items-center justify-between">
-
-                      <div className="flex items-center gap-3">
-                        <Avatar member={member} />
-
-                        <div>
-                          <p className="text-sm font-medium text-surface-fg">
-                            {member.name}
-                          </p>
-
-                          <p className="text-xs text-surface-muted">
-                            {active} active
-                          </p>
-                        </div>
+                        <p className="text-xs text-surface-muted">{active} active</p>
                       </div>
-
-                      <div className="text-right">
-                        <p className="text-sm font-bold text-surface-fg">
-                          {total}
-                        </p>
-
-                        <p className="text-[11px] text-surface-muted">
-                          tasks
-                        </p>
-                      </div>
-
                     </div>
 
-                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-muted/10">
-                      <div
-                        className="h-full rounded-full bg-brand-orange"
-                        style={{
-                          width: `${percentage}%`,
-                        }}
-                      />
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-surface-fg">{total}</p>
+
+                      <p className="text-[11px] text-surface-muted">tasks</p>
                     </div>
-
-                    {overdue > 0 && (
-                      <div className="mt-2 flex items-center gap-1 text-[11px] font-medium text-red-500">
-                        <AlertTriangle className="h-3 w-3" />
-                        {overdue} overdue
-                      </div>
-                    )}
-
                   </div>
-                );
-              }
-            )}
 
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-muted/10">
+                    <div
+                      className="h-full rounded-full bg-brand-orange"
+                      style={{
+                        width: `${percentage}%`,
+                      }}
+                    />
+                  </div>
+
+                  {overdue > 0 && (
+                    <div className="mt-2 flex items-center gap-1 text-[11px] font-medium text-red-500">
+                      <AlertTriangle className="h-3 w-3" />
+                      {overdue} overdue
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       </div>
@@ -607,13 +487,9 @@ export default function AdminTasks() {
       ====================================================== */}
 
       <section className="rounded-2xl border border-surface-border bg-surface">
-
         <div className="flex flex-col gap-4 border-b border-surface-border p-5 md:flex-row md:items-center md:justify-between">
-
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Task Overview
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Task Overview</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
               Every task currently tracked by the agency.
@@ -628,16 +504,12 @@ export default function AdminTasks() {
               className="w-40 bg-transparent text-sm outline-none placeholder:text-surface-muted"
             />
           </div>
-
         </div>
 
         <div className="overflow-x-auto">
-
           <table className="w-full min-w-[900px]">
-
             <thead>
               <tr className="border-b border-surface-border text-left">
-
                 <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-surface-muted">
                   Task
                 </th>
@@ -661,64 +533,42 @@ export default function AdminTasks() {
                 <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-surface-muted">
                   Due
                 </th>
-
               </tr>
             </thead>
 
             <tbody className="divide-y divide-surface-border">
-
               {tasks.map((task) => {
                 const member = getTeamMemberById(task.assigneeId);
                 const project = getProjectById(task.projectId);
 
-                const status =
-                  statusConfig[task.status] ||
-                  statusConfig["not-started"];
+                const status = statusConfig[task.status] || statusConfig["not-started"];
 
-                const priority =
-                  priorityConfig[task.priority];
+                const priority = priorityConfig[task.priority];
 
                 return (
-                  <tr
-                    key={task.id}
-                    className="transition hover:bg-surface-muted/5"
-                  >
-
+                  <tr key={task.id} className="transition hover:bg-surface-muted/5">
                     <td className="px-5 py-4">
                       <div>
-                        <p className="text-sm font-medium text-surface-fg">
-                          {task.title}
-                        </p>
+                        <p className="text-sm font-medium text-surface-fg">{task.title}</p>
 
-                        <p className="mt-1 text-xs text-surface-muted">
-                          {task.service}
-                        </p>
+                        <p className="mt-1 text-xs text-surface-muted">{task.service}</p>
                       </div>
                     </td>
 
                     <td className="px-5 py-4">
-                      <p className="text-sm text-surface-fg">
-                        {project?.name}
-                      </p>
+                      <p className="text-sm text-surface-fg">{project?.name}</p>
                     </td>
 
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
                         <Avatar member={member} />
 
-                        <span className="text-sm text-surface-fg">
-                          {member?.name}
-                        </span>
+                        <span className="text-sm text-surface-fg">{member?.name}</span>
                       </div>
                     </td>
 
                     <td className="px-5 py-4">
-                      <span
-                        className={cn(
-                          "text-xs font-semibold",
-                          priority?.className
-                        )}
-                      >
+                      <span className={cn("text-xs font-semibold", priority?.className)}>
                         {priority?.label}
                       </span>
                     </td>
@@ -748,14 +598,11 @@ export default function AdminTasks() {
                         {task.dueLabel}
                       </span>
                     </td>
-
                   </tr>
                 );
               })}
-
             </tbody>
           </table>
-
         </div>
       </section>
 
@@ -764,11 +611,8 @@ export default function AdminTasks() {
       ====================================================== */}
 
       <section className="rounded-2xl border border-surface-border bg-surface">
-
         <div className="border-b border-surface-border p-5">
-          <h2 className="font-display text-lg font-bold text-surface-fg">
-            Delivery Bottlenecks
-          </h2>
+          <h2 className="font-display text-lg font-bold text-surface-fg">Delivery Bottlenecks</h2>
 
           <p className="mt-1 text-sm text-surface-muted">
             Areas currently most likely to affect project delivery.
@@ -776,18 +620,13 @@ export default function AdminTasks() {
         </div>
 
         <div className="grid gap-4 p-5 md:grid-cols-3">
-
           <div className="rounded-xl bg-red-500/5 p-4">
             <div className="flex items-center gap-2 text-red-500">
               <AlertTriangle className="h-4 w-4" />
-              <span className="text-xs font-semibold uppercase tracking-wider">
-                Blocked
-              </span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Blocked</span>
             </div>
 
-            <p className="mt-3 text-2xl font-bold text-surface-fg">
-              {blockedTasks.length}
-            </p>
+            <p className="mt-3 text-2xl font-bold text-surface-fg">{blockedTasks.length}</p>
 
             <p className="mt-1 text-xs leading-5 text-surface-muted">
               tasks cannot progress until a dependency is resolved.
@@ -797,14 +636,10 @@ export default function AdminTasks() {
           <div className="rounded-xl bg-purple-500/5 p-4">
             <div className="flex items-center gap-2 text-purple-500">
               <Clock3 className="h-4 w-4" />
-              <span className="text-xs font-semibold uppercase tracking-wider">
-                Client Review
-              </span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Client Review</span>
             </div>
 
-            <p className="mt-3 text-2xl font-bold text-surface-fg">
-              {reviewTasks.length}
-            </p>
+            <p className="mt-3 text-2xl font-bold text-surface-fg">{reviewTasks.length}</p>
 
             <p className="mt-1 text-xs leading-5 text-surface-muted">
               tasks are waiting for client feedback or approval.
@@ -814,24 +649,18 @@ export default function AdminTasks() {
           <div className="rounded-xl bg-amber-500/5 p-4">
             <div className="flex items-center gap-2 text-amber-500">
               <Users className="h-4 w-4" />
-              <span className="text-xs font-semibold uppercase tracking-wider">
-                Workload Risk
-              </span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Workload Risk</span>
             </div>
 
             <p className="mt-3 text-2xl font-bold text-surface-fg">
-              {teamPerformance.filter(
-                (member) => member.total >= 3
-              ).length}
+              {teamPerformance.filter((member) => member.total >= 3).length}
             </p>
 
             <p className="mt-1 text-xs leading-5 text-surface-muted">
               team members carrying a relatively high task load.
             </p>
           </div>
-
         </div>
-
       </section>
     </div>
   );

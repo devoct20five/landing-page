@@ -50,11 +50,7 @@ function StatCard({ icon: Icon, label, value, description }) {
             {value}
           </p>
 
-          {description && (
-            <p className="mt-1 text-xs text-surface-muted">
-              {description}
-            </p>
-          )}
+          {description && <p className="mt-1 text-xs text-surface-muted">{description}</p>}
         </div>
 
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -128,13 +124,10 @@ export default function ProjectDetail() {
   const outstanding = paymentData.total - paymentData.paid;
 
   const paymentProgress =
-    paymentData.total > 0
-      ? Math.round((paymentData.paid / paymentData.total) * 100)
-      : 0;
+    paymentData.total > 0 ? Math.round((paymentData.paid / paymentData.total) * 100) : 0;
 
   return (
     <div className="mx-auto max-w-[1180px] animate-fade-up">
-
       {/* Back */}
       <div className="mb-6">
         <Link
@@ -157,18 +150,14 @@ export default function ProjectDetail() {
 
               <span className="text-surface-muted">·</span>
 
-              <span className="text-xs font-medium text-surface-muted">
-                Project
-              </span>
+              <span className="text-xs font-medium text-surface-muted">Project</span>
             </div>
 
             <h1 className="font-display text-display-md font-bold tracking-[-0.025em] text-surface-fg">
               {project.name}
             </h1>
 
-            <p className="mt-3 max-w-2xl text-lead text-surface-muted">
-              {project.description}
-            </p>
+            <p className="mt-3 max-w-2xl text-lead text-surface-muted">{project.description}</p>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <StatusBadge status={project.status} />
@@ -198,9 +187,7 @@ export default function ProjectDetail() {
             <div className="flex items-center gap-2 text-surface-muted">
               <CalendarDays className="h-4 w-4" />
 
-              <span className="text-xs font-semibold uppercase tracking-[0.1em]">
-                Deadline
-              </span>
+              <span className="text-xs font-semibold uppercase tracking-[0.1em]">Deadline</span>
             </div>
 
             <p className="mt-2 font-display text-lg font-bold text-surface-fg">
@@ -255,8 +242,7 @@ export default function ProjectDetail() {
           </div>
 
           <span className="text-xs font-medium text-surface-muted">
-            {project.completedDeliverables} of{" "}
-            {project.totalDeliverables} deliverables completed
+            {project.completedDeliverables} of {project.totalDeliverables} deliverables completed
           </span>
         </div>
 
@@ -269,10 +255,8 @@ export default function ProjectDetail() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
-
         {/* Main */}
         <div className="space-y-6">
-
           {/* Current Work */}
           <section className="brand-card">
             <div className="flex items-center justify-between gap-4">
@@ -298,9 +282,7 @@ export default function ProjectDetail() {
             {isClientReview && (
               <div className="mt-5 flex flex-col gap-3 rounded-xl border border-brand-orange/20 bg-brand-orange/5 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-surface-fg">
-                    Your review is required
-                  </p>
+                  <p className="text-sm font-semibold text-surface-fg">Your review is required</p>
 
                   <p className="mt-1 text-xs text-surface-muted">
                     A deliverable is waiting for your approval.
@@ -325,8 +307,8 @@ export default function ProjectDetail() {
                     </p>
 
                     <p className="mt-1 text-xs leading-5 text-surface-muted">
-                      {project.attentionReason}. Please provide the required
-                      information or assets so the team can continue.
+                      {project.attentionReason}. Please provide the required information or assets
+                      so the team can continue.
                     </p>
                   </div>
                 </div>
@@ -356,9 +338,7 @@ export default function ProjectDetail() {
                     <Layers3 className="h-4 w-4" />
                   </div>
 
-                  <span className="text-sm font-semibold text-surface-fg">
-                    {service}
-                  </span>
+                  <span className="text-sm font-semibold text-surface-fg">{service}</span>
                 </div>
               ))}
             </div>
@@ -383,44 +363,34 @@ export default function ProjectDetail() {
             </div>
 
             <div className="space-y-3">
-              {Array.from({ length: project.totalDeliverables }).map(
-                (_, index) => {
-                  const completed =
-                    index < project.completedDeliverables;
+              {Array.from({ length: project.totalDeliverables }).map((_, index) => {
+                const completed = index < project.completedDeliverables;
 
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 rounded-xl border border-surface-border px-4 py-3"
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 rounded-xl border border-surface-border px-4 py-3"
+                  >
+                    <CheckCircle2
+                      className={`h-4 w-4 ${
+                        completed ? "text-emerald-600" : "text-surface-border"
+                      }`}
+                    />
+
+                    <span
+                      className={`text-sm ${
+                        completed ? "font-medium text-surface-fg" : "text-surface-muted"
+                      }`}
                     >
-                      <CheckCircle2
-                        className={`h-4 w-4 ${
-                          completed
-                            ? "text-emerald-600"
-                            : "text-surface-border"
-                        }`}
-                      />
+                      Deliverable {String(index + 1).padStart(2, "0")}
+                    </span>
 
-                      <span
-                        className={`text-sm ${
-                          completed
-                            ? "font-medium text-surface-fg"
-                            : "text-surface-muted"
-                        }`}
-                      >
-                        Deliverable{" "}
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-
-                      <span className="ml-auto text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-surface-muted">
-                        {completed
-                          ? "Completed"
-                          : "In progress"}
-                      </span>
-                    </div>
-                  );
-                }
-              )}
+                    <span className="ml-auto text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-surface-muted">
+                      {completed ? "Completed" : "In progress"}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
@@ -429,9 +399,7 @@ export default function ProjectDetail() {
           ===================================================== */}
 
           <section className="brand-card">
-
             <div className="flex flex-col gap-4 border-b border-surface-border pb-5 sm:flex-row sm:items-start sm:justify-between">
-
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-surface-muted">
                   Payments
@@ -442,8 +410,7 @@ export default function ProjectDetail() {
                 </h2>
 
                 <p className="mt-1 text-sm text-surface-muted">
-                  Track payments made towards this project and any remaining
-                  balance.
+                  Track payments made towards this project and any remaining balance.
                 </p>
               </div>
 
@@ -456,13 +423,11 @@ export default function ProjectDetail() {
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               )}
-
             </div>
 
             {/* Payment Summary */}
 
             <div className="grid divide-y divide-surface-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-
               <div className="px-1 py-5 sm:px-5">
                 <div className="flex items-center gap-2">
                   <Receipt className="h-4 w-4 text-surface-muted" />
@@ -495,9 +460,7 @@ export default function ProjectDetail() {
                 <div className="flex items-center gap-2">
                   <Clock3
                     className={`h-4 w-4 ${
-                      outstanding > 0
-                        ? "text-brand-orange"
-                        : "text-emerald-600"
+                      outstanding > 0 ? "text-brand-orange" : "text-emerald-600"
                     }`}
                   />
 
@@ -508,29 +471,21 @@ export default function ProjectDetail() {
 
                 <p
                   className={`mt-2 font-display text-xl font-bold ${
-                    outstanding > 0
-                      ? "text-brand-orange"
-                      : "text-emerald-600"
+                    outstanding > 0 ? "text-brand-orange" : "text-emerald-600"
                   }`}
                 >
                   {formatCurrency(outstanding)}
                 </p>
               </div>
-
             </div>
 
             {/* Payment Progress */}
 
             <div className="border-t border-surface-border pt-5">
-
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-surface-muted">
-                  Payment Progress
-                </span>
+                <span className="text-xs font-semibold text-surface-muted">Payment Progress</span>
 
-                <span className="text-xs font-bold text-surface-fg">
-                  {paymentProgress}%
-                </span>
+                <span className="text-xs font-bold text-surface-fg">{paymentProgress}%</span>
               </div>
 
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-border">
@@ -543,20 +498,15 @@ export default function ProjectDetail() {
               </div>
 
               <p className="mt-2 text-xs text-surface-muted">
-                {formatCurrency(paymentData.paid)} of{" "}
-                {formatCurrency(paymentData.total)} paid
+                {formatCurrency(paymentData.paid)} of {formatCurrency(paymentData.total)} paid
               </p>
-
             </div>
 
             {/* Payment History */}
 
             <div className="mt-6">
-
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-bold text-surface-fg">
-                  Payment History
-                </h3>
+                <h3 className="text-sm font-bold text-surface-fg">Payment History</h3>
 
                 <span className="text-xs text-surface-muted">
                   {paymentData.transactions.length} payments
@@ -564,33 +514,26 @@ export default function ProjectDetail() {
               </div>
 
               <div className="divide-y divide-surface-border rounded-xl border border-surface-border">
-
                 {paymentData.transactions.map((payment) => (
                   <div
                     key={payment.id}
                     className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
                   >
-
                     <div className="flex items-center gap-3">
-
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10">
                         <CreditCard className="h-4 w-4 text-emerald-600" />
                       </div>
 
                       <div>
-                        <p className="text-sm font-semibold text-surface-fg">
-                          {payment.id}
-                        </p>
+                        <p className="text-sm font-semibold text-surface-fg">{payment.id}</p>
 
                         <p className="mt-0.5 text-xs text-surface-muted">
                           {payment.date} · {payment.method}
                         </p>
                       </div>
-
                     </div>
 
                     <div className="flex items-center gap-4">
-
                       <span className="text-sm font-bold text-surface-fg">
                         {formatCurrency(payment.amount)}
                       </span>
@@ -599,23 +542,17 @@ export default function ProjectDetail() {
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         Paid
                       </span>
-
                     </div>
-
                   </div>
                 ))}
-
               </div>
-
             </div>
 
             {/* Outstanding Notice */}
 
             {outstanding > 0 && (
               <div className="mt-5 flex flex-col gap-4 rounded-xl border border-brand-orange/20 bg-brand-orange/5 p-4 sm:flex-row sm:items-center sm:justify-between">
-
                 <div className="flex gap-3">
-
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10">
                     <IndianRupee className="h-4 w-4 text-brand-orange" />
                   </div>
@@ -629,7 +566,6 @@ export default function ProjectDetail() {
                       Complete your remaining payment to settle this project.
                     </p>
                   </div>
-
                 </div>
 
                 <Link
@@ -639,34 +575,27 @@ export default function ProjectDetail() {
                   Make Payment
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
-
               </div>
             )}
 
             {outstanding === 0 && (
               <div className="mt-5 flex items-center gap-3 rounded-xl border border-emerald-600/20 bg-emerald-600/5 p-4">
-
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
 
                 <div>
-                  <p className="text-sm font-bold text-surface-fg">
-                    Project fully paid
-                  </p>
+                  <p className="text-sm font-bold text-surface-fg">Project fully paid</p>
 
                   <p className="mt-1 text-xs text-surface-muted">
                     There are no outstanding payments for this project.
                   </p>
                 </div>
-
               </div>
             )}
-
           </section>
         </div>
 
         {/* Sidebar */}
         <aside className="space-y-6">
-
           {/* Team */}
           <section className="brand-card">
             <div className="mb-5">
@@ -681,22 +610,15 @@ export default function ProjectDetail() {
 
             <div className="space-y-3">
               {projectTeam.map((member) => (
-                <div
-                  key={member.id}
-                  className="flex items-center gap-3"
-                >
+                <div key={member.id} className="flex items-center gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
                     {member.initials}
                   </div>
 
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-surface-fg">
-                      {member.name}
-                    </p>
+                    <p className="truncate text-sm font-semibold text-surface-fg">{member.name}</p>
 
-                    <p className="truncate text-xs text-surface-muted">
-                      {member.role}
-                    </p>
+                    <p className="truncate text-xs text-surface-muted">{member.role}</p>
                   </div>
                 </div>
               ))}
@@ -717,9 +639,7 @@ export default function ProjectDetail() {
 
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-surface-muted">
-                  Status
-                </p>
+                <p className="text-xs text-surface-muted">Status</p>
 
                 <p className="mt-1 text-sm font-semibold text-surface-fg">
                   {formatStatus(project.status)}
@@ -727,23 +647,15 @@ export default function ProjectDetail() {
               </div>
 
               <div>
-                <p className="text-xs text-surface-muted">
-                  Last updated
-                </p>
+                <p className="text-xs text-surface-muted">Last updated</p>
 
-                <p className="mt-1 text-sm font-semibold text-surface-fg">
-                  {project.updatedAt}
-                </p>
+                <p className="mt-1 text-sm font-semibold text-surface-fg">{project.updatedAt}</p>
               </div>
 
               <div>
-                <p className="text-xs text-surface-muted">
-                  Deadline
-                </p>
+                <p className="text-xs text-surface-muted">Deadline</p>
 
-                <p className="mt-1 text-sm font-semibold text-surface-fg">
-                  {project.deadline}
-                </p>
+                <p className="mt-1 text-sm font-semibold text-surface-fg">{project.deadline}</p>
               </div>
             </div>
           </section>
@@ -755,9 +667,7 @@ export default function ProjectDetail() {
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
 
                 <div>
-                  <p className="text-sm font-bold text-surface-fg">
-                    Project completed
-                  </p>
+                  <p className="text-sm font-bold text-surface-fg">Project completed</p>
 
                   <p className="mt-1 text-xs leading-5 text-surface-muted">
                     All deliverables have been completed and approved.
@@ -766,7 +676,6 @@ export default function ProjectDetail() {
               </div>
             </div>
           )}
-
         </aside>
       </div>
     </div>

@@ -149,8 +149,7 @@ export const projects = [
     currentWork: {
       title: "Instagram Reel #04",
       service: "Editing",
-      description:
-        "August's reel batch is in edit. Two of four reels are through internal review.",
+      description: "August's reel batch is in edit. Two of four reels are through internal review.",
     },
     updatedAt: "Yesterday",
     deadline: "31 Aug 2026",
@@ -192,8 +191,7 @@ export const projects = [
     currentWork: {
       title: "Product Listing Templates",
       service: "Web Development",
-      description:
-        "Building out the dynamic product listing template ahead of QA.",
+      description: "Building out the dynamic product listing template ahead of QA.",
     },
     updatedAt: "1 hour ago",
     deadline: "28 Aug 2026",
@@ -214,8 +212,7 @@ export const projects = [
     currentWork: {
       title: "Assembly Cut",
       service: "Editing",
-      description:
-        "Assembly is paused pending final footage delivery from the client's shoot.",
+      description: "Assembly is paused pending final footage delivery from the client's shoot.",
     },
     updatedAt: "Yesterday",
     deadline: "25 Aug 2026",
@@ -236,8 +233,7 @@ export const projects = [
     currentWork: {
       title: "Product Animation — V04",
       service: "3D",
-      description:
-        "Revised animation addressing client feedback on lighting and camera timing.",
+      description: "Revised animation addressing client feedback on lighting and camera timing.",
     },
     updatedAt: "2 days ago",
     deadline: "5 Sep 2026",
@@ -319,7 +315,7 @@ export const upcoming = [
 
 export const summaryStats = {
   activeProjects: projects.filter(
-    (p) => p.clientId === currentClient.id && p.status !== "completed",
+    (p) => p.clientId === currentClient.id && p.status !== "completed"
   ).length,
   inProgress: 12,
   needsInput: actionItems.length,
@@ -578,8 +574,7 @@ export const events = [
   {
     id: "event-002",
     title: "Website Design Approval",
-    description:
-      "Client review and approval session for the final website design direction.",
+    description: "Client review and approval session for the final website design direction.",
     type: "review",
     date: "2026-08-18",
     month: "AUG",
@@ -602,8 +597,7 @@ export const events = [
   {
     id: "event-003",
     title: "Campaign Launch Deadline",
-    description:
-      "Final deadline for delivering all campaign assets and launch-ready materials.",
+    description: "Final deadline for delivering all campaign assets and launch-ready materials.",
     type: "deadline",
     date: "2026-08-20",
     month: "AUG",
@@ -698,8 +692,7 @@ export const events = [
   {
     id: "event-007",
     title: "Website Development Deadline",
-    description:
-      "Target completion date for the current website development sprint.",
+    description: "Target completion date for the current website development sprint.",
     type: "deadline",
     date: "2026-08-27",
     month: "AUG",
@@ -746,8 +739,7 @@ export const events = [
   {
     id: "event-009",
     title: "Internal Creative Review",
-    description:
-      "Creative team review of work currently in production before client presentation.",
+    description: "Creative team review of work currently in production before client presentation.",
     type: "internal",
     date: "2026-08-29",
     month: "AUG",

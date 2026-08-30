@@ -37,7 +37,7 @@ const primaryNav = [
     icon: UserSquare2,
     enabled: true,
   },
-   {
+  {
     label: "Attendance",
     to: "/staff/attendance",
     icon: UserSquare2,
@@ -76,10 +76,7 @@ function NavRow({ item, onNavigate }) {
         title="Coming soon"
       >
         <span className="flex items-center gap-3">
-          <Icon
-            className="h-[18px] w-[18px]"
-            strokeWidth={2}
-          />
+          <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
           {item.label}
         </span>
@@ -105,10 +102,7 @@ function NavRow({ item, onNavigate }) {
         )
       }
     >
-      <Icon
-        className="h-[18px] w-[18px]"
-        strokeWidth={2}
-      />
+      <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
       {item.label}
     </NavLink>
@@ -151,11 +145,7 @@ export default function StaffSidebar({ onNavigate }) {
         {/* Primary */}
         <nav className="flex flex-col gap-1">
           {primaryNav.map((item) => (
-            <NavRow
-              key={item.label}
-              item={item}
-              onNavigate={onNavigate}
-            />
+            <NavRow key={item.label} item={item} onNavigate={onNavigate} />
           ))}
         </nav>
 
@@ -164,11 +154,7 @@ export default function StaffSidebar({ onNavigate }) {
         {/* Secondary */}
         <nav className="flex flex-col gap-1">
           {secondaryNav.map((item) => (
-            <NavRow
-              key={item.label}
-              item={item}
-              onNavigate={onNavigate}
-            />
+            <NavRow key={item.label} item={item} onNavigate={onNavigate} />
           ))}
         </nav>
       </div>

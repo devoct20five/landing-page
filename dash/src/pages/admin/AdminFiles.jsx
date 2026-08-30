@@ -99,9 +99,7 @@ export default function AdminFiles() {
 
   const filteredFiles = useMemo(() => {
     return MOCK_FILES.filter((file) => {
-      const matchesSearch = file.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      const matchesSearch = file.name.toLowerCase().includes(search.toLowerCase());
 
       if (selectedFolder === "all") {
         return matchesSearch;
@@ -116,10 +114,7 @@ export default function AdminFiles() {
       }
 
       if (selectedFolder === "documents") {
-        return (
-          matchesSearch &&
-          ["pdf", "spreadsheet"].includes(file.type)
-        );
+        return matchesSearch && ["pdf", "spreadsheet"].includes(file.type);
       }
 
       return matchesSearch && file.folder.toLowerCase() === selectedFolder;
@@ -128,9 +123,7 @@ export default function AdminFiles() {
 
   const toggleSelection = (id) => {
     setSelectedFiles((current) =>
-      current.includes(id)
-        ? current.filter((fileId) => fileId !== id)
-        : [...current, id],
+      current.includes(id) ? current.filter((fileId) => fileId !== id) : [...current, id]
     );
   };
 
@@ -147,9 +140,7 @@ export default function AdminFiles() {
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-surface-fg">
-            Files
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-surface-fg">Files</h1>
 
           <p className="mt-1 text-sm text-surface-muted">
             Manage images, documents, videos, and other project assets.
@@ -179,9 +170,7 @@ export default function AdminFiles() {
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-surface-muted">
-        <span className="font-medium text-surface-fg">
-          Files
-        </span>
+        <span className="font-medium text-surface-fg">Files</span>
 
         {selectedFolder !== "all" && (
           <>
@@ -218,18 +207,12 @@ export default function AdminFiles() {
                   ].join(" ")}
                 >
                   <span className="flex items-center gap-2">
-                    {folder.id === "all" ? (
-                      <File size={15} />
-                    ) : (
-                      <Folder size={15} />
-                    )}
+                    {folder.id === "all" ? <File size={15} /> : <Folder size={15} />}
 
                     {folder.name}
                   </span>
 
-                  <span className="text-xs">
-                    {folder.count}
-                  </span>
+                  <span className="text-xs">{folder.count}</span>
                 </button>
               );
             })}
@@ -238,22 +221,16 @@ export default function AdminFiles() {
           {/* Storage */}
           <div className="mt-6 border-t border-surface-border p-3">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-medium text-surface-muted">
-                Storage
-              </span>
+              <span className="text-xs font-medium text-surface-muted">Storage</span>
 
-              <span className="text-xs font-semibold text-surface-fg">
-                4.2 GB / 10 GB
-              </span>
+              <span className="text-xs font-semibold text-surface-fg">4.2 GB / 10 GB</span>
             </div>
 
             <div className="h-1.5 overflow-hidden rounded-full bg-surface-muted/20">
               <div className="h-full w-[42%] rounded-full bg-brand-orange" />
             </div>
 
-            <p className="mt-2 text-[11px] text-surface-muted">
-              5.8 GB remaining
-            </p>
+            <p className="mt-2 text-[11px] text-surface-muted">5.8 GB remaining</p>
           </div>
         </aside>
 
@@ -297,9 +274,7 @@ export default function AdminFiles() {
                   onClick={() => setView("grid")}
                   className={[
                     "rounded p-1.5",
-                    view === "grid"
-                      ? "bg-surface-muted/10 text-surface-fg"
-                      : "text-surface-muted",
+                    view === "grid" ? "bg-surface-muted/10 text-surface-fg" : "text-surface-muted",
                   ].join(" ")}
                 >
                   <Grid2X2 size={16} />
@@ -310,9 +285,7 @@ export default function AdminFiles() {
                   onClick={() => setView("list")}
                   className={[
                     "rounded p-1.5",
-                    view === "list"
-                      ? "bg-surface-muted/10 text-surface-fg"
-                      : "text-surface-muted",
+                    view === "list" ? "bg-surface-muted/10 text-surface-fg" : "text-surface-muted",
                   ].join(" ")}
                 >
                   <List size={16} />
@@ -370,9 +343,7 @@ export default function AdminFiles() {
 
                     {/* Info */}
                     <div className="border-t border-surface-border p-3">
-                      <p className="truncate text-sm font-semibold text-surface-fg">
-                        {file.name}
-                      </p>
+                      <p className="truncate text-sm font-semibold text-surface-fg">{file.name}</p>
 
                       <p className="mt-1 text-[11px] text-surface-muted">
                         {file.size} · {file.modified}
@@ -408,18 +379,12 @@ export default function AdminFiles() {
                     <FileIcon type={file.type} />
 
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-surface-fg">
-                        {file.name}
-                      </p>
+                      <p className="truncate text-sm font-semibold text-surface-fg">{file.name}</p>
 
-                      <p className="text-xs text-surface-muted">
-                        {file.folder}
-                      </p>
+                      <p className="text-xs text-surface-muted">{file.folder}</p>
                     </div>
 
-                    <span className="hidden text-xs text-surface-muted sm:block">
-                      {file.size}
-                    </span>
+                    <span className="hidden text-xs text-surface-muted sm:block">{file.size}</span>
 
                     <span className="hidden text-xs text-surface-muted md:block">
                       {file.modified}
@@ -442,9 +407,7 @@ export default function AdminFiles() {
               <div className="text-center">
                 <File className="mx-auto h-10 w-10 text-surface-muted" />
 
-                <p className="mt-3 text-sm font-semibold text-surface-fg">
-                  No files found
-                </p>
+                <p className="mt-3 text-sm font-semibold text-surface-fg">No files found</p>
 
                 <p className="mt-1 text-xs text-surface-muted">
                   Try changing your search or folder.

@@ -22,16 +22,11 @@ function StatusBadge({ active }) {
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.08em]",
-        active
-          ? "bg-emerald-500/10 text-emerald-700"
-          : "bg-surface-muted/10 text-surface-muted"
+        active ? "bg-emerald-500/10 text-emerald-700" : "bg-surface-muted/10 text-surface-muted"
       )}
     >
       <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          active ? "bg-emerald-600" : "bg-surface-muted"
-        )}
+        className={cn("h-1.5 w-1.5 rounded-full", active ? "bg-emerald-600" : "bg-surface-muted")}
       />
       {active ? "Active" : "Draft"}
     </span>
@@ -47,9 +42,7 @@ function PlanRow({ plan, service, onEdit, onDelete, onDuplicate }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="font-display text-sm font-bold text-surface-fg">
-            {plan.name}
-          </p>
+          <p className="font-display text-sm font-bold text-surface-fg">{plan.name}</p>
 
           {plan.featured && (
             <span className="rounded-full bg-brand-orange px-2 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.1em] text-white">
@@ -64,13 +57,9 @@ function PlanRow({ plan, service, onEdit, onDelete, onDuplicate }) {
       </div>
 
       <div className="hidden text-right sm:block">
-        <p className="text-sm font-bold text-surface-fg">
-          {plan.price}
-        </p>
+        <p className="text-sm font-bold text-surface-fg">{plan.price}</p>
 
-        <p className="text-[0.65rem] text-surface-muted">
-          Starting price
-        </p>
+        <p className="text-[0.65rem] text-surface-muted">Starting price</p>
       </div>
 
       {plan.discount && (
@@ -149,9 +138,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
   const removePackage = (index) => {
     setForm((current) => ({
       ...current,
-      packages: current.packages.filter(
-        (_, i) => i !== index
-      ),
+      packages: current.packages.filter((_, i) => i !== index),
     }));
   };
 
@@ -171,9 +158,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
   const removeFeature = (index) => {
     setForm((current) => ({
       ...current,
-      features: current.features.filter(
-        (_, i) => i !== index
-      ),
+      features: current.features.filter((_, i) => i !== index),
     }));
   };
 
@@ -215,12 +200,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
                 placeholder="Standard"
               />
 
-              <Field
-                label="Icon"
-                value={form.icon}
-                onChange={update("icon")}
-                placeholder="Film"
-              />
+              <Field label="Icon" value={form.icon} onChange={update("icon")} placeholder="Film" />
 
               <Field
                 label="Price"
@@ -258,9 +238,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
               />
 
               <span>
-                <span className="block text-sm font-semibold text-surface-fg">
-                  Featured plan
-                </span>
+                <span className="block text-sm font-semibold text-surface-fg">Featured plan</span>
 
                 <span className="block text-xs text-surface-muted">
                   Highlight this plan on the client pricing page.
@@ -271,9 +249,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
 
           {/* Packages */}
           <section>
-            <h3 className="mb-1 font-display text-sm font-bold text-surface-fg">
-              Packages
-            </h3>
+            <h3 className="mb-1 font-display text-sm font-bold text-surface-fg">Packages</h3>
 
             <p className="mb-4 text-xs text-surface-muted">
               Package options available under this plan.
@@ -282,9 +258,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
             <div className="flex gap-2">
               <input
                 value={packageInput}
-                onChange={(event) =>
-                  setPackageInput(event.target.value)
-                }
+                onChange={(event) => setPackageInput(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     event.preventDefault();
@@ -326,9 +300,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
 
           {/* Features */}
           <section>
-            <h3 className="mb-1 font-display text-sm font-bold text-surface-fg">
-              Plan Features
-            </h3>
+            <h3 className="mb-1 font-display text-sm font-bold text-surface-fg">Plan Features</h3>
 
             <p className="mb-4 text-xs text-surface-muted">
               Features displayed to clients when comparing plans.
@@ -337,9 +309,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
             <div className="flex gap-2">
               <input
                 value={featureInput}
-                onChange={(event) =>
-                  setFeatureInput(event.target.value)
-                }
+                onChange={(event) => setFeatureInput(event.target.value)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     event.preventDefault();
@@ -368,9 +338,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
                   <div className="flex min-w-0 items-center gap-2">
                     <Check className="h-4 w-4 shrink-0 text-emerald-600" />
 
-                    <span className="text-sm text-surface-fg">
-                      {feature}
-                    </span>
+                    <span className="text-sm text-surface-fg">{feature}</span>
                   </div>
 
                   <button
@@ -413,12 +381,7 @@ function PlanEditor({ service, plan, onClose, onSave }) {
   );
 }
 
-function Field({
-  label,
-  value,
-  onChange,
-  placeholder,
-}) {
+function Field({ label, value, onChange, placeholder }) {
   return (
     <div>
       <label className="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-surface-muted">
@@ -437,8 +400,7 @@ function Field({
 
 export default function AdminServices() {
   const [services, setServices] = useState(SERVICE_LIST);
-  const [selectedService, setSelectedService] =
-    useState(SERVICE_LIST[0]);
+  const [selectedService, setSelectedService] = useState(SERVICE_LIST[0]);
 
   const [search, setSearch] = useState("");
 
@@ -449,15 +411,11 @@ export default function AdminServices() {
 
     if (!query) return services;
 
-    return services.filter((service) =>
-      service.title.toLowerCase().includes(query)
-    );
+    return services.filter((service) => service.title.toLowerCase().includes(query));
   }, [services, search]);
 
   const activeService =
-    services.find(
-      (service) => service.slug === selectedService?.slug
-    ) || services[0];
+    services.find((service) => service.slug === selectedService?.slug) || services[0];
 
   const createPlan = () => {
     setEditor({
@@ -488,10 +446,7 @@ export default function AdminServices() {
               ...item,
               pricing: {
                 ...item.pricing,
-                plans: [
-                  ...item.pricing.plans,
-                  duplicated,
-                ],
+                plans: [...item.pricing.plans, duplicated],
               },
             }
       )
@@ -499,9 +454,7 @@ export default function AdminServices() {
   };
 
   const deletePlan = (service, plan) => {
-    const confirmed = window.confirm(
-      `Delete the ${plan.name} plan from ${service.title}?`
-    );
+    const confirmed = window.confirm(`Delete the ${plan.name} plan from ${service.title}?`);
 
     if (!confirmed) return;
 
@@ -513,10 +466,7 @@ export default function AdminServices() {
               ...item,
               pricing: {
                 ...item.pricing,
-                plans: item.pricing.plans.filter(
-                  (currentPlan) =>
-                    currentPlan !== plan
-                ),
+                plans: item.pricing.plans.filter((currentPlan) => currentPlan !== plan),
               },
             }
       )
@@ -530,15 +480,10 @@ export default function AdminServices() {
           return service;
         }
 
-        const existingPlans =
-          service.pricing?.plans || [];
+        const existingPlans = service.pricing?.plans || [];
 
         const plans = editor.plan
-          ? existingPlans.map((plan) =>
-              plan === editor.plan
-                ? form
-                : plan
-            )
+          ? existingPlans.map((plan) => (plan === editor.plan ? form : plan))
           : [...existingPlans, form];
 
         return {
@@ -559,15 +504,12 @@ export default function AdminServices() {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-         
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             Services
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Manage the services, pricing plans and packages
-            available to clients.
+            Manage the services, pricing plans and packages available to clients.
           </p>
         </div>
 
@@ -593,19 +535,15 @@ export default function AdminServices() {
 
             <div className="space-y-1">
               {filteredServices.map((service) => {
-                const planCount =
-                  service.pricing?.plans?.length || 0;
+                const planCount = service.pricing?.plans?.length || 0;
 
-                const active =
-                  activeService?.slug === service.slug;
+                const active = activeService?.slug === service.slug;
 
                 return (
                   <button
                     key={service.slug}
                     type="button"
-                    onClick={() =>
-                      setSelectedService(service)
-                    }
+                    onClick={() => setSelectedService(service)}
                     className={cn(
                       "flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left transition",
                       active
@@ -616,31 +554,22 @@ export default function AdminServices() {
                     <div
                       className={cn(
                         "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-                        active
-                          ? "bg-white/15"
-                          : "bg-brand-orange/10 text-brand-orange"
+                        active ? "bg-white/15" : "bg-brand-orange/10 text-brand-orange"
                       )}
                     >
                       <Package className="h-4 w-4" />
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold">
-                        {service.title}
-                      </p>
+                      <p className="text-sm font-semibold">{service.title}</p>
 
                       <p
                         className={cn(
                           "mt-0.5 text-[0.65rem]",
-                          active
-                            ? "text-white/70"
-                            : "text-surface-muted"
+                          active ? "text-white/70" : "text-surface-muted"
                         )}
                       >
-                        {planCount}{" "}
-                        {planCount === 1
-                          ? "plan"
-                          : "plans"}
+                        {planCount} {planCount === 1 ? "plan" : "plans"}
                       </p>
                     </div>
 
@@ -681,38 +610,18 @@ export default function AdminServices() {
             </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <Stat
-                label="Plans"
-                value={
-                  activeService?.pricing?.plans
-                    ?.length || 0
-                }
-              />
+              <Stat label="Plans" value={activeService?.pricing?.plans?.length || 0} />
 
-              <Stat
-                label="Audiences"
-                value={
-                  activeService?.solution?.audiences
-                    ?.length || 0
-                }
-              />
+              <Stat label="Audiences" value={activeService?.solution?.audiences?.length || 0} />
 
-              <Stat
-                label="Formats"
-                value={
-                  activeService?.solution?.formats
-                    ?.length || 0
-                }
-              />
+              <Stat label="Formats" value={activeService?.solution?.formats?.length || 0} />
             </div>
           </div>
 
           {/* Search */}
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h3 className="font-display text-lg font-bold text-surface-fg">
-                Pricing Plans
-              </h3>
+              <h3 className="font-display text-lg font-bold text-surface-fg">Pricing Plans</h3>
 
               <p className="mt-1 text-xs text-surface-muted">
                 Plans currently available for this service.
@@ -724,9 +633,7 @@ export default function AdminServices() {
 
               <input
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search services..."
                 className="brand-input w-full pl-9"
               />
@@ -750,13 +657,10 @@ export default function AdminServices() {
               <div className="px-6 py-12 text-center">
                 <Package className="mx-auto h-8 w-8 text-surface-muted" />
 
-                <h3 className="mt-3 font-display font-bold text-surface-fg">
-                  No plans yet
-                </h3>
+                <h3 className="mt-3 font-display font-bold text-surface-fg">No plans yet</h3>
 
                 <p className="mt-1 text-sm text-surface-muted">
-                  Create the first pricing plan for this
-                  service.
+                  Create the first pricing plan for this service.
                 </p>
 
                 <button
@@ -792,9 +696,7 @@ function Stat({ label, value }) {
         {label}
       </p>
 
-      <p className="mt-1 font-display text-xl font-bold text-surface-fg">
-        {value}
-      </p>
+      <p className="mt-1 font-display text-xl font-bold text-surface-fg">{value}</p>
     </div>
   );
 }

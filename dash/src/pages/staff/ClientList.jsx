@@ -8,50 +8,29 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-import {
-  clients,
-  projects,
-  tasks,
-  approvals,
-} from "@/data/mockData";
+import { clients, projects, tasks, approvals } from "@/data/mockData";
 
 import EmptyState from "@/components/shared/EmptyState";
 import { cn } from "@/lib/utils";
 
 function getClientStats(clientId) {
-  const clientProjects = projects.filter(
-    (project) => project.clientId === clientId
-  );
+  const clientProjects = projects.filter((project) => project.clientId === clientId);
 
-  const clientTasks = tasks.filter(
-    (task) => task.clientId === clientId
-  );
+  const clientTasks = tasks.filter((task) => task.clientId === clientId);
 
-  const clientApprovals = approvals.filter(
-    (approval) => approval.clientId === clientId
-  );
+  const clientApprovals = approvals.filter((approval) => approval.clientId === clientId);
 
-  const activeProjects = clientProjects.filter(
-    (project) => project.status !== "completed"
-  );
+  const activeProjects = clientProjects.filter((project) => project.status !== "completed");
 
-  const completedProjects = clientProjects.filter(
-    (project) => project.status === "completed"
-  );
+  const completedProjects = clientProjects.filter((project) => project.status === "completed");
 
   const blockedProjects = clientProjects.filter(
-    (project) =>
-      project.status === "blocked" ||
-      Boolean(project.attentionReason)
+    (project) => project.status === "blocked" || Boolean(project.attentionReason)
   );
 
-  const pendingApprovals = clientApprovals.filter(
-    (approval) => approval.status === "pending"
-  );
+  const pendingApprovals = clientApprovals.filter((approval) => approval.status === "pending");
 
-  const overdueTasks = clientTasks.filter(
-    (task) => task.dueLabel === "Overdue"
-  );
+  const overdueTasks = clientTasks.filter((task) => task.dueLabel === "Overdue");
 
   return {
     projects: clientProjects,
@@ -69,17 +48,13 @@ function ClientCard({ client }) {
   const stats = getClientStats(client.id);
 
   const attentionCount =
-    stats.blockedProjects.length +
-    stats.pendingApprovals.length +
-    stats.overdueTasks.length;
+    stats.blockedProjects.length + stats.pendingApprovals.length + stats.overdueTasks.length;
 
   const averageProgress =
     stats.activeProjects.length > 0
       ? Math.round(
-          stats.activeProjects.reduce(
-            (sum, project) => sum + project.progress,
-            0
-          ) / stats.activeProjects.length
+          stats.activeProjects.reduce((sum, project) => sum + project.progress, 0) /
+            stats.activeProjects.length
         )
       : 100;
 
@@ -97,9 +72,7 @@ function ClientCard({ client }) {
               {client.name}
             </h2>
 
-            <p className="mt-0.5 text-xs text-surface-muted">
-              {client.shortName} · Client
-            </p>
+            <p className="mt-0.5 text-xs text-surface-muted">{client.shortName} · Client</p>
           </div>
         </div>
 
@@ -119,9 +92,7 @@ function ClientCard({ client }) {
             Active Work
           </span>
 
-          <span className="text-sm font-bold text-surface-fg">
-            {averageProgress}%
-          </span>
+          <span className="text-sm font-bold text-surface-fg">{averageProgress}%</span>
         </div>
 
         <div className="h-1.5 overflow-hidden rounded-full bg-surface-border">
@@ -137,63 +108,45 @@ function ClientCard({ client }) {
         <div className="rounded-lg bg-surface-muted/5 p-3">
           <div className="flex items-center gap-1.5 text-surface-muted">
             <FolderKanban className="h-3.5 w-3.5" />
-            <span className="text-[0.65rem] uppercase tracking-wide">
-              Projects
-            </span>
+            <span className="text-[0.65rem] uppercase tracking-wide">Projects</span>
           </div>
 
-          <p className="mt-1 text-lg font-bold text-surface-fg">
-            {stats.activeProjects.length}
-          </p>
+          <p className="mt-1 text-lg font-bold text-surface-fg">{stats.activeProjects.length}</p>
         </div>
 
         <div className="rounded-lg bg-surface-muted/5 p-3">
           <div className="flex items-center gap-1.5 text-surface-muted">
             <Clock3 className="h-3.5 w-3.5" />
-            <span className="text-[0.65rem] uppercase tracking-wide">
-              Tasks
-            </span>
+            <span className="text-[0.65rem] uppercase tracking-wide">Tasks</span>
           </div>
 
-          <p className="mt-1 text-lg font-bold text-surface-fg">
-            {stats.tasks.length}
-          </p>
+          <p className="mt-1 text-lg font-bold text-surface-fg">{stats.tasks.length}</p>
         </div>
 
         <div className="rounded-lg bg-surface-muted/5 p-3">
           <div className="flex items-center gap-1.5 text-surface-muted">
             <CheckCircle2 className="h-3.5 w-3.5" />
-            <span className="text-[0.65rem] uppercase tracking-wide">
-              Done
-            </span>
+            <span className="text-[0.65rem] uppercase tracking-wide">Done</span>
           </div>
 
-          <p className="mt-1 text-lg font-bold text-surface-fg">
-            {stats.completedProjects.length}
-          </p>
+          <p className="mt-1 text-lg font-bold text-surface-fg">{stats.completedProjects.length}</p>
         </div>
 
         <div
           className={cn(
             "rounded-lg p-3",
-            attentionCount > 0
-              ? "bg-brand-orange/5"
-              : "bg-surface-muted/5"
+            attentionCount > 0 ? "bg-brand-orange/5" : "bg-surface-muted/5"
           )}
         >
           <div className="flex items-center gap-1.5 text-surface-muted">
             <AlertTriangle className="h-3.5 w-3.5" />
-            <span className="text-[0.65rem] uppercase tracking-wide">
-              Attention
-            </span>
+            <span className="text-[0.65rem] uppercase tracking-wide">Attention</span>
           </div>
 
           <p
             className={cn(
               "mt-1 text-lg font-bold",
-              attentionCount > 0
-                ? "text-brand-orange"
-                : "text-surface-fg"
+              attentionCount > 0 ? "text-brand-orange" : "text-surface-fg"
             )}
           >
             {attentionCount}
@@ -274,8 +227,7 @@ export default function ClientList() {
                 stats.pendingApprovals.length > 0 ||
                 stats.overdueTasks.length > 0
               : filter === "completed"
-                ? stats.activeProjects.length === 0 &&
-                  stats.completedProjects.length > 0
+                ? stats.activeProjects.length === 0 && stats.completedProjects.length > 0
                 : true;
 
       return matchesSearch && matchesFilter;
@@ -292,16 +244,12 @@ export default function ClientList() {
           </h1>
 
           <p className="mt-2 text-lead text-surface-muted">
-            Manage client relationships and see everything currently being
-            delivered for them.
+            Manage client relationships and see everything currently being delivered for them.
           </p>
         </div>
 
         <div className="text-sm text-surface-muted">
-          <span className="font-semibold text-surface-fg">
-            {clients.length}
-          </span>{" "}
-          clients
+          <span className="font-semibold text-surface-fg">{clients.length}</span> clients
         </div>
       </div>
 
@@ -318,10 +266,7 @@ export default function ClientList() {
               key={item.id}
               type="button"
               onClick={() => setFilter(item.id)}
-              className={cn(
-                "pill",
-                filter === item.id && "pill-active"
-              )}
+              className={cn("pill", filter === item.id && "pill-active")}
             >
               {item.label}
             </button>
@@ -349,10 +294,7 @@ export default function ClientList() {
       ) : (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredClients.map((client) => (
-            <ClientCard
-              key={client.id}
-              client={client}
-            />
+            <ClientCard key={client.id} client={client} />
           ))}
         </div>
       )}

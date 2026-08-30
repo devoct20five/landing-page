@@ -120,9 +120,7 @@ function formatShortDate(date) {
 
 function getAttendance(memberId) {
   return (
-    attendanceData.find(
-      (attendance) => attendance.memberId === memberId
-    ) || {
+    attendanceData.find((attendance) => attendance.memberId === memberId) || {
       memberId,
       status: "absent",
       checkIn: "—",
@@ -138,8 +136,7 @@ function getAttendance(memberId) {
 ============================================================ */
 
 function AttendanceStatus({ status }) {
-  const config =
-    STATUS_CONFIG[status] || STATUS_CONFIG.absent;
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.absent;
 
   return (
     <span
@@ -148,12 +145,7 @@ function AttendanceStatus({ status }) {
         config.className
       )}
     >
-      <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          config.dot
-        )}
-      />
+      <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
 
       {config.label}
     </span>
@@ -164,13 +156,7 @@ function AttendanceStatus({ status }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-  warning = false,
-}) {
+function StatCard({ icon: Icon, label, value, description, warning = false }) {
   return (
     <div className="brand-card">
       <div className="flex items-start justify-between gap-4">
@@ -193,17 +179,13 @@ function StatCard({
       <p
         className={cn(
           "mt-1 font-display text-2xl font-bold tracking-[-0.02em]",
-          warning
-            ? "text-brand-orange"
-            : "text-surface-fg"
+          warning ? "text-brand-orange" : "text-surface-fg"
         )}
       >
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -225,22 +207,16 @@ function AttendanceRow({ member }) {
           </div>
 
           <div className="min-w-0">
-            <p className="font-display text-sm font-bold text-surface-fg">
-              {member.name}
-            </p>
+            <p className="font-display text-sm font-bold text-surface-fg">{member.name}</p>
 
-            <p className="mt-0.5 truncate text-xs text-surface-muted">
-              {member.role}
-            </p>
+            <p className="mt-0.5 truncate text-xs text-surface-muted">{member.role}</p>
           </div>
         </div>
       </td>
 
       {/* Department */}
       <td className="py-5 pr-5">
-        <span className="text-sm text-surface-muted">
-          {member.department || "—"}
-        </span>
+        <span className="text-sm text-surface-muted">{member.department || "—"}</span>
       </td>
 
       {/* Status */}
@@ -253,31 +229,23 @@ function AttendanceRow({ member }) {
         <div className="flex items-center gap-2">
           <Clock3 className="h-3.5 w-3.5 text-surface-muted" />
 
-          <span className="text-sm font-medium text-surface-fg">
-            {attendance.checkIn}
-          </span>
+          <span className="text-sm font-medium text-surface-fg">{attendance.checkIn}</span>
         </div>
       </td>
 
       {/* Check out */}
       <td className="py-5 pr-5">
-        <span className="text-sm text-surface-muted">
-          {attendance.checkOut}
-        </span>
+        <span className="text-sm text-surface-muted">{attendance.checkOut}</span>
       </td>
 
       {/* Hours */}
       <td className="py-5 pr-5">
-        <span className="text-sm font-semibold text-surface-fg">
-          {attendance.hours}
-        </span>
+        <span className="text-sm font-semibold text-surface-fg">{attendance.hours}</span>
       </td>
 
       {/* Work mode */}
       <td className="py-5 pr-5">
-        <span className="text-xs font-medium text-surface-muted">
-          {attendance.workMode}
-        </span>
+        <span className="text-xs font-medium text-surface-muted">{attendance.workMode}</span>
       </td>
 
       {/* Actions */}
@@ -298,9 +266,7 @@ function AttendanceRow({ member }) {
 ============================================================ */
 
 export default function AdminAttendance() {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date()
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -316,39 +282,26 @@ export default function AdminAttendance() {
         member.role?.toLowerCase().includes(query) ||
         member.department?.toLowerCase().includes(query);
 
-      const matchesFilter =
-        filter === "all" ||
-        attendance.status === filter;
+      const matchesFilter = filter === "all" || attendance.status === filter;
 
       return matchesSearch && matchesFilter;
     });
   }, [search, filter]);
 
   const stats = useMemo(() => {
-    const records = teamMembers.map((member) =>
-      getAttendance(member.id)
-    );
+    const records = teamMembers.map((member) => getAttendance(member.id));
 
     return {
       total: teamMembers.length,
 
-      present: records.filter(
-        (item) =>
-          item.status === "present" ||
-          item.status === "remote"
-      ).length,
+      present: records.filter((item) => item.status === "present" || item.status === "remote")
+        .length,
 
-      late: records.filter(
-        (item) => item.status === "late"
-      ).length,
+      late: records.filter((item) => item.status === "late").length,
 
-      leave: records.filter(
-        (item) => item.status === "leave"
-      ).length,
+      leave: records.filter((item) => item.status === "leave").length,
 
-      absent: records.filter(
-        (item) => item.status === "absent"
-      ).length,
+      absent: records.filter((item) => item.status === "absent").length,
     };
   }, []);
 
@@ -376,8 +329,7 @@ export default function AdminAttendance() {
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Track team attendance, working hours, check-ins,
-            and work location across OCT20FIVE.
+            Track team attendance, working hours, check-ins, and work location across OCT20FIVE.
           </p>
         </div>
 
@@ -428,7 +380,6 @@ export default function AdminAttendance() {
 
           <div className="flex items-center gap-2 text-xs text-surface-muted">
             <Users className="h-4 w-4" />
-
             {stats.total} team members
           </div>
         </div>
@@ -439,12 +390,7 @@ export default function AdminAttendance() {
       ===================================================== */}
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        <StatCard
-          icon={Users}
-          label="Team"
-          value={stats.total}
-          description="Total team members"
-        />
+        <StatCard icon={Users} label="Team" value={stats.total} description="Total team members" />
 
         <StatCard
           icon={UserCheck}
@@ -461,19 +407,9 @@ export default function AdminAttendance() {
           warning={stats.late > 0}
         />
 
-        <StatCard
-          icon={Coffee}
-          label="On Leave"
-          value={stats.leave}
-          description="Approved leave"
-        />
+        <StatCard icon={Coffee} label="On Leave" value={stats.leave} description="Approved leave" />
 
-        <StatCard
-          icon={UserX}
-          label="Absent"
-          value={stats.absent}
-          description="Not present"
-        />
+        <StatCard icon={UserX} label="Absent" value={stats.absent} description="Not present" />
       </div>
 
       {/* =====================================================
@@ -501,11 +437,7 @@ export default function AdminAttendance() {
           <div
             className="h-full rounded-full bg-brand-orange transition-all duration-500"
             style={{
-              width: `${
-                stats.total
-                  ? (stats.present / stats.total) * 100
-                  : 0
-              }%`,
+              width: `${stats.total ? (stats.present / stats.total) * 100 : 0}%`,
             }}
           />
         </div>
@@ -513,30 +445,22 @@ export default function AdminAttendance() {
         <div className="mt-4 flex flex-wrap gap-5 text-xs">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span className="text-surface-muted">
-              Present {stats.present}
-            </span>
+            <span className="text-surface-muted">Present {stats.present}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-brand-orange" />
-            <span className="text-surface-muted">
-              Late {stats.late}
-            </span>
+            <span className="text-surface-muted">Late {stats.late}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-purple-500" />
-            <span className="text-surface-muted">
-              Leave {stats.leave}
-            </span>
+            <span className="text-surface-muted">Leave {stats.leave}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-red-500" />
-            <span className="text-surface-muted">
-              Absent {stats.absent}
-            </span>
+            <span className="text-surface-muted">Absent {stats.absent}</span>
           </div>
         </div>
       </section>
@@ -548,13 +472,10 @@ export default function AdminAttendance() {
       <section>
         <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Team Attendance
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Team Attendance</h2>
 
             <p className="mt-1 text-sm text-surface-muted">
-              Individual attendance and working hours for the
-              selected date.
+              Individual attendance and working hours for the selected date.
             </p>
           </div>
 
@@ -565,9 +486,7 @@ export default function AdminAttendance() {
 
               <input
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search team..."
                 className="brand-input w-full pl-9"
               />
@@ -576,9 +495,7 @@ export default function AdminAttendance() {
             {/* Filter */}
             <select
               value={filter}
-              onChange={(event) =>
-                setFilter(event.target.value)
-              }
+              onChange={(event) => setFilter(event.target.value)}
               className="brand-input min-w-[150px]"
             >
               <option value="all">All Status</option>
@@ -601,33 +518,19 @@ export default function AdminAttendance() {
             <table className="w-full min-w-[1100px] border-collapse">
               <thead>
                 <tr className="border-b border-surface-border text-left text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-surface-muted">
-                  <th className="px-6 py-4">
-                    Team Member
-                  </th>
+                  <th className="px-6 py-4">Team Member</th>
 
-                  <th className="py-4 pr-5">
-                    Department
-                  </th>
+                  <th className="py-4 pr-5">Department</th>
 
-                  <th className="py-4 pr-5">
-                    Status
-                  </th>
+                  <th className="py-4 pr-5">Status</th>
 
-                  <th className="py-4 pr-5">
-                    Check In
-                  </th>
+                  <th className="py-4 pr-5">Check In</th>
 
-                  <th className="py-4 pr-5">
-                    Check Out
-                  </th>
+                  <th className="py-4 pr-5">Check Out</th>
 
-                  <th className="py-4 pr-5">
-                    Hours
-                  </th>
+                  <th className="py-4 pr-5">Hours</th>
 
-                  <th className="py-4 pr-5">
-                    Work Mode
-                  </th>
+                  <th className="py-4 pr-5">Work Mode</th>
 
                   <th className="py-4 pr-6" />
                 </tr>
@@ -635,10 +538,7 @@ export default function AdminAttendance() {
 
               <tbody>
                 {filteredMembers.map((member) => (
-                  <AttendanceRow
-                    key={member.id}
-                    member={member}
-                  />
+                  <AttendanceRow key={member.id} member={member} />
                 ))}
               </tbody>
             </table>
@@ -652,7 +552,6 @@ export default function AdminAttendance() {
 
       <div className="mt-6 flex items-center gap-2 text-xs text-surface-muted">
         <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-
         Attendance records are shown for the selected date.
       </div>
     </div>

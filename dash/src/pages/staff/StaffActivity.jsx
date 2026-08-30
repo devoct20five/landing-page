@@ -16,12 +16,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import {
-  staffActivity,
-  tasks,
-  projects,
-  teamMembers,
-} from "@/data/mockData";
+import { staffActivity, tasks, projects, teamMembers } from "@/data/mockData";
 
 import EmptyState from "@/components/shared/EmptyState";
 
@@ -111,10 +106,9 @@ function getCurrentStaff() {
    * For now we use the first staff member from mock data.
    */
 
-  return teamMembers.find(
-    (member) =>
-      member.role?.toLowerCase().includes("staff")
-  ) || teamMembers[0];
+  return (
+    teamMembers.find((member) => member.role?.toLowerCase().includes("staff")) || teamMembers[0]
+  );
 }
 
 function getActivityType(item) {
@@ -150,45 +144,27 @@ function getActivityType(item) {
 
   const text = item.text?.toLowerCase() || "";
 
-  if (
-    text.includes("completed") ||
-    text.includes("finished")
-  ) {
+  if (text.includes("completed") || text.includes("finished")) {
     return "completed";
   }
 
-  if (
-    text.includes("task") ||
-    text.includes("assigned")
-  ) {
+  if (text.includes("task") || text.includes("assigned")) {
     return "task";
   }
 
-  if (
-    text.includes("project") ||
-    text.includes("created")
-  ) {
+  if (text.includes("project") || text.includes("created")) {
     return "project";
   }
 
-  if (
-    text.includes("comment") ||
-    text.includes("mentioned")
-  ) {
+  if (text.includes("comment") || text.includes("mentioned")) {
     return "comment";
   }
 
-  if (
-    text.includes("upload") ||
-    text.includes("uploaded")
-  ) {
+  if (text.includes("upload") || text.includes("uploaded")) {
     return "upload";
   }
 
-  if (
-    text.includes("review") ||
-    text.includes("approved")
-  ) {
+  if (text.includes("review") || text.includes("approved")) {
     return "review";
   }
 
@@ -200,8 +176,7 @@ function getActivityType(item) {
 ============================================================ */
 
 function ActivityBadge({ type }) {
-  const config =
-    ACTIVITY_CONFIG[type] || ACTIVITY_CONFIG.default;
+  const config = ACTIVITY_CONFIG[type] || ACTIVITY_CONFIG.default;
 
   const Icon = config.icon;
 
@@ -227,8 +202,7 @@ function ActivityBadge({ type }) {
 function ActivityItem({ activity }) {
   const type = getActivityType(activity);
 
-  const config =
-    ACTIVITY_CONFIG[type] || ACTIVITY_CONFIG.default;
+  const config = ACTIVITY_CONFIG[type] || ACTIVITY_CONFIG.default;
 
   const Icon = config.icon;
 
@@ -238,10 +212,7 @@ function ActivityItem({ activity }) {
 
       <div className="relative flex shrink-0 flex-col items-center">
         <div
-          className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-xl",
-            config.className
-          )}
+          className={cn("flex h-10 w-10 items-center justify-center rounded-xl", config.className)}
         >
           <Icon className="h-4.5 w-4.5" />
         </div>
@@ -254,20 +225,14 @@ function ActivityItem({ activity }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-6 text-surface-fg">
-              {activity.text}
-            </p>
+            <p className="text-sm font-semibold leading-6 text-surface-fg">{activity.text}</p>
 
             {activity.description && (
-              <p className="mt-1 text-xs leading-5 text-surface-muted">
-                {activity.description}
-              </p>
+              <p className="mt-1 text-xs leading-5 text-surface-muted">{activity.description}</p>
             )}
           </div>
 
-          <span className="shrink-0 text-xs text-surface-muted">
-            {activity.timestamp}
-          </span>
+          <span className="shrink-0 text-xs text-surface-muted">{activity.timestamp}</span>
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -296,12 +261,7 @@ function ActivityItem({ activity }) {
    STAT CARD
 ============================================================ */
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  description,
-}) {
+function StatCard({ icon: Icon, label, value, description }) {
   return (
     <div className="brand-card">
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
@@ -316,9 +276,7 @@ function StatCard({
         {value}
       </p>
 
-      <p className="mt-1 text-xs text-surface-muted">
-        {description}
-      </p>
+      <p className="mt-1 text-xs text-surface-muted">{description}</p>
     </div>
   );
 }
@@ -336,13 +294,9 @@ function ProjectActivityRow({ project }) {
         </div>
 
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-surface-fg">
-            {project.name}
-          </p>
+          <p className="truncate text-sm font-semibold text-surface-fg">{project.name}</p>
 
-          <p className="mt-0.5 text-xs text-surface-muted">
-            {project.progress}% complete
-          </p>
+          <p className="mt-0.5 text-xs text-surface-muted">{project.progress}% complete</p>
         </div>
       </div>
 
@@ -385,9 +339,7 @@ export default function StaffActivity() {
   const myTasks = useMemo(() => {
     if (!currentStaff) return [];
 
-    return tasks.filter(
-      (task) => task.assigneeId === currentStaff.id
-    );
+    return tasks.filter((task) => task.assigneeId === currentStaff.id);
   }, [currentStaff]);
 
   /*
@@ -397,19 +349,11 @@ export default function StaffActivity() {
    */
 
   const myProjectIds = useMemo(() => {
-    return [
-      ...new Set(
-        myTasks
-          .map((task) => task.projectId)
-          .filter(Boolean)
-      ),
-    ];
+    return [...new Set(myTasks.map((task) => task.projectId).filter(Boolean))];
   }, [myTasks]);
 
   const myProjects = useMemo(() => {
-    return projects.filter((project) =>
-      myProjectIds.includes(project.id)
-    );
+    return projects.filter((project) => myProjectIds.includes(project.id));
   }, [myProjectIds]);
 
   /*
@@ -427,8 +371,7 @@ export default function StaffActivity() {
       let matchesFilter = true;
 
       if (activeFilter === "tasks") {
-        matchesFilter =
-          type === "task" || type === "completed";
+        matchesFilter = type === "task" || type === "completed";
       }
 
       if (activeFilter === "projects") {
@@ -445,18 +388,10 @@ export default function StaffActivity() {
 
       const matchesSearch =
         !query ||
-        activity.text
-          ?.toLowerCase()
-          .includes(query) ||
-        activity.description
-          ?.toLowerCase()
-          .includes(query) ||
-        activity.projectName
-          ?.toLowerCase()
-          .includes(query) ||
-        activity.taskName
-          ?.toLowerCase()
-          .includes(query);
+        activity.text?.toLowerCase().includes(query) ||
+        activity.description?.toLowerCase().includes(query) ||
+        activity.projectName?.toLowerCase().includes(query) ||
+        activity.taskName?.toLowerCase().includes(query);
 
       return matchesFilter && matchesSearch;
     });
@@ -468,13 +403,9 @@ export default function StaffActivity() {
    * ----------------------------------------------------------
    */
 
-  const completedTasks = myTasks.filter(
-    (task) => task.status === "completed"
-  ).length;
+  const completedTasks = myTasks.filter((task) => task.status === "completed").length;
 
-  const pendingTasks = myTasks.filter(
-    (task) => task.status !== "completed"
-  ).length;
+  const pendingTasks = myTasks.filter((task) => task.status !== "completed").length;
 
   return (
     <div className="mx-auto max-w-[1400px] animate-fade-up">
@@ -484,15 +415,13 @@ export default function StaffActivity() {
 
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-        
-
           <h1 className="font-display text-display-md font-bold tracking-[-0.02em] text-surface-fg">
             My Activity
           </h1>
 
           <p className="mt-2 max-w-2xl text-lead text-surface-muted">
-            Keep track of your recent work, task updates,
-            project activity and contributions across OCT20FIVE.
+            Keep track of your recent work, task updates, project activity and contributions across
+            OCT20FIVE.
           </p>
         </div>
 
@@ -502,13 +431,9 @@ export default function StaffActivity() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-surface-fg">
-              {currentStaff?.name}
-            </p>
+            <p className="text-xs font-semibold text-surface-fg">{currentStaff?.name}</p>
 
-            <p className="text-[0.65rem] text-surface-muted">
-              {currentStaff?.role}
-            </p>
+            <p className="text-[0.65rem] text-surface-muted">{currentStaff?.role}</p>
           </div>
         </div>
       </div>
@@ -561,9 +486,7 @@ export default function StaffActivity() {
 
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="font-display text-lg font-bold text-surface-fg">
-                Activity Timeline
-              </h2>
+              <h2 className="font-display text-lg font-bold text-surface-fg">Activity Timeline</h2>
 
               <p className="mt-1 text-sm text-surface-muted">
                 A record of your recent actions and updates.
@@ -575,9 +498,7 @@ export default function StaffActivity() {
 
               <input
                 value={search}
-                onChange={(event) =>
-                  setSearch(event.target.value)
-                }
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search activity..."
                 className="brand-input w-full pl-9"
               />
@@ -591,9 +512,7 @@ export default function StaffActivity() {
               <button
                 key={filter.id}
                 type="button"
-                onClick={() =>
-                  setActiveFilter(filter.id)
-                }
+                onClick={() => setActiveFilter(filter.id)}
                 className={cn(
                   "shrink-0 border-b-2 px-4 py-3 text-sm font-medium transition",
                   activeFilter === filter.id
@@ -616,10 +535,7 @@ export default function StaffActivity() {
           ) : (
             <div className="brand-card overflow-hidden p-0">
               {filteredActivity.map((activity) => (
-                <ActivityItem
-                  key={activity.id}
-                  activity={activity}
-                />
+                <ActivityItem key={activity.id} activity={activity} />
               ))}
             </div>
           )}
@@ -636,9 +552,7 @@ export default function StaffActivity() {
             <div className="border-b border-surface-border px-5 py-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="font-display text-base font-bold text-surface-fg">
-                    My Work
-                  </h2>
+                  <h2 className="font-display text-base font-bold text-surface-fg">My Work</h2>
 
                   <p className="mt-1 text-xs text-surface-muted">
                     Projects you're currently contributing to.
@@ -651,17 +565,12 @@ export default function StaffActivity() {
 
             {myProjects.length === 0 ? (
               <div className="p-5">
-                <p className="text-sm text-surface-muted">
-                  No projects assigned yet.
-                </p>
+                <p className="text-sm text-surface-muted">No projects assigned yet.</p>
               </div>
             ) : (
               <div>
                 {myProjects.slice(0, 5).map((project) => (
-                  <ProjectActivityRow
-                    key={project.id}
-                    project={project}
-                  />
+                  <ProjectActivityRow key={project.id} project={project} />
                 ))}
               </div>
             )}
@@ -684,39 +593,22 @@ export default function StaffActivity() {
           <section className="brand-card">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="font-display text-base font-bold text-surface-fg">
-                  Task Summary
-                </h2>
+                <h2 className="font-display text-base font-bold text-surface-fg">Task Summary</h2>
 
-                <p className="mt-1 text-xs text-surface-muted">
-                  Your current task workload.
-                </p>
+                <p className="mt-1 text-xs text-surface-muted">Your current task workload.</p>
               </div>
 
               <ListChecks className="h-4 w-4 text-brand-orange" />
             </div>
 
             <div className="mt-6 space-y-4">
-              <SummaryRow
-                label="Total Tasks"
-                value={myTasks.length}
-              />
+              <SummaryRow label="Total Tasks" value={myTasks.length} />
 
-              <SummaryRow
-                label="Completed"
-                value={completedTasks}
-                valueClass="text-emerald-700"
-              />
+              <SummaryRow label="Completed" value={completedTasks} valueClass="text-emerald-700" />
 
-              <SummaryRow
-                label="In Progress"
-                value={pendingTasks}
-                valueClass="text-brand-orange"
-              />
+              <SummaryRow label="In Progress" value={pendingTasks} valueClass="text-brand-orange" />
             </div>
           </section>
-
-      
         </aside>
       </div>
     </div>
@@ -727,25 +619,12 @@ export default function StaffActivity() {
    SUMMARY ROW
 ============================================================ */
 
-function SummaryRow({
-  label,
-  value,
-  valueClass = "text-surface-fg",
-}) {
+function SummaryRow({ label, value, valueClass = "text-surface-fg" }) {
   return (
     <div className="flex items-center justify-between border-b border-surface-border pb-3 last:border-b-0 last:pb-0">
-      <span className="text-xs text-surface-muted">
-        {label}
-      </span>
+      <span className="text-xs text-surface-muted">{label}</span>
 
-      <span
-        className={cn(
-          "text-sm font-bold",
-          valueClass
-        )}
-      >
-        {value}
-      </span>
+      <span className={cn("text-sm font-bold", valueClass)}>{value}</span>
     </div>
   );
 }

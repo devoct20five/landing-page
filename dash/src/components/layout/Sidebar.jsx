@@ -1,10 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {
-  LayoutDashboard,
-  FolderKanban,
-  BriefcaseBusiness,
-  MessageSquareText,
-} from "lucide-react";
+import { LayoutDashboard, FolderKanban, BriefcaseBusiness, MessageSquareText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -33,23 +28,23 @@ const navItems = [
     enabled: true,
   },
   {
-  label: "Approvals",
+    label: "Approvals",
     to: "/approvals",
     icon: MessageSquareText,
     enabled: true,
   },
   {
-      label: "Support",
+    label: "Support",
     to: "/support",
     icon: MessageSquareText,
     enabled: true,
-  }
-, {
+  },
+  {
     label: "Queries",
     to: "/queries",
     icon: MessageSquareText,
     enabled: true,
-}
+  },
 ];
 
 export default function Sidebar({ onNavigate }) {
@@ -79,10 +74,7 @@ export default function Sidebar({ onNavigate }) {
                 title="Coming soon"
               >
                 <span className="flex items-center gap-3">
-                  <Icon
-                    className="h-[18px] w-[18px]"
-                    strokeWidth={2}
-                  />
+                  <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
                   {item.label}
                 </span>
@@ -109,10 +101,7 @@ export default function Sidebar({ onNavigate }) {
                 )
               }
             >
-              <Icon
-                className="h-[18px] w-[18px]"
-                strokeWidth={2}
-              />
+              <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
 
               {item.label}
             </NavLink>

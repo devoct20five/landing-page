@@ -1,9 +1,8 @@
 import {
   Image,
   Video,
-
   Link2,
-  Plus, 
+  Plus,
   Search,
   MoreHorizontal,
   Eye,
@@ -43,8 +42,7 @@ const behindTheWorkItems = [
     id: "btw-002",
     type: "video",
     title: "Editing Room — Hero Film",
-    description:
-      "A short look at the team working through the latest cut of the campaign film.",
+    description: "A short look at the team working through the latest cut of the campaign film.",
     projectId: "project-001",
     projectName: "Summer Campaign 2026",
     clientId: "client-001",
@@ -59,8 +57,7 @@ const behindTheWorkItems = [
     id: "btw-003",
     type: "youtube",
     title: "Making the Summer Campaign",
-    description:
-      "A behind-the-scenes film documenting the production of the campaign.",
+    description: "A behind-the-scenes film documenting the production of the campaign.",
     projectId: "project-001",
     projectName: "Summer Campaign 2026",
     clientId: "client-001",
@@ -76,8 +73,7 @@ const behindTheWorkItems = [
     id: "btw-004",
     type: "photo",
     title: "3D Product Development",
-    description:
-      "Early-stage renders and development work from the Product Launch project.",
+    description: "Early-stage renders and development work from the Product Launch project.",
     projectId: "project-004",
     projectName: "Product Launch",
     clientId: "client-001",
@@ -92,8 +88,7 @@ const behindTheWorkItems = [
     id: "btw-005",
     type: "video",
     title: "Website Design Walkthrough",
-    description:
-      "A quick walkthrough of the design exploration before development began.",
+    description: "A quick walkthrough of the design exploration before development began.",
     projectId: "project-003",
     projectName: "Website Redesign",
     clientId: "client-001",
@@ -108,8 +103,7 @@ const behindTheWorkItems = [
     id: "btw-006",
     type: "youtube",
     title: "Product Animation — Process",
-    description:
-      "The complete creative process behind the latest product animation.",
+    description: "The complete creative process behind the latest product animation.",
     projectId: "project-009",
     projectName: "Product Animation",
     clientId: "client-003",
@@ -138,22 +132,13 @@ export default function AdminBehindTheWork() {
         item.description.toLowerCase().includes(search.toLowerCase()) ||
         item.projectName.toLowerCase().includes(search.toLowerCase());
 
-      const matchesType =
-        typeFilter === "all" || item.type === typeFilter;
+      const matchesType = typeFilter === "all" || item.type === typeFilter;
 
-      const matchesStatus =
-        statusFilter === "all" || item.status === statusFilter;
+      const matchesStatus = statusFilter === "all" || item.status === statusFilter;
 
-      const matchesProject =
-        projectFilter === "all" ||
-        item.projectId === projectFilter;
+      const matchesProject = projectFilter === "all" || item.projectId === projectFilter;
 
-      return (
-        matchesSearch &&
-        matchesType &&
-        matchesStatus &&
-        matchesProject
-      );
+      return matchesSearch && matchesType && matchesStatus && matchesProject;
     });
   }, [items, search, typeFilter, statusFilter, projectFilter]);
 
@@ -161,9 +146,7 @@ export default function AdminBehindTheWork() {
     total: items.length,
     published: items.filter((item) => item.status === "published").length,
     drafts: items.filter((item) => item.status === "draft").length,
-    videos: items.filter(
-      (item) => item.type === "video" || item.type === "youtube"
-    ).length,
+    videos: items.filter((item) => item.type === "video" || item.type === "youtube").length,
   };
 
   function togglePublish(id) {
@@ -172,10 +155,7 @@ export default function AdminBehindTheWork() {
         item.id === id
           ? {
               ...item,
-              status:
-                item.status === "published"
-                  ? "draft"
-                  : "published",
+              status: item.status === "published" ? "draft" : "published",
             }
           : item
       )
@@ -183,9 +163,7 @@ export default function AdminBehindTheWork() {
   }
 
   function deleteItem(id) {
-    setItems((current) =>
-      current.filter((item) => item.id !== id)
-    );
+    setItems((current) => current.filter((item) => item.id !== id));
   }
 
   return (
@@ -198,15 +176,13 @@ export default function AdminBehindTheWork() {
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-             
-
               <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
                 Behind the Work
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Share the creative process, production moments and
-                behind-the-scenes content with your clients.
+                Share the creative process, production moments and behind-the-scenes content with
+                your clients.
               </p>
             </div>
 
@@ -231,29 +207,13 @@ export default function AdminBehindTheWork() {
         =================================================== */}
 
         <div className="mb-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-surface-border bg-surface-card sm:grid-cols-4">
-          <Stat
-            label="Total Content"
-            value={stats.total}
-            icon={FolderKanban}
-          />
+          <Stat label="Total Content" value={stats.total} icon={FolderKanban} />
 
-          <Stat
-            label="Published"
-            value={stats.published}
-            icon={Eye}
-          />
+          <Stat label="Published" value={stats.published} icon={Eye} />
 
-          <Stat
-            label="Drafts"
-            value={stats.drafts}
-            icon={EyeOff}
-          />
+          <Stat label="Drafts" value={stats.drafts} icon={EyeOff} />
 
-          <Stat
-            label="Video Content"
-            value={stats.videos}
-            icon={Video}
-          />
+          <Stat label="Video Content" value={stats.videos} icon={Video} />
         </div>
 
         {/* ===================================================
@@ -302,10 +262,7 @@ export default function AdminBehindTheWork() {
                 onChange={setProjectFilter}
                 options={[
                   ["all", "All Projects"],
-                  ...projects.map((project) => [
-                    project.id,
-                    project.name,
-                  ]),
+                  ...projects.map((project) => [project.id, project.name]),
                 ]}
               />
             </div>
@@ -362,17 +319,8 @@ export default function AdminBehindTheWork() {
    CARD
 ============================================================ */
 
-function BehindTheWorkCard({
-  item,
-  onTogglePublish,
-  onDelete,
-}) {
-  const TypeIcon =
-    item.type === "photo"
-      ? Image
-      : item.type === "youtube"
-        ? Video
-        : Video;
+function BehindTheWorkCard({ item, onTogglePublish, onDelete }) {
+  const TypeIcon = item.type === "photo" ? Image : item.type === "youtube" ? Video : Video;
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-surface-border bg-surface-card transition-all duration-200 hover:border-brand-orange/40 hover:shadow-[0_12px_35px_-20px_rgba(0,0,0,0.3)]">
@@ -394,11 +342,7 @@ function BehindTheWorkCard({
         <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-lg bg-black/60 px-2.5 py-1.5 text-xs font-semibold text-white backdrop-blur">
           <TypeIcon className="h-3.5 w-3.5" />
 
-          {item.type === "photo"
-            ? "Photo"
-            : item.type === "youtube"
-              ? "YouTube"
-              : "Video"}
+          {item.type === "photo" ? "Photo" : item.type === "youtube" ? "YouTube" : "Video"}
         </div>
 
         {/* Status */}
@@ -411,9 +355,7 @@ function BehindTheWorkCard({
               : "bg-white/90 text-surface-fg"
           )}
         >
-          {item.status === "published"
-            ? "Published"
-            : "Draft"}
+          {item.status === "published" ? "Published" : "Draft"}
         </div>
 
         {/* Play */}
@@ -432,9 +374,7 @@ function BehindTheWorkCard({
       <div className="p-5">
         <div className="mb-3 flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h3 className="truncate text-sm font-bold text-surface-fg">
-              {item.title}
-            </h3>
+            <h3 className="truncate text-sm font-bold text-surface-fg">{item.title}</h3>
 
             <p className="mt-1 flex items-center gap-1.5 text-xs text-surface-muted">
               <FolderKanban className="h-3.5 w-3.5" />
@@ -448,9 +388,7 @@ function BehindTheWorkCard({
           </button>
         </div>
 
-        <p className="line-clamp-2 text-xs leading-5 text-surface-muted">
-          {item.description}
-        </p>
+        <p className="line-clamp-2 text-xs leading-5 text-surface-muted">{item.description}</p>
 
         <div className="mt-4 flex items-center justify-between border-t border-surface-border pt-4">
           <div>
@@ -458,9 +396,7 @@ function BehindTheWorkCard({
               Client
             </p>
 
-            <p className="mt-1 text-xs font-semibold text-surface-fg">
-              {item.clientName}
-            </p>
+            <p className="mt-1 text-xs font-semibold text-surface-fg">{item.clientName}</p>
           </div>
 
           <div className="text-right">
@@ -468,9 +404,7 @@ function BehindTheWorkCard({
               Added
             </p>
 
-            <p className="mt-1 text-xs text-surface-muted">
-              {item.createdAt}
-            </p>
+            <p className="mt-1 text-xs text-surface-muted">{item.createdAt}</p>
           </div>
         </div>
 
@@ -545,9 +479,7 @@ function CreateContentModal({ onClose, onCreate }) {
   function submit(e) {
     e.preventDefault();
 
-    const project = projects.find(
-      (item) => item.id === form.projectId
-    );
+    const project = projects.find((item) => item.id === form.projectId);
 
     onCreate({
       ...form,
@@ -565,9 +497,7 @@ function CreateContentModal({ onClose, onCreate }) {
 
         <div className="flex items-center justify-between border-b border-surface-border px-6 py-5">
           <div>
-            <h2 className="font-display text-lg font-bold text-surface-fg">
-              Add Behind the Work
-            </h2>
+            <h2 className="font-display text-lg font-bold text-surface-fg">Add Behind the Work</h2>
 
             <p className="mt-1 text-xs text-surface-muted">
               Share a new piece of behind-the-scenes content.
@@ -632,9 +562,7 @@ function CreateContentModal({ onClose, onCreate }) {
             <textarea
               rows={3}
               value={form.description}
-              onChange={(e) =>
-                update("description", e.target.value)
-              }
+              onChange={(e) => update("description", e.target.value)}
               placeholder="Tell the client what's happening behind the work..."
               className="form-input resize-none"
             />
@@ -645,9 +573,7 @@ function CreateContentModal({ onClose, onCreate }) {
           <FormField label="Project">
             <select
               value={form.projectId}
-              onChange={(e) =>
-                update("projectId", e.target.value)
-              }
+              onChange={(e) => update("projectId", e.target.value)}
               className="form-input"
             >
               {projects.map((project) => (
@@ -669,9 +595,7 @@ function CreateContentModal({ onClose, onCreate }) {
                   required
                   type="url"
                   value={form.url}
-                  onChange={(e) =>
-                    update("url", e.target.value)
-                  }
+                  onChange={(e) => update("url", e.target.value)}
                   placeholder="https://youtube.com/watch?v=..."
                   className="form-input pl-9"
                 />
@@ -706,9 +630,7 @@ function CreateContentModal({ onClose, onCreate }) {
             <input
               type="url"
               value={form.thumbnail}
-              onChange={(e) =>
-                update("thumbnail", e.target.value)
-              }
+              onChange={(e) => update("thumbnail", e.target.value)}
               placeholder="Optional thumbnail URL"
               className="form-input"
             />
@@ -734,20 +656,14 @@ function CreateContentModal({ onClose, onCreate }) {
               >
                 <EyeOff className="h-4 w-4 text-surface-muted" />
 
-                <p className="mt-2 text-sm font-semibold text-surface-fg">
-                  Draft
-                </p>
+                <p className="mt-2 text-sm font-semibold text-surface-fg">Draft</p>
 
-                <p className="mt-1 text-xs text-surface-muted">
-                  Only visible internally.
-                </p>
+                <p className="mt-1 text-xs text-surface-muted">Only visible internally.</p>
               </button>
 
               <button
                 type="button"
-                onClick={() =>
-                  update("status", "published")
-                }
+                onClick={() => update("status", "published")}
                 className={cn(
                   "rounded-xl border px-4 py-3 text-left",
                   form.status === "published"
@@ -757,13 +673,9 @@ function CreateContentModal({ onClose, onCreate }) {
               >
                 <Eye className="h-4 w-4 text-brand-orange" />
 
-                <p className="mt-2 text-sm font-semibold text-surface-fg">
-                  Published
-                </p>
+                <p className="mt-2 text-sm font-semibold text-surface-fg">Published</p>
 
-                <p className="mt-1 text-xs text-surface-muted">
-                  Visible to the selected client.
-                </p>
+                <p className="mt-1 text-xs text-surface-muted">Visible to the selected client.</p>
               </button>
             </div>
           </div>
@@ -802,9 +714,7 @@ function Stat({ icon: Icon, label, value }) {
       <div className="flex items-center gap-2">
         <Icon className="h-4 w-4 text-brand-orange" />
 
-        <span className="text-xs font-medium text-surface-muted">
-          {label}
-        </span>
+        <span className="text-xs font-medium text-surface-muted">{label}</span>
       </div>
 
       <p className="mt-2 font-display text-2xl font-bold tracking-[-0.04em] text-surface-fg">
@@ -814,11 +724,7 @@ function Stat({ icon: Icon, label, value }) {
   );
 }
 
-function FilterSelect({
-  value,
-  onChange,
-  options,
-}) {
+function FilterSelect({ value, onChange, options }) {
   return (
     <select
       value={value}
@@ -846,12 +752,7 @@ function FormField({ label, children }) {
   );
 }
 
-function TypeButton({
-  active,
-  icon: Icon,
-  label,
-  onClick,
-}) {
+function TypeButton({ active, icon: Icon, label, onClick }) {
   return (
     <button
       type="button"
@@ -876,13 +777,10 @@ function EmptyState() {
         <Image className="h-5 w-5 text-surface-muted" />
       </div>
 
-      <h3 className="mt-4 text-sm font-bold text-surface-fg">
-        No content found
-      </h3>
+      <h3 className="mt-4 text-sm font-bold text-surface-fg">No content found</h3>
 
       <p className="mx-auto mt-1 max-w-sm text-xs leading-5 text-surface-muted">
-        Try changing your filters or add a new behind-the-scenes
-        post.
+        Try changing your filters or add a new behind-the-scenes post.
       </p>
     </div>
   );

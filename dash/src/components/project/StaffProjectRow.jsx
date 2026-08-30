@@ -9,9 +9,7 @@ export default function StaffProjectRow({ project }) {
         <p className="font-display text-sm font-bold text-surface-fg">{project.name}</p>
       </td>
       <td className="py-4 pr-4 text-sm text-surface-muted">{project.clientName}</td>
-      <td className="py-4 pr-4 text-xs text-surface-muted">
-        {project.services.join(" · ")}
-      </td>
+      <td className="py-4 pr-4 text-xs text-surface-muted">{project.services.join(" · ")}</td>
       <td className="py-4 pr-4">
         <div className="flex items-center gap-2">
           <div className="w-20">
