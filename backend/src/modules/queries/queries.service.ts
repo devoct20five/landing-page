@@ -62,13 +62,13 @@ export class QueriesService {
     };
   }
 
-  async findOne(id: number): Promise<SupportQuery> {
+  async findOne(id: string): Promise<SupportQuery> {
     const query = await this.queryModel.findByPk(id, { include: INCLUDE });
     if (!query) throw new NotFoundException(`Query #${id} not found`);
     return query;
   }
 
-  async update(id: number, dto: UpdateQueryDto): Promise<SupportQuery> {
+  async update(id: string, dto: UpdateQueryDto): Promise<SupportQuery> {
     const query = await this.findOne(id);
     const patch: any = { ...dto };
 
@@ -88,7 +88,7 @@ export class QueriesService {
     return this.findOne(id);
   }
 
-  async assign(id: number, dto: AssignQueryDto): Promise<SupportQuery> {
+  async assign(id: string, dto: AssignQueryDto): Promise<SupportQuery> {
     const query = await this.findOne(id);
     await query.update({
       assigned_to: dto.staff_id,
@@ -97,7 +97,7 @@ export class QueriesService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const query = await this.findOne(id);
     await query.destroy();
   }

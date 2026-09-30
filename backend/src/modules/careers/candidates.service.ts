@@ -74,7 +74,7 @@ export class CandidatesService {
   }
 
   /** Pipeline view grouped by stage — for the candidate pipeline board (3.11). */
-  async pipeline(jobId?: number) {
+  async pipeline(jobId?: string) {
     const where: any = jobId ? { job_id: jobId } : {};
     const candidates = await this.candidateModel.findAll({
       where,
@@ -97,7 +97,7 @@ export class CandidatesService {
     return board;
   }
 
-  async findOne(id: number): Promise<Candidate> {
+  async findOne(id: string): Promise<Candidate> {
     const candidate = await this.candidateModel.findByPk(id, {
       include: INCLUDE,
     });
@@ -106,7 +106,7 @@ export class CandidatesService {
   }
 
   async updateStage(
-    id: number,
+    id: string,
     dto: UpdateCandidateStageDto,
   ): Promise<Candidate> {
     const candidate = await this.findOne(id);
@@ -114,13 +114,13 @@ export class CandidatesService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const candidate = await this.findOne(id);
     await candidate.destroy();
   }
 
   async addNote(
-    candidateId: number,
+    candidateId: string,
     dto: CreateCandidateNoteDto,
   ): Promise<CandidateNote> {
     await this.findOne(candidateId); // 404 guard
@@ -141,7 +141,7 @@ export class CandidatesService {
     return created;
   }
 
-  async listNotes(candidateId: number): Promise<CandidateNote[]> {
+  async listNotes(candidateId: string): Promise<CandidateNote[]> {
     await this.findOne(candidateId);
     return this.noteModel.findAll({
       where: { candidate_id: candidateId },

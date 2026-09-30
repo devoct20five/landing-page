@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -33,7 +33,7 @@ export class RolesController {
 
   @Get(':id')
   @RequirePermissions('team.view')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.rolesService.findOne(id);
   }
 
@@ -45,14 +45,14 @@ export class RolesController {
 
   @Put(':id')
   @RequirePermissions('team.edit')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateRoleDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateRoleDto) {
     return this.rolesService.update(id, dto);
   }
 
   @Put(':id/permissions')
   @RequirePermissions('team.edit')
   setPermissions(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: AssignPermissionsDto,
   ) {
     return this.rolesService.setPermissions(id, dto.permissionIds);
@@ -60,7 +60,7 @@ export class RolesController {
 
   @Delete(':id')
   @RequirePermissions('team.edit')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.rolesService.remove(id);
   }
 }

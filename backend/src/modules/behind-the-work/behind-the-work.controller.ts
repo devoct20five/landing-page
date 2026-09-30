@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   Query,
-  ParseIntPipe,
+  ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
 import { BehindTheWorkService } from './behind-the-work.service';
@@ -17,7 +17,7 @@ import { QueryBehindTheWorkDto } from './dto/query-behind-the-work.dto';
 import { BtwStatus } from './models/behind-the-work.model';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { AuthenticatedUser } from '../auth/types/authenticated-user.type';
+import type { AuthenticatedUser } from '../auth/types/authenticated-user.type';
 // Public showcase feed — no auth, published items only.
 // Kept separate so it can be mounted without JwtAuthGuard.
 @Controller('behind-the-work/public')
@@ -37,7 +37,10 @@ export class BehindTheWorkController {
   constructor(private readonly service: BehindTheWorkService) {}
 
   @Post()
-  create(@Body() dto: CreateBehindTheWorkDto, @CurrentUser() user: AuthUser) {
+  create(
+    @Body() dto: CreateBehindTheWorkDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.create(dto, user.id);
   }
 
@@ -47,13 +50,13 @@ export class BehindTheWorkController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateBehindTheWorkDto,
   ) {
     return this.service.update(id, dto);
@@ -61,17 +64,17 @@ export class BehindTheWorkController {
 
   // Toggle publish / unpublish
   @Patch(':id/publish')
-  publish(@Param('id', ParseIntPipe) id: number) {
+  publish(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.setStatus(id, BtwStatus.PUBLISHED);
   }
 
   @Patch(':id/unpublish')
-  unpublish(@Param('id', ParseIntPipe) id: number) {
+  unpublish(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.setStatus(id, BtwStatus.DRAFT);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.remove(id);
   }
 }

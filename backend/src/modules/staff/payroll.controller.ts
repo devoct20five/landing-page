@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -31,25 +32,25 @@ export class PayrollController {
   }
 
   @Get('staff/:staffId')
-  payoutHistory(@Param('staffId', ParseIntPipe) staffId: number) {
+  payoutHistory(@Param('staffId', ParseUUIDPipe) staffId: string) {
     return this.payrollService.payoutHistoryForStaff(staffId);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.payrollService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdatePayrollEntryDto,
   ) {
     return this.payrollService.update(id, dto);
   }
 
   @Post(':id/process')
-  processPayout(@Param('id', ParseIntPipe) id: number) {
+  processPayout(@Param('id', ParseUUIDPipe) id: string) {
     return this.payrollService.processPayout(id);
   }
 

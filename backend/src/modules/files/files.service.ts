@@ -52,7 +52,7 @@ export class FilesService {
     return paginate(rows, count, page, limit);
   }
 
-  async findOne(id: number): Promise<File> {
+  async findOne(id: string): Promise<File> {
     const file = await this.fileModel.findByPk(id, {
       include: [
         {
@@ -67,7 +67,7 @@ export class FilesService {
 
   async create(
     uploaded: Express.Multer.File,
-    body: { folderId?: number; projectId?: number },
+    body: { folderId?: string; projectId?: string },
     requester: RequestUser,
   ): Promise<File> {
     return this.fileModel.create({
@@ -83,13 +83,13 @@ export class FilesService {
     } as any);
   }
 
-  async update(id: number, dto: UpdateFileDto): Promise<File> {
+  async update(id: string, dto: UpdateFileDto): Promise<File> {
     const file = await this.findOne(id);
     await file.update(dto);
     return file;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const file = await this.findOne(id);
     await file.destroy();
     await fs.unlink(file.storageUrl).catch(() => undefined); // best-effort disk cleanup

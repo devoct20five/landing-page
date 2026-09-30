@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -33,7 +33,7 @@ export class FoldersController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.foldersService.findOne(id);
   }
 
@@ -43,12 +43,12 @@ export class FoldersController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFolderDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateFolderDto) {
     return this.foldersService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.foldersService.remove(id);
   }
 }

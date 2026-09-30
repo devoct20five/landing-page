@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -25,7 +25,7 @@ export class ApprovalsController {
 
   @Get(':id')
   findOne(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
   ) {
     return this.approvalsService.findOne(id, user);
@@ -33,7 +33,7 @@ export class ApprovalsController {
 
   @Get('deliverables/:deliverableId/history')
   versionHistory(
-    @Param('deliverableId', ParseIntPipe) deliverableId: number,
+    @Param('deliverableId', ParseUUIDPipe) deliverableId: string,
     @CurrentUser() user: RequestUser,
   ) {
     return this.approvalsService.versionHistory(deliverableId, user);
@@ -46,7 +46,7 @@ export class ApprovalsController {
 
   @Patch(':id/review')
   review(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: ReviewApprovalDto,
     @CurrentUser() user: RequestUser,
   ) {

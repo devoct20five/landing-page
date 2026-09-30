@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -35,7 +35,7 @@ export class FilesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.filesService.findOne(id);
   }
 
@@ -59,17 +59,17 @@ export class FilesController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFileDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateFileDto) {
     return this.filesService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.filesService.remove(id);
   }
 
   @Get(':id/download')
-  async download(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+  async download(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
     const file = await this.filesService.findOne(id);
     return res.download(
       this.filesService.resolveStoragePath(file.storageUrl),

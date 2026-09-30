@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -27,7 +27,7 @@ export class EventsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventsService.findOne(id);
   }
 
@@ -37,18 +37,18 @@ export class EventsController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateEventDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateEventDto) {
     return this.eventsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventsService.remove(id);
   }
 
   @Post(':id/attendees')
   addAttendees(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: AddAttendeesDto,
   ) {
     return this.eventsService.addAttendees(id, dto);
@@ -56,8 +56,8 @@ export class EventsController {
 
   @Delete(':id/attendees/:userId')
   removeAttendee(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ) {
     return this.eventsService.removeAttendee(id, userId);
   }
@@ -65,7 +65,7 @@ export class EventsController {
   /** The current user responds to their own invite. */
   @Patch(':id/rsvp')
   rsvp(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: RsvpEventDto,
     @CurrentUser() user: RequestUser,
   ) {

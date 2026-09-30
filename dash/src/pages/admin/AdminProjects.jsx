@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   FolderKanban,
@@ -9,7 +10,11 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
-import { projects, clients, getClientById, getTeamMemberById } from "@/data/mockData";
+import { useProjects, useClientOptions } from "@/hooks/useProjects";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { isAtRisk } from "@/api/adapters/project";
+import ErrorState from "@/components/shared/ErrorState";
+import { SkeletonList } from "@/components/shared/Skeleton";
 
 import EmptyState from "@/components/shared/EmptyState";
 import { cn } from "@/lib/utils";
@@ -120,18 +125,23 @@ function StatCard({ icon: Icon, label, value, description, alert = false }) {
 }
 
 function ProjectRow({ project }) {
-  const client = getClientById(project.clientId);
+  const navigate = useNavigate();
 
-  const owner = project.ownerId
-    ? getTeamMemberById(project.ownerId)
-    : project.assigneeId
-      ? getTeamMemberById(project.assigneeId)
-      : null;
+  // The adapter already resolved the client; no lookup table needed.
+  const client = project.raw?.client ?? { name: project.clientName };
+
+  // Project ownership is not a field on the backend model — the team is a
+  // many-to-many with no designated owner. Showing the first assigned member
+  // until the backend gains a real owner (or this column becomes "Team").
+  const owner = project.teamMembers?.[0] ?? null;
 
   const status = getProjectStatus(project);
 
   return (
-    <tr className="group border-b border-surface-border last:border-b-0">
+    <tr
+      onClick={() => navigate(`/admin/project/${project.id}`)}
+      className="group cursor-pointer border-b border-surface-border last:border-b-0 hover:bg-[color-mix(in_srgb,var(--surface-muted)_5%,transparent)]"
+    >
       {/* Project */}
       <td className="px-6 py-5">
         <div className="min-w-[230px]">
@@ -233,6 +243,7 @@ function ProjectRow({ project }) {
       <td className="py-5 pr-6 text-right">
         <button
           type="button"
+          onClick={() => navigate(`/admin/project/${project.id}`)}
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-surface-muted transition hover:bg-surface-muted/10 hover:text-surface-fg"
           aria-label={`Open ${project.name}`}
         >
@@ -248,55 +259,56 @@ export default function AdminProjects() {
   const [clientFilter, setClientFilter] = useState("all");
   const [search, setSearch] = useState("");
 
+  const debouncedSearch = useDebouncedValue(search, 300);
+  const { clients } = useClientOptions();
+
+  // "active" and "at-risk" are UI buckets rather than backend statuses.
+  const serverStatus = ["client-review", "completed"].includes(statusFilter)
+    ? statusFilter
+    : undefined;
+
+  const { projects, meta, isLoading, error, refetch } = useProjects({
+    search: debouncedSearch,
+    status: serverStatus,
+    clientId: clientFilter === "all" ? undefined : clientFilter,
+    limit: 50,
+  });
+
+  // Derived from the projects currently loaded. Once the portfolio outgrows
+  // one page these should come from a backend stats endpoint rather than a
+  // count of whatever happens to be on screen.
   const portfolioStats = useMemo(() => {
-    const active = projects.filter((project) => getProjectStatus(project) === "active");
-
-    const atRisk = projects.filter((project) => getProjectStatus(project) === "at-risk");
-
-    const clientReview = projects.filter(
-      (project) => getProjectStatus(project) === "client-review"
-    );
-
-    const completed = projects.filter((project) => getProjectStatus(project) === "completed");
-
-    const progressProjects = projects.filter(
-      (project) => getProjectStatus(project) !== "completed"
-    );
+    const inDelivery = projects.filter((project) => project.status !== "completed");
 
     const averageProgress =
-      progressProjects.length > 0
+      inDelivery.length > 0
         ? Math.round(
-            progressProjects.reduce((sum, project) => sum + (project.progress ?? 0), 0) /
-              progressProjects.length
+            inDelivery.reduce((sum, project) => sum + (project.progress ?? 0), 0) /
+              inDelivery.length
           )
         : 0;
 
     return {
-      active: active.length,
-      atRisk: atRisk.length,
-      clientReview: clientReview.length,
-      completed: completed.length,
+      active: inDelivery.filter((project) => !isAtRisk(project)).length,
+      atRisk: projects.filter(isAtRisk).length,
+      clientReview: projects.filter((project) => project.status === "client-review").length,
+      completed: projects.filter((project) => project.status === "completed").length,
       averageProgress,
     };
-  }, []);
+  }, [projects]);
 
+  // Search, client and real statuses are server-side. The two UI buckets are
+  // refined here. (The previous version had `statusFilter === statusFilter`,
+  // so the status filter never actually did anything.)
   const filteredProjects = useMemo(() => {
-    const query = search.toLowerCase();
-
-    return projects.filter((project) => {
-      const client = getClientById(project.clientId);
-      const status = getProjectStatus(project);
-
-      const matchesSearch =
-        project.name?.toLowerCase().includes(query) || client?.name?.toLowerCase().includes(query);
-
-      const matchesStatus = statusFilter === "all" ? true : statusFilter === statusFilter;
-
-      const matchesClient = clientFilter === "all" ? true : project.clientId === clientFilter;
-
-      return matchesSearch && matchesStatus && matchesClient;
-    });
-  }, [search, statusFilter, clientFilter]);
+    if (statusFilter === "active") {
+      return projects.filter((project) => project.status !== "completed" && !isAtRisk(project));
+    }
+    if (statusFilter === "at-risk") {
+      return projects.filter(isAtRisk);
+    }
+    return projects;
+  }, [projects, statusFilter]);
 
   return (
     <div className="mx-auto max-w-[1500px] animate-fade-up">
@@ -314,8 +326,8 @@ export default function AdminProjects() {
         </div>
 
         <div className="text-sm text-surface-muted">
-          <span className="font-semibold text-surface-fg">{projects.length}</span> projects in
-          portfolio
+          <span className="font-semibold text-surface-fg">{meta?.total ?? projects.length}</span>{" "}
+          projects in portfolio
         </div>
       </div>
 
@@ -324,7 +336,7 @@ export default function AdminProjects() {
         <StatCard
           icon={FolderKanban}
           label="Total Projects"
-          value={projects.length}
+          value={meta?.total ?? projects.length}
           description="Across all clients"
         />
 
@@ -405,17 +417,30 @@ export default function AdminProjects() {
           </select>
 
           <span className="text-xs text-surface-muted">
-            Showing <span className="font-semibold text-surface-fg">{filteredProjects.length}</span>{" "}
-            projects
+            {isLoading
+              ? "Loading…"
+              : `Showing ${filteredProjects.length} ${filteredProjects.length === 1 ? "project" : "projects"}`}
           </span>
         </div>
       </div>
 
       {/* Projects */}
-      {filteredProjects.length === 0 ? (
+      {isLoading ? (
+        <SkeletonList rows={8} />
+      ) : error ? (
+        <ErrorState error={error} resource="Projects" onRetry={refetch} />
+      ) : filteredProjects.length === 0 ? (
         <EmptyState
-          title="No Projects Found"
-          description="Try changing your search or project filters."
+          title={
+            search || clientFilter !== "all" || statusFilter !== "all"
+              ? "No projects match these filters"
+              : "No projects yet"
+          }
+          description={
+            search || clientFilter !== "all" || statusFilter !== "all"
+              ? "Try changing your search or project filters."
+              : "Create the first project to start tracking delivery."
+          }
         />
       ) : (
         <div className="brand-card overflow-x-auto p-0">

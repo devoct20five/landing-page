@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   Query,
-  ParseIntPipe,
+  ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
@@ -15,7 +15,7 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { QueryNotificationDto } from './dto/query-notification.dto';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { AuthenticatedUser } from '../auth/types/authenticated-user.type';
+import type { AuthenticatedUser } from '../auth/types/authenticated-user.type';
 // Bell / dropdown, all portals (feature-list 1.8 Client, 2.8-adjacent Staff, 3.x Admin)
 @UseGuards(JwtAuthGuard)
 @Controller('notifications')
@@ -34,31 +34,34 @@ export class NotificationsController {
   @Get()
   findMine(
     @Query() query: QueryNotificationDto,
-    @CurrentUser() user: AuthUser,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.service.findForUser(user.id, query);
   }
 
   @Get('unread-count')
-  unreadCount(@CurrentUser() user: AuthUser) {
+  unreadCount(@CurrentUser() user: AuthenticatedUser) {
     return this.service.unreadCount(user.id);
   }
 
   @Patch('read-all')
-  markAllRead(@CurrentUser() user: AuthUser) {
+  markAllRead(@CurrentUser() user: AuthenticatedUser) {
     return this.service.markAllAsRead(user.id);
   }
 
   @Patch(':id/read')
   markRead(
-    @Param('id', ParseIntPipe) id: number,
-    @CurrentUser() user: AuthUser,
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.service.markAsRead(id, user.id);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: AuthUser) {
+  remove(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.remove(id, user.id);
   }
 }

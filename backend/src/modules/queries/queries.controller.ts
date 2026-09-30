@@ -5,7 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -40,23 +40,23 @@ export class QueriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.queriesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateQueryDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateQueryDto) {
     return this.queriesService.update(id, dto);
   }
 
   @Patch(':id/assign')
-  assign(@Param('id', ParseIntPipe) id: number, @Body() dto: AssignQueryDto) {
+  assign(@Param('id', ParseUUIDPipe) id: string, @Body() dto: AssignQueryDto) {
     return this.queriesService.assign(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.queriesService.remove(id);
   }
 }

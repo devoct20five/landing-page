@@ -1,10 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Progress } from "@/components/ui/progress";
 
 export default function StaffProjectRow({ project }) {
+  const navigate = useNavigate();
+
   return (
-    <tr className="group cursor-pointer border-b border-surface-border transition-colors duration-300 last:border-b-0 hover:bg-[color-mix(in_srgb,var(--surface-muted)_5%,transparent)]">
+    <tr
+      onClick={() => navigate(`/staff/project/${project.id}`)}
+      className="group cursor-pointer border-b border-surface-border transition-colors duration-300 last:border-b-0 hover:bg-[color-mix(in_srgb,var(--surface-muted)_5%,transparent)]"
+    >
       <td className="py-4 pr-4">
         <p className="font-display text-sm font-bold text-surface-fg">{project.name}</p>
       </td>

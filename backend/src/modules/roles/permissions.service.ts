@@ -23,7 +23,7 @@ export class PermissionsService {
     });
   }
 
-  async findOne(id: number): Promise<Permission> {
+  async findOne(id: string): Promise<Permission> {
     const permission = await this.permissionModel.findByPk(id);
     if (!permission) {
       throw new NotFoundException(`Permission ${id} not found`);
@@ -47,7 +47,7 @@ export class PermissionsService {
     });
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const permission = await this.findOne(id);
     await permission.destroy();
   }

@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -32,20 +32,20 @@ export class StaffController {
   }
 
   @Get(':userId')
-  findOne(@Param('userId', ParseIntPipe) userId: number) {
+  findOne(@Param('userId', ParseUUIDPipe) userId: string) {
     return this.staffService.findOne(userId);
   }
 
   @Patch(':userId')
   update(
-    @Param('userId', ParseIntPipe) userId: number,
+    @Param('userId', ParseUUIDPipe) userId: string,
     @Body() dto: UpdateStaffProfileDto,
   ) {
     return this.staffService.update(userId, dto);
   }
 
   @Delete(':userId')
-  remove(@Param('userId', ParseIntPipe) userId: number) {
+  remove(@Param('userId', ParseUUIDPipe) userId: string) {
     return this.staffService.remove(userId);
   }
 }

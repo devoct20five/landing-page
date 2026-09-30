@@ -73,14 +73,14 @@ export class InvoicesService {
     };
   }
 
-  async findOne(id: number): Promise<Invoice> {
+  async findOne(id: string): Promise<Invoice> {
     const invoice = await this.invoiceModel.findByPk(id, { include: INCLUDE });
     if (!invoice) throw new NotFoundException(`Invoice #${id} not found`);
     return invoice;
   }
 
   /** Invoice + payment history for a single project (client "pay for project" screen). */
-  async findByProject(projectId: number) {
+  async findByProject(projectId: string) {
     return this.invoiceModel.findAll({
       where: { project_id: projectId },
       include: INCLUDE,
@@ -88,20 +88,20 @@ export class InvoicesService {
     });
   }
 
-  async update(id: number, dto: UpdateInvoiceDto): Promise<Invoice> {
+  async update(id: string, dto: UpdateInvoiceDto): Promise<Invoice> {
     const invoice = await this.findOne(id);
     await invoice.update({ ...dto });
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const invoice = await this.findOne(id);
     await invoice.destroy();
   }
 
   /** Records a payment transaction and rolls it into the invoice's amount_paid / status. */
   async recordPayment(
-    invoiceId: number,
+    invoiceId: string,
     dto: CreatePaymentDto,
   ): Promise<Invoice> {
     const invoice = await this.findOne(invoiceId);
@@ -130,7 +130,7 @@ export class InvoicesService {
     return this.findOne(invoiceId);
   }
 
-  async listTransactions(invoiceId: number): Promise<PaymentTransaction[]> {
+  async listTransactions(invoiceId: string): Promise<PaymentTransaction[]> {
     await this.findOne(invoiceId); // 404 guard
     return this.paymentModel.findAll({
       where: { invoice_id: invoiceId },
@@ -139,7 +139,7 @@ export class InvoicesService {
   }
 
   /** Revenue KPIs for the admin Payments dashboard. */
-  async revenueStats(clientId?: number) {
+  async revenueStats(clientId?: string) {
     const where: any = clientId ? { client_id: clientId } : {};
 
     const invoices = await this.invoiceModel.findAll({

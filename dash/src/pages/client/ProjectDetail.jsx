@@ -14,9 +14,14 @@ import {
   Receipt,
 } from "lucide-react";
 
-import { getProjectById, teamMembers } from "@/data/mockData";
+import { useProject } from "@/hooks/useProjects";
+import { useProjectBilling } from "@/hooks/useProjectBilling";
+import { useProjectApprovals } from "@/hooks/useProjectApprovals";
+import { formatCurrency } from "@/api/adapters/invoice";
 import StatusBadge from "@/components/shared/StatusBadge";
 import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
+import { Skeleton, SkeletonList } from "@/components/shared/Skeleton";
 
 const STATUS_LABELS = {
   "in-progress": "In Progress",
@@ -27,14 +32,6 @@ const STATUS_LABELS = {
 
 function formatStatus(status) {
   return STATUS_LABELS[status] || status;
-}
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(value);
 }
 
 function StatCard({ icon: Icon, label, value, description }) {
@@ -61,17 +58,44 @@ function StatCard({ icon: Icon, label, value, description }) {
   );
 }
 
+function BackLink() {
+  return (
+    <div className="mb-6">
+      <Link
+        to="/projects"
+        className="inline-flex items-center gap-2 text-sm font-medium text-surface-muted transition hover:text-surface-fg"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        All Projects
+      </Link>
+    </div>
+  );
+}
+
 export default function ProjectDetail() {
   const { projectId } = useParams();
 
-  const project = getProjectById(projectId);
+  const { project, isLoading, error, isForbidden, isNotFound, refetch } = useProject(projectId);
+  const { billing, isLoading: billingLoading } = useProjectBilling(projectId);
+  const { pending: pendingApprovals } = useProjectApprovals(projectId);
 
-  if (!project) {
+  if (isLoading) {
+    return (
+      <div className="mx-auto max-w-[1180px]">
+        <BackLink />
+        <Skeleton className="mb-4 h-10 w-2/3" />
+        <Skeleton className="mb-8 h-4 w-1/3" />
+        <SkeletonList rows={4} />
+      </div>
+    );
+  }
+
+  if (isNotFound) {
     return (
       <div className="mx-auto max-w-[1180px]">
         <EmptyState
-          title="Project Not Found"
-          description="The project you're looking for doesn't exist or is no longer available."
+          title="Project not found"
+          description="This project doesn't exist or is no longer available."
         />
 
         <div className="mt-6 flex justify-center">
@@ -87,57 +111,36 @@ export default function ProjectDetail() {
     );
   }
 
-  const projectTeam = teamMembers.slice(0, project.teamSize);
+  if (isForbidden) {
+    return (
+      <div className="mx-auto max-w-[1180px]">
+        <BackLink />
+        <ErrorState error={error} resource="This project" />
+      </div>
+    );
+  }
+
+  if (error || !project) {
+    return (
+      <div className="mx-auto max-w-[1180px]">
+        <BackLink />
+        <ErrorState error={error} resource="This project" onRetry={refetch} />
+      </div>
+    );
+  }
+
+  const projectTeam = project.teamMembers;
 
   const isBlocked = project.status === "blocked";
   const isCompleted = project.status === "completed";
   const isClientReview = project.status === "client-review";
 
-  /*
-   * ============================================================
-   * PAYMENT DATA
-   * Replace this with API data later.
-   * ============================================================
-   */
-
-  const paymentData = {
-    total: 240000,
-    paid: 120000,
-    transactions: [
-      {
-        id: "PAY-2026-001",
-        date: "05 Aug 2026",
-        amount: 75000,
-        method: "Bank Transfer",
-        status: "paid",
-      },
-      {
-        id: "PAY-2026-002",
-        date: "10 Aug 2026",
-        amount: 45000,
-        method: "UPI",
-        status: "paid",
-      },
-    ],
-  };
-
-  const outstanding = paymentData.total - paymentData.paid;
-
-  const paymentProgress =
-    paymentData.total > 0 ? Math.round((paymentData.paid / paymentData.total) * 100) : 0;
+  const outstanding = billing.outstanding;
+  const paymentProgress = billing.total > 0 ? Math.round((billing.paid / billing.total) * 100) : 0;
 
   return (
     <div className="mx-auto max-w-[1180px] animate-fade-up">
-      {/* Back */}
-      <div className="mb-6">
-        <Link
-          to="/projects"
-          className="inline-flex items-center gap-2 text-sm font-medium text-surface-muted transition hover:text-surface-fg"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          All Projects
-        </Link>
-      </div>
+      <BackLink />
 
       {/* Header */}
       <section className="mb-8">
@@ -209,7 +212,11 @@ export default function ProjectDetail() {
         <StatCard
           icon={CheckCircle2}
           label="Deliverables"
-          value={`${project.completedDeliverables}/${project.totalDeliverables}`}
+          value={
+            project.totalDeliverables !== null
+              ? `${project.completedDeliverables}/${project.totalDeliverables}`
+              : "—"
+          }
           description="Completed deliverables"
         />
 
@@ -241,9 +248,11 @@ export default function ProjectDetail() {
             </h2>
           </div>
 
-          <span className="text-xs font-medium text-surface-muted">
-            {project.completedDeliverables} of {project.totalDeliverables} deliverables completed
-          </span>
+          {project.totalDeliverables !== null && (
+            <span className="text-xs font-medium text-surface-muted">
+              {project.completedDeliverables} of {project.totalDeliverables} deliverables completed
+            </span>
+          )}
         </div>
 
         <div className="mt-5 h-3 overflow-hidden rounded-full bg-surface-border">
@@ -289,10 +298,13 @@ export default function ProjectDetail() {
                   </p>
                 </div>
 
-                <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-4 py-2.5 text-xs font-semibold text-white transition hover:opacity-90">
+                <Link
+                  to={pendingApprovals[0] ? `/approval/${pendingApprovals[0].id}` : "/approvals"}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-4 py-2.5 text-xs font-semibold text-white transition hover:opacity-90"
+                >
                   Review
                   <ArrowUpRight className="h-3.5 w-3.5" />
-                </button>
+                </Link>
               </div>
             )}
 
@@ -357,41 +369,52 @@ export default function ProjectDetail() {
                 </h2>
               </div>
 
-              <span className="text-xs font-semibold text-surface-muted">
-                {project.completedDeliverables}/{project.totalDeliverables}
-              </span>
+              {project.totalDeliverables !== null && (
+                <span className="text-xs font-semibold text-surface-muted">
+                  {project.completedDeliverables}/{project.totalDeliverables}
+                </span>
+              )}
             </div>
 
-            <div className="space-y-3">
-              {Array.from({ length: project.totalDeliverables }).map((_, index) => {
-                const completed = index < project.completedDeliverables;
+            {project.deliverables && project.deliverables.length > 0 ? (
+              <div className="space-y-3">
+                {project.deliverables.map((deliverable) => {
+                  const completed = deliverable.status === "approved" || deliverable.status === "delivered";
 
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 rounded-xl border border-surface-border px-4 py-3"
-                  >
-                    <CheckCircle2
-                      className={`h-4 w-4 ${
-                        completed ? "text-emerald-600" : "text-surface-border"
-                      }`}
-                    />
-
-                    <span
-                      className={`text-sm ${
-                        completed ? "font-medium text-surface-fg" : "text-surface-muted"
-                      }`}
+                  return (
+                    <div
+                      key={deliverable.id}
+                      className="flex items-center gap-3 rounded-xl border border-surface-border px-4 py-3"
                     >
-                      Deliverable {String(index + 1).padStart(2, "0")}
-                    </span>
+                      <CheckCircle2
+                        className={`h-4 w-4 shrink-0 ${
+                          completed ? "text-emerald-600" : "text-surface-border"
+                        }`}
+                      />
 
-                    <span className="ml-auto text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-surface-muted">
-                      {completed ? "Completed" : "In progress"}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+                      <div className="min-w-0 flex-1">
+                        <span
+                          className={`block truncate text-sm ${
+                            completed ? "font-medium text-surface-fg" : "text-surface-muted"
+                          }`}
+                        >
+                          {deliverable.title}
+                        </span>
+                        {deliverable.dueDate && (
+                          <span className="text-xs text-surface-muted">Due {deliverable.dueDate}</span>
+                        )}
+                      </div>
+
+                      <span className="ml-auto shrink-0 text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-surface-muted">
+                        {deliverable.status.replace("-", " ")}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-sm text-surface-muted">No deliverables have been added to this project yet.</p>
+            )}
           </section>
 
           {/* =====================================================
@@ -438,7 +461,7 @@ export default function ProjectDetail() {
                 </div>
 
                 <p className="mt-2 font-display text-xl font-bold text-surface-fg">
-                  {formatCurrency(paymentData.total)}
+                  {formatCurrency(billing.total)}
                 </p>
               </div>
 
@@ -452,7 +475,7 @@ export default function ProjectDetail() {
                 </div>
 
                 <p className="mt-2 font-display text-xl font-bold text-emerald-600">
-                  {formatCurrency(paymentData.paid)}
+                  {formatCurrency(billing.paid)}
                 </p>
               </div>
 
@@ -498,7 +521,7 @@ export default function ProjectDetail() {
               </div>
 
               <p className="mt-2 text-xs text-surface-muted">
-                {formatCurrency(paymentData.paid)} of {formatCurrency(paymentData.total)} paid
+                {formatCurrency(billing.paid)} of {formatCurrency(billing.total)} paid
               </p>
             </div>
 
@@ -509,12 +532,15 @@ export default function ProjectDetail() {
                 <h3 className="text-sm font-bold text-surface-fg">Payment History</h3>
 
                 <span className="text-xs text-surface-muted">
-                  {paymentData.transactions.length} payments
+                  {billing.transactions.length} payments
                 </span>
               </div>
 
+              {billing.transactions.length === 0 ? (
+                <p className="text-sm text-surface-muted">No payments recorded yet.</p>
+              ) : (
               <div className="divide-y divide-surface-border rounded-xl border border-surface-border">
-                {paymentData.transactions.map((payment) => (
+                {billing.transactions.map((payment) => (
                   <div
                     key={payment.id}
                     className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
@@ -525,10 +551,17 @@ export default function ProjectDetail() {
                       </div>
 
                       <div>
-                        <p className="text-sm font-semibold text-surface-fg">{payment.id}</p>
+                        <p className="text-sm font-semibold text-surface-fg">{payment.invoiceNumber}</p>
 
                         <p className="mt-0.5 text-xs text-surface-muted">
-                          {payment.date} · {payment.method}
+                          {payment.paidAt
+                            ? new Date(payment.paidAt).toLocaleDateString(undefined, {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              })
+                            : "—"}{" "}
+                          · {payment.method}
                         </p>
                       </div>
                     </div>
@@ -538,14 +571,23 @@ export default function ProjectDetail() {
                         {formatCurrency(payment.amount)}
                       </span>
 
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[0.65rem] font-semibold text-emerald-600">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold ${
+                          payment.status === "success"
+                            ? "bg-emerald-500/10 text-emerald-600"
+                            : payment.status === "failed"
+                              ? "bg-red-500/10 text-red-600"
+                              : "bg-surface-muted/10 text-surface-muted"
+                        }`}
+                      >
                         <CheckCircle2 className="h-3.5 w-3.5" />
-                        Paid
+                        {payment.status}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
+              )}
             </div>
 
             {/* Outstanding Notice */}
@@ -608,21 +650,27 @@ export default function ProjectDetail() {
               </h2>
             </div>
 
-            <div className="space-y-3">
-              {projectTeam.map((member) => (
-                <div key={member.id} className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
-                    {member.initials}
-                  </div>
+            {projectTeam.length === 0 ? (
+              <p className="text-sm text-surface-muted">No team members assigned yet.</p>
+            ) : (
+              <div className="space-y-3">
+                {projectTeam.map((member) => (
+                  <div key={member.id} className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-orange/10 text-xs font-bold text-brand-orange">
+                      {member.initials}
+                    </div>
 
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-surface-fg">{member.name}</p>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-surface-fg">{member.name}</p>
 
-                    <p className="truncate text-xs text-surface-muted">{member.role}</p>
+                      {member.role && (
+                        <p className="truncate text-xs text-surface-muted">{member.role}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* Project Information */}

@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -19,7 +19,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { RequirePermissions } from '../../common/decorators/permissions.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserType } from '../../common/enums/user-type.enum';
-import { AuthenticatedUser } from '../auth/types/authenticated-user.type';
+import type { AuthenticatedUser } from '../auth/types/authenticated-user.type';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -44,7 +44,7 @@ export class UsersController {
   @Get(':id')
   @Roles(UserType.ADMIN)
   @RequirePermissions('team.view')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
@@ -73,14 +73,14 @@ export class UsersController {
   @Patch(':id')
   @Roles(UserType.ADMIN)
   @RequirePermissions('team.edit')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateUserDto) {
     return this.usersService.update(id, dto);
   }
 
   @Delete(':id')
   @Roles(UserType.ADMIN)
   @RequirePermissions('team.edit')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.remove(id);
   }
 }

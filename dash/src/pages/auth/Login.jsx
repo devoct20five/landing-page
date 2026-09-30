@@ -1,6 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight, BriefcaseBusiness, UserRound, ShieldCheck } from "lucide-react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  AlertCircle,
+  ArrowRight,
+  BriefcaseBusiness,
+  Loader2,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
+
+import { useAuth, homeRouteFor } from "@/auth";
 
 import { cn } from "@/lib/utils";
 
@@ -17,24 +26,48 @@ const ROLES = [
     description: "Manage projects, clients, tasks and internal operations.",
     icon: BriefcaseBusiness,
   },
+  {
+    id: "admin",
+    title: "Admin",
+    description: "Agency oversight: delivery, team, clients and finance.",
+    icon: ShieldCheck,
+  },
 ];
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { status, userType, login } = useAuth();
 
   const [selectedRole, setSelectedRole] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleContinue = () => {
-    if (!selectedRole) return;
+  // Already signed in — go straight to the right workspace.
+  if (status === "authed") {
+    return <Navigate to={location.state?.from?.pathname ?? homeRouteFor(userType)} replace />;
+  }
 
-    // Temporary frontend routing.
-    // Replace with real authentication later.
-    if (selectedRole === "client") {
-      navigate("/dashboard");
-    } else {
-      navigate("/staff");
+  const handleSubmit = async (event) => {
+    event?.preventDefault();
+    if (!selectedRole || !email || !password || submitting) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      // `portal` is enforced server-side: the backend rejects an account whose
+      // userType does not match the portal that was chosen here.
+      const user = await login({ email, password, portal: selectedRole });
+      navigate(location.state?.from?.pathname ?? homeRouteFor(user.userType), {
+        replace: true,
+      });
+    } catch (err) {
+      setError(err?.message ?? "We couldn't sign you in. Try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -183,7 +216,17 @@ export default function Login() {
                 <div className="mt-7 animate-fade-up">
                   <div className="mb-5 h-px bg-surface-border" />
 
-                  <div className="space-y-4">
+                  {error && (
+                    <div
+                      role="alert"
+                      className="mb-4 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                    >
+                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+
+                  <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                       <label className="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-surface-muted">
                         Email Address
@@ -222,20 +265,28 @@ export default function Login() {
                     </div>
 
                     <button
-                      type="button"
-                      onClick={handleContinue}
-                      disabled={!email || !password}
+                      type="submit"
+                      disabled={!email || !password || submitting}
                       className={cn(
                         "mt-2 flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition",
-                        email && password
+                        email && password && !submitting
                           ? "bg-brand-orange text-white shadow-[0_10px_24px_-8px_rgba(255,90,31,0.5)] hover:brightness-105"
                           : "cursor-not-allowed bg-surface-muted/10 text-surface-muted"
                       )}
                     >
-                      Sign in as {selectedRole === "client" ? "Client" : "Staff"}
-                      <ArrowRight className="h-4 w-4" />
+                      {submitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                          Signing in…
+                        </>
+                      ) : (
+                        <>
+                          Sign in as {ROLES.find((role) => role.id === selectedRole)?.title}
+                          <ArrowRight className="h-4 w-4" />
+                        </>
+                      )}
                     </button>
-                  </div>
+                  </form>
                 </div>
               )}
 

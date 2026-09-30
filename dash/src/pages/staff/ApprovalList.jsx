@@ -1,73 +1,81 @@
-import { Plus } from "lucide-react";
+import { useState } from "react";
+
+import { approvalsApi } from "@/api";
+import { adaptApproval } from "@/api/adapters/approval";
+import { useApiResource } from "@/hooks/useApiResource";
 
 import ApprovalCard from "@/components/approvals/ApprovalCard";
 import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
+import { SkeletonList } from "@/components/shared/Skeleton";
+import { cn } from "@/lib/utils";
 
-export default function ApprovalList({ approvals = [] }) {
-  const handleAddApproval = () => {
-    // Open Add Approval modal here
-    console.log("Add approval");
-  };
+const STATUS_FILTERS = [
+  { id: "", label: "All" },
+  { id: "pending", label: "Pending" },
+  { id: "changes-requested", label: "Changes Requested" },
+  { id: "approved", label: "Approved" },
+  { id: "rejected", label: "Rejected" },
+];
 
-  if (!approvals || approvals.length === 0) {
-    return (
-      <div className="space-y-6">
-        {/* Page Header */}
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="font-display text-2xl font-bold text-surface-fg">Approvals</h1>
+/**
+ * Agency-wide approval visibility for staff. Read-only — see
+ * components/approvals/ApprovalCard.jsx for why: only the client can review
+ * an approval, so there's nothing to action here beyond "Create Approval
+ * Request", which belongs to the project workspace it's requested from
+ * rather than this list.
+ */
+export default function ApprovalList() {
+  const [status, setStatus] = useState("");
 
-            <p className="mt-1 text-sm text-surface-muted">
-              Review, manage, and track client approvals.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleAddApproval}
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-orange px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-          >
-            <Plus size={16} />
-            New Approval
-          </button>
-        </div>
-
-        <EmptyState
-          title="Nothing Here"
-          description="Approvals matching this view will appear here."
-        />
-      </div>
-    );
-  }
+  const fetcher = () => approvalsApi.listApprovals({ status: status || undefined, limit: 100 });
+  const { data, isLoading, error, refetch } = useApiResource(fetcher, [status]);
+  const approvals = (data?.items ?? []).map(adaptApproval);
 
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-surface-fg">Approvals</h1>
-
-          <p className="mt-1 text-sm text-surface-muted">
-            Review, manage, and track client approvals.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleAddApproval}
-          className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-orange px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-        >
-          <Plus size={16} />
-          New Approval
-        </button>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-surface-fg">Approvals</h1>
+        <p className="mt-1 text-sm text-surface-muted">
+          Track client approvals across every project.
+        </p>
       </div>
 
-      {/* Approval List */}
-      <div className="space-y-3">
-        {approvals.map((approval) => (
-          <ApprovalCard key={approval.id} approval={approval} />
+      {/* Status filter */}
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by status">
+        {STATUS_FILTERS.map((filter) => (
+          <button
+            key={filter.id || "all"}
+            type="button"
+            onClick={() => setStatus(filter.id)}
+            className={cn("pill", status === filter.id && "pill-active")}
+          >
+            {filter.label}
+          </button>
         ))}
       </div>
+
+      {isLoading && <SkeletonList rows={5} />}
+
+      {!isLoading && error && (
+        <ErrorState error={error} resource="Approvals" onRetry={refetch} />
+      )}
+
+      {!isLoading && !error && approvals.length === 0 && (
+        <EmptyState
+          title="Nothing here"
+          description="Approvals matching this view will appear here."
+        />
+      )}
+
+      {!isLoading && !error && approvals.length > 0 && (
+        <div className="space-y-3">
+          {approvals.map((approval) => (
+            <ApprovalCard key={approval.id} approval={approval} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

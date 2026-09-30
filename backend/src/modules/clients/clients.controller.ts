@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -35,22 +35,22 @@ export class ClientsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.clientsService.findOne(id);
   }
 
   @Get(':id/stats')
-  stats(@Param('id', ParseIntPipe) id: number) {
+  stats(@Param('id', ParseUUIDPipe) id: string) {
     return this.clientsService.statsFor(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateClientDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateClientDto) {
     return this.clientsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.clientsService.remove(id);
   }
 
@@ -58,21 +58,21 @@ export class ClientsController {
 
   @Post(':id/contacts')
   addContact(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateClientContactDto,
   ) {
     return this.clientsService.addContact(id, dto);
   }
 
   @Get(':id/contacts')
-  listContacts(@Param('id', ParseIntPipe) id: number) {
+  listContacts(@Param('id', ParseUUIDPipe) id: string) {
     return this.clientsService.listContacts(id);
   }
 
   @Patch(':id/contacts/:contactId')
   updateContact(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('contactId', ParseUUIDPipe) contactId: string,
     @Body() dto: UpdateClientContactDto,
   ) {
     return this.clientsService.updateContact(id, contactId, dto);
@@ -80,8 +80,8 @@ export class ClientsController {
 
   @Delete(':id/contacts/:contactId')
   removeContact(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('contactId', ParseUUIDPipe) contactId: string,
   ) {
     return this.clientsService.removeContact(id, contactId);
   }

@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -38,17 +38,20 @@ export class ServicesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.servicesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateServiceDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateServiceDto,
+  ) {
     return this.servicesService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.servicesService.remove(id);
   }
 
@@ -56,7 +59,7 @@ export class ServicesController {
 
   @Post(':id/plans')
   addPlan(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateServicePlanDto,
   ) {
     return this.servicesService.addPlan(id, dto);
@@ -64,16 +67,16 @@ export class ServicesController {
 
   @Get(':id/plans/:planId')
   findPlan(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('planId', ParseUUIDPipe) planId: string,
   ) {
     return this.servicesService.findPlan(id, planId);
   }
 
   @Patch(':id/plans/:planId')
   updatePlan(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('planId', ParseUUIDPipe) planId: string,
     @Body() dto: UpdateServicePlanDto,
   ) {
     return this.servicesService.updatePlan(id, planId, dto);
@@ -81,24 +84,24 @@ export class ServicesController {
 
   @Patch(':id/plans/:planId/toggle-status')
   toggleStatus(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('planId', ParseUUIDPipe) planId: string,
   ) {
     return this.servicesService.togglePlanStatus(id, planId);
   }
 
   @Post(':id/plans/:planId/duplicate')
   duplicatePlan(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('planId', ParseUUIDPipe) planId: string,
   ) {
     return this.servicesService.duplicatePlan(id, planId);
   }
 
   @Delete(':id/plans/:planId')
   removePlan(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('planId', ParseUUIDPipe) planId: string,
   ) {
     return this.servicesService.removePlan(id, planId);
   }
@@ -107,7 +110,7 @@ export class ServicesController {
 
   @Post(':id/plans/:planId/packages')
   addPackage(
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('planId', ParseUUIDPipe) planId: string,
     @Body() dto: PlanPackageDto,
   ) {
     return this.servicesService.addPackage(planId, dto);
@@ -115,15 +118,15 @@ export class ServicesController {
 
   @Delete(':id/plans/:planId/packages/:packageId')
   removePackage(
-    @Param('planId', ParseIntPipe) planId: number,
-    @Param('packageId', ParseIntPipe) packageId: number,
+    @Param('planId', ParseUUIDPipe) planId: string,
+    @Param('packageId', ParseUUIDPipe) packageId: string,
   ) {
     return this.servicesService.removePackage(planId, packageId);
   }
 
   @Post(':id/plans/:planId/features')
   addFeature(
-    @Param('planId', ParseIntPipe) planId: number,
+    @Param('planId', ParseUUIDPipe) planId: string,
     @Body() dto: PlanFeatureDto,
   ) {
     return this.servicesService.addFeature(planId, dto);
@@ -131,8 +134,8 @@ export class ServicesController {
 
   @Delete(':id/plans/:planId/features/:featureId')
   removeFeature(
-    @Param('planId', ParseIntPipe) planId: number,
-    @Param('featureId', ParseIntPipe) featureId: number,
+    @Param('planId', ParseUUIDPipe) planId: string,
+    @Param('featureId', ParseUUIDPipe) featureId: string,
   ) {
     return this.servicesService.removeFeature(planId, featureId);
   }

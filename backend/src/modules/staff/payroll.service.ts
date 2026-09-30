@@ -52,20 +52,20 @@ export class PayrollService {
     });
   }
 
-  async findOne(id: number): Promise<Payroll> {
+  async findOne(id: string): Promise<Payroll> {
     const entry = await this.payrollModel.findByPk(id, { include: [User] });
     if (!entry) throw new NotFoundException(`Payroll entry ${id} not found`);
     return entry;
   }
 
-  async update(id: number, dto: UpdatePayrollEntryDto): Promise<Payroll> {
+  async update(id: string, dto: UpdatePayrollEntryDto): Promise<Payroll> {
     const entry = await this.findOne(id);
     await entry.update(dto);
     return entry;
   }
 
   /** "Process payouts" action — marks paid with today's payout_date. */
-  async processPayout(id: number): Promise<Payroll> {
+  async processPayout(id: string): Promise<Payroll> {
     const entry = await this.findOne(id);
     await entry.update({
       payoutStatus: PayoutStatus.PAID,
@@ -88,7 +88,7 @@ export class PayrollService {
     return count;
   }
 
-  async payoutHistoryForStaff(staffId: number): Promise<Payroll[]> {
+  async payoutHistoryForStaff(staffId: string): Promise<Payroll[]> {
     return this.payrollModel.findAll({
       where: { staffId },
       order: [

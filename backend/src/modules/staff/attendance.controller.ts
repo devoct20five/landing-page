@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
@@ -24,21 +24,21 @@ export class AttendanceController {
 
   @Post(':staffId/check-in')
   checkIn(
-    @Param('staffId', ParseIntPipe) staffId: number,
+    @Param('staffId', ParseUUIDPipe) staffId: string,
     @Body() dto: CheckInDto,
   ) {
     return this.attendanceService.checkIn(staffId, dto);
   }
 
   @Post(':staffId/check-out')
-  checkOut(@Param('staffId', ParseIntPipe) staffId: number) {
+  checkOut(@Param('staffId', ParseUUIDPipe) staffId: string) {
     return this.attendanceService.checkOut(staffId);
   }
 
   /** Admin manual override for a staff member's attendance on a given date (3.7). */
   @Put(':staffId')
   upsert(
-    @Param('staffId', ParseIntPipe) staffId: number,
+    @Param('staffId', ParseUUIDPipe) staffId: string,
     @Body() dto: UpsertAttendanceDto,
   ) {
     return this.attendanceService.upsert(staffId, dto);
@@ -53,7 +53,7 @@ export class AttendanceController {
   /** Personal history + hours-worked summary (2.7). */
   @Get(':staffId')
   findForStaff(
-    @Param('staffId', ParseIntPipe) staffId: number,
+    @Param('staffId', ParseUUIDPipe) staffId: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
   ) {

@@ -65,7 +65,7 @@ export class EventsService {
     return paginate(rows, count, page, limit);
   }
 
-  async findOne(id: number): Promise<Event> {
+  async findOne(id: string): Promise<Event> {
     const event = await this.eventModel.findByPk(id, {
       include: [ATTENDEE_INCLUDE],
     });
@@ -90,19 +90,19 @@ export class EventsService {
     return this.findOne(event.id);
   }
 
-  async update(id: number, dto: UpdateEventDto): Promise<Event> {
+  async update(id: string, dto: UpdateEventDto): Promise<Event> {
     const event = await this.findOne(id);
     await event.update(dto);
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const event = await this.findOne(id);
     await event.destroy();
   }
 
   async addAttendees(
-    eventId: number,
+    eventId: string,
     dto: AddAttendeesDto,
   ): Promise<EventAttendee[]> {
     await this.findOne(eventId);
@@ -125,13 +125,13 @@ export class EventsService {
     });
   }
 
-  async removeAttendee(eventId: number, userId: number): Promise<void> {
+  async removeAttendee(eventId: string, userId: string): Promise<void> {
     await this.attendeeModel.destroy({ where: { eventId, userId } });
   }
 
   async rsvp(
-    eventId: number,
-    userId: number,
+    eventId: string,
+    userId: string,
     status: RsvpStatus,
   ): Promise<EventAttendee> {
     const link = await this.attendeeModel.findOne({
@@ -142,7 +142,7 @@ export class EventsService {
     return link;
   }
 
-  private async findAttendeeEventIds(userId: number): Promise<number[]> {
+  private async findAttendeeEventIds(userId: string): Promise<string[]> {
     const links = await this.attendeeModel.findAll({
       where: { userId },
       attributes: ['eventId'],

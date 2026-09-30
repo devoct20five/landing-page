@@ -51,7 +51,7 @@ export class UsersService {
     };
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     const user = await this.userModel.findByPk(id, {
       include: [Role],
       attributes: { exclude: ['passwordHash'] },
@@ -105,7 +105,7 @@ export class UsersService {
     return this.findOne(user.id);
   }
 
-  async update(id: number, dto: UpdateUserDto): Promise<User> {
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
     const user = await this.userModel.findByPk(id);
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
@@ -142,7 +142,7 @@ export class UsersService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const user = await this.userModel.findByPk(id);
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
@@ -150,7 +150,7 @@ export class UsersService {
     await user.destroy();
   }
 
-  async changePassword(id: number, dto: ChangePasswordDto): Promise<void> {
+  async changePassword(id: string, dto: ChangePasswordDto): Promise<void> {
     const user = await this.userModel.findByPk(id);
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
@@ -168,7 +168,7 @@ export class UsersService {
     await user.save();
   }
 
-  async touchLastLogin(id: number): Promise<void> {
+  async touchLastLogin(id: string): Promise<void> {
     await this.userModel.update({ lastLoginAt: new Date() }, { where: { id } });
   }
 

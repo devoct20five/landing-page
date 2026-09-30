@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -48,22 +48,25 @@ export class ProjectsController {
   }
 
   @Get('dashboard/:clientId')
-  clientDashboard(@Param('clientId', ParseIntPipe) clientId: number) {
+  clientDashboard(@Param('clientId', ParseUUIDPipe) clientId: string) {
     return this.projectsService.clientDashboardStats(clientId);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.projectsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateProjectDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateProjectDto,
+  ) {
     return this.projectsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.projectsService.remove(id);
   }
 
@@ -71,7 +74,7 @@ export class ProjectsController {
 
   @Post(':id/services')
   linkServices(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: LinkServicesDto,
   ) {
     return this.projectsService.linkServices(id, dto);
@@ -79,8 +82,8 @@ export class ProjectsController {
 
   @Delete(':id/services/:serviceId')
   unlinkService(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('serviceId', ParseIntPipe) serviceId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
   ) {
     return this.projectsService.unlinkService(id, serviceId);
   }
@@ -89,7 +92,7 @@ export class ProjectsController {
 
   @Post(':id/team')
   assignTeamMember(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: AssignTeamMemberDto,
   ) {
     return this.projectsService.assignTeamMember(id, dto);
@@ -97,8 +100,8 @@ export class ProjectsController {
 
   @Delete(':id/team/:staffId')
   removeTeamMember(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('staffId', ParseIntPipe) staffId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('staffId', ParseUUIDPipe) staffId: string,
   ) {
     return this.projectsService.removeTeamMember(id, staffId);
   }
@@ -107,21 +110,21 @@ export class ProjectsController {
 
   @Post(':id/deliverables')
   addDeliverable(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateDeliverableDto,
   ) {
     return this.projectsService.addDeliverable(id, dto);
   }
 
   @Get(':id/deliverables')
-  listDeliverables(@Param('id', ParseIntPipe) id: number) {
+  listDeliverables(@Param('id', ParseUUIDPipe) id: string) {
     return this.projectsService.listDeliverables(id);
   }
 
   @Patch(':id/deliverables/:deliverableId')
   updateDeliverable(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('deliverableId', ParseIntPipe) deliverableId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('deliverableId', ParseUUIDPipe) deliverableId: string,
     @Body() dto: UpdateDeliverableDto,
   ) {
     return this.projectsService.updateDeliverable(id, deliverableId, dto);
@@ -129,8 +132,8 @@ export class ProjectsController {
 
   @Delete(':id/deliverables/:deliverableId')
   removeDeliverable(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('deliverableId', ParseIntPipe) deliverableId: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('deliverableId', ParseUUIDPipe) deliverableId: string,
   ) {
     return this.projectsService.removeDeliverable(id, deliverableId);
   }

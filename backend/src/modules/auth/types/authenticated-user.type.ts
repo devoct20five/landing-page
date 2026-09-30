@@ -6,12 +6,19 @@ import { UserType } from '@/common/enums/user-type.enum';
  * Built by JwtStrategy.validate() from the JWT payload.
  */
 export interface AuthenticatedUser {
-  id: number;
+  id: string;
   uuid: string;
   email: string;
   userType: UserType;
-  roleId: number;
+  roleId: string;
   roleSlug: string;
+
+  /**
+   * Only set for userType === CLIENT, resolved from the user's ClientContact
+   * row at login. Every client-scoping check in the app (approvals, tasks)
+   * reads this — see ClientsService.findClientIdForUser.
+   */
+  clientId?: string;
 
   /**
    * Flattened permission slugs for this role.
@@ -39,11 +46,13 @@ export type RequestUser = AuthenticatedUser;
  * for stateless, fast auth checks.
  */
 export interface JwtPayload {
-  sub: number;
+  sub: string;
   uuid: string;
   email: string;
   userType: UserType;
-  roleId: number;
+  roleId: string;
   roleSlug: string;
+  /** Only present for userType === CLIENT. See AuthenticatedUser.clientId. */
+  clientId?: string;
   permissions: string[];
 }

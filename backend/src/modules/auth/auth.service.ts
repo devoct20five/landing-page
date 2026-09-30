@@ -7,16 +7,19 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { RolesService } from '../roles/roles.service';
+import { ClientsService } from '../clients/clients.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtPayload } from './types/authenticated-user.type';
 import { User } from '../users/models/user.model';
 import { UserStatus } from '../../common/enums/user-status.enum';
+import { UserType } from '@/common/enums/index.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly rolesService: RolesService,
+    private readonly clientsService: ClientsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -55,7 +58,7 @@ export class AuthService {
   }
 
   /** Re-issues a token with fresh permissions - call after a role/permission change. */
-  async refreshToken(userId: number): Promise<string> {
+  async refreshToken(userId: string): Promise<string> {
     const user = await this.usersService.findOne(userId);
     return this.signToken(user);
   }
@@ -64,6 +67,15 @@ export class AuthService {
     const permissions = await this.rolesService.getPermissionSlugs(user.roleId);
     const role = await this.rolesService.findOne(user.roleId);
 
+    // Every client-scoping check (approvals, tasks, ...) reads
+    // requester.clientId, so a client-portal user needs it embedded here —
+    // the guards never hit the database, the same reason permissions are
+    // flattened into the token instead of looked up per request.
+    const clientId =
+      user.userType === UserType.CLIENT
+        ? await this.clientsService.findClientIdForUser(user.id)
+        : undefined;
+
     const payload: JwtPayload = {
       sub: user.id,
       uuid: user.uuid,
@@ -71,6 +83,7 @@ export class AuthService {
       userType: user.userType,
       roleId: user.roleId,
       roleSlug: role.slug,
+      clientId: clientId ?? undefined,
       permissions,
     };
 

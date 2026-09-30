@@ -29,7 +29,7 @@ export class AttendanceService {
   ) {}
 
   /** Staff self check-in (2.7). Creates today's row if it doesn't exist. */
-  async checkIn(staffId: number, dto: CheckInDto): Promise<Attendance> {
+  async checkIn(staffId: string, dto: CheckInDto): Promise<Attendance> {
     const workDate = todayStr();
     const [row, created] = await this.attendanceModel.findOrCreate({
       where: { staffId, workDate },
@@ -57,7 +57,7 @@ export class AttendanceService {
   }
 
   /** Staff self check-out (2.7). Computes hours_worked from check_in. */
-  async checkOut(staffId: number): Promise<Attendance> {
+  async checkOut(staffId: string): Promise<Attendance> {
     const workDate = todayStr();
     const row = await this.attendanceModel.findOne({
       where: { staffId, workDate },
@@ -77,7 +77,7 @@ export class AttendanceService {
   }
 
   /** Admin manual override for a given staff/date (3.7). */
-  async upsert(staffId: number, dto: UpsertAttendanceDto): Promise<Attendance> {
+  async upsert(staffId: string, dto: UpsertAttendanceDto): Promise<Attendance> {
     const [row] = await this.attendanceModel.findOrCreate({
       where: { staffId, workDate: dto.workDate },
       defaults: { staffId, ...dto } as any,
@@ -105,7 +105,7 @@ export class AttendanceService {
   }
 
   /** Personal attendance history + hours-worked summary for one staff member. */
-  async findForStaff(staffId: number, from?: string, to?: string) {
+  async findForStaff(staffId: string, from?: string, to?: string) {
     const where: any = { staffId };
     if (from || to) {
       where.workDate = {};

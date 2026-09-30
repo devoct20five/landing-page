@@ -11,7 +11,12 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-import { projects, clients } from "@/data/mockData";
+import { useProjects, useClientOptions } from "@/hooks/useProjects";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { isAtRisk } from "@/api/adapters/project";
+import { useAuth } from "@/auth";
+import ErrorState from "@/components/shared/ErrorState";
+import { SkeletonList } from "@/components/shared/Skeleton";
 import StaffProjectRow from "@/components/project/StaffProjectRow";
 import StaffProjectCard from "@/components/project/StaffProjectCard";
 import EmptyState from "@/components/shared/EmptyState";
@@ -173,9 +178,11 @@ function TimelineProject({ project, index }) {
             </div>
 
             <div className="flex items-center gap-4 text-xs text-surface-muted">
-              <span>
-                {project.completedDeliverables}/{project.totalDeliverables} deliverables
-              </span>
+              {project.totalDeliverables !== null && (
+                <span>
+                  {project.completedDeliverables}/{project.totalDeliverables} deliverables
+                </span>
+              )}
 
               <ArrowRight className="h-3.5 w-3.5" />
             </div>
@@ -253,35 +260,41 @@ function ViewToggle({ view, setView }) {
 }
 
 export default function StaffProjects() {
+  const { user } = useAuth();
+
   const [statusFilter, setStatusFilter] = useState("all");
   const [clientFilter, setClientFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [view, setView] = useState("table");
 
+  const debouncedSearch = useDebouncedValue(search, 300);
+  const { clients } = useClientOptions();
+
+  // "active" and "at-risk" are UI buckets, not backend statuses, so only the
+  // real ones are pushed to the server; the rest is refined below.
+  const serverStatus = ["client-review", "completed"].includes(statusFilter)
+    ? statusFilter
+    : undefined;
+
+  const { projects, meta, isLoading, error, refetch } = useProjects({
+    // Staff see the projects they are assigned to, not the whole agency.
+    staffId: user?.id,
+    search: debouncedSearch,
+    status: serverStatus,
+    clientId: clientFilter === "all" ? undefined : clientFilter,
+    limit: 50,
+  });
+
+  // Server-side: search, client, real statuses. Client-side: the two UI buckets.
   const filtered = useMemo(() => {
-    return projects.filter((project) => {
-      const matchesStatus =
-        statusFilter === "all"
-          ? true
-          : statusFilter === "active"
-            ? project.status !== "completed"
-            : statusFilter === "at-risk"
-              ? project.status === "blocked" || Boolean(project.attentionReason)
-              : project.status === statusFilter;
-
-      const matchesClient = clientFilter === "all" ? true : project.clientId === clientFilter;
-
-      const query = search.toLowerCase();
-
-      const matchesSearch =
-        !query ||
-        project.name?.toLowerCase().includes(query) ||
-        project.clientName?.toLowerCase().includes(query) ||
-        project.services?.some((service) => service.toLowerCase().includes(query));
-
-      return matchesStatus && matchesClient && matchesSearch;
-    });
-  }, [statusFilter, clientFilter, search]);
+    if (statusFilter === "active") {
+      return projects.filter((project) => project.status !== "completed");
+    }
+    if (statusFilter === "at-risk") {
+      return projects.filter(isAtRisk);
+    }
+    return projects;
+  }, [projects, statusFilter]);
 
   return (
     <div className="mx-auto max-w-[1320px] animate-fade-up">
@@ -348,16 +361,35 @@ export default function StaffProjects() {
       {/* Result count */}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-xs text-surface-muted">
-          Showing <span className="font-semibold text-surface-fg">{filtered.length}</span>{" "}
-          {filtered.length === 1 ? "project" : "projects"}
+          {isLoading ? (
+            "Loading projects…"
+          ) : (
+            <>
+              Showing <span className="font-semibold text-surface-fg">{filtered.length}</span>{" "}
+              {filtered.length === 1 ? "project" : "projects"}
+              {meta?.total > filtered.length && ` of ${meta.total}`}
+            </>
+          )}
         </p>
       </div>
 
-      {/* Empty */}
-      {filtered.length === 0 ? (
+      {/* Loading */}
+      {isLoading ? (
+        <SkeletonList rows={6} />
+      ) : error ? (
+        <ErrorState error={error} resource="Projects" onRetry={refetch} />
+      ) : filtered.length === 0 ? (
         <EmptyState
-          title="No Projects Match These Filters"
-          description="Try a different status, client, or search term."
+          title={
+            search || clientFilter !== "all" || statusFilter !== "all"
+              ? "No projects match these filters"
+              : "No projects assigned to you yet"
+          }
+          description={
+            search || clientFilter !== "all" || statusFilter !== "all"
+              ? "Try a different status, client, or search term."
+              : "Projects you are added to will show up here."
+          }
         />
       ) : (
         <>

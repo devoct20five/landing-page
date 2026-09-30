@@ -12,15 +12,15 @@ export class FoldersService {
 
   /** Contents of one directory level: pass parentId undefined for a project's root folders. */
   async findChildren(
-    projectId: number | undefined,
-    parentId: number | null | undefined,
+    projectId: string | undefined,
+    parentId: string | null | undefined,
   ): Promise<Folder[]> {
     const where: WhereOptions = { parentId: parentId ?? null };
     if (projectId) where['projectId'] = projectId;
     return this.folderModel.findAll({ where, order: [['name', 'ASC']] });
   }
 
-  async findOne(id: number): Promise<Folder> {
+  async findOne(id: string): Promise<Folder> {
     const folder = await this.folderModel.findByPk(id);
     if (!folder) throw new NotFoundException(`Folder ${id} not found`);
     return folder;
@@ -33,7 +33,7 @@ export class FoldersService {
     } as any);
   }
 
-  async update(id: number, dto: UpdateFolderDto): Promise<Folder> {
+  async update(id: string, dto: UpdateFolderDto): Promise<Folder> {
     const folder = await this.findOne(id);
     await folder.update(dto);
     return folder;
@@ -41,7 +41,7 @@ export class FoldersService {
 
   /** DB has ON DELETE CASCADE on folders.parent_id and files.folder_id (SET NULL) — subfolders
    *  cascade-delete, files inside move to root, matching the schema's declared behavior. */
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const folder = await this.findOne(id);
     await folder.destroy();
   }

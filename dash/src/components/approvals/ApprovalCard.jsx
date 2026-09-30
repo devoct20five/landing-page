@@ -1,14 +1,11 @@
+import { Link } from "react-router-dom";
 import {
-  Check,
   Clock,
   MessageSquareWarning,
-  MoreHorizontal,
   CheckCircle2,
+  XCircle,
   ExternalLink,
-  RotateCcw,
 } from "lucide-react";
-
-import { getProjectById, getClientById } from "@/data/mockData";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,39 +15,35 @@ const STATUS_CONFIG = {
     icon: Clock,
     className: "text-brand-orange",
   },
-
   "changes-requested": {
     label: "Changes requested",
     icon: MessageSquareWarning,
-    className: "text-red-600",
+    className: "text-amber-600",
   },
-
   approved: {
     label: "Approved",
     icon: CheckCircle2,
     className: "text-emerald-700",
   },
+  rejected: {
+    label: "Rejected",
+    icon: XCircle,
+    className: "text-red-600",
+  },
 };
 
+/**
+ * Staff/admin approval card — read-only by design. Only the client can
+ * approve, request changes, or reject (enforced server-side in
+ * approvals.service.ts: "Only the client can review an approval"), so this
+ * card shows status and links back to the project rather than exposing
+ * review actions that would 403.
+ *
+ * @param {{ approval: ReturnType<typeof import("@/api/adapters/approval").adaptApproval> }} props
+ */
 export default function ApprovalCard({ approval }) {
-  const project = getProjectById(approval.projectId);
-  const client = getClientById(approval.clientId);
-
   const config = STATUS_CONFIG[approval.status] || STATUS_CONFIG.pending;
-
   const Icon = config.icon;
-
-  const handleApprove = () => {
-    console.log("Approve approval:", approval.id);
-  };
-
-  const handleRequestChanges = () => {
-    console.log("Request changes:", approval.id);
-  };
-
-  const handleOpen = () => {
-    console.log("Open approval:", approval.id);
-  };
 
   return (
     <div className="brand-card group flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -63,11 +56,10 @@ export default function ApprovalCard({ approval }) {
             </h3>
 
             <p className="mt-0.5 text-sm text-surface-muted">
-              Version {approval.version} · {client?.name} · {project?.name}
+              Version {approval.version} · {approval.clientName} · {approval.projectName}
             </p>
           </div>
 
-          {/* Version */}
           <span className="shrink-0 rounded-md bg-surface-muted/10 px-2 py-1 text-[11px] font-semibold text-surface-muted">
             v{approval.version}
           </span>
@@ -76,10 +68,8 @@ export default function ApprovalCard({ approval }) {
         {/* Status */}
         <div className={`mt-3 flex items-center gap-1.5 text-sm font-medium ${config.className}`}>
           <Icon className="h-4 w-4" strokeWidth={2} />
-
           {config.label}
-
-          {approval.status !== "approved" && approval.waitingSince && (
+          {approval.status === "pending" && approval.waitingSince && (
             <span className="text-surface-muted">— {approval.waitingSince}</span>
           )}
         </div>
@@ -87,56 +77,16 @@ export default function ApprovalCard({ approval }) {
 
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-2">
-        {/* Open */}
-        <Button variant="outline" size="sm" onClick={handleOpen} className="gap-1.5">
-          <ExternalLink size={14} />
-          Open
-        </Button>
-
-        {/* Pending Actions */}
-        {approval.status === "pending" && (
-          <>
-            <Button size="sm" onClick={handleApprove} className="gap-1.5">
-              <Check size={14} />
-              Approve
-            </Button>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRequestChanges}
-              className="gap-1.5 text-red-600 hover:text-red-700"
-            >
-              <MessageSquareWarning size={14} />
-              Changes
-            </Button>
-          </>
-        )}
-
-        {/* Changes Requested */}
-        {approval.status === "changes-requested" && (
-          <Button variant="outline" size="sm" onClick={handleOpen} className="gap-1.5">
-            <RotateCcw size={14} />
-            Review Changes
+        {approval.projectId ? (
+          <Button variant="outline" size="sm" className="gap-1.5" asChild>
+            <Link to={`/staff/project/${approval.projectId}`}>
+              <ExternalLink size={14} />
+              Open Project
+            </Link>
           </Button>
+        ) : (
+          <span className="text-xs text-surface-muted">No linked project</span>
         )}
-
-        {/* Approved */}
-        {approval.status === "approved" && (
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-            <CheckCircle2 size={15} />
-            Approved
-          </span>
-        )}
-
-        {/* More */}
-        <button
-          type="button"
-          className="flex h-8 w-8 items-center justify-center rounded-md text-surface-muted transition hover:bg-surface-muted/10 hover:text-surface-fg"
-          aria-label="More approval actions"
-        >
-          <MoreHorizontal size={17} />
-        </button>
       </div>
     </div>
   );

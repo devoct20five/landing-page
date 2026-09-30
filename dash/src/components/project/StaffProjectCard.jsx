@@ -1,10 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Progress } from "@/components/ui/progress";
 
 export default function StaffProjectCard({ project }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="brand-card">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => navigate(`/staff/project/${project.id}`)}
+      onKeyDown={(event) => event.key === "Enter" && navigate(`/staff/project/${project.id}`)}
+      className="brand-card cursor-pointer transition hover:border-brand-orange/30"
+    >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
           <h3 className="font-display text-base font-bold text-surface-fg">{project.name}</h3>

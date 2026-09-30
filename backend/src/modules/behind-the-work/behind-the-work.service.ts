@@ -30,7 +30,7 @@ export class BehindTheWorkService {
     },
   ];
 
-  async create(dto: CreateBehindTheWorkDto, authorId: number) {
+  async create(dto: CreateBehindTheWorkDto, authorId: string) {
     if (dto.content_type === 'youtube' && !dto.media_url) {
       throw new BadRequestException(
         'media_url (YouTube link) is required for youtube content',
@@ -79,7 +79,7 @@ export class BehindTheWorkService {
     return this.findAll(query);
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const item = await this.btwModel.findByPk(id, {
       include: this.includeRelations,
     });
@@ -88,13 +88,13 @@ export class BehindTheWorkService {
     return item;
   }
 
-  async update(id: number, dto: UpdateBehindTheWorkDto) {
+  async update(id: string, dto: UpdateBehindTheWorkDto) {
     const item = await this.findOne(id);
     await item.update(dto);
     return item;
   }
 
-  async setStatus(id: number, status: BtwStatus) {
+  async setStatus(id: string, status: BtwStatus) {
     const item = await this.findOne(id);
     await item.update({
       status,
@@ -104,7 +104,7 @@ export class BehindTheWorkService {
     return item;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const item = await this.findOne(id);
     await item.destroy();
     return { id, deleted: true };

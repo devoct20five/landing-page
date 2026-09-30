@@ -69,7 +69,7 @@ export class ServicesService {
     });
   }
 
-  async findOne(id: number): Promise<Service> {
+  async findOne(id: string): Promise<Service> {
     const service = await this.serviceModel.findByPk(id, {
       include: [
         {
@@ -84,13 +84,13 @@ export class ServicesService {
     return service;
   }
 
-  async update(id: number, dto: UpdateServiceDto): Promise<Service> {
+  async update(id: string, dto: UpdateServiceDto): Promise<Service> {
     await this.findOne(id);
     await this.serviceModel.update(dto, { where: { id } });
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.findOne(id);
     await this.serviceModel.destroy({ where: { id } });
   }
@@ -100,7 +100,7 @@ export class ServicesService {
   // ---------------------------------------------------------------------
 
   async addPlan(
-    serviceId: number,
+    serviceId: string,
     dto: CreateServicePlanDto,
   ): Promise<ServicePlan> {
     await this.findOne(serviceId);
@@ -125,7 +125,7 @@ export class ServicesService {
     return this.findPlan(serviceId, plan.id);
   }
 
-  async findPlan(serviceId: number, planId: number): Promise<ServicePlan> {
+  async findPlan(serviceId: string, planId: string): Promise<ServicePlan> {
     const plan = await this.servicePlanModel.findOne({
       where: { id: planId, serviceId },
       include: PLAN_INCLUDE as any,
@@ -135,8 +135,8 @@ export class ServicesService {
   }
 
   async updatePlan(
-    serviceId: number,
-    planId: number,
+    serviceId: string,
+    planId: string,
     dto: UpdateServicePlanDto,
   ): Promise<ServicePlan> {
     const plan = await this.findPlan(serviceId, planId);
@@ -146,21 +146,21 @@ export class ServicesService {
 
   /** Active/Draft status toggle for a plan (3.14). */
   async togglePlanStatus(
-    serviceId: number,
-    planId: number,
+    serviceId: string,
+    planId: string,
   ): Promise<ServicePlan> {
     const plan = await this.findPlan(serviceId, planId);
     await plan.update({ isActive: !plan.isActive });
     return plan;
   }
 
-  async removePlan(serviceId: number, planId: number): Promise<void> {
+  async removePlan(serviceId: string, planId: string): Promise<void> {
     const plan = await this.findPlan(serviceId, planId);
     await plan.destroy();
   }
 
   /** Duplicate a plan (and its packages/features) — admin 3.14 action. */
-  async duplicatePlan(serviceId: number, planId: number): Promise<ServicePlan> {
+  async duplicatePlan(serviceId: string, planId: string): Promise<ServicePlan> {
     const source = await this.findPlan(serviceId, planId);
 
     const copy = await this.servicePlanModel.create({
@@ -200,13 +200,13 @@ export class ServicesService {
   // -- packages / features on an existing plan ----------------------------
 
   async addPackage(
-    planId: number,
+    planId: string,
     dto: PlanPackageDto,
   ): Promise<ServicePlanPackage> {
     return this.packageModel.create({ ...dto, planId } as any);
   }
 
-  async removePackage(planId: number, packageId: number): Promise<void> {
+  async removePackage(planId: string, packageId: string): Promise<void> {
     const pkg = await this.packageModel.findOne({
       where: { id: packageId, planId },
     });
@@ -215,13 +215,13 @@ export class ServicesService {
   }
 
   async addFeature(
-    planId: number,
+    planId: string,
     dto: PlanFeatureDto,
   ): Promise<ServicePlanFeature> {
     return this.featureModel.create({ ...dto, planId } as any);
   }
 
-  async removeFeature(planId: number, featureId: number): Promise<void> {
+  async removeFeature(planId: string, featureId: string): Promise<void> {
     const feature = await this.featureModel.findOne({
       where: { id: featureId, planId },
     });

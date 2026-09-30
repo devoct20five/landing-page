@@ -1,21 +1,27 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import { RequireAuth, RequireRole } from "@/auth";
+import { UserType } from "@/api";
+import RoleHome from "@/routes/RoleHome";
+
 import ClientLayout from "@/layouts/ClientLayout";
 import Dashboard from "@/pages/client/Dashboard";
 import Projects from "@/pages/client/Projects";
 
 import StaffLayout from "@/layouts/StaffLayout";
 import StaffProjects from "@/pages/staff/StaffProjects";
+import StaffProjectDetail from "@/pages/staff/StaffProjectDetail";
 import TaskList from "./pages/staff/TaskList";
 import ApprovalList from "./pages/staff/ApprovalList";
 
-import { tasks, approvals } from "@/data/mockData";
+import { tasks } from "@/data/mockData";
 import ClientList from "./pages/staff/ClientList";
 
 import AdminLayout from "./layouts/AdminLayout";
 import AdminClients from "./pages/admin/AdminClient";
 import AdminTeam from "./pages/admin/AdminTeam";
 import AdminProjects from "./pages/admin/AdminProjects";
+import AdminProjectDetail from "./pages/admin/AdminProjectDetail";
 import ClientSettings from "./pages/client/ClientSettings";
 import AdminServices from "./pages/admin/AdminServices";
 
@@ -57,6 +63,10 @@ import ClientSupport from "./pages/client/ClientSupportPage";
 import ClientQueries from "./pages/client/ClientQueries";
 import AdminInvoiceList from "./pages/admin/AdminInvoiceList";
 import CreateInvoice from "./pages/admin/CreateInvoice";
+import AccountSettings from "./pages/client/AccountSettings";
+import BillingInvoices from "./pages/client/BillingInvoices";
+import ClientNotifications from "./pages/client/ClientNotifications";
+import ClientDocuments from "./pages/client/ClientDocuments";
 
 export default function App() {
   return (
@@ -80,15 +90,29 @@ export default function App() {
             PUBLIC PROFILE
         ===================================================== */}
 
-        <Route path="/u/:id" element={<Profile />} />
+        <Route
+          path="/u/:id"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+
+        {/* Root: send each user to their own workspace, not the client one */}
+        <Route path="/" element={<RoleHome />} />
 
         {/* =====================================================
             CLIENT
         ===================================================== */}
 
-        <Route element={<ClientLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-
+        <Route
+          element={
+            <RequireRole allow={[UserType.CLIENT]}>
+              <ClientLayout />
+            </RequireRole>
+          }
+        >
           <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/projects" element={<Projects />} />
@@ -109,15 +133,32 @@ export default function App() {
           <Route path="/project/:projectId/pay" element={<ProjectPayment />} />
 
           <Route path="/client/settings" element={<ClientSettings />} />
-
+          <Route path="/settings/account" element={<AccountSettings />} />
+          <Route path="/settings/billing" element={<BillingInvoices />} />
           <Route path="/client/services" element={<ClientServices />} />
+
+          {/* Previously linked from the sidebar with no route behind them */}
+          <Route path="/notifications" element={<ClientNotifications />} />
+          <Route path="/documents" element={<ClientDocuments />} />
+
+          {/* The sidebar links /account/settings; the page lives at /settings/account */}
+          <Route
+            path="/account/settings"
+            element={<Navigate to="/settings/account" replace />}
+          />
         </Route>
 
         {/* =====================================================
             STAFF
         ===================================================== */}
 
-        <Route element={<StaffLayout />}>
+        <Route
+          element={
+            <RequireRole allow={[UserType.STAFF, UserType.ADMIN]}>
+              <StaffLayout />
+            </RequireRole>
+          }
+        >
           <Route path="/staff" element={<StaffDashboard />} />
 
           <Route path="/staff/files" element={<StaffFiles />} />
@@ -126,20 +167,28 @@ export default function App() {
 
           <Route path="/staff/projects" element={<StaffProjects />} />
 
+          <Route path="/staff/project/:projectId" element={<StaffProjectDetail />} />
+
           <Route path="/staff/attendance" element={<StaffAttendance />} />
 
           <Route path="/staff/tasks" element={<TaskList tasks={tasks} />} />
 
           <Route path="/staff/clients" element={<ClientList />} />
 
-          <Route path="/staff/approvals" element={<ApprovalList approvals={approvals} />} />
+          <Route path="/staff/approvals" element={<ApprovalList />} />
         </Route>
 
         {/* =====================================================
             ADMIN
         ===================================================== */}
 
-        <Route element={<AdminLayout />}>
+        <Route
+          element={
+            <RequireRole allow={[UserType.ADMIN]}>
+              <AdminLayout />
+            </RequireRole>
+          }
+        >
           <Route path="/admin" element={<AdminDashboard />} />
 
           <Route path="/admin/files" element={<AdminFiles />} />
@@ -165,6 +214,8 @@ export default function App() {
 
           <Route path="/admin/projects" element={<AdminProjects />} />
 
+          <Route path="/admin/project/:projectId" element={<AdminProjectDetail />} />
+
           <Route path="/admin/services" element={<AdminServices />} />
           <Route path="/admin/client/:clientId" element={<AdminClientDetail />} />
           <Route path="/admin/approvals" element={<AdminApprovals />} />
@@ -175,7 +226,8 @@ export default function App() {
             FALLBACK
         ===================================================== */}
 
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        {/* Role-aware: a bad URL used to drop staff and admins on the client dashboard */}
+        <Route path="*" element={<RoleHome />} />
       </Routes>
     </BrowserRouter>
   );

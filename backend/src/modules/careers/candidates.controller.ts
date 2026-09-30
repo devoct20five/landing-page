@@ -5,7 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -36,13 +36,13 @@ export class CandidatesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.candidatesService.findOne(id);
   }
 
   @Patch(':id/stage')
   updateStage(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateCandidateStageDto,
   ) {
     return this.candidatesService.updateStage(id, dto);
@@ -50,20 +50,20 @@ export class CandidatesController {
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.candidatesService.remove(id);
   }
 
   @Post(':id/notes')
   addNote(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateCandidateNoteDto,
   ) {
     return this.candidatesService.addNote(id, dto);
   }
 
   @Get(':id/notes')
-  listNotes(@Param('id', ParseIntPipe) id: number) {
+  listNotes(@Param('id', ParseUUIDPipe) id: string) {
     return this.candidatesService.listNotes(id);
   }
 }

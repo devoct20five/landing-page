@@ -83,7 +83,7 @@ export class TasksService {
     return paginate(rows, count, page, limit);
   }
 
-  async findOne(id: number, requester: RequestUser): Promise<Task> {
+  async findOne(id: string, requester: RequestUser): Promise<Task> {
     const task = await this.taskModel.findByPk(id, {
       attributes: { include: [[COMMENT_COUNT_LITERAL, 'commentCount']] },
       include: [
@@ -113,7 +113,7 @@ export class TasksService {
   }
 
   async update(
-    id: number,
+    id: string,
     dto: UpdateTaskDto,
     requester: RequestUser,
   ): Promise<Task> {
@@ -123,7 +123,7 @@ export class TasksService {
   }
 
   async updateStatus(
-    id: number,
+    id: string,
     status: string,
     requester: RequestUser,
   ): Promise<Task> {
@@ -132,13 +132,13 @@ export class TasksService {
     return this.findOne(id, requester);
   }
 
-  async remove(id: number, requester: RequestUser): Promise<void> {
+  async remove(id: string, requester: RequestUser): Promise<void> {
     const task = await this.findOne(id, requester);
     await task.destroy();
   }
 
   async listComments(
-    taskId: number,
+    taskId: string,
     requester: RequestUser,
   ): Promise<TaskComment[]> {
     await this.findOne(taskId, requester); // 404s + access check
@@ -155,7 +155,7 @@ export class TasksService {
   }
 
   async addComment(
-    taskId: number,
+    taskId: string,
     dto: CreateTaskCommentDto,
     requester: RequestUser,
   ): Promise<TaskComment> {

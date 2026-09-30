@@ -18,7 +18,7 @@ interface AuthenticatedRequest extends Request {
  *
  * findMe(@CurrentUser() user: AuthenticatedUser)
  *
- * findMyId(@CurrentUser('id') id: number)
+ * findMyId(@CurrentUser('id') id: string)
  *
  * findMyEmail(@CurrentUser('email') email: string)
  */

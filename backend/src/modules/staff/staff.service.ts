@@ -57,7 +57,7 @@ export class StaffService {
     return { data: rows, total: count, page, limit };
   }
 
-  async findOne(userId: number): Promise<StaffProfile> {
+  async findOne(userId: string): Promise<StaffProfile> {
     const profile = await this.staffProfileModel.findByPk(userId, {
       include: [User],
     });
@@ -67,7 +67,7 @@ export class StaffService {
   }
 
   async update(
-    userId: number,
+    userId: string,
     dto: UpdateStaffProfileDto,
   ): Promise<StaffProfile> {
     const profile = await this.findOne(userId);
@@ -75,7 +75,7 @@ export class StaffService {
     return profile;
   }
 
-  async remove(userId: number): Promise<void> {
+  async remove(userId: string): Promise<void> {
     const profile = await this.findOne(userId);
     await profile.destroy();
   }

@@ -1,107 +1,33 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Check,
   CheckCircle2,
   Clock3,
   FileCheck2,
   ExternalLink,
-  Eye,
-  MessageSquare,
-  MoreHorizontal,
+  Loader2,
   X,
-  AlertCircle,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
-const approvals = [
-  {
-    id: "approval-001",
-    title: "Hero Campaign Film — Final Cut",
-    description: "Final edited version of the campaign film is ready for your review and approval.",
-    project: "Summer Campaign 2026",
-    type: "Video",
-    submittedBy: "Rahul Mehta",
-    submittedRole: "Editor",
-    submittedDate: "21 Aug 2026",
-    dueDate: "25 Aug 2026",
-    version: "v4.2",
-    status: "pending",
-    priority: "high",
-    comments: 3,
-    previewUrl: "#",
-  },
-  {
-    id: "approval-002",
-    title: "Homepage Design — Final",
-    description: "Final homepage design incorporating the latest feedback and content updates.",
-    project: "Website Redesign",
-    type: "Design",
-    submittedBy: "Priya Nair",
-    submittedRole: "Designer",
-    submittedDate: "20 Aug 2026",
-    dueDate: "24 Aug 2026",
-    version: "v3.1",
-    status: "pending",
-    priority: "normal",
-    comments: 5,
-    previewUrl: "#",
-  },
-  {
-    id: "approval-003",
-    title: "Product Launch Social Assets",
-    description: "Social media creatives prepared for the upcoming product launch campaign.",
-    project: "Product Launch",
-    type: "Creative",
-    submittedBy: "Arjun Rao",
-    submittedRole: "3D Artist",
-    submittedDate: "19 Aug 2026",
-    dueDate: "23 Aug 2026",
-    version: "v2.0",
-    status: "pending",
-    priority: "normal",
-    comments: 2,
-    previewUrl: "#",
-  },
-  {
-    id: "approval-004",
-    title: "August Social Content Batch",
-    description: "Monthly social content batch approved for publishing.",
-    project: "Social Content Retainer",
-    type: "Content",
-    submittedBy: "Sana Iyer",
-    submittedRole: "Project Manager",
-    submittedDate: "12 Aug 2026",
-    dueDate: "15 Aug 2026",
-    version: "v1.5",
-    status: "approved",
-    priority: "normal",
-    comments: 4,
-    previewUrl: "#",
-  },
-  {
-    id: "approval-005",
-    title: "Hero Film — Creative Direction",
-    description: "Creative direction and storyboard previously submitted for review.",
-    project: "Summer Campaign 2026",
-    type: "Video",
-    submittedBy: "Rahul Mehta",
-    submittedRole: "Editor",
-    submittedDate: "28 Jul 2026",
-    dueDate: "30 Jul 2026",
-    version: "v1.0",
-    status: "approved",
-    priority: "normal",
-    comments: 6,
-    previewUrl: "#",
-  },
-];
+import { approvalsApi, filesApi } from "@/api";
+import { adaptApproval } from "@/api/adapters/approval";
+import { useApiResource } from "@/hooks/useApiResource";
+import { useApprovalReview } from "@/hooks/useApprovalReview";
+import ErrorState from "@/components/shared/ErrorState";
+import { SkeletonList } from "@/components/shared/Skeleton";
 
 export default function ClientApprovals() {
-  const pendingApprovals = approvals.filter((approval) => approval.status === "pending");
+  const fetcher = () => approvalsApi.listApprovals({ limit: 100 });
+  const { data, isLoading, error, refetch } = useApiResource(fetcher, []);
 
-  const completedApprovals = approvals.filter((approval) => approval.status === "approved");
+  const approvals = (data?.items ?? []).map(adaptApproval);
+  const pendingApprovals = approvals.filter((approval) => approval.status === "pending");
+  const reviewedApprovals = approvals.filter((approval) => approval.status !== "pending");
 
   return (
+
     <div className="min-h-full bg-surface-bg">
       {/* =====================================================
           HEADER
@@ -177,7 +103,12 @@ export default function ClientApprovals() {
 
             <div className="space-y-4">
               {pendingApprovals.map((approval, index) => (
-                <ApprovalCard key={approval.id} approval={approval} featured={index === 0} />
+                <ApprovalCard
+                  key={approval.id}
+                  approval={approval}
+                  featured={index === 0}
+                  onReviewed={refetch}
+                />
               ))}
             </div>
           </section>
@@ -186,7 +117,7 @@ export default function ClientApprovals() {
         {/* ===================================================
             COMPLETED APPROVALS
         =================================================== */}
-        {completedApprovals.length > 0 && (
+        {reviewedApprovals.length > 0 && (
           <section>
             <div className="mb-4">
               <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-surface-fg">
@@ -194,12 +125,12 @@ export default function ClientApprovals() {
               </h2>
 
               <p className="mt-1 text-sm text-surface-muted">
-                Deliverables you have previously reviewed and approved.
+                Deliverables you have previously reviewed.
               </p>
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-card">
-              {completedApprovals.map((approval) => (
+              {reviewedApprovals.map((approval) => (
                 <CompletedApprovalRow key={approval.id} approval={approval} />
               ))}
             </div>
@@ -209,7 +140,13 @@ export default function ClientApprovals() {
         {/* ===================================================
             EMPTY STATE
         =================================================== */}
-        {approvals.length === 0 && (
+        {isLoading && <SkeletonList rows={4} />}
+
+        {!isLoading && error && (
+          <ErrorState error={error} resource="Approvals" onRetry={refetch} />
+        )}
+
+        {!isLoading && !error && approvals.length === 0 && (
           <div className="rounded-2xl border border-dashed border-surface-border bg-surface-card px-6 py-16 text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-bg">
               <FileCheck2 className="h-5 w-5 text-surface-muted" />
@@ -233,7 +170,36 @@ export default function ClientApprovals() {
    APPROVAL CARD
 ============================================================ */
 
-function ApprovalCard({ approval, featured = false }) {
+function ApprovalCard({ approval, featured = false, onReviewed }) {
+  const [mode, setMode] = useState("idle"); // idle | changes | reject
+  const [feedback, setFeedback] = useState("");
+  const [downloading, setDownloading] = useState(false);
+
+  const { approve, requestChanges, reject, isApproving, isRequestingChanges, isRejecting, error } =
+    useApprovalReview(approval.id, { onSuccess: onReviewed });
+
+  const busy = isApproving || isRequestingChanges || isRejecting;
+  const fileId = approval.raw?.file?.id ?? approval.raw?.fileId;
+  const fileName = approval.raw?.file?.name;
+
+  const handlePreview = async () => {
+    if (!fileId) return;
+    setDownloading(true);
+    try {
+      await filesApi.downloadFile(fileId, fileName);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const submitFeedback = async () => {
+    if (!feedback.trim()) return;
+    if (mode === "changes") await requestChanges(feedback.trim());
+    if (mode === "reject") await reject(feedback.trim());
+    setMode("idle");
+    setFeedback("");
+  };
+
   return (
     <article
       className={cn(
@@ -256,17 +222,12 @@ function ApprovalCard({ approval, featured = false }) {
               )}
 
               <span className="rounded-full bg-surface-bg px-2.5 py-1 text-[0.6rem] font-semibold text-surface-muted">
-                {approval.project}
+                {approval.projectName}
               </span>
 
-              <span className="rounded-full bg-surface-bg px-2.5 py-1 text-[0.6rem] font-semibold text-surface-muted">
-                {approval.type}
-              </span>
-
-              {approval.priority === "high" && (
-                <span className="flex items-center gap-1 rounded-full bg-red-500/10 px-2.5 py-1 text-[0.6rem] font-semibold text-red-600">
-                  <AlertCircle className="h-3 w-3" />
-                  High Priority
+              {approval.deliverableTitle && (
+                <span className="rounded-full bg-surface-bg px-2.5 py-1 text-[0.6rem] font-semibold text-surface-muted">
+                  {approval.deliverableTitle}
                 </span>
               )}
             </div>
@@ -275,41 +236,29 @@ function ApprovalCard({ approval, featured = false }) {
               {approval.title}
             </h3>
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-              {approval.description}
-            </p>
-
             {/* META */}
             <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3">
               <Meta icon={FileCheck2} text={`Version ${approval.version}`} />
 
-              <Meta icon={Clock3} text={`Due ${approval.dueDate}`} />
-
-              <Meta icon={MessageSquare} text={`${approval.comments} comments`} />
+              {approval.waitingSince && (
+                <Meta icon={Clock3} text={`Waiting ${approval.waitingSince}`} />
+              )}
             </div>
           </div>
 
           {/* ACTIONS */}
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row xl:flex-col">
-            <button
-              className={cn(
-                "inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3",
-                "bg-brand-orange text-sm font-bold text-white",
-                "shadow-[0_10px_24px_-8px_rgba(255,90,31,0.5)]",
-                "transition-all duration-200 hover:translate-y-[-1px]"
-              )}
-            >
-              <Eye className="h-4 w-4" />
-              Review
-            </button>
-
-            <a
-              href={approval.previewUrl}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-surface-border bg-surface-bg px-5 py-3 text-sm font-semibold text-surface-fg transition-colors hover:border-brand-orange hover:text-brand-orange"
-            >
-              Preview
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            {fileId && (
+              <button
+                type="button"
+                onClick={handlePreview}
+                disabled={downloading}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-surface-border bg-surface-bg px-5 py-3 text-sm font-semibold text-surface-fg transition-colors hover:border-brand-orange hover:text-brand-orange disabled:opacity-50"
+              >
+                {downloading ? "Opening…" : "Preview"}
+                <ExternalLink className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -317,35 +266,90 @@ function ApprovalCard({ approval, featured = false }) {
         <div className="mt-6 flex flex-col gap-4 border-t border-surface-border pt-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-bg text-xs font-bold text-surface-fg">
-              {getInitials(approval.submittedBy)}
+              {approval.requesterName ? getInitials(approval.requesterName) : "—"}
             </div>
 
             <div>
               <p className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-surface-muted">
-                Submitted by
+                Requested by
               </p>
 
-              <p className="mt-0.5 text-sm font-semibold text-surface-fg">{approval.submittedBy}</p>
-
-              <p className="text-[0.65rem] text-surface-muted">
-                {approval.submittedRole} · {approval.submittedDate}
+              <p className="mt-0.5 text-sm font-semibold text-surface-fg">
+                {approval.requesterName ?? "—"}
               </p>
             </div>
           </div>
 
           {/* QUICK ACTIONS */}
-          <div className="flex items-center gap-2">
-            <button className="inline-flex items-center gap-2 rounded-xl border border-surface-border px-4 py-2.5 text-xs font-bold text-surface-fg transition-colors hover:border-red-300 hover:bg-red-500/5 hover:text-red-600">
-              <X className="h-3.5 w-3.5" />
-              Request Changes
-            </button>
+          {mode === "idle" ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setMode("changes")}
+                disabled={busy}
+                className="inline-flex items-center gap-2 rounded-xl border border-surface-border px-4 py-2.5 text-xs font-bold text-surface-fg transition-colors hover:border-red-300 hover:bg-red-500/5 hover:text-red-600 disabled:opacity-50"
+              >
+                <X className="h-3.5 w-3.5" />
+                Request Changes
+              </button>
 
-            <button className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2.5 text-xs font-bold text-emerald-600 transition-colors hover:bg-emerald-500/15">
-              <Check className="h-3.5 w-3.5" />
-              Approve
-            </button>
-          </div>
+              <button
+                onClick={() => approve()}
+                disabled={busy}
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2.5 text-xs font-bold text-emerald-600 transition-colors hover:bg-emerald-500/15 disabled:opacity-50"
+              >
+                {isApproving ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Check className="h-3.5 w-3.5" />
+                )}
+                Approve
+              </button>
+            </div>
+          ) : null}
         </div>
+
+        {mode !== "idle" && (
+          <div className="mt-4 border-t border-surface-border pt-5">
+            <label className="mb-2 block text-xs font-semibold text-surface-fg">
+              What needs to change?
+            </label>
+            <textarea
+              value={feedback}
+              onChange={(event) => setFeedback(event.target.value)}
+              rows={3}
+              autoFocus
+              placeholder="Tell the team what to adjust before you can approve this…"
+              className="brand-input w-full resize-none"
+            />
+            {error && (
+              <p role="alert" className="mt-2 text-xs font-medium text-red-600">
+                {error.message}
+              </p>
+            )}
+            <div className="mt-3 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={submitFeedback}
+                disabled={!feedback.trim() || busy}
+                className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                Send Feedback
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("idle");
+                  setFeedback("");
+                }}
+                disabled={busy}
+                className="rounded-xl px-4 py-2.5 text-xs font-semibold text-surface-muted transition hover:text-surface-fg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );
@@ -356,12 +360,36 @@ function ApprovalCard({ approval, featured = false }) {
 ============================================================ */
 
 function CompletedApprovalRow({ approval }) {
+  const isApproved = approval.status === "approved";
+  const isRejected = approval.status === "rejected";
+
+  const badgeClass = isApproved
+    ? "bg-emerald-500/10 text-emerald-600"
+    : isRejected
+      ? "bg-red-500/10 text-red-600"
+      : "bg-amber-500/10 text-amber-600";
+
+  const badgeLabel = isApproved
+    ? "Approved"
+    : isRejected
+      ? "Rejected"
+      : "Changes Requested";
+
   return (
     <div className="group flex flex-col gap-4 border-b border-surface-border px-6 py-5 last:border-b-0 sm:flex-row sm:items-center">
       {/* ICON */}
       <div className="flex shrink-0 items-center">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10">
-          <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+        <div
+          className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-xl",
+            isApproved ? "bg-emerald-500/10" : isRejected ? "bg-red-500/10" : "bg-amber-500/10"
+          )}
+        >
+          {isApproved ? (
+            <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+          ) : (
+            <X className={cn("h-5 w-5", isRejected ? "text-red-600" : "text-amber-600")} />
+          )}
         </div>
       </div>
 
@@ -370,32 +398,40 @@ function CompletedApprovalRow({ approval }) {
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="truncate text-sm font-bold text-surface-fg">{approval.title}</h3>
 
-          <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[0.6rem] font-semibold text-emerald-600">
-            Approved
+          <span className={cn("rounded-full px-2 py-0.5 text-[0.6rem] font-semibold", badgeClass)}>
+            {badgeLabel}
           </span>
         </div>
 
         <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-surface-muted">
-          <span>{approval.project}</span>
-
-          <span className="hidden sm:inline">
-            {approval.type} · {approval.version}
-          </span>
-
-          <span>Reviewed {approval.submittedDate}</span>
+          <span>{approval.projectName}</span>
+          <span className="hidden sm:inline">v{approval.version}</span>
+          {approval.reviewedAt && (
+            <span>
+              Reviewed{" "}
+              {new Date(approval.reviewedAt).toLocaleDateString(undefined, {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          )}
         </div>
+
+        {approval.feedback && (
+          <p className="mt-2 max-w-2xl text-xs leading-5 text-surface-muted">
+            &ldquo;{approval.feedback}&rdquo;
+          </p>
+        )}
       </div>
 
-      {/* ACTIONS */}
-      <div className="flex items-center gap-2">
-        <button className="rounded-lg p-2 text-surface-muted transition-colors hover:bg-surface-bg hover:text-surface-fg">
-          <Eye className="h-4 w-4" />
-        </button>
-
-        <button className="rounded-lg p-2 text-surface-muted transition-colors hover:bg-surface-bg hover:text-surface-fg">
-          <MoreHorizontal className="h-4 w-4" />
-        </button>
-      </div>
+      <Link
+        to={`/approval/${approval.id}`}
+        className="shrink-0 rounded-lg p-2 text-surface-muted transition-colors hover:bg-surface-bg hover:text-surface-fg"
+        aria-label={`View ${approval.title}`}
+      >
+        <ExternalLink className="h-4 w-4" />
+      </Link>
     </div>
   );
 }

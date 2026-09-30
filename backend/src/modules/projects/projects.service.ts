@@ -101,7 +101,7 @@ export class ProjectsService {
     return { data: rows, total: count, page, limit };
   }
 
-  async findOne(id: number): Promise<Project> {
+  async findOne(id: string): Promise<Project> {
     const project = await this.projectModel.findByPk(id, {
       include: DETAIL_INCLUDES as any,
     });
@@ -109,13 +109,13 @@ export class ProjectsService {
     return project;
   }
 
-  async update(id: number, dto: UpdateProjectDto): Promise<Project> {
+  async update(id: string, dto: UpdateProjectDto): Promise<Project> {
     const project = await this.findOne(id);
     await project.update(dto);
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const project = await this.findOne(id);
     await project.destroy();
   }
@@ -124,13 +124,13 @@ export class ProjectsService {
   // Services involved (project_services)
   // ---------------------------------------------------------------------
 
-  async linkServices(id: number, dto: LinkServicesDto): Promise<Project> {
+  async linkServices(id: string, dto: LinkServicesDto): Promise<Project> {
     const project = await this.findOne(id);
     await (project as any).$add('services', dto.serviceIds);
     return this.findOne(id);
   }
 
-  async unlinkService(id: number, serviceId: number): Promise<Project> {
+  async unlinkService(id: string, serviceId: string): Promise<Project> {
     const project = await this.findOne(id);
     await (project as any).$remove('services', serviceId);
     return this.findOne(id);
@@ -141,7 +141,7 @@ export class ProjectsService {
   // ---------------------------------------------------------------------
 
   async assignTeamMember(
-    id: number,
+    id: string,
     dto: AssignTeamMemberDto,
   ): Promise<Project> {
     await this.findOne(id);
@@ -155,14 +155,14 @@ export class ProjectsService {
     return this.findOne(id);
   }
 
-  async removeTeamMember(id: number, staffId: number): Promise<Project> {
+  async removeTeamMember(id: string, staffId: string): Promise<Project> {
     await this.findOne(id);
     await this.teamMemberModel.destroy({ where: { projectId: id, staffId } });
     await this.syncTeamSize(id);
     return this.findOne(id);
   }
 
-  private async syncTeamSize(projectId: number): Promise<void> {
+  private async syncTeamSize(projectId: string): Promise<void> {
     const teamSize = await this.teamMemberModel.count({
       where: { projectId },
     });
@@ -174,21 +174,21 @@ export class ProjectsService {
   // ---------------------------------------------------------------------
 
   async addDeliverable(
-    projectId: number,
+    projectId: string,
     dto: CreateDeliverableDto,
   ): Promise<Deliverable> {
     await this.findOne(projectId);
     return this.deliverableModel.create({ ...dto, projectId } as any);
   }
 
-  async listDeliverables(projectId: number): Promise<Deliverable[]> {
+  async listDeliverables(projectId: string): Promise<Deliverable[]> {
     await this.findOne(projectId);
     return this.deliverableModel.findAll({ where: { projectId } });
   }
 
   async updateDeliverable(
-    projectId: number,
-    deliverableId: number,
+    projectId: string,
+    deliverableId: string,
     dto: UpdateDeliverableDto,
   ): Promise<Deliverable> {
     const deliverable = await this.deliverableModel.findOne({
@@ -201,8 +201,8 @@ export class ProjectsService {
   }
 
   async removeDeliverable(
-    projectId: number,
-    deliverableId: number,
+    projectId: string,
+    deliverableId: string,
   ): Promise<void> {
     const deliverable = await this.deliverableModel.findOne({
       where: { id: deliverableId, projectId },
@@ -213,7 +213,7 @@ export class ProjectsService {
   }
 
   /** progress_percent = share of deliverables approved/delivered. */
-  private async recalculateProgress(projectId: number): Promise<void> {
+  private async recalculateProgress(projectId: string): Promise<void> {
     const deliverables = await this.deliverableModel.findAll({
       where: { projectId },
     });
@@ -237,7 +237,7 @@ export class ProjectsService {
   // ---------------------------------------------------------------------
 
   /** Client 1.1 summary stats: active / in-progress / needs-input / completed. */
-  async clientDashboardStats(clientId: number) {
+  async clientDashboardStats(clientId: string) {
     const projects = await this.projectModel.findAll({ where: { clientId } });
     return {
       active: projects.filter((p) =>
@@ -256,7 +256,7 @@ export class ProjectsService {
   }
 
   /** Projects needing attention: blocked / review pending / deadline soon. */
-  async needingAttention(clientId?: number) {
+  async needingAttention(clientId?: string) {
     const soon = new Date();
     soon.setDate(soon.getDate() + 7);
 

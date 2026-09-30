@@ -1,78 +1,75 @@
 import {
-  ArrowUpRight,
-  BookOpen,
+  Boxes,
+  Calendar,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
-  ClipboardList,
-  FileCheck2,
-  FileText,
+  Coins,
+  FolderKanban,
   HelpCircle,
-  Lock,
+  Mail,
   MessageSquare,
-  Phone,
+  Plus,
   Receipt,
-  Scale,
-  ShieldCheck,
-  Sparkles,
+  Search,
+  Star,
+  User,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 /* ============================================================
    MOCK DATA
 ============================================================ */
 
-const documents = [
+const conversations = [
   {
-    id: "terms",
-    title: "Terms & Conditions",
-    description:
-      "The terms governing the use of our services, client responsibilities, project delivery and engagement.",
-    icon: Scale,
-    category: "Company Policy",
-    updated: "Updated 01 Aug 2026",
-    href: "#",
+    id: "sup-041",
+    reference: "SUP-2026-0041",
+    status: "active",
+    subject: "Can't find my August invoice",
+    meta: "Updated today · 2 replies",
   },
   {
-    id: "privacy",
-    title: "Privacy Policy",
-    description:
-      "How we collect, use, store and protect information associated with your account and projects.",
-    icon: Lock,
-    category: "Company Policy",
-    updated: "Updated 01 Aug 2026",
-    href: "#",
+    id: "sup-038",
+    reference: "SUP-2026-0038",
+    status: "awaiting_client",
+    subject: "How do I download my agreement?",
+    meta: "Updated 20 Aug 2026 · 4 replies",
   },
   {
-    id: "agreement",
-    title: "Client Service Agreement",
-    description:
-      "Your agreement with the company covering the scope, responsibilities, commercial terms and engagement conditions.",
-    icon: FileCheck2,
-    category: "Your Agreement",
-    updated: "Signed 18 Jun 2026",
-    href: "#",
-    signed: true,
+    id: "sup-031",
+    reference: "SUP-2026-0031",
+    status: "active",
+    subject: "How do tokens work?",
+    meta: "Updated 19 Aug 2026 · 3 replies",
   },
   {
-    id: "brief",
-    title: "Client Brief",
-    description:
-      "The original project brief and requirements submitted for your engagement with the team.",
-    icon: ClipboardList,
-    category: "Project Document",
-    updated: "Updated 20 Jun 2026",
-    href: "#",
+    id: "sup-025",
+    reference: "SUP-2026-0025",
+    status: "resolved",
+    subject: "Where can I update my account information?",
+    meta: "Resolved 13 Aug 2026 · 2 replies",
   },
   {
-    id: "refund",
-    title: "Refund Policy",
-    description:
-      "Information about refunds, cancellations, eligible payments and applicable conditions.",
-    icon: Receipt,
-    category: "Company Policy",
-    updated: "Updated 01 Aug 2026",
-    href: "#",
+    id: "sup-018",
+    reference: "SUP-2026-0018",
+    status: "resolved",
+    subject: "How do I add a meeting to my calendar?",
+    meta: "Resolved 05 Aug 2026 · 3 replies",
   },
+];
+
+const faqCategories = [
+  { id: "account", label: "Account & Workspace", icon: User },
+  { id: "projects", label: "Projects", icon: FolderKanban },
+  { id: "invoices", label: "Invoices & Payments", icon: Receipt },
+  { id: "tokens", label: "Tokens", icon: Coins },
+  { id: "meetings", label: "Meetings", icon: Calendar },
+  { id: "general", label: "General", icon: HelpCircle },
 ];
 
 /* ============================================================
@@ -80,318 +77,249 @@ const documents = [
 ============================================================ */
 
 export default function ClientSupport() {
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [faqSearch, setFaqSearch] = useState("");
+
+  const filteredConversations = useMemo(() => {
+    return conversations.filter((c) => {
+      const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+      const term = search.toLowerCase().trim();
+      const matchesSearch =
+        !term || c.subject.toLowerCase().includes(term) || c.reference.toLowerCase().includes(term);
+      return matchesStatus && matchesSearch;
+    });
+  }, [search, statusFilter]);
+
+  const filteredFaqs = useMemo(() => {
+    const term = faqSearch.toLowerCase().trim();
+    if (!term) return faqCategories;
+    return faqCategories.filter((f) => f.label.toLowerCase().includes(term));
+  }, [faqSearch]);
+
   return (
-    <div className="min-h-full bg-surface-bg">
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
+    <div className="min-h-screen bg-slate-50 px-6 py-8">
+      <div className="mx-auto max-w-[1180px]">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-[24px] font-bold tracking-[-0.01em] text-slate-900">
+            Support &amp; Help
+          </h1>
+          <p className="mt-1.5 text-[13px] text-slate-500">
+            Need help using your OCT2OFIVE workspace? We&rsquo;re here to help.
+          </p>
+        </div>
 
-      <div className="border-b border-surface-border">
-        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-            <div>
-              <div className="mb-3 flex items-center gap-2">
-                <HelpCircle className="h-4 w-4 text-brand-orange" />
+        {/* Quick actions */}
+        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <QuickAction
+            icon={Mail}
+            title="Contact Us"
+            description="Email the OCT2OFIVE support team."
+          />
+          <QuickAction
+            icon={Plus}
+            title="Raise a Ticket"
+            description="Create a support request and track it."
+          />
+        </div>
 
-                <span className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-brand-orange">
-                  Client Support
-                </span>
+        {/* Two-pane layout */}
+        <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+          {/* Conversations */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5">
+            <h2 className="mb-4 text-[15px] font-semibold text-slate-900">Your Conversations</h2>
+
+            <div className="mb-4 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search conversations..."
+                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-8 pr-3 text-[12.5px] text-slate-700 outline-none placeholder:text-slate-400 focus:border-rose-300"
+                />
               </div>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[12.5px] font-medium text-slate-600 outline-none focus:border-rose-300"
+              >
+                <option value="all">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="awaiting_client">Awaiting Your Response</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
 
-              <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-surface-fg sm:text-4xl">
-                Support & Resources
-              </h1>
+            <div className="divide-y divide-slate-100">
+              {filteredConversations.length > 0 ? (
+                filteredConversations.map((c) => <ConversationRow key={c.id} conversation={c} />)
+              ) : (
+                <div className="py-14 text-center text-[13px] text-slate-400">
+                  No conversations match the selected filters.
+                </div>
+              )}
+            </div>
 
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-surface-muted">
-                Find your agreements, project documents, policies and information about your
-                engagement with us.
+            <div className="mt-4 flex items-center justify-between">
+              <span className="text-[12px] text-slate-400">1–5 of 12 conversations</span>
+              <div className="flex items-center gap-1">
+                <button className="grid h-7 w-7 place-items-center rounded-md text-slate-300">
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                </button>
+                {[1, 2, 3].map((n) => (
+                  <button
+                    key={n}
+                    className={cn(
+                      "grid h-7 w-7 place-items-center rounded-md text-[12px] font-semibold",
+                      n === 1 ? "bg-rose-50 text-rose-600" : "text-slate-500 hover:bg-slate-50"
+                    )}
+                  >
+                    {n}
+                  </button>
+                ))}
+                <button className="grid h-7 w-7 place-items-center rounded-md text-slate-400 hover:bg-slate-50">
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5">
+            <h2 className="text-[15px] font-semibold text-slate-900">Frequently Asked Questions</h2>
+            <p className="mt-1 text-[12.5px] text-slate-500">
+              Quick answers to common questions about using your OCT2OFIVE workspace.
+            </p>
+
+            <div className="relative mt-4">
+              <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+              <input
+                value={faqSearch}
+                onChange={(e) => setFaqSearch(e.target.value)}
+                placeholder="Search FAQs..."
+                className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-8 pr-3 text-[12.5px] text-slate-700 outline-none placeholder:text-slate-400 focus:border-rose-300"
+              />
+            </div>
+
+            <div className="mt-3 space-y-1">
+              {filteredFaqs.map((f) => (
+                <FaqRow key={f.id} category={f} />
+              ))}
+            </div>
+          </section>
+        </div>
+
+        {/* Help footer */}
+        <div className="mt-6 flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="flex items-start gap-3">
+            <MessageSquare className="mt-0.5 h-4 w-4 text-rose-500" />
+            <div>
+              <p className="text-[13px] font-semibold text-slate-900">Help us improve</p>
+              <p className="text-[12.5px] text-slate-500">
+                Have feedback about the Client Portal? We&rsquo;d love to hear it.
               </p>
             </div>
-
-            <Link
-              to="/client/support/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-xs font-bold text-white shadow-[0_10px_24px_-8px_rgba(255,90,31,0.5)] transition-all hover:-translate-y-px"
-            >
-              <MessageSquare className="h-4 w-4" />
-              Contact Support
-            </Link>
           </div>
+          <button className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-rose-200 px-3.5 py-2 text-[12.5px] font-semibold text-rose-600 hover:bg-rose-50">
+            Give Feedback
+            <ArrowUpRightIcon />
+          </button>
         </div>
       </div>
-
-      {/* ======================================================
-          MAIN CONTENT
-      ====================================================== */}
-
-      <main className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-        {/* ==================================================
-            SUPPORT BANNER
-        ================================================== */}
-
-        <SupportBanner />
-
-        {/* ==================================================
-            DOCUMENTS
-        ================================================== */}
-
-        <section className="mt-8">
-          <div className="mb-5">
-            <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-surface-fg">
-              Your Documents & Policies
-            </h2>
-
-            <p className="mt-1 text-sm text-surface-muted">
-              Access important documents associated with your account and engagement.
-            </p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {documents.map((document) => (
-              <DocumentCard key={document.id} document={document} />
-            ))}
-          </div>
-        </section>
-
-        {/* ==================================================
-            AGREEMENT STATUS
-        ================================================== */}
-
-        <AgreementStatus />
-
-        {/* ==================================================
-            NEED HELP
-        ================================================== */}
-
-        <NeedHelp />
-      </main>
     </div>
   );
 }
 
 /* ============================================================
-   SUPPORT BANNER
+   QUICK ACTION CARD
 ============================================================ */
 
-function SupportBanner() {
+function QuickAction({ icon: Icon, title, description }) {
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-brand-orange/20 bg-surface-card">
-      <div className="absolute right-0 top-0 h-48 w-48 translate-x-16 -translate-y-16 rounded-full bg-brand-orange/5" />
-
-      <div className="relative flex flex-col gap-6 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex gap-4">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-orange/10">
-            <Sparkles className="h-5 w-5 text-brand-orange" />
-          </div>
-
-          <div>
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-brand-orange">
-              Need assistance?
-            </p>
-
-            <h2 className="mt-1 font-display text-xl font-bold tracking-[-0.03em] text-surface-fg">
-              We're here to help.
-            </h2>
-
-            <p className="mt-1 max-w-2xl text-sm leading-6 text-surface-muted">
-              If you have questions about your project, billing, agreements or anything else in your
-              workspace, reach out to our team.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-          <Link
-            to="/client/support/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-4 py-2.5 text-xs font-bold text-white"
-          >
-            <MessageSquare className="h-3.5 w-3.5" />
-            Start a Conversation
-          </Link>
-
-          <a
-            href="mailto:support@example.com"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-surface-border bg-surface-bg px-4 py-2.5 text-xs font-bold text-surface-fg transition-colors hover:border-brand-orange hover:text-brand-orange"
-          >
-            <MailIcon />
-            Email Support
-          </a>
-        </div>
+    <button className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-left hover:border-slate-300">
+      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-rose-50">
+        <Icon className="h-5 w-5 text-rose-600" />
       </div>
-    </section>
+      <div className="min-w-0 flex-1">
+        <p className="text-[14px] font-semibold text-slate-900">{title}</p>
+        <p className="text-[12.5px] text-slate-500">{description}</p>
+      </div>
+      <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 group-hover:text-rose-500" />
+    </button>
   );
 }
 
 /* ============================================================
-   DOCUMENT CARD
+   CONVERSATION ROW
 ============================================================ */
 
-function DocumentCard({ document }) {
-  const Icon = document.icon;
-
-  return (
-    <a
-      href={document.href}
-      className="group rounded-2xl border border-surface-border bg-surface-card p-5 transition-all duration-200 hover:-translate-y-px hover:border-surface-muted hover:shadow-[0_12px_30px_-24px_rgba(0,0,0,0.35)]"
-    >
-      <div className="flex gap-4">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-bg transition-colors group-hover:bg-brand-orange/10">
-          <Icon className="h-5 w-5 text-surface-muted transition-colors group-hover:text-brand-orange" />
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-sm font-bold text-surface-fg">{document.title}</h3>
-
-                {document.signed && (
-                  <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[0.5rem] font-bold text-emerald-600">
-                    <CheckCircle2 className="h-3 w-3" />
-                    Signed
-                  </span>
-                )}
-              </div>
-
-              <span className="mt-1 inline-block text-[0.6rem] font-semibold uppercase tracking-[0.06em] text-surface-muted">
-                {document.category}
-              </span>
-            </div>
-
-            <ArrowUpRight className="h-4 w-4 shrink-0 text-surface-muted transition-colors group-hover:text-brand-orange" />
-          </div>
-
-          <p className="mt-3 text-xs leading-5 text-surface-muted">{document.description}</p>
-
-          <div className="mt-4 flex items-center justify-between">
-            <span className="text-[0.6rem] font-medium text-surface-muted">{document.updated}</span>
-
-            <span className="inline-flex items-center gap-1 text-[0.6rem] font-bold text-surface-muted group-hover:text-brand-orange">
-              View Document
-              <ChevronRight className="h-3 w-3" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </a>
-  );
+function getStatusConfig(status) {
+  const config = {
+    active: { label: "Active", tint: "text-orange-500", bg: "bg-orange-50", icon: Mail },
+    awaiting_client: {
+      label: "Awaiting Your Response",
+      tint: "text-sky-600",
+      bg: "bg-sky-50",
+      icon: MessageSquare,
+    },
+    resolved: {
+      label: "Resolved",
+      tint: "text-emerald-600",
+      bg: "bg-emerald-50",
+      icon: CheckCircle2,
+    },
+  };
+  return config[status] || config.active;
 }
 
-/* ============================================================
-   AGREEMENT STATUS
-============================================================ */
+function ConversationRow({ conversation }) {
+  const status = getStatusConfig(conversation.status);
+  const Icon = status.icon;
 
-function AgreementStatus() {
   return (
-    <section className="mt-10">
-      <div className="mb-5">
-        <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-surface-fg">
-          Engagement Status
-        </h2>
-
-        <p className="mt-1 text-sm text-surface-muted">
-          Current status of your agreement and project documentation.
+    <button className="group flex w-full items-start gap-3 py-3.5 text-left">
+      <div className={cn("mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg", status.bg)}>
+        <Icon className={cn("h-4 w-4", status.tint)} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold text-slate-400">{conversation.reference}</span>
+          <span className={cn("text-[11px] font-semibold", status.tint)}>{status.label}</span>
+        </div>
+        <p className="mt-1 text-[13.5px] font-semibold leading-snug text-slate-900">
+          {conversation.subject}
         </p>
+        <p className="text-[11px] text-slate-400">{conversation.meta}</p>
       </div>
-
-      <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-card">
-        <div className="grid gap-0 md:grid-cols-3">
-          <StatusItem
-            icon={FileCheck2}
-            label="Service Agreement"
-            value="Signed"
-            description="18 Jun 2026"
-            status="success"
-          />
-
-          <StatusItem
-            icon={ClipboardList}
-            label="Client Brief"
-            value="Confirmed"
-            description="20 Jun 2026"
-            status="success"
-          />
-
-          <StatusItem
-            icon={ShieldCheck}
-            label="Account Status"
-            value="Active"
-            description="No restrictions"
-            status="success"
-          />
-        </div>
-      </div>
-    </section>
+      <ChevronRight className="mt-1 hidden h-4 w-4 shrink-0 text-slate-300 group-hover:text-rose-500 sm:block" />
+    </button>
   );
 }
 
 /* ============================================================
-   STATUS ITEM
+   FAQ ROW
 ============================================================ */
 
-function StatusItem({ icon: Icon, label, value, description, status }) {
+function FaqRow({ category }) {
+  const Icon = category.icon;
   return (
-    <div className="border-b border-surface-border p-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-      <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10">
-          <Icon className="h-4 w-4 text-emerald-600" />
-        </div>
-
-        <div>
-          <p className="text-[0.6rem] font-bold uppercase tracking-[0.08em] text-surface-muted">
-            {label}
-          </p>
-
-          <p className="mt-1 text-sm font-bold text-surface-fg">{value}</p>
-
-          <p className="mt-0.5 text-[0.65rem] text-surface-muted">{description}</p>
-        </div>
+    <button className="group flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left hover:bg-slate-50">
+      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-500">
+        <Icon className="h-4 w-4" />
       </div>
-    </div>
+      <span className="flex-1 text-[13px] font-medium text-slate-800">{category.label}</span>
+      <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 group-hover:text-rose-500" />
+    </button>
   );
 }
 
 /* ============================================================
-   NEED HELP
+   ICON
 ============================================================ */
 
-function NeedHelp() {
-  return (
-    <section className="mt-10 rounded-2xl border border-surface-border bg-surface-card p-6">
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-bg">
-            <HelpCircle className="h-5 w-5 text-surface-muted" />
-          </div>
-
-          <div>
-            <h2 className="text-sm font-bold text-surface-fg">
-              Can't find what you're looking for?
-            </h2>
-
-            <p className="mt-1 text-xs leading-5 text-surface-muted">
-              Contact our support team for questions about your project, payments, agreements or
-              account.
-            </p>
-          </div>
-        </div>
-
-        <Link
-          to="/client/support/contact"
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-surface-border px-4 py-2.5 text-xs font-bold text-surface-fg transition-colors hover:border-brand-orange hover:text-brand-orange"
-        >
-          Contact Support
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </Link>
-      </div>
-    </section>
-  );
-}
-
-/* ============================================================
-   MAIL ICON
-============================================================ */
-
-function MailIcon() {
+function ArrowUpRightIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -400,9 +328,8 @@ function MailIcon() {
       strokeWidth="2"
       className="h-3.5 w-3.5"
     >
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-
-      <path d="m22 7-8.97 5.7a2 2 0 0 1-2.06 0L2 7" />
+      <path d="M7 17 17 7" />
+      <path d="M7 7h10v10" />
     </svg>
   );
 }

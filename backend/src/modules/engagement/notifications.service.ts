@@ -27,7 +27,7 @@ export class NotificationsService {
    * behind an admin/system guard if you need it externally.
    */
   async notify(dto: {
-    user_id: number;
+    user_id: string;
     title: string;
     message?: string;
     link_url?: string;
@@ -36,7 +36,7 @@ export class NotificationsService {
   }
 
   async notifyMany(
-    userIds: number[],
+    userIds: string[],
     payload: { title: string; message?: string; link_url?: string },
   ) {
     const rows = userIds.map((user_id) => ({
@@ -66,7 +66,7 @@ export class NotificationsService {
     });
   }
 
-  async findForUser(userId: number, query: QueryNotificationDto) {
+  async findForUser(userId: string, query: QueryNotificationDto) {
     const where: Record<string, any> = { user_id: userId };
     if (query.unread) where.is_read = false;
 
@@ -88,14 +88,14 @@ export class NotificationsService {
     };
   }
 
-  async unreadCount(userId: number) {
+  async unreadCount(userId: string) {
     const count = await this.notificationModel.count({
       where: { user_id: userId, is_read: false },
     });
     return { unread: count };
   }
 
-  async markAsRead(id: number, userId: number) {
+  async markAsRead(id: string, userId: string) {
     const item = await this.notificationModel.findByPk(id);
     if (!item) throw new NotFoundException(`Notification #${id} not found`);
     if (item.user_id !== userId) {
@@ -105,7 +105,7 @@ export class NotificationsService {
     return item;
   }
 
-  async markAllAsRead(userId: number) {
+  async markAllAsRead(userId: string) {
     const [affected] = await this.notificationModel.update(
       { is_read: true },
       { where: { user_id: userId, is_read: false } },
@@ -113,7 +113,7 @@ export class NotificationsService {
     return { updated: affected };
   }
 
-  async remove(id: number, userId: number) {
+  async remove(id: string, userId: string) {
     const item = await this.notificationModel.findByPk(id);
     if (!item) throw new NotFoundException(`Notification #${id} not found`);
     if (item.user_id !== userId) {

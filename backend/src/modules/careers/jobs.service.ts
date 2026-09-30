@@ -79,7 +79,7 @@ export class JobsService {
     };
   }
 
-  async findOne(id: number): Promise<JobPosting> {
+  async findOne(id: string): Promise<JobPosting> {
     const job = await this.jobModel.findByPk(id, {
       include: [
         {
@@ -93,13 +93,13 @@ export class JobsService {
     return job;
   }
 
-  async update(id: number, dto: UpdateJobDto): Promise<JobPosting> {
+  async update(id: string, dto: UpdateJobDto): Promise<JobPosting> {
     const job = await this.findOne(id);
     await job.update({ ...dto });
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const job = await this.findOne(id);
     await job.destroy();
   }

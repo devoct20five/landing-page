@@ -1,64 +1,54 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   CheckCircle2,
   Clock3,
   XCircle,
-  AlertTriangle,
+  MessageSquareWarning,
   ArrowUpRight,
   UserCircle2,
   FolderKanban,
 } from "lucide-react";
 
-import { approvals, projects, clients } from "@/data/mockData";
+import { approvalsApi } from "@/api";
+import { adaptApproval } from "@/api/adapters/approval";
+import { useApiResource } from "@/hooks/useApiResource";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { useClientOptions } from "@/hooks/useProjects";
 
 import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
+import { SkeletonList } from "@/components/shared/Skeleton";
 import { cn } from "@/lib/utils";
 
 const STATUS_FILTERS = [
-  {
-    id: "all",
-    label: "All",
-  },
-  {
-    id: "pending",
-    label: "Pending",
-  },
-  {
-    id: "approved",
-    label: "Approved",
-  },
-  {
-    id: "rejected",
-    label: "Rejected",
-  },
+  { id: "all", label: "All" },
+  { id: "pending", label: "Pending" },
+  { id: "changes-requested", label: "Changes Requested" },
+  { id: "approved", label: "Approved" },
+  { id: "rejected", label: "Rejected" },
 ];
 
 function getApprovalStatus(approval) {
   if (approval.status === "approved") {
-    return {
-      label: "Approved",
-      className: "bg-emerald-500/10 text-emerald-600",
-      icon: CheckCircle2,
-    };
+    return { label: "Approved", className: "bg-emerald-500/10 text-emerald-600", icon: CheckCircle2 };
   }
-
   if (approval.status === "rejected") {
+    return { label: "Rejected", className: "bg-red-500/10 text-red-600", icon: XCircle };
+  }
+  if (approval.status === "changes-requested") {
     return {
-      label: "Rejected",
-      className: "bg-red-500/10 text-red-600",
-      icon: XCircle,
+      label: "Changes Requested",
+      className: "bg-amber-500/10 text-amber-600",
+      icon: MessageSquareWarning,
     };
   }
-
-  return {
-    label: "Pending",
-    className: "bg-brand-orange/10 text-brand-orange",
-    icon: Clock3,
-  };
+  return { label: "Pending", className: "bg-brand-orange/10 text-brand-orange", icon: Clock3 };
 }
 
 function ApprovalCard({ approval }) {
+  const navigate = useNavigate();
   const status = getApprovalStatus(approval);
   const StatusIcon = status.icon;
 
@@ -73,11 +63,11 @@ function ApprovalCard({ approval }) {
 
           <div className="min-w-0">
             <h2 className="truncate font-display text-base font-bold text-surface-fg">
-              {approval.title || approval.name || "Approval Request"}
+              {approval.title}
             </h2>
 
             <p className="mt-1 text-xs text-surface-muted">
-              {approval.description || "A new approval requires your attention."}
+              {approval.deliverableTitle ?? "A new approval requires your attention."}
             </p>
           </div>
         </div>
@@ -122,38 +112,27 @@ function ApprovalCard({ approval }) {
 
       {/* DETAILS */}
       <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs text-surface-muted">
-        {approval.requestedBy && (
+        {approval.requesterName && (
           <span>
             Requested by{" "}
-            <strong className="font-semibold text-surface-fg">{approval.requestedBy}</strong>
+            <strong className="font-semibold text-surface-fg">{approval.requesterName}</strong>
           </span>
         )}
 
-        {approval.createdAt && <span>{approval.createdAt}</span>}
-
-        {approval.dueLabel && (
-          <span className={cn(approval.dueLabel === "Overdue" && "font-semibold text-red-600")}>
-            {approval.dueLabel}
-          </span>
+        {approval.status === "pending" && approval.waitingSince && (
+          <span className="font-semibold text-brand-orange">Waiting {approval.waitingSince}</span>
         )}
       </div>
 
       {/* FOOTER */}
-      <div className="mt-5 flex items-center justify-between border-t border-surface-border pt-4">
-        <div className="flex items-center gap-2">
-          {approval.priority === "high" && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-2.5 py-1 text-[0.65rem] font-semibold text-red-600">
-              <AlertTriangle className="h-3 w-3" />
-              High Priority
-            </span>
-          )}
-        </div>
-
+      <div className="mt-5 flex items-center justify-end border-t border-surface-border pt-4">
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-surface-fg transition hover:text-brand-orange"
+          onClick={() => approval.projectId && navigate(`/admin/project/${approval.projectId}`)}
+          disabled={!approval.projectId}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-surface-fg transition hover:text-brand-orange disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Review
+          Open Project
           <ArrowUpRight className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -187,45 +166,40 @@ function StatCard({ icon: Icon, label, value, description, attention = false }) 
 export default function AdminApprovals() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [clientFilter, setClientFilter] = useState("all");
-  const [projectFilter, setProjectFilter] = useState("all");
   const [search, setSearch] = useState("");
 
+  const debouncedSearch = useDebouncedValue(search, 300);
+  const { clients } = useClientOptions();
+
+  const fetcher = () =>
+    approvalsApi.listApprovals({
+      status: statusFilter === "all" ? undefined : statusFilter,
+      clientId: clientFilter === "all" ? undefined : clientFilter,
+      limit: 100,
+    });
+  const { data, isLoading, error, refetch } = useApiResource(fetcher, [statusFilter, clientFilter]);
+  const approvals = (data?.items ?? []).map(adaptApproval);
+
   const stats = useMemo(() => {
-    const pending = approvals.filter((approval) => approval.status === "pending");
-
-    const approved = approvals.filter((approval) => approval.status === "approved");
-
-    const rejected = approvals.filter((approval) => approval.status === "rejected");
-
     return {
       total: approvals.length,
-      pending: pending.length,
-      approved: approved.length,
-      rejected: rejected.length,
+      pending: approvals.filter((a) => a.status === "pending").length,
+      approved: approvals.filter((a) => a.status === "approved").length,
+      rejected: approvals.filter((a) => a.status === "rejected").length,
     };
-  }, []);
+  }, [approvals]);
 
+  // Search is client-side — the approvals endpoint has no search param.
   const filteredApprovals = useMemo(() => {
-    const query = search.toLowerCase().trim();
-
-    return approvals.filter((approval) => {
-      const matchesStatus = statusFilter === "all" || approval.status === statusFilter;
-
-      const matchesClient = clientFilter === "all" || approval.clientId === clientFilter;
-
-      const matchesProject = projectFilter === "all" || approval.projectId === projectFilter;
-
-      const matchesSearch =
-        !query ||
+    const query = debouncedSearch.toLowerCase().trim();
+    if (!query) return approvals;
+    return approvals.filter(
+      (approval) =>
         approval.title?.toLowerCase().includes(query) ||
-        approval.name?.toLowerCase().includes(query) ||
         approval.clientName?.toLowerCase().includes(query) ||
-        approval.projectName?.toLowerCase().includes(query) ||
-        approval.description?.toLowerCase().includes(query);
-
-      return matchesStatus && matchesClient && matchesProject && matchesSearch;
-    });
-  }, [statusFilter, clientFilter, projectFilter, search]);
+        approval.projectName?.toLowerCase().includes(query)
+    );
+  }, [approvals, debouncedSearch]);
 
   return (
     <div className="mx-auto max-w-[1320px] animate-fade-up">
@@ -315,7 +289,7 @@ export default function AdminApprovals() {
           </div>
         </div>
 
-        {/* DROPDOWNS */}
+        {/* CLIENT FILTER */}
         <div className="flex flex-col gap-3 sm:flex-row">
           <select
             value={clientFilter}
@@ -330,36 +304,32 @@ export default function AdminApprovals() {
               </option>
             ))}
           </select>
-
-          <select
-            value={projectFilter}
-            onChange={(event) => setProjectFilter(event.target.value)}
-            className="brand-input w-full py-2.5 text-sm sm:w-[240px]"
-          >
-            <option value="all">All Projects</option>
-
-            {projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 
       {/* RESULT COUNT */}
       <div className="mb-4 flex items-center justify-between">
         <p className="text-xs text-surface-muted">
-          Showing <span className="font-semibold text-surface-fg">{filteredApprovals.length}</span>{" "}
-          {filteredApprovals.length === 1 ? "approval" : "approvals"}
+          {isLoading ? (
+            "Loading approvals…"
+          ) : (
+            <>
+              Showing <span className="font-semibold text-surface-fg">{filteredApprovals.length}</span>{" "}
+              {filteredApprovals.length === 1 ? "approval" : "approvals"}
+            </>
+          )}
         </p>
       </div>
 
       {/* CONTENT */}
-      {filteredApprovals.length === 0 ? (
+      {isLoading ? (
+        <SkeletonList rows={6} />
+      ) : error ? (
+        <ErrorState error={error} resource="Approvals" onRetry={refetch} />
+      ) : filteredApprovals.length === 0 ? (
         <EmptyState
           title="No Approvals Found"
-          description="Try changing the status, client, project, or search filter."
+          description="Try changing the status, client, or search filter."
         />
       ) : (
         <div className="grid gap-5 lg:grid-cols-2">

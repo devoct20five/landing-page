@@ -5,7 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -39,37 +39,40 @@ export class InvoicesController {
   }
 
   @Get('project/:projectId')
-  findByProject(@Param('projectId', ParseIntPipe) projectId: number) {
+  findByProject(@Param('projectId', ParseUUIDPipe) projectId: string) {
     return this.invoicesService.findByProject(projectId);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.invoicesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateInvoiceDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateInvoiceDto,
+  ) {
     return this.invoicesService.update(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.invoicesService.remove(id);
   }
 
   // ---- Client: Project Payment module (1.3) ---------------------------
   @Post(':id/payments')
   recordPayment(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreatePaymentDto,
   ) {
     return this.invoicesService.recordPayment(id, dto);
   }
 
   @Get(':id/payments')
-  listPayments(@Param('id', ParseIntPipe) id: number) {
+  listPayments(@Param('id', ParseUUIDPipe) id: string) {
     return this.invoicesService.listTransactions(id);
   }
 }

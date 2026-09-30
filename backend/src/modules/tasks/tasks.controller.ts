@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -16,7 +16,7 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { QueryTaskDto } from './dto/query-task.dto';
 import { CreateTaskCommentDto } from './dto/create-task-comment.dto';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { RequestUser } from '../auth/types/authenticated-user.type';
+import type { RequestUser } from '../auth/types/authenticated-user.type';
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
@@ -28,7 +28,7 @@ export class TasksController {
 
   @Get(':id')
   findOne(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
   ) {
     return this.tasksService.findOne(id, user);
@@ -41,7 +41,7 @@ export class TasksController {
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateTaskDto,
     @CurrentUser() user: RequestUser,
   ) {
@@ -50,7 +50,7 @@ export class TasksController {
 
   @Patch(':id/status')
   updateStatus(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateTaskStatusDto,
     @CurrentUser() user: RequestUser,
   ) {
@@ -59,7 +59,7 @@ export class TasksController {
 
   @Delete(':id')
   remove(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
   ) {
     return this.tasksService.remove(id, user);
@@ -67,7 +67,7 @@ export class TasksController {
 
   @Get(':id/comments')
   listComments(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
   ) {
     return this.tasksService.listComments(id, user);
@@ -75,7 +75,7 @@ export class TasksController {
 
   @Post(':id/comments')
   addComment(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateTaskCommentDto,
     @CurrentUser() user: RequestUser,
   ) {

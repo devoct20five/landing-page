@@ -25,7 +25,7 @@ export class RolesService {
     });
   }
 
-  async findOne(id: number): Promise<Role> {
+  async findOne(id: string): Promise<Role> {
     const role = await this.roleModel.findByPk(id, { include: [Permission] });
     if (!role) {
       throw new NotFoundException(`Role ${id} not found`);
@@ -58,7 +58,7 @@ export class RolesService {
     return this.findOne(role.id);
   }
 
-  async update(id: number, dto: UpdateRoleDto): Promise<Role> {
+  async update(id: string, dto: UpdateRoleDto): Promise<Role> {
     const role = await this.findOne(id);
 
     if (dto.permissionIds) {
@@ -73,7 +73,7 @@ export class RolesService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const role = await this.findOne(id);
     if (role.isSystem) {
       throw new BadRequestException('System roles cannot be deleted');
@@ -82,7 +82,7 @@ export class RolesService {
   }
 
   /** Replaces the full set of permissions attached to a role. */
-  async setPermissions(roleId: number, permissionIds: number[]): Promise<Role> {
+  async setPermissions(roleId: string, permissionIds: string[]): Promise<Role> {
     const role = await this.findOne(roleId);
 
     if (permissionIds.length) {
@@ -99,7 +99,7 @@ export class RolesService {
   }
 
   /** Flat list of permission slugs for a role - used when issuing a JWT. */
-  async getPermissionSlugs(roleId: number): Promise<string[]> {
+  async getPermissionSlugs(roleId: string): Promise<string[]> {
     const role = await this.roleModel.findByPk(roleId, {
       include: [Permission],
     });

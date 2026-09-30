@@ -59,7 +59,7 @@ export class ClientsService {
   }
 
   /** Client detail page: full project history for a single client (3.2). */
-  async findOne(id: number): Promise<Client> {
+  async findOne(id: string): Promise<Client> {
     const client = await this.clientModel.findByPk(id, {
       include: [{ model: ClientContact, include: [User] }, { model: Project }],
     });
@@ -67,19 +67,19 @@ export class ClientsService {
     return client;
   }
 
-  async update(id: number, dto: UpdateClientDto): Promise<Client> {
+  async update(id: string, dto: UpdateClientDto): Promise<Client> {
     const client = await this.findOne(id);
     await client.update(dto);
     return client;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const client = await this.findOne(id);
     await client.destroy();
   }
 
   /** Aggregate stats row for the admin client list (3.2). */
-  async statsFor(id: number) {
+  async statsFor(id: string) {
     const client = await this.findOne(id);
     const projects = client.projects ?? [];
 
@@ -109,7 +109,7 @@ export class ClientsService {
   // ---------------------------------------------------------------------
 
   async addContact(
-    clientId: number,
+    clientId: string,
     dto: CreateClientContactDto,
   ): Promise<ClientContact> {
     await this.findOne(clientId); // 404s if client missing
@@ -133,7 +133,7 @@ export class ClientsService {
     return this.clientContactModel.create({ ...dto, clientId } as any);
   }
 
-  async listContacts(clientId: number): Promise<ClientContact[]> {
+  async listContacts(clientId: string): Promise<ClientContact[]> {
     await this.findOne(clientId);
     return this.clientContactModel.findAll({
       where: { clientId },
@@ -142,8 +142,8 @@ export class ClientsService {
   }
 
   async updateContact(
-    clientId: number,
-    contactId: number,
+    clientId: string,
+    contactId: string,
     dto: UpdateClientContactDto,
   ): Promise<ClientContact> {
     const contact = await this.clientContactModel.findOne({
@@ -162,11 +162,26 @@ export class ClientsService {
     return contact;
   }
 
-  async removeContact(clientId: number, contactId: number): Promise<void> {
+  async removeContact(clientId: string, contactId: string): Promise<void> {
     const contact = await this.clientContactModel.findOne({
       where: { id: contactId, clientId },
     });
     if (!contact) throw new NotFoundException('Client contact not found');
     await contact.destroy();
+  }
+
+  /**
+   * Resolves which Client a client-portal user belongs to, via their
+   * ClientContact row. Used at login (see AuthService.signToken) to embed
+   * clientId in the JWT — every client-scoping check in the app
+   * (approvals, tasks, ...) reads requester.clientId from that claim, so a
+   * client user with no ClientContact row will not be scoped to anything.
+   */
+  async findClientIdForUser(userId: string): Promise<string | null> {
+    const contact = await this.clientContactModel.findOne({
+      where: { userId },
+      attributes: ['clientId'],
+    });
+    return contact?.clientId ?? null;
   }
 }
