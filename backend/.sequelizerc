@@ -1,0 +1,26 @@
+// Sequelize CLI configuration.
+//
+// This file is loaded by `sequelize-cli` before it does anything else. It:
+//   1. Registers ts-node (with a CommonJS-targeted tsconfig) so migrations
+//      and seeders can be written in TypeScript, matching the rest of the
+//      codebase, instead of being a second plain-JS dialect nobody wants to
+//      touch.
+//   2. Points sequelize-cli at database/{config,migrations,seeders} instead
+//      of its default project-root locations, so this stays out of src/.
+//
+// See database/README.md for the actual migrate/seed commands.
+
+process.env.TS_NODE_PROJECT =
+  process.env.TS_NODE_PROJECT || require('path').resolve(__dirname, 'database/tsconfig.json');
+process.env.TS_NODE_TRANSPILE_ONLY = process.env.TS_NODE_TRANSPILE_ONLY || 'true';
+
+require('ts-node/register');
+
+const path = require('path');
+
+module.exports = {
+  config: path.resolve('database', 'config', 'config.js'),
+  'migrations-path': path.resolve('database', 'migrations'),
+  'seeders-path': path.resolve('database', 'seeders'),
+  'models-path': path.resolve('src'),
+};

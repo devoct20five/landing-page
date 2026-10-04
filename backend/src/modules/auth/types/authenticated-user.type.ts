@@ -7,7 +7,6 @@ import { UserType } from '@/common/enums/user-type.enum';
  */
 export interface AuthenticatedUser {
   id: string;
-  uuid: string;
   email: string;
   userType: UserType;
   roleId: string;
@@ -47,7 +46,6 @@ export type RequestUser = AuthenticatedUser;
  */
 export interface JwtPayload {
   sub: string;
-  uuid: string;
   email: string;
   userType: UserType;
   roleId: string;

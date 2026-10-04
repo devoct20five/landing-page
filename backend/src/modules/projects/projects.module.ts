@@ -9,6 +9,7 @@ import { Service } from '../services/models/service.model';
 import { User } from '../users/models/user.model';
 import { ProjectsService } from './projects.service';
 import { ProjectsController } from './projects.controller';
+import { AccessControlModule } from '@/common/access-control/access-control.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProjectsController } from './projects.controller';
       Service,
       User,
     ]),
+    AccessControlModule,
   ],
   controllers: [ProjectsController],
   providers: [ProjectsService],

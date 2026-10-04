@@ -6,9 +6,11 @@ import { FoldersController } from './folders.controller';
 import { FoldersService } from './folders.service';
 import { File } from './models/file.model';
 import { Folder } from './models/folder.model';
+import { User } from '../users/models/user.model';
+import { AccessControlModule } from '@/common/access-control/access-control.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([File, Folder])],
+  imports: [SequelizeModule.forFeature([File, Folder, User]), AccessControlModule],
   controllers: [FilesController, FoldersController],
   providers: [FilesService, FoldersService],
   exports: [FilesService, FoldersService],

@@ -16,17 +16,25 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { QueryTaskDto } from './dto/query-task.dto';
 import { CreateTaskCommentDto } from './dto/create-task-comment.dto';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { RequirePermissions } from '@/common/decorators/permissions.decorator';
 import type { RequestUser } from '../auth/types/authenticated-user.type';
+
+// Permission-gated per database/helpers/permission-catalog.ts. Resource
+// scoping (client tenancy, staff project assignment) happens inside
+// TasksService via AccessControlService — a permission only says someone
+// can view/edit *some* task, not *which* ones.
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
+  @RequirePermissions('tasks.view')
   findAll(@Query() query: QueryTaskDto, @CurrentUser() user: RequestUser) {
     return this.tasksService.findAll(query, user);
   }
 
   @Get(':id')
+  @RequirePermissions('tasks.view')
   findOne(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
@@ -35,11 +43,13 @@ export class TasksController {
   }
 
   @Post()
+  @RequirePermissions('tasks.create')
   create(@Body() dto: CreateTaskDto, @CurrentUser() user: RequestUser) {
     return this.tasksService.create(dto, user);
   }
 
   @Patch(':id')
+  @RequirePermissions('tasks.edit')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateTaskDto,
@@ -49,6 +59,7 @@ export class TasksController {
   }
 
   @Patch(':id/status')
+  @RequirePermissions('tasks.edit')
   updateStatus(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateTaskStatusDto,
@@ -58,6 +69,7 @@ export class TasksController {
   }
 
   @Delete(':id')
+  @RequirePermissions('tasks.delete')
   remove(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
@@ -66,6 +78,7 @@ export class TasksController {
   }
 
   @Get(':id/comments')
+  @RequirePermissions('tasks.view')
   listComments(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: RequestUser,
@@ -74,6 +87,7 @@ export class TasksController {
   }
 
   @Post(':id/comments')
+  @RequirePermissions('tasks.edit')
   addComment(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateTaskCommentDto,

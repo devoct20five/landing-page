@@ -5,12 +5,12 @@ export class CreatePermissionDto {
   @ApiProperty({ example: 'projects' })
   @IsString()
   @MaxLength(60)
-  module?: string;
+  module!: string;
 
   @ApiProperty({ example: 'view' })
   @IsString()
   @MaxLength(60)
-  action?: string;
+  action!: string;
 
   // If omitted, service derives it as `${module}.${action}`
   @ApiPropertyOptional({ example: 'projects.view' })

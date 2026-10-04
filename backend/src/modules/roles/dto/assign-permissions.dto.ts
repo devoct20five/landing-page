@@ -13,5 +13,5 @@ export class AssignPermissionsDto {
   @IsArray()
   @ArrayUnique()
   @IsUUID(undefined, { each: true })
-  permissionIds?: string[];
+  permissionIds!: string[];
 }

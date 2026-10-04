@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   MinLength,
@@ -11,12 +12,13 @@ import { UserType } from '../../../common/enums/user-type.enum';
 export class LoginDto {
   @ApiProperty({ example: 'ada@studio.com' })
   @IsEmail()
-  email?: string;
+  @IsNotEmpty()
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @MinLength(1)
-  password?: string;
+  password!: string;
 
   // Backs the "Client / Staff selector" on the login screen (feature-list 0.).
   // If provided, login fails unless the account's user_type matches, so someone

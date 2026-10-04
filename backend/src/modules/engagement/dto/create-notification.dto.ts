@@ -27,7 +27,7 @@ export class CreateNotificationDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  title?: string;
+  title!: string;
 
   @IsOptional()
   @IsString()

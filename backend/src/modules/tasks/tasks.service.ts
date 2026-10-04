@@ -1,5 +1,4 @@
 import {
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,8 +12,9 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { QueryTaskDto } from './dto/query-task.dto';
 import { CreateTaskCommentDto } from './dto/create-task-comment.dto';
 import { paginate, Paginated } from '@/common/dto/pagination-query.dto';
+import { AccessControlService } from '@/common/access-control/access-control.service';
 
-import { RequestUser } from '../auth/types/authenticated-user.type';
+import type { RequestUser } from '../auth/types/authenticated-user.type';
 import { UserType } from '@/common/enums/index.enum';
 
 const COMMENT_COUNT_LITERAL = literal(
@@ -26,6 +26,7 @@ export class TasksService {
   constructor(
     @InjectModel(Task) private readonly taskModel: typeof Task,
     @InjectModel(TaskComment) private readonly commentModel: typeof TaskComment,
+    private readonly accessControl: AccessControlService,
   ) {}
 
   async findAll(
@@ -37,17 +38,30 @@ export class TasksService {
     const where: WhereOptions = {};
 
     if (query.projectId) where['projectId'] = query.projectId;
-    if (query.clientId) where['clientId'] = query.clientId;
     if (query.assigneeId) where['assigneeId'] = query.assigneeId;
     if (query.status) where['status'] = query.status;
     if (query.priority) where['priority'] = query.priority;
     if (query.search) where['title'] = { [Op.like]: `%${query.search}%` };
 
-    // A staff member scoped view: "my tasks" unless they explicitly query someone else's
-    // (that's enforced by a Guard/RBAC layer in the auth module; the service just narrows
-    // the client's own visibility so a client can never list another client's tasks).
+    // docs/00_CURRENT_STATE_AUDIT.md §3: client scoping was already
+    // correct here (clientId forced from the JWT). What was missing was
+    // the staff side — a plain `staff` user had no restriction at all and
+    // could list every task in the system via query.clientId/projectId.
+    // Also: `query.clientId` is no longer read at all for a client user,
+    // the same "ignore the caller's own claim, use the resolved tenant"
+    // fix applied to Projects/Files.
     if (requester.userType === UserType.CLIENT) {
-      where['clientId'] = requester.clientId;
+      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (requester.roleSlug === 'staff') {
+      const assignedProjectIds = await this.accessControl.assignedProjectIds(
+        requester.id,
+      );
+      where[Op.or as any] = [
+        { assigneeId: requester.id },
+        { projectId: { [Op.in]: assignedProjectIds } },
+      ];
+    } else if (query.clientId) {
+      where['clientId'] = query.clientId;
     }
 
     if (query.dueLabel === 'due-today') {
@@ -100,7 +114,7 @@ export class TasksService {
       ],
     });
     if (!task) throw new NotFoundException(`Task ${id} not found`);
-    this.assertClientCanAccess(task, requester);
+    await this.accessControl.assertTaskAccess(requester, task);
     return task;
   }
 
@@ -174,14 +188,5 @@ export class TasksService {
       ],
     });
     return withUser ?? comment;
-  }
-
-  private assertClientCanAccess(task: Task, requester: RequestUser): void {
-    if (
-      requester.userType === UserType.CLIENT &&
-      task.clientId !== requester.clientId
-    ) {
-      throw new ForbiddenException('You do not have access to this task');
-    }
   }
 }

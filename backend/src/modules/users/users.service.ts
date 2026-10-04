@@ -11,6 +11,7 @@ import { User } from './models/user.model';
 import { Role } from '../roles/models/role.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateMyProfileDto } from './dto/update-my-profile.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 
@@ -70,14 +71,6 @@ export class UsersService {
     });
   }
 
-  async findByUuid(uuid: string): Promise<User | null> {
-    return this.userModel.findOne({
-      where: { uuid },
-      include: [Role],
-      attributes: { exclude: ['passwordHash'] },
-    });
-  }
-
   async create(dto: CreateUserDto): Promise<User> {
     const existing = await this.userModel.findOne({
       where: { email: dto.email.toLowerCase() },
@@ -94,22 +87,37 @@ export class UsersService {
       userType: dto.userType,
       roleId: dto.roleId,
       firstName: dto.firstName,
-      lastName: dto.lastName,
+      lastName: dto.lastName ?? null,
       initials: this.deriveInitials(dto.firstName, dto.lastName),
       email: dto.email.toLowerCase(),
-      phone: dto.phone,
+      phone: dto.phone ?? null,
       passwordHash,
-      avatarUrl: dto.avatarUrl,
-    });
+      avatarUrl: dto.avatarUrl ?? null,
+    } as any);
 
     return this.findOne(user.id);
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<User> {
+  /**
+   * dto accepts either the full admin UpdateUserDto (roleId/status
+   * included) or the narrower self-service UpdateMyProfileDto (see that
+   * file for why they're deliberately different types). `roleId`/`status`
+   * are read via an explicit cast rather than widening the parameter
+   * type to `any` — a UpdateMyProfileDto instance simply has no such
+   * properties, so the cast yields `undefined` there and the `??
+   * user.roleId` / `?? user.status` fallback below is a no-op, exactly
+   * as if those fields had never been in the payload at all.
+   */
+  async update(
+    id: string,
+    dto: UpdateUserDto | UpdateMyProfileDto,
+  ): Promise<User> {
     const user = await this.userModel.findByPk(id);
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
     }
+
+    const adminFields = dto as UpdateUserDto;
 
     if (dto.email && dto.email.toLowerCase() !== user.email) {
       const clash = await this.userModel.findOne({
@@ -123,7 +131,7 @@ export class UsersService {
     }
 
     await user.update({
-      roleId: dto.roleId ?? user.roleId,
+      roleId: adminFields.roleId ?? user.roleId,
       firstName: dto.firstName ?? user.firstName,
       lastName: dto.lastName ?? user.lastName,
       initials:
@@ -136,7 +144,7 @@ export class UsersService {
       email: dto.email ? dto.email.toLowerCase() : user.email,
       phone: dto.phone ?? user.phone,
       avatarUrl: dto.avatarUrl ?? user.avatarUrl,
-      status: dto.status ?? user.status,
+      status: adminFields.status ?? user.status,
     });
 
     return this.findOne(id);
@@ -172,7 +180,7 @@ export class UsersService {
     await this.userModel.update({ lastLoginAt: new Date() }, { where: { id } });
   }
 
-  private deriveInitials(firstName: string, lastName?: string): string {
+  private deriveInitials(firstName: string, lastName?: string | null): string {
     const first = firstName?.[0] ?? '';
     const last = lastName?.[0] ?? '';
     return (first + last).toUpperCase().slice(0, 4);

@@ -44,7 +44,7 @@ export class PermissionsService {
       action: dto.action,
       slug,
       description: dto.description,
-    });
+    } as any);
   }
 
   async remove(id: string): Promise<void> {

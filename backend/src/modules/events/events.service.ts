@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op, WhereOptions } from 'sequelize';
 import { Event } from './models/event.model';
@@ -10,6 +10,8 @@ import { QueryEventDto } from './dto/query-event.dto';
 import { AddAttendeesDto } from './dto/add-attendees.dto';
 import { paginate, Paginated } from '@/common/dto/pagination-query.dto';
 import { RsvpStatus } from '@/common/enums/index.enum';
+import { UserType } from '@/common/enums/user-type.enum';
+import type { RequestUser } from '../auth/types/authenticated-user.type';
 
 const ATTENDEE_INCLUDE = {
   model: EventAttendee,
@@ -26,15 +28,29 @@ export class EventsService {
     private readonly attendeeModel: typeof EventAttendee,
   ) {}
 
-  async findAll(query: QueryEventDto): Promise<Paginated<Event>> {
+  /**
+   * docs/00_CURRENT_STATE_AUDIT.md §3/§45: previously trusted
+   * query.clientId outright — a client could see any other client's
+   * events just by passing a different clientId. Spec §45: "Client users
+   * should only see events they are allowed to see." A client is now
+   * restricted to their own clientId, and internal agency events
+   * (clientId IS NULL) are excluded from their view entirely — those are
+   * staff-only by nature.
+   */
+  async findAll(query: QueryEventDto, requester: RequestUser): Promise<Paginated<Event>> {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
     const where: WhereOptions = {};
 
     if (query.eventType) where['eventType'] = query.eventType;
     if (query.status) where['status'] = query.status;
-    if (query.clientId) where['clientId'] = query.clientId;
     if (query.projectId) where['projectId'] = query.projectId;
+
+    if (requester.userType === UserType.CLIENT) {
+      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (query.clientId) {
+      where['clientId'] = query.clientId;
+    }
     if (query.from || query.to) {
       where['eventDate'] = {
         ...(query.from ? { [Op.gte]: query.from } : {}),
@@ -65,7 +81,7 @@ export class EventsService {
     return paginate(rows, count, page, limit);
   }
 
-  async findOne(id: string): Promise<Event> {
+  private async findOneUnscoped(id: string): Promise<Event> {
     const event = await this.eventModel.findByPk(id, {
       include: [ATTENDEE_INCLUDE],
     });
@@ -73,7 +89,17 @@ export class EventsService {
     return event;
   }
 
-  async create(dto: CreateEventDto, createdBy: number): Promise<Event> {
+  async findOne(id: string, requester: RequestUser): Promise<Event> {
+    const event = await this.findOneUnscoped(id);
+    if (requester.userType === UserType.CLIENT) {
+      if (!event.clientId || event.clientId !== requester.clientId) {
+        throw new ForbiddenException('You do not have access to this event.');
+      }
+    }
+    return event;
+  }
+
+  async create(dto: CreateEventDto, createdBy: string): Promise<Event> {
     const { attendeeUserIds, ...rest } = dto;
     const event = await this.eventModel.create({ ...rest, createdBy } as any);
 
@@ -87,17 +113,17 @@ export class EventsService {
       );
     }
 
-    return this.findOne(event.id);
+    return this.findOneUnscoped(event.id);
   }
 
   async update(id: string, dto: UpdateEventDto): Promise<Event> {
-    const event = await this.findOne(id);
+    const event = await this.findOneUnscoped(id);
     await event.update(dto);
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   async remove(id: string): Promise<void> {
-    const event = await this.findOne(id);
+    const event = await this.findOneUnscoped(id);
     await event.destroy();
   }
 
@@ -105,7 +131,7 @@ export class EventsService {
     eventId: string,
     dto: AddAttendeesDto,
   ): Promise<EventAttendee[]> {
-    await this.findOne(eventId);
+    await this.findOneUnscoped(eventId);
     await this.attendeeModel.bulkCreate(
       dto.userIds.map((userId) => ({
         eventId,

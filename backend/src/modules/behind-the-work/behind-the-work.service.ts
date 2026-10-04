@@ -53,12 +53,15 @@ export class BehindTheWorkService {
     if (query.client_id) where.client_id = query.client_id;
     if (query.search) where.title = { [Op.like]: `%${query.search}%` };
 
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+
     const { rows, count } = await this.btwModel.findAndCountAll({
       where,
       include: this.includeRelations,
       order: [['created_at', 'DESC']],
-      limit: query.limit,
-      offset: query.offset,
+      limit,
+      offset: (page - 1) * limit,
       distinct: true,
     });
 

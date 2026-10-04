@@ -8,10 +8,10 @@ import {
 
 export class CreateApprovalDto {
   @IsUUID()
-  projectId?: string;
+  projectId!: string;
 
   @IsUUID()
-  clientId?: string;
+  clientId!: string;
 
   @IsOptional()
   @IsUUID()
@@ -20,12 +20,12 @@ export class CreateApprovalDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  title?: string;
+  title!: string;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(20)
-  version?: string;
+  version!: string;
 
   @IsOptional()
   @IsUUID()

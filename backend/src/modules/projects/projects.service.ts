@@ -19,6 +19,9 @@ import {
   UpdateDeliverableDto,
 } from './dto/deliverable.dto';
 import { DeliverableStatus, ProjectStatus } from '@/common/enums/index.enum';
+import { UserType } from '@/common/enums/user-type.enum';
+import { AccessControlService } from '@/common/access-control/access-control.service';
+import type { RequestUser } from '@/modules/auth/types/authenticated-user.type';
 
 const DETAIL_INCLUDES = [
   { model: Client },
@@ -35,6 +38,7 @@ export class ProjectsService {
     private readonly teamMemberModel: typeof ProjectTeamMember,
     @InjectModel(Deliverable)
     private readonly deliverableModel: typeof Deliverable,
+    private readonly accessControl: AccessControlService,
   ) {}
 
   // ---------------------------------------------------------------------
@@ -56,23 +60,38 @@ export class ProjectsService {
       await (project as any).$set('teamMembers', teamMemberIds);
     }
 
-    return this.findOne(project.id);
+    return this.findOneUnscoped(project.id);
   }
 
   /**
    * Shared list endpoint backing:
    *  - Admin 3.3 (all projects, filter by client/status)
-   *  - Client 1.2 (filter by the logged-in client's clientId)
-   *  - Staff 2.2 (filter by staffId via project_team_members)
+   *  - Client 1.2 (own projects only — clientId is forced from the JWT,
+   *    never taken from the query string: docs/00_CURRENT_STATE_AUDIT.md
+   *    §3 — this used to trust query.clientId outright)
+   *  - Staff 2.2 (own assignments only, via project_team_members)
    */
-  async findAll(query: QueryProjectDto) {
+  async findAll(query: QueryProjectDto, user: RequestUser) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
     const where: any = {};
 
     if (query.status) where.status = query.status;
-    if (query.clientId) where.clientId = query.clientId;
     if (query.search) where.name = { [Op.like]: `%${query.search}%` };
+
+    if (user.userType === UserType.CLIENT) {
+      // A client can only ever see their own projects — ignore whatever
+      // (if anything) query.clientId says and use the tenant resolved at
+      // login instead.
+      where.clientId = user.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (user.roleSlug === 'staff') {
+      const assignedIds = await this.accessControl.assignedProjectIds(user.id);
+      where.id = { [Op.in]: assignedIds };
+      // admin/manager: no extra restriction beyond an optional explicit
+      // clientId filter, which is safe for them (permission-gated route).
+    } else if (query.clientId) {
+      where.clientId = query.clientId;
+    }
 
     const include: any[] = [
       { model: Client },
@@ -101,7 +120,8 @@ export class ProjectsService {
     return { data: rows, total: count, page, limit };
   }
 
-  async findOne(id: string): Promise<Project> {
+  /** Fetches a project with no access check — internal use only (after create, etc). */
+  private async findOneUnscoped(id: string): Promise<Project> {
     const project = await this.projectModel.findByPk(id, {
       include: DETAIL_INCLUDES as any,
     });
@@ -109,14 +129,22 @@ export class ProjectsService {
     return project;
   }
 
-  async update(id: string, dto: UpdateProjectDto): Promise<Project> {
-    const project = await this.findOne(id);
-    await project.update(dto);
-    return this.findOne(id);
+  async findOne(id: string, user: RequestUser): Promise<Project> {
+    const project = await this.findOneUnscoped(id);
+    await this.accessControl.assertProjectAccess(user, project);
+    return project;
   }
 
-  async remove(id: string): Promise<void> {
-    const project = await this.findOne(id);
+  async update(id: string, dto: UpdateProjectDto, user: RequestUser): Promise<Project> {
+    const project = await this.findOneUnscoped(id);
+    await this.accessControl.assertProjectAccess(user, project);
+    await project.update(dto);
+    return this.findOneUnscoped(id);
+  }
+
+  async remove(id: string, user: RequestUser): Promise<void> {
+    const project = await this.findOneUnscoped(id);
+    await this.accessControl.assertProjectAccess(user, project);
     await project.destroy();
   }
 
@@ -125,15 +153,15 @@ export class ProjectsService {
   // ---------------------------------------------------------------------
 
   async linkServices(id: string, dto: LinkServicesDto): Promise<Project> {
-    const project = await this.findOne(id);
+    const project = await this.findOneUnscoped(id);
     await (project as any).$add('services', dto.serviceIds);
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   async unlinkService(id: string, serviceId: string): Promise<Project> {
-    const project = await this.findOne(id);
+    const project = await this.findOneUnscoped(id);
     await (project as any).$remove('services', serviceId);
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   // ---------------------------------------------------------------------
@@ -144,7 +172,7 @@ export class ProjectsService {
     id: string,
     dto: AssignTeamMemberDto,
   ): Promise<Project> {
-    await this.findOne(id);
+    await this.findOneUnscoped(id);
     await this.teamMemberModel.upsert({
       projectId: id,
       staffId: dto.staffId,
@@ -152,14 +180,14 @@ export class ProjectsService {
       assignedAt: new Date(),
     } as any);
     await this.syncTeamSize(id);
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   async removeTeamMember(id: string, staffId: string): Promise<Project> {
-    await this.findOne(id);
+    await this.findOneUnscoped(id);
     await this.teamMemberModel.destroy({ where: { projectId: id, staffId } });
     await this.syncTeamSize(id);
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   private async syncTeamSize(projectId: string): Promise<void> {
@@ -176,13 +204,16 @@ export class ProjectsService {
   async addDeliverable(
     projectId: string,
     dto: CreateDeliverableDto,
+    user: RequestUser,
   ): Promise<Deliverable> {
-    await this.findOne(projectId);
+    const project = await this.findOneUnscoped(projectId);
+    await this.accessControl.assertProjectAccess(user, project);
     return this.deliverableModel.create({ ...dto, projectId } as any);
   }
 
-  async listDeliverables(projectId: string): Promise<Deliverable[]> {
-    await this.findOne(projectId);
+  async listDeliverables(projectId: string, user: RequestUser): Promise<Deliverable[]> {
+    const project = await this.findOneUnscoped(projectId);
+    await this.accessControl.assertProjectAccess(user, project);
     return this.deliverableModel.findAll({ where: { projectId } });
   }
 
@@ -190,7 +221,10 @@ export class ProjectsService {
     projectId: string,
     deliverableId: string,
     dto: UpdateDeliverableDto,
+    user: RequestUser,
   ): Promise<Deliverable> {
+    const project = await this.findOneUnscoped(projectId);
+    await this.accessControl.assertProjectAccess(user, project);
     const deliverable = await this.deliverableModel.findOne({
       where: { id: deliverableId, projectId },
     });
@@ -203,7 +237,10 @@ export class ProjectsService {
   async removeDeliverable(
     projectId: string,
     deliverableId: string,
+    user: RequestUser,
   ): Promise<void> {
+    const project = await this.findOneUnscoped(projectId);
+    await this.accessControl.assertProjectAccess(user, project);
     const deliverable = await this.deliverableModel.findOne({
       where: { id: deliverableId, projectId },
     });
@@ -237,7 +274,8 @@ export class ProjectsService {
   // ---------------------------------------------------------------------
 
   /** Client 1.1 summary stats: active / in-progress / needs-input / completed. */
-  async clientDashboardStats(clientId: string) {
+  async clientDashboardStats(clientId: string, user: RequestUser) {
+    this.accessControl.assertClientAccess(user, clientId);
     const projects = await this.projectModel.findAll({ where: { clientId } });
     return {
       active: projects.filter((p) =>
@@ -256,7 +294,7 @@ export class ProjectsService {
   }
 
   /** Projects needing attention: blocked / review pending / deadline soon. */
-  async needingAttention(clientId?: string) {
+  async needingAttention(clientId: string | undefined, user: RequestUser) {
     const soon = new Date();
     soon.setDate(soon.getDate() + 7);
 
@@ -267,7 +305,15 @@ export class ProjectsService {
         { deadline: { [Op.lte]: soon.toISOString().slice(0, 10) } },
       ],
     };
-    if (clientId) where.clientId = clientId;
+
+    if (user.userType === UserType.CLIENT) {
+      where.clientId = user.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (user.roleSlug === 'staff') {
+      const assignedIds = await this.accessControl.assignedProjectIds(user.id);
+      where.id = { [Op.in]: assignedIds };
+    } else if (clientId) {
+      where.clientId = clientId;
+    }
 
     return this.projectModel.findAll({ where, include: [Client] });
   }

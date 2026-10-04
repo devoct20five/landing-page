@@ -70,11 +70,14 @@ export class NotificationsService {
     const where: Record<string, any> = { user_id: userId };
     if (query.unread) where.is_read = false;
 
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+
     const { rows, count } = await this.notificationModel.findAndCountAll({
       where,
       order: [['created_at', 'DESC']],
-      limit: query.limit,
-      offset: query.offset,
+      limit,
+      offset: (page - 1) * limit,
     });
 
     return {

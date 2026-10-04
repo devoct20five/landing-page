@@ -3,6 +3,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  IsUUID,
   Max,
   MaxLength,
   Min,
@@ -28,9 +29,13 @@ export class UpdateProjectDto extends PartialType(
   @MaxLength(255)
   currentWorkTitle?: string;
 
+  // FK to services.id (UUID) — was @IsInt() with a `number` type, another
+  // instance of the same numeric-ID assumption fixed elsewhere in this
+  // pass (folders, projects/invoices controllers). Never actually
+  // validated correctly against this schema's UUID ids.
   @IsOptional()
-  @IsInt()
-  currentWorkServiceId?: number;
+  @IsUUID()
+  currentWorkServiceId?: string;
 
   @IsOptional()
   @IsString()

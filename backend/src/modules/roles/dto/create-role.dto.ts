@@ -13,7 +13,7 @@ export class CreateRoleDto {
   @ApiProperty({ example: 'Project Manager' })
   @IsString()
   @MaxLength(60)
-  name?: string;
+  name!: string;
 
   @ApiProperty({ example: 'project-manager' })
   @IsString()
@@ -21,7 +21,7 @@ export class CreateRoleDto {
   @Matches(/^[a-z0-9-]+$/, {
     message: 'slug must be lowercase letters, numbers and hyphens only',
   })
-  slug?: string;
+  slug!: string;
 
   @ApiPropertyOptional({ example: 'Manages projects, tasks and approvals' })
   @IsOptional()

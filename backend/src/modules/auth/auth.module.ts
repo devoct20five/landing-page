@@ -19,8 +19,18 @@ import { ClientsModule } from '../clients/clients.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN', '8h') },
+        // getOrThrow (not get): fail loudly at boot if JWT_SECRET is
+        // missing rather than silently signing tokens with `undefined` as
+        // the secret. Matches JwtStrategy's own guard below.
+        secret: config.getOrThrow<string>('JWT_SECRET'),
+        signOptions: {
+          // @types/jsonwebtoken's `expiresIn` is typed as a template-literal
+          // union (StringValue, e.g. "8h" | "1d" | ...), which a
+          // config-driven runtime string can never satisfy statically.
+          // The value itself is validated by the `ms` package at runtime;
+          // this cast only silences the compile-time mismatch.
+          expiresIn: config.get<string>('JWT_EXPIRES_IN', '8h') as unknown as number,
+        },
       }),
     }),
   ],

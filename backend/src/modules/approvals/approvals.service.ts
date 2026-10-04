@@ -16,8 +16,9 @@ import { ReviewApprovalDto } from './dto/review-approval.dto';
 import { QueryApprovalDto } from './dto/query-approval.dto';
 
 import { paginate, Paginated } from '@/common/dto/pagination-query.dto';
+import { AccessControlService } from '@/common/access-control/access-control.service';
 
-import { RequestUser } from '../auth/types/authenticated-user.type';
+import type { RequestUser } from '../auth/types/authenticated-user.type';
 import { ApprovalStatus, UserType } from '@/common/enums/index.enum';
 
 const INCLUDE = [
@@ -42,6 +43,7 @@ export class ApprovalsService {
   constructor(
     @InjectModel(Approval)
     private readonly approvalModel: typeof Approval,
+    private readonly accessControl: AccessControlService,
   ) {}
 
   async findAll(
@@ -57,10 +59,6 @@ export class ApprovalsService {
       where['projectId'] = query.projectId;
     }
 
-    if (query.clientId) {
-      where['clientId'] = query.clientId;
-    }
-
     if (query.deliverableId) {
       where['deliverableId'] = query.deliverableId;
     }
@@ -69,9 +67,17 @@ export class ApprovalsService {
       where['status'] = query.status;
     }
 
-    // Clients can only see their own approvals.
+    // docs/00_CURRENT_STATE_AUDIT.md §3: client scoping (forcing
+    // requester.clientId, ignoring query.clientId) already existed here.
+    // What was missing was the staff side — a plain `staff` user had no
+    // restriction and could list approvals for any project in the system.
     if (requester.userType === UserType.CLIENT) {
-      where['clientId'] = requester.clientId;
+      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (requester.roleSlug === 'staff') {
+      const scope = await this.accessControl.scopeProjectIdWhereForStaff(requester);
+      Object.assign(where, scope);
+    } else if (query.clientId) {
+      where['clientId'] = query.clientId;
     }
 
     const { rows, count } = await this.approvalModel.findAndCountAll({
@@ -95,7 +101,10 @@ export class ApprovalsService {
       throw new NotFoundException(`Approval ${id} not found`);
     }
 
-    this.assertClientCanAccess(approval, requester);
+    await this.accessControl.assertProjectAccess(requester, {
+      id: approval.projectId,
+      clientId: approval.clientId,
+    });
 
     return approval;
   }
@@ -112,10 +121,11 @@ export class ApprovalsService {
       deliverableId,
     };
 
-    // Clients can only see approval history
-    // belonging to their own client account.
     if (requester.userType === UserType.CLIENT) {
-      where['clientId'] = requester.clientId;
+      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (requester.roleSlug === 'staff') {
+      const scope = await this.accessControl.scopeProjectIdWhereForStaff(requester);
+      Object.assign(where, scope);
     }
 
     const rows = await this.approvalModel.findAll({
@@ -139,12 +149,21 @@ export class ApprovalsService {
       throw new ForbiddenException('Clients cannot create approval requests');
     }
 
+    // A staff user (non agency-wide) must actually be assigned to the
+    // project they're requesting approval on — previously unchecked, so
+    // any staff login could create an approval (and notify a client) for
+    // a project they have no business touching.
+    await this.accessControl.assertProjectAccess(requester, {
+      id: dto.projectId,
+      clientId: dto.clientId,
+    });
+
     const approval = await this.approvalModel.create({
       ...dto,
       status: ApprovalStatus.PENDING,
       requestedBy: requester.id,
       requestedAt: new Date(),
-    });
+    } as any);
 
     return this.findOne(approval.id, requester);
   }
@@ -209,21 +228,5 @@ export class ApprovalsService {
 
       return plain;
     });
-  }
-
-  /**
-   * Ensures a client can only access
-   * approvals belonging to their client account.
-   */
-  private assertClientCanAccess(
-    approval: Approval,
-    requester: RequestUser,
-  ): void {
-    if (
-      requester.userType === UserType.CLIENT &&
-      approval.clientId !== requester.clientId
-    ) {
-      throw new ForbiddenException('You do not have access to this approval');
-    }
   }
 }

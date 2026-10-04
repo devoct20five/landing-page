@@ -22,13 +22,14 @@ export class FoldersController {
     @Query('projectId') projectId: string | undefined,
     @Query('parentId') parentId: string | undefined,
   ) {
+    // Previously ran these UUID strings through Number(...), which
+    // produces NaN for any real id — this endpoint could never have
+    // returned correct results. IDs here are UUIDs end to end, matching
+    // FoldersService.findChildren's actual (string | null | undefined)
+    // signature.
     return this.foldersService.findChildren(
-      projectId ? Number(projectId) : undefined,
-      parentId === undefined
-        ? undefined
-        : parentId === ''
-          ? null
-          : Number(parentId),
+      projectId || undefined,
+      parentId === undefined ? undefined : parentId === '' ? null : parentId,
     );
   }
 

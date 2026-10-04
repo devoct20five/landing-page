@@ -14,19 +14,19 @@ import { UserType } from '../../../common/enums/user-type.enum';
 export class CreateUserDto {
   @ApiProperty({ enum: UserType, example: UserType.STAFF })
   @IsEnum(UserType)
-  userType?: UserType;
+  userType!: UserType;
 
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: 'FK to roles.id',
   })
   @IsUUID()
-  roleId?: string;
+  roleId!: string;
 
   @ApiProperty({ example: 'Ada' })
   @IsString()
   @MaxLength(80)
-  firstName?: string;
+  firstName!: string;
 
   @ApiPropertyOptional({ example: 'Lovelace' })
   @IsOptional()
@@ -37,7 +37,7 @@ export class CreateUserDto {
   @ApiProperty({ example: 'ada@studio.com' })
   @IsEmail()
   @MaxLength(190)
-  email?: string;
+  email!: string;
 
   @ApiPropertyOptional({ example: '+919876543210' })
   @IsOptional()
@@ -49,7 +49,7 @@ export class CreateUserDto {
   @IsString()
   @MinLength(8)
   @MaxLength(72)
-  password?: string;
+  password!: string;
 
   @ApiPropertyOptional({
     example: 'https://cdn.example.com/avatars/1.png',

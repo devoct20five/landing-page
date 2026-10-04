@@ -15,28 +15,32 @@ import {
   UpdateStaffProfileDto,
 } from './dto/staff-profile.dto';
 import { QueryStaffDto } from './dto/query-staff.dto';
+import { RequirePermissions } from '@/common/decorators/permissions.decorator';
 
-// NOTE: gate write routes behind an admin/manager guard once auth is wired in.
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
   @Post()
+  @RequirePermissions('team.create')
   create(@Body() dto: CreateStaffProfileDto) {
     return this.staffService.create(dto);
   }
 
   @Get()
+  @RequirePermissions('team.view')
   findAll(@Query() query: QueryStaffDto) {
     return this.staffService.findAll(query);
   }
 
   @Get(':userId')
+  @RequirePermissions('team.view')
   findOne(@Param('userId', ParseUUIDPipe) userId: string) {
     return this.staffService.findOne(userId);
   }
 
   @Patch(':userId')
+  @RequirePermissions('team.edit')
   update(
     @Param('userId', ParseUUIDPipe) userId: string,
     @Body() dto: UpdateStaffProfileDto,
@@ -45,6 +49,7 @@ export class StaffController {
   }
 
   @Delete(':userId')
+  @RequirePermissions('team.delete')
   remove(@Param('userId', ParseUUIDPipe) userId: string) {
     return this.staffService.remove(userId);
   }

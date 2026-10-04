@@ -5,5 +5,5 @@ export class AddAttendeesDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsUUID(undefined, { each: true })
-  userIds?: string[];
+  userIds!: string[];
 }

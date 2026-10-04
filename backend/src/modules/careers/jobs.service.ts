@@ -64,8 +64,12 @@ export class JobsService {
           raw: true,
         })
       : [];
-    const countMap = new Map<number, number>(
-      (counts as any[]).map((c) => [Number(c.job_id), Number(c.count)]),
+    // job_id (like every id in this schema) is a UUID string. Keying this
+    // map by Number(c.job_id) always produced NaN, and job.id below is a
+    // string, so applicant_count silently returned 0 for every job — the
+    // lookup key could never match. Keyed by the raw string id instead.
+    const countMap = new Map<string, number>(
+      (counts as any[]).map((c) => [String(c.job_id), Number(c.count)]),
     );
 
     const data = rows.map((job) => ({

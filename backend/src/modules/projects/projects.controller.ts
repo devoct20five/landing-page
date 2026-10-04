@@ -21,58 +21,77 @@ import {
   CreateDeliverableDto,
   UpdateDeliverableDto,
 } from './dto/deliverable.dto';
+import { RequirePermissions } from '@/common/decorators/permissions.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import type { RequestUser } from '@/modules/auth/types/authenticated-user.type';
 
-// NOTE: Wire in your auth/RBAC guards per route (admin-only for create/
-// delete/assign; client/staff routes should additionally scope by the
-// requester's own clientId/staffId) — omitted so the module drops in
-// regardless of your auth setup.
+// Every route below is reachable by any authenticated user unless a
+// @RequirePermissions() is present — see docs/00_CURRENT_STATE_AUDIT.md §2.
+// Permission slugs match database/helpers/permission-catalog.ts. Beyond
+// the permission gate, ProjectsService further scopes results/access to
+// what the caller's client/staff assignment actually covers (§3/§11) via
+// AccessControlService — a permission alone ("projects.view") only says
+// *that* someone can view projects, not *which* ones.
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
+  @RequirePermissions('projects.create')
   create(@Body() dto: CreateProjectDto) {
     return this.projectsService.create(dto);
   }
 
   @Get()
-  findAll(@Query() query: QueryProjectDto) {
-    return this.projectsService.findAll(query);
+  @RequirePermissions('projects.view')
+  findAll(@Query() query: QueryProjectDto, @CurrentUser() user: RequestUser) {
+    return this.projectsService.findAll(query, user);
   }
 
   @Get('attention')
-  needingAttention(@Query('clientId') clientId?: string) {
-    return this.projectsService.needingAttention(
-      clientId ? parseInt(clientId, 10) : undefined,
-    );
+  @RequirePermissions('projects.view')
+  needingAttention(
+    @Query('clientId') clientId: string | undefined,
+    @CurrentUser() user: RequestUser,
+  ) {
+    return this.projectsService.needingAttention(clientId, user);
   }
 
   @Get('dashboard/:clientId')
-  clientDashboard(@Param('clientId', ParseUUIDPipe) clientId: string) {
-    return this.projectsService.clientDashboardStats(clientId);
+  @RequirePermissions('projects.view')
+  clientDashboard(
+    @Param('clientId', ParseUUIDPipe) clientId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    return this.projectsService.clientDashboardStats(clientId, user);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.projectsService.findOne(id);
+  @RequirePermissions('projects.view')
+  findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
+    return this.projectsService.findOne(id, user);
   }
 
   @Patch(':id')
+  @RequirePermissions('projects.edit')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateProjectDto,
+    @CurrentUser() user: RequestUser,
   ) {
-    return this.projectsService.update(id, dto);
+    return this.projectsService.update(id, dto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.projectsService.remove(id);
+  @RequirePermissions('projects.delete')
+  remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
+    return this.projectsService.remove(id, user);
   }
 
   // -- services involved ---------------------------------------------------
 
   @Post(':id/services')
+  @RequirePermissions('projects.edit')
   linkServices(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: LinkServicesDto,
@@ -81,6 +100,7 @@ export class ProjectsController {
   }
 
   @Delete(':id/services/:serviceId')
+  @RequirePermissions('projects.edit')
   unlinkService(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('serviceId', ParseUUIDPipe) serviceId: string,
@@ -91,6 +111,7 @@ export class ProjectsController {
   // -- team assignment ------------------------------------------------------
 
   @Post(':id/team')
+  @RequirePermissions('team.edit')
   assignTeamMember(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: AssignTeamMemberDto,
@@ -99,6 +120,7 @@ export class ProjectsController {
   }
 
   @Delete(':id/team/:staffId')
+  @RequirePermissions('team.edit')
   removeTeamMember(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('staffId', ParseUUIDPipe) staffId: string,
@@ -109,32 +131,42 @@ export class ProjectsController {
   // -- deliverables ----------------------------------------------------------
 
   @Post(':id/deliverables')
+  @RequirePermissions('deliverables.create')
   addDeliverable(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateDeliverableDto,
+    @CurrentUser() user: RequestUser,
   ) {
-    return this.projectsService.addDeliverable(id, dto);
+    return this.projectsService.addDeliverable(id, dto, user);
   }
 
   @Get(':id/deliverables')
-  listDeliverables(@Param('id', ParseUUIDPipe) id: string) {
-    return this.projectsService.listDeliverables(id);
+  @RequirePermissions('deliverables.view')
+  listDeliverables(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    return this.projectsService.listDeliverables(id, user);
   }
 
   @Patch(':id/deliverables/:deliverableId')
+  @RequirePermissions('deliverables.edit')
   updateDeliverable(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('deliverableId', ParseUUIDPipe) deliverableId: string,
     @Body() dto: UpdateDeliverableDto,
+    @CurrentUser() user: RequestUser,
   ) {
-    return this.projectsService.updateDeliverable(id, deliverableId, dto);
+    return this.projectsService.updateDeliverable(id, deliverableId, dto, user);
   }
 
   @Delete(':id/deliverables/:deliverableId')
+  @RequirePermissions('deliverables.delete')
   removeDeliverable(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('deliverableId', ParseUUIDPipe) deliverableId: string,
+    @CurrentUser() user: RequestUser,
   ) {
-    return this.projectsService.removeDeliverable(id, deliverableId);
+    return this.projectsService.removeDeliverable(id, deliverableId, user);
   }
 }

@@ -19,38 +19,40 @@ import {
   PlanPackageDto,
 } from './dto/create-service-plan.dto';
 import { UpdateServicePlanDto } from './dto/update-service-plan.dto';
+import { RequirePermissions } from '@/common/decorators/permissions.decorator';
 
-// NOTE: read routes (GET) are safe for the client catalog browse (1.6);
-// gate every write route behind an admin/manager guard (3.14) once auth
-// is wired in.
+// Read routes (GET) are the client-facing service catalog browse (spec
+// §1.6); every write route is admin/manager only (spec §42, §3.14).
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
+  @RequirePermissions('services.create')
   create(@Body() dto: CreateServiceDto) {
     return this.servicesService.create(dto);
   }
 
   @Get()
+  @RequirePermissions('services.view')
   findAll(@Query() query: QueryServiceDto) {
     return this.servicesService.findAll(query);
   }
 
   @Get(':id')
+  @RequirePermissions('services.view')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.servicesService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: UpdateServiceDto,
-  ) {
+  @RequirePermissions('services.edit')
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateServiceDto) {
     return this.servicesService.update(id, dto);
   }
 
   @Delete(':id')
+  @RequirePermissions('services.delete')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.servicesService.remove(id);
   }
@@ -58,6 +60,7 @@ export class ServicesController {
   // -- plans ----------------------------------------------------------------
 
   @Post(':id/plans')
+  @RequirePermissions('services.edit')
   addPlan(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: CreateServicePlanDto,
@@ -66,6 +69,7 @@ export class ServicesController {
   }
 
   @Get(':id/plans/:planId')
+  @RequirePermissions('services.view')
   findPlan(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('planId', ParseUUIDPipe) planId: string,
@@ -74,6 +78,7 @@ export class ServicesController {
   }
 
   @Patch(':id/plans/:planId')
+  @RequirePermissions('services.edit')
   updatePlan(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('planId', ParseUUIDPipe) planId: string,
@@ -83,6 +88,7 @@ export class ServicesController {
   }
 
   @Patch(':id/plans/:planId/toggle-status')
+  @RequirePermissions('services.edit')
   toggleStatus(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('planId', ParseUUIDPipe) planId: string,
@@ -91,6 +97,7 @@ export class ServicesController {
   }
 
   @Post(':id/plans/:planId/duplicate')
+  @RequirePermissions('services.edit')
   duplicatePlan(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('planId', ParseUUIDPipe) planId: string,
@@ -99,6 +106,7 @@ export class ServicesController {
   }
 
   @Delete(':id/plans/:planId')
+  @RequirePermissions('services.delete')
   removePlan(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('planId', ParseUUIDPipe) planId: string,
@@ -109,6 +117,7 @@ export class ServicesController {
   // -- packages / features on a plan ----------------------------------------
 
   @Post(':id/plans/:planId/packages')
+  @RequirePermissions('services.edit')
   addPackage(
     @Param('planId', ParseUUIDPipe) planId: string,
     @Body() dto: PlanPackageDto,
@@ -117,6 +126,7 @@ export class ServicesController {
   }
 
   @Delete(':id/plans/:planId/packages/:packageId')
+  @RequirePermissions('services.edit')
   removePackage(
     @Param('planId', ParseUUIDPipe) planId: string,
     @Param('packageId', ParseUUIDPipe) packageId: string,
@@ -125,6 +135,7 @@ export class ServicesController {
   }
 
   @Post(':id/plans/:planId/features')
+  @RequirePermissions('services.edit')
   addFeature(
     @Param('planId', ParseUUIDPipe) planId: string,
     @Body() dto: PlanFeatureDto,
@@ -133,6 +144,7 @@ export class ServicesController {
   }
 
   @Delete(':id/plans/:planId/features/:featureId')
+  @RequirePermissions('services.edit')
   removeFeature(
     @Param('planId', ParseUUIDPipe) planId: string,
     @Param('featureId', ParseUUIDPipe) featureId: string,

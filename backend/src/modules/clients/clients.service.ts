@@ -30,7 +30,7 @@ export class ClientsService {
   // Client CRUD (admin: 3.2, also backs client public profile / settings)
   // ---------------------------------------------------------------------
 
-  async create(dto: CreateClientDto, createdBy?: number): Promise<Client> {
+  async create(dto: CreateClientDto, createdBy: string): Promise<Client> {
     return this.clientModel.create({ ...dto, createdBy } as any);
   }
 

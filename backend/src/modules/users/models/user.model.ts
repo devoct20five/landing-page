@@ -168,8 +168,17 @@ export class User extends Model<User> {
 
   /**
    * Returns the user without the password hash.
+   *
+   * Typed as a plain record, not `Omit<User, 'passwordHash'>` — the
+   * previous annotation claimed this returns something structurally
+   * assignable to a full `User` instance (minus one field), but
+   * `toJSON()` returns a plain serialized object with none of the
+   * Sequelize Model instance methods (`$add`, `$set`, `$get`, ...) that
+   * `User` (a Model subclass) structurally requires. That mismatch is
+   * exactly what TS2740 was catching; the annotation was giving callers
+   * a false sense of what's actually available on the returned object.
    */
-  toSafeJSON(): Omit<User, 'passwordHash'> {
+  toSafeJSON(): Record<string, unknown> {
     const json = this.toJSON();
 
     const { passwordHash: _passwordHash, ...safe } = json;

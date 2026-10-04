@@ -15,8 +15,14 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { QueryNotificationDto } from './dto/query-notification.dto';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { RequirePermissions } from '@/common/decorators/permissions.decorator';
 import type { AuthenticatedUser } from '../auth/types/authenticated-user.type';
-// Bell / dropdown, all portals (feature-list 1.8 Client, 2.8-adjacent Staff, 3.x Admin)
+
+// Bell / dropdown, all portals (feature-list 1.8 Client, 2.8-adjacent Staff, 3.x Admin).
+// Every route is already self-scoped by user.id (never a param) — see
+// NotificationsService.markAsRead/remove, which additionally verify
+// ownership before acting. The permission decorators below are the one
+// thing that was actually missing.
 @UseGuards(JwtAuthGuard)
 @Controller('notifications')
 export class NotificationsController {
@@ -24,14 +30,15 @@ export class NotificationsController {
 
   // System/admin use only in practice — most notifications are created
   // internally via NotificationsService.notify()/notifyMany() from other
-  // modules (approvals, tasks, payments, etc). Guard this route further
-  // (e.g. an AdminOnly guard) if you keep it exposed.
+  // modules (approvals, tasks, payments, etc).
   @Post()
+  @RequirePermissions('notifications.manage')
   create(@Body() dto: CreateNotificationDto) {
     return this.service.create(dto);
   }
 
   @Get()
+  @RequirePermissions('notifications.view')
   findMine(
     @Query() query: QueryNotificationDto,
     @CurrentUser() user: AuthenticatedUser,
@@ -40,16 +47,19 @@ export class NotificationsController {
   }
 
   @Get('unread-count')
+  @RequirePermissions('notifications.view')
   unreadCount(@CurrentUser() user: AuthenticatedUser) {
     return this.service.unreadCount(user.id);
   }
 
   @Patch('read-all')
+  @RequirePermissions('notifications.view')
   markAllRead(@CurrentUser() user: AuthenticatedUser) {
     return this.service.markAllAsRead(user.id);
   }
 
   @Patch(':id/read')
+  @RequirePermissions('notifications.view')
   markRead(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: AuthenticatedUser,
@@ -58,10 +68,8 @@ export class NotificationsController {
   }
 
   @Delete(':id')
-  remove(
-    @Param('id', ParseUUIDPipe) id: string,
-    @CurrentUser() user: AuthenticatedUser,
-  ) {
+  @RequirePermissions('notifications.view')
+  remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.service.remove(id, user.id);
   }
 }

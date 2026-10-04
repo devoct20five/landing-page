@@ -14,6 +14,9 @@ import { QueryInvoiceDto } from './dto/query-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Invoice } from './models/invoice.model';
 import { PaymentTransaction } from './models/payment-transaction.model';
+import { AccessControlService } from '@/common/access-control/access-control.service';
+import { UserType } from '@/common/enums/user-type.enum';
+import type { RequestUser } from '../auth/types/authenticated-user.type';
 
 const INCLUDE = [
   { model: Client, attributes: ['id', 'name', 'short_name', 'logo_url'] },
@@ -28,6 +31,7 @@ export class InvoicesService {
     @InjectModel(Invoice) private readonly invoiceModel: typeof Invoice,
     @InjectModel(PaymentTransaction)
     private readonly paymentModel: typeof PaymentTransaction,
+    private readonly accessControl: AccessControlService,
   ) {}
 
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
@@ -40,22 +44,46 @@ export class InvoicesService {
       );
     }
     const invoice = await this.invoiceModel.create({ ...dto } as any);
-    return this.findOne(invoice.id);
+    return this.findOneUnscoped(invoice.id);
   }
 
-  async findAll(query: QueryInvoiceDto) {
+  /**
+   * docs/00_CURRENT_STATE_AUDIT.md §41: this previously had NO scoping at
+   * all — not even the client-side check Tasks/Approvals already had.
+   * Any authenticated user, including a client, could list every invoice
+   * in the system by leaving client_id off the query. Finance data is
+   * exactly the case spec §41 warns about: "never expose financial data
+   * merely because a user can access the project."
+   */
+  async findAll(query: QueryInvoiceDto, requester: RequestUser) {
     const page = query.page && query.page > 0 ? query.page : 1;
     const limit = query.limit && query.limit > 0 ? query.limit : 20;
     const where: any = {};
 
     if (query.status) where.status = query.status;
-    if (query.client_id) where.client_id = query.client_id;
     if (query.project_id) where.project_id = query.project_id;
     if (query.search) {
       where[Op.or] = [
         { invoice_number: { [Op.like]: `%${query.search}%` } },
         { description: { [Op.like]: `%${query.search}%` } },
       ];
+    }
+
+    if (requester.userType === UserType.CLIENT) {
+      where.client_id = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+    } else if (requester.roleSlug === 'staff') {
+      // Plain staff have no invoices.view grant in the permission catalog
+      // today (finance is manager/admin/client only — spec §41), so this
+      // branch is currently unreachable via the guard. Kept as
+      // defense-in-depth in case that grant is ever loosened later,
+      // scoped the same way Tasks/Approvals/Projects are.
+      const scope = await this.accessControl.scopeProjectIdWhereForStaff(
+        requester,
+        'project_id',
+      );
+      Object.assign(where, scope);
+    } else if (query.client_id) {
+      where.client_id = query.client_id;
     }
 
     const { rows, count } = await this.invoiceModel.findAndCountAll({
@@ -73,29 +101,40 @@ export class InvoicesService {
     };
   }
 
-  async findOne(id: string): Promise<Invoice> {
+  /** Fetches an invoice with no access check — internal use only (after create). */
+  private async findOneUnscoped(id: string): Promise<Invoice> {
     const invoice = await this.invoiceModel.findByPk(id, { include: INCLUDE });
     if (!invoice) throw new NotFoundException(`Invoice #${id} not found`);
     return invoice;
   }
 
+  async findOne(id: string, requester: RequestUser): Promise<Invoice> {
+    const invoice = await this.findOneUnscoped(id);
+    this.accessControl.assertClientAccess(requester, invoice.client_id);
+    return invoice;
+  }
+
   /** Invoice + payment history for a single project (client "pay for project" screen). */
-  async findByProject(projectId: string) {
-    return this.invoiceModel.findAll({
+  async findByProject(projectId: string, requester: RequestUser) {
+    const invoices = await this.invoiceModel.findAll({
       where: { project_id: projectId },
       include: INCLUDE,
       order: [['created_at', 'DESC']],
     });
+    // Every invoice on a given project belongs to the same client, so one
+    // check on the first row (if any) covers the whole list.
+    if (invoices[0]) this.accessControl.assertClientAccess(requester, invoices[0].client_id);
+    return invoices;
   }
 
   async update(id: string, dto: UpdateInvoiceDto): Promise<Invoice> {
-    const invoice = await this.findOne(id);
+    const invoice = await this.findOneUnscoped(id);
     await invoice.update({ ...dto });
-    return this.findOne(id);
+    return this.findOneUnscoped(id);
   }
 
   async remove(id: string): Promise<void> {
-    const invoice = await this.findOne(id);
+    const invoice = await this.findOneUnscoped(id);
     await invoice.destroy();
   }
 
@@ -103,8 +142,10 @@ export class InvoicesService {
   async recordPayment(
     invoiceId: string,
     dto: CreatePaymentDto,
+    requester: RequestUser,
   ): Promise<Invoice> {
-    const invoice = await this.findOne(invoiceId);
+    const invoice = await this.findOneUnscoped(invoiceId);
+    this.accessControl.assertClientAccess(requester, invoice.client_id);
 
     const txn = await this.paymentModel.create({
       invoice_id: invoiceId,
@@ -127,18 +168,22 @@ export class InvoicesService {
       await invoice.update({ amount_paid: newAmountPaid, status });
     }
 
-    return this.findOne(invoiceId);
+    return this.findOneUnscoped(invoiceId);
   }
 
-  async listTransactions(invoiceId: string): Promise<PaymentTransaction[]> {
-    await this.findOne(invoiceId); // 404 guard
+  async listTransactions(
+    invoiceId: string,
+    requester: RequestUser,
+  ): Promise<PaymentTransaction[]> {
+    const invoice = await this.findOneUnscoped(invoiceId);
+    this.accessControl.assertClientAccess(requester, invoice.client_id);
     return this.paymentModel.findAll({
       where: { invoice_id: invoiceId },
       order: [['created_at', 'DESC']],
     });
   }
 
-  /** Revenue KPIs for the admin Payments dashboard. */
+  /** Revenue KPIs for the admin Payments dashboard — agency-wide roles only (route-gated). */
   async revenueStats(clientId?: string) {
     const where: any = clientId ? { client_id: clientId } : {};
 

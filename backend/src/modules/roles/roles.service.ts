@@ -49,7 +49,7 @@ export class RolesService {
       name: dto.name,
       slug: dto.slug,
       description: dto.description,
-    });
+    } as any);
 
     if (dto.permissionIds?.length) {
       await this.setPermissions(role.id, dto.permissionIds);
