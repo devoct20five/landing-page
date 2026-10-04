@@ -96,7 +96,7 @@ export default function FeaturesGrid({
                     font-black
                     uppercase
                     leading-[0.84]
-                    tracking-[-0.055em]
+                    tracking-[-0.03em]
                     text-balance
                   "
                 >
@@ -111,10 +111,10 @@ export default function FeaturesGrid({
                       mx-auto
                       mt-5
                       max-w-[570px]
-                      text-[0.68rem]
+                      text-[0.8rem]
                       leading-[1.5]
                       opacity-65
-                      md:text-[0.75rem]
+                      md:text-[0.85rem]
                     "
                   >
                     {pricingSubline}
@@ -163,15 +163,15 @@ export default function FeaturesGrid({
                           featured
                             ? `
                               border-brand-orange
-                              bg-[#111]
-                              text-white
+                              bg-brand-black
+                              text-brand-cream
                               shadow-[0_0_35px_rgba(255,65,20,0.08)]
                             `
                             : `
-                              border-black/10
-                              bg-[#0b0b0b]
-                              text-white
-                              hover:border-white/25
+                              border-brand-black/10
+                              bg-brand-black
+                              text-brand-cream
+                              hover:border-brand-cream/25
                             `
                         }
                       `}
@@ -199,13 +199,13 @@ export default function FeaturesGrid({
                             size={16}
                             strokeWidth={1.25}
                             className={
-                              featured ? "text-brand-orange" : "text-white/80"
+                              featured ? "text-brand-orange" : "text-brand-cream/80"
                             }
                           />
 
                           <span
                             className="
-                              text-[9px]
+                              text-[12px]
                               font-bold
                               uppercase
                               tracking-[0.06em]
@@ -223,7 +223,7 @@ export default function FeaturesGrid({
                               border-brand-orange/60
                               px-2
                               py-1
-                              text-[6px]
+                              text-[11px]
                               font-bold
                               uppercase
                               text-brand-orange
@@ -244,7 +244,7 @@ export default function FeaturesGrid({
                               text-[1.45rem]
                               font-black
                               leading-none
-                              tracking-[-0.04em]
+                              tracking-[-0.03em]
                             "
                           >
                             {plan.price}
@@ -253,7 +253,7 @@ export default function FeaturesGrid({
                           <span
                             className="
                               pb-[2px]
-                              text-[7px]
+                              text-[13px]
                               opacity-50
                             "
                           >
@@ -272,7 +272,7 @@ export default function FeaturesGrid({
                           overflow-hidden
                           rounded-full
                           border
-                          border-white/10
+                          border-brand-cream/10
                         "
                       >
                         {(plan.packages || ["3 Pack", "7 Pack", "15 Pack"]).map(
@@ -288,14 +288,14 @@ export default function FeaturesGrid({
                                 h-5
                                 items-center
                                 justify-center
-                                text-[6px]
+                                text-[11px]
                                 font-medium
                                 ${
                                   selected
                                     ? featured
-                                      ? "bg-brand-orange text-white"
-                                      : "bg-white text-black"
-                                    : "text-white/55"
+                                      ? "bg-brand-orange text-brand-cream"
+                                      : "bg-brand-card text-brand-black"
+                                    : "text-brand-cream/55"
                                 }
                               `}
                               >
@@ -311,7 +311,7 @@ export default function FeaturesGrid({
                       <div className="mt-3 px-2">
                         <div
                           className="
-                            text-[6px]
+                            text-[11px]
                             uppercase
                             tracking-[0.08em]
                             opacity-40
@@ -332,7 +332,7 @@ export default function FeaturesGrid({
                           mt-2
                           flex-1
                           border-t
-                          border-white/[0.08]
+                          border-brand-cream/[0.08]
                           px-2
                           pt-2
                         "
@@ -347,9 +347,9 @@ export default function FeaturesGrid({
                                   flex
                                   items-start
                                   gap-1.5
-                                  text-[6.5px]
+                                  text-[12px]
                                   leading-[1.3]
-                                  text-white/65
+                                  text-brand-cream/65
                                 "
                               >
                                 <span className="mt-[1px] text-brand-orange">
@@ -374,7 +374,7 @@ export default function FeaturesGrid({
                             justify-center
                             gap-1
                             rounded-full
-                            text-[7px]
+                            text-[13px]
                             font-bold
                             transition-transform
                             duration-300
@@ -382,8 +382,8 @@ export default function FeaturesGrid({
 
                             ${
                               featured
-                                ? "bg-brand-orange text-white"
-                                : "bg-white text-black"
+                                ? "bg-brand-orange text-brand-cream"
+                                : "bg-brand-card text-brand-black"
                             }
                           `}
                         >
@@ -400,12 +400,12 @@ export default function FeaturesGrid({
                             justify-center
                             rounded-full
                             border
-                            border-white/10
-                            text-[7px]
-                            text-white/70
+                            border-brand-cream/10
+                            text-[13px]
+                            text-brand-cream/70
                             transition-colors
-                            hover:border-white/30
-                            hover:text-white
+                            hover:border-brand-cream/30
+                            hover:text-brand-cream
                           "
                         >
                           Book a Call
@@ -433,11 +433,11 @@ export default function FeaturesGrid({
                     gap-4
                     rounded-[7px]
                     border
-                    border-white/10
-                    bg-[#0b0b0b]
+                    border-brand-cream/10
+                    bg-brand-black
                     px-4
                     py-3
-                    text-white
+                    text-brand-cream
                     md:flex-row
                     md:items-center
                     md:justify-between
@@ -451,7 +451,7 @@ export default function FeaturesGrid({
                     />
 
                     <div className="min-w-0">
-                      <div className="text-[6px] font-bold uppercase text-brand-orange">
+                      <div className="text-[11px] font-bold uppercase text-brand-orange">
                         Signature
                       </div>
 
@@ -460,7 +460,7 @@ export default function FeaturesGrid({
                       </h3>
 
                       {signature.body && (
-                        <p className="mt-1 text-[6.5px] opacity-50">
+                        <p className="mt-1 text-[12px] opacity-50">
                           {signature.body}
                         </p>
                       )}
@@ -469,7 +469,7 @@ export default function FeaturesGrid({
 
                   <div className="flex items-center gap-4 md:gap-6">
                     <div>
-                      <div className="text-[6px] uppercase opacity-40">
+                      <div className="text-[11px] uppercase opacity-40">
                         From
                       </div>
 
@@ -488,9 +488,9 @@ export default function FeaturesGrid({
                           gap-1
                           rounded-full
                           border
-                          border-white/15
+                          border-brand-cream/15
                           px-3
-                          text-[6px]
+                          text-[11px]
                           md:flex
                         "
                       >
@@ -509,7 +509,7 @@ export default function FeaturesGrid({
                         rounded-full
                         bg-brand-orange
                         px-3
-                        text-[6px]
+                        text-[11px]
                         font-bold
                       "
                     >
@@ -538,13 +538,13 @@ export default function FeaturesGrid({
                   justify-between
                   rounded-[7px]
                   border
-                  border-white/10
-                  bg-[#0b0b0b]
+                  border-brand-cream/10
+                  bg-brand-black
                   px-4
                   py-3
-                  text-white
+                  text-brand-cream
                   transition-colors
-                  hover:border-white/25
+                  hover:border-brand-cream/25
                 "
               >
                 <div className="flex items-center gap-3">
@@ -555,7 +555,7 @@ export default function FeaturesGrid({
                   />
 
                   <div>
-                    <div className="text-[6px] font-bold uppercase text-brand-orange">
+                    <div className="text-[11px] font-bold uppercase text-brand-orange">
                       Compare plans
                     </div>
 
@@ -563,7 +563,7 @@ export default function FeaturesGrid({
                       Everything. Side by side.
                     </div>
 
-                    <div className="mt-1 text-[6px] opacity-40">
+                    <div className="mt-1 text-[11px] opacity-40">
                       Compare prices, plans and features all in one place.
                     </div>
                   </div>
@@ -577,9 +577,9 @@ export default function FeaturesGrid({
                     gap-1
                     rounded-full
                     border
-                    border-white/15
+                    border-brand-cream/15
                     px-3
-                    text-[6px]
+                    text-[11px]
                     transition-all
                     group-hover:border-brand-orange
                     group-hover:text-brand-orange
@@ -619,7 +619,7 @@ export default function FeaturesGrid({
                   font-black
                   uppercase
                   leading-[0.84]
-                  tracking-[-0.055em]
+                  tracking-[-0.03em]
                   text-balance
                 "
               >
@@ -634,11 +634,11 @@ export default function FeaturesGrid({
                     mx-auto
                     mt-5
                     max-w-[620px]
-                    text-[0.68rem]
+                    text-[0.8rem]
                     font-medium
                     leading-[1.5]
                     opacity-60
-                    md:text-[0.75rem]
+                    md:text-[0.85rem]
                   "
                 >
                   {subline}
@@ -679,7 +679,7 @@ export default function FeaturesGrid({
                         overflow-hidden
                         rounded-[9px]
                         border
-                        bg-white
+                        bg-brand-card
                         px-4
                         py-4
                         transition-all
@@ -687,7 +687,7 @@ export default function FeaturesGrid({
                         ease-smooth
                         hover:-translate-y-[2px]
                         hover:border-brand-orange
-                        hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]
+                        hover:shadow-[0_12px_30px_rgba(26,9,7,0.06)]
                         md:min-h-[160px]
                         md:px-5
                         md:py-5
@@ -715,7 +715,7 @@ export default function FeaturesGrid({
                           border-brand-orange/40
                           px-1
                           font-display
-                          text-[7px]
+                          text-[13px]
                           font-black
                           leading-none
                           text-brand-orange
@@ -832,7 +832,7 @@ export default function FeaturesGrid({
                   h-8
                   rounded-full
                   px-5
-                  text-[7px]
+                  text-[13px]
                   font-bold
                   uppercase
                   tracking-[0.04em]

@@ -24,7 +24,7 @@ export default function Workflow({
           </Reveal>
 
           <Reveal delay={0.05}>
-            <h2 className="mx-auto mt-5 max-w-2xl font-display text-display-lg uppercase leading-[0.88] tracking-[-0.04em] text-balance">
+            <h2 className="mx-auto mt-5 max-w-2xl font-display text-display-lg uppercase leading-[0.88] tracking-[-0.03em] text-balance">
               {headline}
             </h2>
           </Reveal>
@@ -45,12 +45,12 @@ export default function Workflow({
               <div
                 className="
                   group relative flex min-h-[108px] items-center
-                  rounded-2xl border border-black/[0.08]
-                  bg-white px-5 py-5
-                  shadow-[0_2px_12px_rgba(0,0,0,0.04)]
+                  rounded-2xl border border-brand-black/[0.08]
+                  bg-brand-card px-5 py-5
+                  shadow-[0_2px_12px_rgba(26,9,7,0.04)]
                   transition-all duration-300
                   hover:-translate-y-0.5
-                  hover:shadow-[0_8px_24px_rgba(0,0,0,0.07)]
+                  hover:shadow-[0_8px_24px_rgba(26,9,7,0.07)]
                   md:px-5
                 "
               >
@@ -85,8 +85,8 @@ export default function Workflow({
                     right-[-15px] top-1/2 z-20
                     hidden h-8 w-8 -translate-y-1/2
                     items-center justify-center
-                    rounded-full border border-black/[0.08]
-                    bg-white shadow-sm
+                    rounded-full border border-brand-black/[0.08]
+                    bg-brand-card shadow-sm
                     md:flex
                   "
                 >

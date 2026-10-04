@@ -14,7 +14,7 @@ export default function VisionPage() {
     <>
       <Navbar />
 
-      <main className="bg-white text-neutral-900">
+      <main className="bg-brand-cream text-brand-black">
         {/* ============================= */}
         {/* OUR VISION                    */}
         {/* ============================= */}
@@ -31,7 +31,7 @@ export default function VisionPage() {
                   </span>
                 </h1>
 
-                <div className="mt-12 max-w-3xl space-y-7 text-base md:text-lg leading-8 text-neutral-600">
+                <div className="mt-12 max-w-3xl space-y-7 text-base md:text-lg leading-8 text-brand-textSoft">
                   <p>
                     We started OCT20FIVE Agency because we wanted to give people
                     the quality they actually deserve, not the low-effort work
@@ -56,7 +56,7 @@ export default function VisionPage() {
                     want that—not for clients, not for creatives, not for
                     ourselves.
                     <br />
-                    <span className="font-medium text-neutral-900">
+                    <span className="font-medium text-brand-black">
                       That's our vision.
                     </span>
                   </p>
@@ -75,14 +75,14 @@ export default function VisionPage() {
               <div className="text-center">
                 <SectionTag>Our Mission</SectionTag>
 
-                <p className="mt-6 uppercase tracking-[0.35em] text-xs text-neutral-500">
+                <p className="mt-6 uppercase tracking-[0.35em] text-xs text-brand-textSoft">
                   We just have one mission...
                 </p>
 
                 <h2 className="mt-5 font-display uppercase leading-[0.85] tracking-tight text-5xl md:text-7xl xl:text-8xl">
-                  <span className="text-neutral-900">Concept.</span>{" "}
-                  <span className="text-neutral-900">Create.</span>{" "}
-                  <span className="text-neutral-900">Deliver.</span>{" "}
+                  <span className="text-brand-black">Concept.</span>{" "}
+                  <span className="text-brand-black">Create.</span>{" "}
+                  <span className="text-brand-black">Deliver.</span>{" "}
                   <span className="text-brand-orange">That's All.</span>
                 </h2>
               </div>
@@ -92,7 +92,7 @@ export default function VisionPage() {
             <Reveal delay={0.15}>
               <Link
                 href="#leadership"
-                className="group mt-16 block rounded-3xl border border-brand-orange/20 bg-[#fffaf7] transition-all duration-300 hover:border-brand-orange hover:shadow-xl"
+                className="group mt-16 block rounded-3xl border border-brand-orange/20 bg-brand-card transition-all duration-300 hover:border-brand-orange hover:shadow-xl"
               >
                 <div className="grid md:grid-cols-12 items-center gap-8 px-8 py-8 md:px-10">
                   <div className="md:col-span-2 flex justify-center md:justify-start">
@@ -112,14 +112,14 @@ export default function VisionPage() {
                     </h3>
                   </div>
 
-                  <div className="md:col-span-4 text-center md:text-left text-neutral-600 leading-7">
+                  <div className="md:col-span-4 text-center md:text-left text-brand-textSoft leading-7">
                     Meet the people turning this vision into reality.
                   </div>
 
                   <div className="md:col-span-2 flex justify-center md:justify-end">
                     <div className="flex items-center gap-3 font-semibold uppercase tracking-wide text-sm">
                       Explore Team
-                      <div className="w-11 h-11 rounded-full border border-brand-orange text-brand-orange flex items-center justify-center transition-all duration-300 group-hover:bg-brand-orange group-hover:text-white">
+                      <div className="w-11 h-11 rounded-full border border-brand-orange text-brand-orange flex items-center justify-center transition-all duration-300 group-hover:bg-brand-orange group-hover:text-brand-cream">
                         <ArrowRight
                           size={18}
                           className="group-hover:translate-x-0.5 transition-transform"
@@ -150,7 +150,7 @@ export default function VisionPage() {
             </Reveal>
 
             <Reveal delay={0.15}>
-              <div className="relative mt-14 rounded-[28px] overflow-hidden border border-neutral-200">
+              <div className="relative mt-14 rounded-[28px] overflow-hidden border border-brand-border">
                 <div className="relative aspect-[16/8]">
                   <Image
                     src="/images/team/team-photo.jpg"
@@ -161,14 +161,14 @@ export default function VisionPage() {
                     className="object-cover"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-brand-black/70 via-brand-black/25 to-transparent" />
 
                   <div className="absolute left-10 bottom-10 max-w-sm">
-                    <p className="text-white/80 uppercase tracking-[0.35em] text-xs mb-4">
+                    <p className="text-brand-cream/80 uppercase tracking-[0.35em] text-xs mb-4">
                       OCT20FIVE
                     </p>
 
-                    <h3 className="font-display uppercase leading-[0.88] text-4xl md:text-6xl text-white">
+                    <h3 className="font-display uppercase leading-[0.88] text-4xl md:text-6xl text-brand-cream">
                       People
                       <br />
                       <span className="text-brand-orange">Who Made</span>
@@ -185,10 +185,10 @@ export default function VisionPage() {
             <Reveal delay={0.25}>
               <div className="mt-24">
                 <div className="flex justify-center">
-                  <div className="h-px w-24 bg-neutral-300" />
+                  <div className="h-px w-24 bg-brand-border" />
                 </div>
 
-                <p className="text-center mt-5 uppercase tracking-[0.45em] text-xs text-neutral-500">
+                <p className="text-center mt-5 uppercase tracking-[0.45em] text-xs text-brand-textSoft">
                   Leadership
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function VisionPage() {
 
               <Reveal>
                 <article className="group">
-                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-brand-creamSoft">
                     <Image
                       src="/images/team/tarun.jpg"
                       alt="Tarun Verma"
@@ -213,7 +213,7 @@ export default function VisionPage() {
                       Tarun Verma
                     </h3>
 
-                    <p className="text-sm text-neutral-500 mt-1">
+                    <p className="text-sm text-brand-textSoft mt-1">
                       Founder & CEO
                     </p>
 
@@ -240,7 +240,7 @@ export default function VisionPage() {
 
               <Reveal delay={0.05}>
                 <article className="group">
-                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-brand-creamSoft">
                     <Image
                       src="/images/team/ananya.jpg"
                       alt="Ananya Iyer"
@@ -254,7 +254,7 @@ export default function VisionPage() {
                       Ananya Iyer
                     </h3>
 
-                    <p className="text-sm text-neutral-500 mt-1">Design Lead</p>
+                    <p className="text-sm text-brand-textSoft mt-1">Design Lead</p>
 
                     <div className="mt-4 flex gap-4">
                       <Link
@@ -279,7 +279,7 @@ export default function VisionPage() {
 
               <Reveal delay={0.1}>
                 <article className="group">
-                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-brand-creamSoft">
                     <Image
                       src="/images/team/rachav.jpg"
                       alt="Rachav Sharma"
@@ -293,7 +293,7 @@ export default function VisionPage() {
                       Rachav Sharma
                     </h3>
 
-                    <p className="text-sm text-neutral-500 mt-1">
+                    <p className="text-sm text-brand-textSoft mt-1">
                       Head of Production
                     </p>
 
@@ -320,7 +320,7 @@ export default function VisionPage() {
 
               <Reveal delay={0.15}>
                 <article className="group">
-                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-neutral-100">
+                  <div className="relative overflow-hidden rounded-3xl aspect-[4/5] bg-brand-creamSoft">
                     <Image
                       src="/images/team/vivek.jpg"
                       alt="Vivek Rathi"
@@ -334,7 +334,7 @@ export default function VisionPage() {
                       Vivek Rathi
                     </h3>
 
-                    <p className="text-sm text-neutral-500 mt-1">
+                    <p className="text-sm text-brand-textSoft mt-1">
                       3D & Motion Lead
                     </p>
 
@@ -362,10 +362,10 @@ export default function VisionPage() {
 
             <Reveal delay={0.3}>
               <div className="mt-28 flex justify-center">
-                <div className="h-px w-24 bg-neutral-300" />
+                <div className="h-px w-24 bg-brand-border" />
               </div>
 
-              <p className="mt-5 text-center uppercase tracking-[0.45em] text-xs text-neutral-500">
+              <p className="mt-5 text-center uppercase tracking-[0.45em] text-xs text-brand-textSoft">
                 Team
               </p>
             </Reveal>
@@ -380,7 +380,7 @@ export default function VisionPage() {
                   <article className="group">
                     {/* Image */}
 
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 border border-neutral-200">
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-creamSoft border border-brand-border">
                       <Image
                         src={member.image}
                         alt={member.name}
@@ -389,7 +389,7 @@ export default function VisionPage() {
                         className="object-cover transition duration-500 group-hover:scale-105"
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
                     </div>
 
                     {/* Details */}
@@ -399,7 +399,7 @@ export default function VisionPage() {
                         {member.name}
                       </h3>
 
-                      <p className="mt-1 text-xs text-neutral-500">
+                      <p className="mt-1 text-xs text-brand-textSoft">
                         {member.role}
                       </p>
 
@@ -437,7 +437,7 @@ export default function VisionPage() {
             {/* ===================================== */}
 
             <Reveal delay={0.25}>
-              <div className="mt-32 border-t border-neutral-200 pt-20">
+              <div className="mt-32 border-t border-brand-border pt-20">
                 <div className="max-w-5xl mx-auto text-center">
                   <SectionTag>Our Culture</SectionTag>
 
@@ -446,7 +446,7 @@ export default function VisionPage() {
                     <span className="text-brand-orange"> great people.</span>
                   </h2>
 
-                  <p className="mt-8 text-lg leading-8 text-neutral-600 max-w-3xl mx-auto">
+                  <p className="mt-8 text-lg leading-8 text-brand-textSoft max-w-3xl mx-auto">
                     Every campaign, every design, every line of code and every
                     strategy that leaves OCT20FIVE carries the effort of a team
                     that believes creativity isn't a department—it's a culture.
@@ -463,7 +463,7 @@ export default function VisionPage() {
             {/* ===================================== */}
 
             <Reveal delay={0.35}>
-              <div className="mt-24 rounded-[36px] overflow-hidden bg-neutral-950 text-white">
+              <div className="mt-24 rounded-[36px] overflow-hidden bg-brand-black text-brand-cream">
                 <div className="px-10 md:px-20 py-20 text-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ff5a1f33,transparent_65%)]" />
 
@@ -478,7 +478,7 @@ export default function VisionPage() {
                       </span>
                     </h2>
 
-                    <p className="mt-8 max-w-2xl mx-auto text-neutral-300 leading-8">
+                    <p className="mt-8 max-w-2xl mx-auto text-brand-cream/60 leading-8">
                       Whether you're launching a brand, scaling a product,
                       producing content or building a digital experience, we'd
                       love to hear your story.
@@ -486,7 +486,7 @@ export default function VisionPage() {
 
                     <Link
                       href="/agency/get-in-touch"
-                      className="inline-flex items-center gap-3 mt-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover transition-colors px-8 py-4 font-semibold text-white"
+                      className="inline-flex items-center gap-3 mt-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover transition-colors px-8 py-4 font-semibold text-brand-cream"
                     >
                       Start Your Project
                       <ArrowRight size={18} />

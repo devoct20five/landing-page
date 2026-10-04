@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Logo from "@/components/brands/Logo";
 import { Mail, Instagram, Linkedin, ArrowUpRight } from "lucide-react";
 
 const AGENCY_NAVIGATE = [
@@ -34,14 +35,14 @@ export default function Footer({ variant = "agency" }) {
   const navLinks = variant === "service" ? SERVICE_NAVIGATE : AGENCY_NAVIGATE;
 
   return (
-<footer className="relative overflow-hidden bg-brand-black text-white">
+<footer className="relative overflow-hidden bg-brand-black text-brand-cream">
   {/* Background */}
-  <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+  <div className="absolute inset-x-0 top-0 h-px bg-brand-cream/10" />
   <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-brand-orange/5 blur-[150px]" />
 
   <div className="container relative py-16">
     {/* Top Divider */}
-    <div className="mb-12 border-t border-white/10" />
+    <div className="mb-12 border-t border-brand-cream/10" />
 
     {/* Logo */}
     <div className="mb-14 flex justify-center">
@@ -115,15 +116,15 @@ export default function Footer({ variant = "agency" }) {
 
       {/* CTA */}
       <div>
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-7">
+        <div className="relative overflow-hidden rounded-2xl border border-brand-cream/10 bg-brand-cream/[0.02] p-7">
 
           <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-brand-orange/20 blur-3xl" />
 
-          <h3 className="mb-4 text-3xl font-bold text-white">
+          <h3 className="mb-4 text-3xl font-bold text-brand-cream">
             Join us now!
           </h3>
 
-          <p className="mb-6 text-sm leading-7 text-white/60">
+          <p className="mb-6 text-sm leading-7 text-brand-cream/60">
             Good at what you do and serious about making great work?
             We're always open to meeting people who can bring
             something new to the table.
@@ -131,7 +132,7 @@ export default function Footer({ variant = "agency" }) {
 
           <Link
             href="/agency/careers"
-            className="group inline-flex items-center gap-2 rounded-full border border-brand-orange px-5 py-2.5 text-sm font-semibold text-brand-orange transition-all duration-300 hover:bg-brand-orange hover:text-white"
+            className="group inline-flex items-center gap-2 rounded-full border border-brand-orange px-5 py-2.5 text-sm font-semibold text-brand-orange transition-all duration-300 hover:bg-brand-orange hover:text-brand-cream"
           >
             Join the team!
 
@@ -145,33 +146,19 @@ export default function Footer({ variant = "agency" }) {
     </div>
 
     {/* Bottom */}
-    <div className="mt-12 border-t border-white/10 pt-8">
+    <div className="mt-12 border-t border-brand-cream/10 pt-8">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
         <div className="flex items-center gap-5">
 
-          <div className="flex h-12 w-12 flex-col items-center justify-center border border-white/20 text-white">
-
-            <span className="text-[8px] font-bold tracking-[0.3em]">
-              OCT
-            </span>
-
-            <span className="text-lg font-black leading-none">
-              20
-            </span>
-
-            <span className="text-[8px] font-bold tracking-[0.3em]">
-              FIVE
-            </span>
-
-          </div>
+          <Logo href="/" variant="orange" size="sm" />
 
           <div>
-            <p className="text-[13px] text-white/40">
+            <p className="text-[13px] text-brand-cream/40">
               © {new Date().getFullYear()} OCT20FIVE Agency. All rights reserved.
             </p>
 
-            <p className="mt-1 text-[13px] text-white/30">
+            <p className="mt-1 text-[13px] text-brand-cream/30">
               Crafted with purpose. Built for impact.
               <span className="ml-1 text-brand-orange">•</span>
             </p>
@@ -181,9 +168,9 @@ export default function Footer({ variant = "agency" }) {
 
         <div className="flex items-center gap-8">
 
-          <div className="hidden h-10 w-px bg-white/10 lg:block" />
+          <div className="hidden h-10 w-px bg-brand-cream/10 lg:block" />
 
-          <div className="flex items-center gap-5 text-[12px] uppercase tracking-[0.45em] text-white/55">
+          <div className="flex items-center gap-5 text-[12px] uppercase tracking-[0.45em] text-brand-cream/55">
 
             <span>CREATE</span>
 
@@ -213,23 +200,7 @@ export default function Footer({ variant = "agency" }) {
 ========================================================== */
 
 function LogoMark() {
-  return (
-    <Link href="/" className="group">
-      <div className="relative flex h-32 w-32 items-center justify-center border-2 border-brand-orange bg-black transition-all duration-300 group-hover:scale-105">
-
-        <div className="text-center font-black leading-none text-brand-orange">
-
-          <div className="text-3xl">OCT</div>
-
-          <div className="text-5xl">20</div>
-
-          <div className="text-3xl">FIVE</div>
-
-        </div>
-
-      </div>
-    </Link>
-  );
+  return <Logo href="/" variant="orange" size="xl" />;
 }
 
 /* ==========================================================
@@ -253,11 +224,11 @@ function FooterLink({
             rel: "noopener noreferrer",
           }
         : {})}
-      className="group inline-flex items-center gap-3 text-[15px] text-white/55 transition-all duration-500 ease-smooth hover:text-white"
+      className="group inline-flex items-center gap-3 text-[15px] text-brand-cream/55 transition-all duration-500 ease-smooth hover:text-brand-cream"
     >
       {icon && (
         <span
-          className={`flex h-7 w-7 items-center justify-center rounded-lg text-white ${iconClass}`}
+          className={`flex h-7 w-7 items-center justify-center rounded-lg text-brand-cream ${iconClass}`}
           style={iconStyle}
         >
           {icon}
@@ -275,7 +246,7 @@ function FooterLink({
             left-0
             top-full
             block
-            text-white
+            text-brand-cream
             transition-transform
             duration-500
             ease-smooth
@@ -291,7 +262,7 @@ function FooterLink({
 function Heading({ children }) {
   return (
     <div className="mb-5">
-      <p className="relative inline-block text-[13px] font-semibold uppercase tracking-wider text-white">
+      <p className="relative inline-block text-[13px] font-semibold uppercase tracking-wider text-brand-cream">
         {children}
 
         <span className="absolute -bottom-2 left-0 h-[2px] w-8 bg-brand-orange" />

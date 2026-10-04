@@ -149,17 +149,17 @@ export default function BehindTheWorkPage() {
                         sizes="(max-width: 768px) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 ease-apple group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/10 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 p-5">
                         <div className="flex items-center justify-between">
                           <h3 className="font-display text-2xl uppercase leading-none">
                             {c.title}
                           </h3>
-                          <span className="w-8 h-8 shrink-0 rounded-icon border border-white/30 flex items-center justify-center text-white transition-colors group-hover:border-brand-orange group-hover:text-brand-orange">
+                          <span className="w-8 h-8 shrink-0 rounded-icon border border-brand-cream/30 flex items-center justify-center text-brand-cream transition-colors group-hover:border-brand-orange group-hover:text-brand-orange">
                             <ArrowUpRight size={14} />
                           </span>
                         </div>
-                        <p className="mt-2 text-sm text-white/70">{c.desc}</p>
+                        <p className="mt-2 text-sm text-brand-cream/70">{c.desc}</p>
                       </div>
                     </div>
                   </Link>

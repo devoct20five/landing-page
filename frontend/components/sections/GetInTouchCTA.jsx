@@ -81,7 +81,7 @@ export default function GetInTouchCTA({
                   font-black
                   uppercase
                   leading-[0.82]
-                  tracking-[-0.055em]
+                  tracking-[-0.03em]
                 "
               >
                 READY TO START
@@ -102,7 +102,7 @@ export default function GetInTouchCTA({
                   max-w-[450px]
                   text-[0.82rem]
                   leading-[1.65]
-                  text-black/70
+                  text-brand-black/70
                   md:text-[0.9rem]
                 "
               >
@@ -144,13 +144,13 @@ export default function GetInTouchCTA({
                     rounded-[9px]
                     border
                     border-brand-orange/40
-                    bg-white
+                    bg-brand-card
                     p-5
                     transition-all
                     duration-500
                     hover:-translate-y-1.5
                     hover:border-brand-orange
-                    hover:shadow-[0_25px_60px_rgba(0,0,0,0.08)]
+                    hover:shadow-[0_25px_60px_rgba(26,9,7,0.08)]
                     md:p-6
                   "
                 >
@@ -200,7 +200,7 @@ export default function GetInTouchCTA({
                         max-w-[190px]
                         text-[0.68rem]
                         leading-[1.55]
-                        text-black/60
+                        text-brand-black/60
                       "
                     >
                       You know what you need.
@@ -262,13 +262,13 @@ export default function GetInTouchCTA({
                     flex-col
                     rounded-[9px]
                     border
-                    bg-white
+                    bg-brand-card
                     p-5
                     transition-all
                     duration-500
                     hover:-translate-y-1.5
                     hover:border-brand-orange
-                    hover:shadow-[0_25px_60px_rgba(0,0,0,0.08)]
+                    hover:shadow-[0_25px_60px_rgba(26,9,7,0.08)]
                     md:p-6
                   "
                   style={{
@@ -288,8 +288,8 @@ export default function GetInTouchCTA({
                       justify-center
                       rounded-full
                       border
-                      border-black/10
-                      text-black/70
+                      border-brand-black/10
+                      text-brand-black/70
                     "
                   >
                     <Pencil
@@ -322,7 +322,7 @@ export default function GetInTouchCTA({
                         max-w-[190px]
                         text-[0.68rem]
                         leading-[1.55]
-                        text-black/60
+                        text-brand-black/60
                       "
                     >
                       Have an idea but not all

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { Suspense, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -121,7 +121,7 @@ function formatINR(n) {
   return `₹${n.toLocaleString("en-IN")}`;
 }
 
-export default function CheckoutPage() {
+function CheckoutInner() {
   const params = useSearchParams();
 
   const planKey = params.get("plan") || "growth";
@@ -381,7 +381,7 @@ export default function CheckoutPage() {
                                     }}
                                   >
                                     {active && (
-                                      <Check size={12} className="text-white" />
+                                      <Check size={12} className="text-brand-cream" />
                                     )}
                                   </span>
                                   <span className="text-sm font-medium">
@@ -1244,5 +1244,13 @@ function OrderMini({ plan, activePackage, total, onEdit }) {
         <Pencil size={12} /> Edit
       </button>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckoutInner />
+    </Suspense>
   );
 }

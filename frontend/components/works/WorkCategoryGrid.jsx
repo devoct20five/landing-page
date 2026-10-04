@@ -49,7 +49,7 @@ export default function WorkCategoryGrid({ category, items }) {
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover transition-transform duration-700 ease-apple group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors" />
+                      <div className="absolute inset-0 bg-brand-black/25 group-hover:bg-brand-black/10 transition-colors" />
 
                       {/* Play button */}
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -57,13 +57,13 @@ export default function WorkCategoryGrid({ category, items }) {
                           <Play
                             size={22}
                             fill="white"
-                            className="text-white translate-x-0.5"
+                            className="text-brand-cream translate-x-0.5"
                           />
                         </div>
                       </div>
 
                       {/* Duration badge */}
-                      <span className="absolute bottom-3 right-3 rounded-md bg-black/70 px-2 py-1 text-xs font-medium tabular-nums text-white/90">
+                      <span className="absolute bottom-3 right-3 rounded-md bg-brand-black/70 px-2 py-1 text-xs font-medium tabular-nums text-brand-cream/90">
                         {item.duration}
                       </span>
                     </div>

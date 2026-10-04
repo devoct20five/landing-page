@@ -4,302 +4,160 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import Image from 'next/image'
 import { ChevronDown } from 'lucide-react'
+import Eclipse from '@/components/brands/Eclipse'
 
+const EASE = [0.22, 1, 0.36, 1]
+
+/**
+ * Shared page hero — brand book layout language:
+ * dark #1A0907 field + Eclipse glow, left-aligned heavy uppercase title,
+ * Satoshi body, orange hairline footer.
+ *
+ * Props
+ *  eyebrow     small orange label above the title
+ *  headline    string (wrapped word-by-word) or ReactNode
+ *  description optional supporting paragraph (Satoshi)
+ *  subline     "CONCEPT. CREATE. DELIVER." → rendered with orange full stops
+ *  actions     optional buttons (ReactNode)
+ *  image       optional photo, shown as a quiet monochrome texture under the glow
+ */
 export default function Hero({
-  eyebrow = 'OCT20FIVE AGENCY',
-  headline = 'FULL SPECTRUM CREATIVE SERVICES',
-  subline = 'CONCEPT / CREATE / DELIVER',
+  eyebrow = 'OCT20FIVE',
+  headline = '',
+  description,
+  subline,
+  actions,
   image,
   imageAlt = '',
   showScrollCue = true,
 }) {
   const ref = useRef(null)
-
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   })
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12])
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '8%'])
-  const contentOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.65, 1],
-    [1, 1, 0]
-  )
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.65, 1], [1, 1, 0])
+
+  const words = typeof headline === 'string' ? headline.trim().split(/\s+/) : null
+  const tokens = subline
+    ? subline.split(/\s*[./]\s*/).map((t) => t.trim()).filter(Boolean)
+    : []
 
   return (
     <section
       ref={ref}
       data-theme="dark"
-      className="
-        relative
-        min-h-[100svh]
-        w-full
-        overflow-hidden
-        bg-black
-        text-white
-      "
+      className="theme-dark relative min-h-[100svh] w-full overflow-hidden bg-brand-black text-brand-cream"
     >
-      {/* =========================================================
-          BACKGROUND
-      ========================================================= */}
-
-      <motion.div
-        style={{ scale, y }}
-        className="absolute inset-0 z-0"
-      >
+      {/* BACKGROUND */}
+      <motion.div style={{ scale, y }} className="absolute inset-0 z-0">
         {image && (
           <Image
             src={image}
-            alt={imageAlt || 'OCT20FIVE production set'}
+            alt={imageAlt}
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="object-cover object-center opacity-25 mix-blend-luminosity grayscale"
           />
         )}
-
-        {/* Heavy cinematic darkening */}
-        <div className="absolute inset-0 bg-black/65" />
-
-        {/* Darker centre behind typography */}
-        <div
-          className="
-            absolute inset-0
-            bg-[radial-gradient(
-              ellipse_at_center,
-              rgba(0,0,0,0.15)_0%,
-              rgba(0,0,0,0.58)_48%,
-              rgba(0,0,0,0.88)_100%
-            )]
-          "
-        />
-
-        {/* Top / bottom cinematic falloff */}
-        <div
-          className="
-            absolute inset-0
-            bg-gradient-to-b
-            from-black/75
-            via-transparent
-            to-black/85
-          "
-        />
-
-        {/* Subtle orange atmospheric glow */}
-        <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-[45vw]
-            w-[70vw]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-brand-orange/[0.055]
-            blur-[120px]
-          "
-        />
+        <Eclipse bare={!!image} />
       </motion.div>
 
-      {/* =========================================================
-          CONTENT
-      ========================================================= */}
-
+      {/* CONTENT */}
       <motion.div
         style={{ opacity: contentOpacity }}
-        className="
-          relative
-          z-10
-          flex
-          min-h-[100svh]
-          flex-col
-          items-center
-          justify-center
-          px-5
-          pb-20
-          pt-32
-          text-center
-        "
+        className="container relative z-10 flex min-h-[100svh] flex-col justify-center pb-28 pt-36"
       >
-        {/* -----------------------------------------
-            EYEBROW
-        ----------------------------------------- */}
-
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.25,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="
-            mb-7
-            text-[11px]
-            font-medium
-            uppercase
-            tracking-[0.48em]
-            text-brand-orange
-            sm:text-xs
-            md:mb-8
-            md:text-sm
-            md:tracking-[0.55em]
-          "
+          transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+          className="mb-7 flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-brand-orange md:mb-9 md:text-sm"
         >
+          <span className="h-px w-10 bg-brand-orange" />
           {eyebrow}
         </motion.div>
 
-        {/* -----------------------------------------
-            MAIN HEADLINE
-        ----------------------------------------- */}
-
-        <h1
-          className="
-            max-w-[1100px]
-            font-display
-            font-black
-            uppercase
-            leading-[0.82]
-            tracking-[-0.045em]
-            text-white
-          "
-        >
-          <span className="block overflow-hidden">
-            <motion.span
-              initial={{ y: '110%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                duration: 1,
-                delay: 0.35,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="
-                block
-                text-[clamp(3.3rem,8.2vw,8rem)]
-              "
-            >
-              FULL SPECTRUM
-            </motion.span>
-          </span>
-
-          <span className="block overflow-hidden">
-            <motion.span
-              initial={{ y: '110%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                duration: 1,
-                delay: 0.43,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="
-                block
-                text-[clamp(3.3rem,8.2vw,8rem)]
-              "
-            >
-              CREATIVE SERVICES
-            </motion.span>
-          </span>
+        <h1 className="max-w-[16ch] font-display text-[clamp(2.9rem,8.2vw,8rem)] font-black uppercase leading-[0.92] tracking-[-0.02em] text-brand-cream text-balance sm:max-w-[18ch]">
+          {words
+            ? words.map((w, i) => (
+                <span key={i} className="mr-[0.22em] inline-block overflow-hidden align-bottom">
+                  <motion.span
+                    initial={{ y: '110%' }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.3 + i * 0.07, ease: EASE }}
+                    className="inline-block"
+                  >
+                    {w}
+                  </motion.span>
+                </span>
+              ))
+            : headline}
         </h1>
 
-        {/* -----------------------------------------
-            TAGLINE
-        ----------------------------------------- */}
+        {description && (
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+            className="mt-8 max-w-xl text-base leading-relaxed text-brand-cream/70 md:text-lg"
+          >
+            {description}
+          </motion.p>
+        )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.9,
-            delay: 0.95,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="
-            mt-9
-            flex
-            items-center
-            justify-center
-            gap-3
-            text-[11px]
-            font-medium
-            uppercase
-            tracking-[0.34em]
-            text-white/90
-            sm:gap-4
-            sm:text-xs
-            md:mt-10
-            md:text-sm
-            md:tracking-[0.42em]
-          "
-        >
-          <span>CONCEPT</span>
-          <span className="text-brand-orange">.</span>
+        {tokens.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
+            className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium uppercase tracking-[0.28em] text-brand-cream/90 md:text-sm"
+          >
+            {tokens.map((t, i) => (
+              <span key={i} className="inline-flex items-center gap-3">
+                {t}
+                <span className="text-brand-orange">.</span>
+              </span>
+            ))}
+          </motion.div>
+        )}
 
-          <span>CREATE</span>
-          <span className="text-brand-orange">.</span>
-
-          <span>DELIVER</span>
-          <span className="text-brand-orange">.</span>
-        </motion.div>
+        {actions && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.1, ease: EASE }}
+            className="mt-10 flex flex-wrap items-center gap-3"
+          >
+            {actions}
+          </motion.div>
+        )}
       </motion.div>
 
-      {/* =========================================================
-          SCROLL CUE
-      ========================================================= */}
-
+      {/* FOOTER HAIRLINE — echoes the orange rule + page number on every brand-book slide */}
       {showScrollCue && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{
-            delay: 1.55,
-            duration: 1,
-          }}
-          className="
-            absolute
-            bottom-7
-            left-1/2
-            z-20
-            flex
-            -translate-x-1/2
-            flex-col
-            items-center
-            gap-2
-            md:bottom-8
-          "
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute inset-x-0 bottom-7 z-20 md:bottom-9"
         >
-          <span
-            className="
-              text-[8px]
-              font-medium
-              uppercase
-              tracking-[0.35em]
-              text-white/70
-              md:text-[9px]
-            "
-          >
-            Scroll Down
-          </span>
-
-          <motion.div
-            animate={{
-              y: [0, 7, 0],
-              opacity: [0.6, 1, 0.6],
-            }}
-            transition={{
-              duration: 1.8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            <ChevronDown
-              size={18}
-              strokeWidth={1.5}
-              className="text-brand-orange"
-            />
-          </motion.div>
+          <div className="container flex items-center gap-4">
+            <span className="h-px flex-1 bg-brand-orange/60" />
+            <span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-brand-cream/70">
+              Scroll
+              <motion.span
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                className="inline-flex"
+              >
+                <ChevronDown size={16} strokeWidth={1.6} className="text-brand-orange" />
+              </motion.span>
+            </span>
+          </div>
         </motion.div>
       )}
     </section>

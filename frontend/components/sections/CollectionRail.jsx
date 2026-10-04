@@ -18,9 +18,9 @@ export default function CollectionRail({
       className={`
         relative
         overflow-hidden
-        bg-black
+        bg-brand-black
         py-8
-        text-white
+        text-brand-cream
         md:py-10
         ${className}
       `}
@@ -41,7 +41,7 @@ export default function CollectionRail({
                 }}
               />
 
-              <span className="text-[8px] font-bold uppercase tracking-[0.22em] text-white/50">
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cream/50">
                 {eyebrow}
               </span>
             </div>
@@ -75,7 +75,7 @@ export default function CollectionRail({
       ===================================================== */}
 
       {showScrollCue && (
-        <div className="mt-7 flex items-center justify-center gap-2 text-[8px] font-medium uppercase tracking-[0.25em] text-white/30">
+        <div className="mt-7 flex items-center justify-center gap-2 text-[11px] font-medium uppercase tracking-[0.25em] text-brand-cream/30">
           <Mouse size={12} strokeWidth={1.2} />
           <span>Scroll to explore</span>
         </div>
@@ -117,7 +117,7 @@ function CollectionRow({
       }}
       className="
         border-t
-        border-white/[0.09]
+        border-brand-cream/[0.09]
         py-2
         md:py-[9px]
       "
@@ -150,11 +150,11 @@ function CollectionRow({
         >
           <span
             className="
-              text-[7px]
+              text-[11px]
               font-bold
               uppercase
               tracking-[0.12em]
-              md:text-[8px]
+              md:text-[11px]
             "
             style={{
               color: accent,
@@ -188,7 +188,7 @@ function CollectionRow({
                 font-bold
                 uppercase
                 leading-none
-                text-white/40
+                text-brand-cream/40
                 md:text-[0.68rem]
               "
             >
@@ -253,9 +253,9 @@ function CollectionRow({
               shrink-0
               items-center
               justify-center
-              text-white/50
+              text-brand-cream/50
               transition-colors
-              hover:text-white
+              hover:text-brand-cream
               md:flex
             "
           >
@@ -314,7 +314,7 @@ function CollectionCard({
         shrink-0
         overflow-hidden
         border
-        bg-[#090909]
+        bg-brand-black
         transition-all
         duration-300
 
@@ -323,7 +323,7 @@ function CollectionCard({
         ${
           card.featured
             ? 'border-[var(--collection-accent)]'
-            : 'border-white/[0.08]'
+            : 'border-brand-cream/[0.08]'
         }
       `}
       style={{
@@ -357,9 +357,9 @@ function CollectionCard({
           absolute
           inset-0
           bg-gradient-to-t
-          from-black/90
-          via-black/20
-          to-black/5
+          from-brand-black/90
+          via-brand-black/20
+          to-brand-black/5
         "
       />
 
@@ -394,8 +394,8 @@ function CollectionCard({
             justify-center
             rounded-full
             border
-            border-white/45
-            bg-black/50
+            border-brand-cream/45
+            bg-brand-black/50
             backdrop-blur-sm
           "
         >
@@ -423,12 +423,12 @@ function CollectionCard({
             <p
               className="
                 font-display
-                text-[7px]
+                text-[11px]
                 font-bold
                 uppercase
                 leading-[0.95]
-                text-white
-                md:text-[8px]
+                text-brand-cream
+                md:text-[11px]
               "
             >
               {card.title}
@@ -441,8 +441,8 @@ function CollectionCard({
                 mt-0.5
                 text-[5px]
                 leading-tight
-                text-white/55
-                md:text-[6px]
+                text-brand-cream/55
+                md:text-[11px]
               "
             >
               {card.subtitle}

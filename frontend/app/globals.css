@@ -8,99 +8,69 @@
 
 @layer base {
   :root {
-    /* Brand primitives */
+    /* ------------------------------------------------------------
+       OCT20FIVE brand book — Color System (slide 11)
+         Dark   #1A0907   (RGB 26 9 7)
+         Cream  #F6F0E8
+         Orange #FF5A1F   (RGB 255 90 31)  — primary brand orange
+       Every other value below is a tint / shade / alpha of these three.
+       ------------------------------------------------------------ */
     --brand-orange: #ff5a1f;
-    /* aligned: tailwind.config brand.orangeHover is #E94D15 — this
-       previously read #e64e1a, a close but distinct hex, so any
-       element styled purely via the CSS variable (vs. the
-       hover:bg-brand-orangeHover utility class) was rendering a
-       slightly different hover color than the token system intends. */
     --brand-orange-hover: #e94d15;
     --brand-orange-soft: #ffb089;
 
-    /* note: tailwind.config only defines brand.black (#0A0A0A), not
-       brand.dark — but the hex value here is identical, so bg-brand-black
-       in components correctly resolves to this same color. Kept the
-       --brand-dark-* variable names as-is since they're internal to
-       this file and not exposed as Tailwind color classes; just be
-       aware "dark" here and "black" in tailwind.config refer to the
-       same color by different names. */
-    --brand-dark: #0a0a0a;
-    --brand-dark-2: #121212;
-    --brand-dark-3: #1c1c1c;
+    --brand-dark: #1a0907;
+    --brand-dark-2: #241210;
+    --brand-dark-3: #2e1a16;
 
-    /* aligned: tailwind.config brand.cream is #F6F4EF and
-       brand.creamSoft is #EFE9DF — these previously read #f6f0e8 and
-       #ede4d6, which are close but distinct warmer/darker hexes. Since
-       --surface-bg (light theme) and .glass-nav-light both derive from
-       these, the light-theme background and floating nav were
-       rendering a visibly different cream than bg-brand-cream would
-       produce anywhere it's used directly. */
-    --brand-cream: #f6f4ef;
-    --brand-cream-2: #efe9df;
+    --brand-cream: #f6f0e8;
+    --brand-cream-2: #ede4d8;
     --brand-peach: #f4e4d5;
+    --brand-card: #fbf8f3;
 
-    --brand-ink: #111111;
+    --brand-ink: #1a0907;
 
-    /* corrected: unified on a neutral gray for muted/secondary text
-       across both light and dark surfaces — reference body copy under
-       headlines (services blurbs, feature card descriptions, footer
-       copy) reads as neutral gray, not warm brown-gray. */
-    --brand-muted-light: #585858;
-    --brand-muted-dark: #9a9a9a;
+    /* Secondary-typeface brown-gray (brand book slide 14). Replaces the
+       neutral #585858 / #9a9a9a — the brand palette is warm throughout. */
+    --brand-muted-light: #6f625a;
+    --brand-muted-dark: #b3a79d;
 
-    /* aligned: tailwind.config brand.borderDark is rgba(255,255,255,.08)
-       — this previously read .1 opacity, a small but real mismatch, so
-       a border styled via border-brand-borderDark (Tailwind class) and
-       one styled via var(--surface-border) on a dark section (which
-       traces back to this variable) were two slightly different
-       opacities for what's meant to be the same hairline. */
-    --brand-line: rgba(255, 255, 255, 0.08);
-    /* open question — not changed: tailwind.config's brand.border is a
-       solid warm hex (#E8E2D9), not a translucent black overlay like
-       this variable. Both represent "the light-theme hairline" but are
-       built two different ways. If a component ever uses the
-       border-brand-border Tailwind class directly on a cream surface,
-       it'll look visibly different from one using var(--surface-border)
-       here. Worth deciding which is canonical — happy to make that
-       call if you tell me which one matches the reference. */
-    --brand-line-on-light: rgba(17, 17, 17, 0.1);
+    --brand-line: rgba(246, 240, 232, 0.1);
+    --brand-line-on-light: rgba(26, 9, 7, 0.12);
+
+    /* Typefaces (brand book slides 13–14) */
+    --font-display: "Saira Variable", "Saira", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Satoshi", "Satoshi Variable", ui-sans-serif, system-ui, sans-serif;
 
     /* Theme-swappable surface tokens (default = light) */
-    --surface-bg: #f6f4ef;
+    --surface-bg: var(--brand-cream);
     --surface-fg: var(--brand-ink);
     --surface-muted: var(--brand-muted-light);
-    --surface-card: #ffffff;
+    --surface-card: var(--brand-card);
     --surface-border: var(--brand-line-on-light);
 
-    /* shadcn compatibility */
-    --background: 33 45% 94%;
-    --foreground: 0 0% 7%;
-    --card: 33 45% 98%;
-    --card-foreground: 0 0% 7%;
-    --popover: 33 45% 98%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 16 100% 56%;
-    --primary-foreground: 33 45% 96%;
-    --secondary: 33 25% 88%;
-    --secondary-foreground: 0 0% 7%;
-    --muted: 33 25% 90%;
-    --muted-foreground: 0 0% 35%;
+    /* shadcn compatibility (HSL triplets of the brand colours) */
+    --background: 38 41% 94%;          /* #F6F0E8 */
+    --foreground: 8 58% 6%;            /* #1A0907 */
+    --card: 36 43% 97%;                /* #FBF8F3 */
+    --card-foreground: 8 58% 6%;
+    --popover: 36 43% 97%;
+    --popover-foreground: 8 58% 6%;
+    --primary: 16 100% 56%;            /* #FF5A1F */
+    --primary-foreground: 38 41% 94%;
+    --secondary: 34 32% 89%;
+    --secondary-foreground: 8 58% 6%;
+    --muted: 34 32% 89%;
+    --muted-foreground: 20 10% 40%;    /* #6F625A */
     --accent: 16 100% 56%;
-    --accent-foreground: 33 45% 96%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 33 45% 96%;
-    --border: 33 15% 82%;
-    --input: 33 15% 82%;
+    --accent-foreground: 38 41% 94%;
+    --destructive: 16 100% 56%;
+    --destructive-foreground: 38 41% 94%;
+    --border: 34 25% 83%;
+    --input: 34 25% 83%;
     --ring: 16 100% 56%;
 
-    /* corrected: unified radius scale — globals.css and tailwind.config
-       previously disagreed (1.75rem vs 2rem) for the same card
-       component. Reference cards (services grid, feature grid, pricing
-       cards, portfolio tiles) all read as one consistent, fairly large
-       radius. Standardizing on 2rem as the single source of truth,
-       consumed by both .brand-card below and borderRadius.card in
-       tailwind.config. */
+    /* Card radius — single source of truth (tailwind borderRadius.card) */
     --radius: 2rem;
   }
 
@@ -111,22 +81,22 @@
     --surface-muted: var(--brand-muted-dark);
     --surface-card: var(--brand-dark-2);
     --surface-border: var(--brand-line);
-    --background: 0 0% 4%;
-    --foreground: 33 45% 94%;
-    --card: 0 0% 7%;
-    --card-foreground: 33 45% 94%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 33 45% 94%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
-    --border: 0 0% 100% / 0.1;
+    --background: 8 58% 6%;
+    --foreground: 38 41% 94%;
+    --card: 8 40% 10%;
+    --card-foreground: 38 41% 94%;
+    --popover: 8 40% 10%;
+    --popover-foreground: 38 41% 94%;
+    --muted: 8 30% 14%;
+    --muted-foreground: 30 14% 66%;
+    --border: 38 41% 94% / 0.1;
     color-scheme: dark;
   }
   .theme-light {
     --surface-bg: var(--brand-cream);
     --surface-fg: var(--brand-ink);
     --surface-muted: var(--brand-muted-light);
-    --surface-card: #ffffff;
+    --surface-card: var(--brand-card);
     --surface-border: var(--brand-line-on-light);
     color-scheme: light;
   }
@@ -134,7 +104,7 @@
     --surface-bg: var(--brand-peach);
     --surface-fg: var(--brand-ink);
     --surface-muted: var(--brand-muted-light);
-    --surface-card: #ffffff;
+    --surface-card: var(--brand-card);
     --surface-border: var(--brand-line-on-light);
     color-scheme: light;
   }
@@ -168,13 +138,7 @@
     min-height: 100vh;
     background-color: var(--surface-bg);
     color: var(--surface-fg);
-    font-family:
-      "Satoshi",
-      "Satoshi Variable",
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      sans-serif;
+    font-family: var(--font-body);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -184,34 +148,22 @@
       color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Type hierarchy (brand book slide 18):
+     Headings = Saira Heavy, uppercase where the layout calls for it.
+     Body / UI = Satoshi. */
   h1,
   h2,
   h3,
   h4,
   h5 {
-    font-family: var(--font-display), "Archivo Black", "Anton", sans-serif;
-    letter-spacing: -0.02em;
-  }
-
-  /* added: dedicated accent/script font hook for one-off display
-     moments (the homepage "Showcase" hero uses an italic script/serif
-     face, distinct from the heavy grotesque used everywhere else in
-     the reference). Swap the fallback stack for the real font file
-     once confirmed — placeholder uses a generic elegant serif so the
-     class works immediately.
-     note: --font-accent is not currently set anywhere (layout.js only
-     defines --font-display via next/font/google Oswald), so .font-accent
-     always falls through to the Playfair Display placeholder today.
-     Not a tailwind-alignment issue, just flagging it's not wired up yet. */
-  .font-accent {
-    font-family: var(--font-accent), "Playfair Display", Georgia, serif;
-    font-style: italic;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.015em;
   }
 
   ::selection {
     background: var(--brand-orange);
-    color: #fff;
+    color: var(--brand-cream);
   }
   :focus-visible {
     outline: 2px solid var(--brand-orange);
@@ -272,23 +224,37 @@
     white-space: nowrap;
     will-change: transform;
   }
+  /* Button system — brand book "UI Language" (slide 16).
+     Pill-shaped; Primary / Secondary / Ghost / Icon / Destructive /
+     Disabled / Loading. */
   .btn-primary {
     background: var(--brand-orange);
-    color: #fff;
-    box-shadow: 0 12px 30px -10px rgba(255, 90, 31, 0.6);
+    color: var(--brand-cream);
+    box-shadow: 0 12px 30px -10px rgba(255, 90, 31, 0.55);
   }
   .btn-primary:hover {
     background: var(--brand-orange-hover);
-    box-shadow: 0 18px 48px -12px rgba(255, 90, 31, 0.75);
+    box-shadow: 0 18px 48px -12px rgba(255, 90, 31, 0.7);
     transform: translateY(-2px);
   }
-  .btn-secondary {
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 18px -8px rgba(255, 90, 31, 0.6);
+  }
+  /* Secondary = outlined in the surface foreground (ink on cream, cream on dark) */
+  .btn-secondary,
+  .btn-outline {
+    background: transparent;
+    color: var(--surface-fg);
+    border: 1.5px solid var(--surface-fg);
+  }
+  .btn-secondary:hover,
+  .btn-outline:hover {
     background: var(--surface-fg);
     color: var(--surface-bg);
-  }
-  .btn-secondary:hover {
     transform: translateY(-2px);
   }
+  /* Ghost = orange outline, orange label */
   .btn-ghost {
     background: transparent;
     color: var(--brand-orange);
@@ -296,20 +262,47 @@
   }
   .btn-ghost:hover {
     background: var(--brand-orange);
-    color: #fff;
+    color: var(--brand-cream);
     transform: translateY(-2px);
   }
-  .btn-outline {
+  /* Destructive = filled orange (per brand book "Delete/Remove") */
+  .btn-destructive {
+    background: var(--brand-orange);
+    color: var(--brand-cream);
+  }
+  .btn-destructive:hover {
+    background: var(--brand-orange-hover);
+    transform: translateY(-2px);
+  }
+  /* Loading = orange outline + "please wait…" state */
+  .btn-loading {
     background: transparent;
-    color: var(--surface-fg);
-    border: 1.5px solid var(--surface-fg);
+    color: var(--brand-orange);
+    border: 1.5px solid var(--brand-orange);
+    pointer-events: none;
+    cursor: progress;
   }
-  .btn-outline:hover {
-    background: var(--surface-fg);
-    color: var(--surface-bg);
+  .btn-loading::before {
+    content: "";
+    width: 0.9em;
+    height: 0.9em;
+    border-radius: 999px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: btn-spin 0.8s linear infinite;
   }
-  .btn:disabled {
-    opacity: 0.4;
+  @keyframes btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  /* Disabled = flat warm gray (brand book), not just faded */
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    background: rgba(111, 98, 90, 0.28);
+    color: var(--brand-muted-light);
+    border-color: transparent;
+    box-shadow: none;
     cursor: not-allowed;
     transform: none !important;
   }
@@ -318,7 +311,7 @@
   .btn-icon {
     width: 3rem;
     height: 3rem;
-    border-radius: 999px;
+    border-radius: 0.95rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -329,8 +322,8 @@
   }
   .btn-icon:hover {
     background: var(--brand-orange);
-    color: #fff;
-    transform: rotate(-8deg);
+    color: var(--brand-cream);
+    transform: translate(2px, -2px);
   }
 
   /* ==== LINK WITH ARROW ==== */
@@ -382,7 +375,7 @@
   }
   .pill-active {
     background: var(--brand-orange);
-    color: #fff;
+    color: var(--brand-cream);
     border-color: var(--brand-orange);
   }
 
@@ -434,7 +427,7 @@
   }
   .brand-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 40px 80px -30px rgba(26, 9, 7, 0.3);
     border-color: rgba(255, 90, 31, 0.35);
   }
 
@@ -540,14 +533,14 @@
   .chip-select-active {
     background: var(--brand-orange);
     border-color: var(--brand-orange);
-    color: #fff;
+    color: var(--brand-cream);
   }
 
   /* ==== GLASS NAV ==== */
   .glass-nav {
     backdrop-filter: blur(18px) saturate(1.4);
     -webkit-backdrop-filter: blur(18px) saturate(1.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--brand-line);
   }
   /* note: every nav bar observed in the reference — including ones
      sitting on dark hero imagery — renders as this light/cream
@@ -556,14 +549,14 @@
      default in practice. Confirm before wiring a dark nav variant
      into the header component. */
   .glass-nav-dark {
-    background: rgba(10, 10, 10, 0.55);
+    background: rgba(26, 9, 7, 0.7);
     color: var(--brand-cream);
     border-color: var(--brand-line);
   }
   .glass-nav-light {
     /* aligned: recomputed from the corrected --brand-cream (#F6F4EF)
        above — was rgba(246,240,232,.7), the old cream's RGB. */
-    background: rgba(246, 244, 239, 0.7);
+    background: rgba(246, 240, 232, 0.8);
     color: var(--brand-ink);
     border-color: var(--brand-line-on-light);
   }
@@ -576,7 +569,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 0.375rem;
-    color: #fff;
+    color: var(--brand-cream);
     flex-shrink: 0;
   }
 
@@ -590,6 +583,35 @@
 }
 
 @layer utilities {
+  /* Outlined numerals / words — the oversized "01 02 03…" device that
+     opens every section in the brand book. */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(246, 240, 232, 0.28);
+  }
+  .text-outline-ink {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(26, 9, 7, 0.22);
+  }
+
+  /* Eclipse lens-flare breathing */
+  .eclipse-flare {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: eclipse-breathe 7s ease-in-out infinite;
+  }
+  @keyframes eclipse-breathe {
+    0%,
+    100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
   .grain::before {
     content: "";
     position: absolute;

@@ -34,6 +34,26 @@ const links = [
   },
 ]
 
+/* Main-site (ecosystem hub) navigation */
+const mainLinks = [
+  {
+    label: 'Ecosystem',
+    href: '/#ecosystem',
+  },
+  {
+    label: 'Agency',
+    href: '/agency',
+  },
+  {
+    label: 'Vision',
+    href: '/agency/vision',
+  },
+  {
+    label: 'Careers',
+    href: '/agency/careers',
+  },
+]
+
 const cta = {
   label: 'Get in touch',
   href: '/agency/get-in-touch',
@@ -41,12 +61,15 @@ const cta = {
 
 const contactHref = '/agency/book-a-call'
 
-export default function Navbar() {
+export default function Navbar({ variant = 'agency', initialTheme = 'dark' }) {
   const pathname = usePathname()
+  const isMain = variant === 'utility' || variant === 'main'
+  const navLinks = isMain ? mainLinks : links
+  const homeHref = isMain ? '/' : '/agency'
 
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [dark, setDark] = useState(true)
+  const [dark, setDark] = useState(initialTheme === 'dark')
 
   /*
    * ---------------------------------------------------------
@@ -185,21 +208,21 @@ export default function Navbar() {
 
   const navClass = dark
     ? `
-      border-white/10
-      bg-black/75
-      text-white
+      border-brand-cream/10
+      bg-brand-black/80
+      text-brand-cream
       backdrop-blur-xl
     `
     : `
-      border-black/10
-      bg-[#f7f3ed]/90
-      text-black
+      border-brand-black/10
+      bg-brand-cream/90
+      text-brand-black
       backdrop-blur-xl
     `
 
   const logoVariant = dark
-    ? 'light'
-    : 'dark'
+    ? 'orange'
+    : 'ink'
 
 
   return (
@@ -258,7 +281,7 @@ export default function Navbar() {
             ${
               scrolled
                 ? `
-                  shadow-[0_12px_45px_rgba(0,0,0,0.18)]
+                  shadow-[0_12px_45px_rgba(26,9,7,0.18)]
                 `
                 : ''
             }
@@ -269,29 +292,13 @@ export default function Navbar() {
               LOGO
           ================================================= */}
 
-          <Link
-            href="/agency"
-            aria-label="OCT20FIVE home"
-            className="
-              relative
-              z-20
-              flex
-              h-[40px]
-              w-[40px]
-              shrink-0
-              items-center
-              justify-center
-              rounded-full
-
-              md:h-[42px]
-              md:w-[42px]
-            "
-          >
-            <Logo
-              variant={logoVariant}
-              size="sm"
-            />
-          </Link>
+          <Logo
+            href={homeHref}
+            variant={logoVariant}
+            size="sm"
+            priority
+            className="relative z-20 ml-0.5"
+          />
 
 
           {/* =================================================
@@ -308,7 +315,7 @@ export default function Navbar() {
           >
             <div className="flex items-center">
 
-              {links.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -318,7 +325,7 @@ export default function Navbar() {
                     rounded-full
                     px-3
                     py-2
-                    text-[9px]
+                    text-[11px]
                     font-semibold
                     uppercase
                     tracking-[0.08em]
@@ -329,7 +336,7 @@ export default function Navbar() {
                     hover:opacity-100
 
                     xl:px-4
-                    xl:text-[10px]
+                    xl:text-[12px]
                   "
                 >
 
@@ -383,11 +390,11 @@ export default function Navbar() {
                 rounded-full
                 bg-brand-orange
                 px-4
-                text-[9px]
+                text-[11px]
                 font-bold
                 uppercase
                 tracking-[0.045em]
-                text-white
+                text-brand-cream
                 transition-all
                 duration-300
 
@@ -431,7 +438,7 @@ export default function Navbar() {
                 rounded-full
                 border
                 px-4
-                text-[8px]
+                text-[11px]
                 font-semibold
                 uppercase
                 tracking-[0.09em]
@@ -443,18 +450,18 @@ export default function Navbar() {
                 ${
                   dark
                     ? `
-                      border-white/10
-                      bg-white/[0.015]
-                      text-white/70
-                      hover:border-white/20
-                      hover:text-white
+                      border-brand-cream/10
+                      bg-brand-cream/[0.015]
+                      text-brand-cream/70
+                      hover:border-brand-cream/20
+                      hover:text-brand-cream
                     `
                     : `
-                      border-black/10
-                      bg-black/[0.02]
-                      text-black/70
-                      hover:border-black/20
-                      hover:text-black
+                      border-brand-black/10
+                      bg-brand-black/[0.02]
+                      text-brand-black/70
+                      hover:border-brand-black/20
+                      hover:text-brand-black
                     `
                 }
               `}
@@ -501,14 +508,14 @@ export default function Navbar() {
                 ${
                   dark
                     ? `
-                      border-white/10
-                      text-white
-                      hover:bg-white/5
+                      border-brand-cream/10
+                      text-brand-cream
+                      hover:bg-brand-cream/5
                     `
                     : `
-                      border-black/10
-                      text-black
-                      hover:bg-black/5
+                      border-brand-black/10
+                      text-brand-black
+                      hover:bg-brand-black/5
                     `
                 }
               `}
@@ -547,7 +554,7 @@ export default function Navbar() {
               inset-0
               z-[100]
               bg-brand-dark
-              text-white
+              text-brand-cream
               lg:hidden
             "
           >
@@ -566,22 +573,9 @@ export default function Navbar() {
               "
             >
 
-              <Link
-                href="/agency"
-                onClick={() => setOpen(false)}
-                className="
-                  flex
-                  h-[44px]
-                  w-[44px]
-                  items-center
-                  justify-center
-                "
-              >
-                <Logo
-                  variant="light"
-                  size="sm"
-                />
-              </Link>
+              <span onClick={() => setOpen(false)}>
+                <Logo href={homeHref} variant="orange" size="sm" />
+              </span>
 
 
               <button
@@ -596,8 +590,8 @@ export default function Navbar() {
                   justify-center
                   rounded-full
                   border
-                  border-white/10
-                  text-white
+                  border-brand-cream/10
+                  text-brand-cream
                 "
               >
                 <X
@@ -635,7 +629,7 @@ export default function Navbar() {
               "
             >
 
-              {links.map((link, index) => (
+              {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
                   initial={{
@@ -660,7 +654,7 @@ export default function Navbar() {
                       items-center
                       justify-between
                       border-b
-                      border-white/10
+                      border-brand-cream/10
                       py-5
                       font-display
                       text-[2.2rem]
@@ -705,7 +699,7 @@ export default function Navbar() {
                   font-bold
                   uppercase
                   tracking-[0.08em]
-                  text-white
+                  text-brand-cream
                 "
               >
 
@@ -736,12 +730,12 @@ export default function Navbar() {
                   gap-2
                   rounded-full
                   border
-                  border-white/10
+                  border-brand-cream/10
                   text-xs
                   font-bold
                   uppercase
                   tracking-[0.08em]
-                  text-white/70
+                  text-brand-cream/70
                 "
               >
 

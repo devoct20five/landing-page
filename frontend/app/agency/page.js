@@ -36,9 +36,19 @@ export default function AgencyPage() {
       <main>
         <Hero
           eyebrow="OCT20FIVE Agency"
-          headline="FULL SPECTRUM CREATIVE SERVICES"
-          subline="CONCEPT. CREATE. DELIVER."
-          image="https://images.unsplash.com/photo-1604888989902-6c8d8617e02a?crop=entropy&cs=srgb&fm=jpg&q=85&w=2600"
+          headline="Full Spectrum Creative Services"
+          subline="Concept. Create. Deliver."
+          actions={
+            <>
+              <Link href="/agency/get-in-touch" className="btn btn-primary">
+                Get in touch
+                <ArrowRight size={16} strokeWidth={2} />
+              </Link>
+              <a href="#services" className="btn btn-outline">
+                Our services
+              </a>
+            </>
+          }
         />
 
         {/* ================= SERVICES ================= */}
@@ -69,9 +79,9 @@ export default function AgencyPage() {
           font-display
           font-black
           uppercase
-          leading-[0.84]
-          tracking-[-0.055em]
-          text-[clamp(3.25rem,7.4vw,7rem)]
+          leading-[0.95]
+          tracking-[-0.03em]
+          text-[clamp(2.5rem,5.4vw,5rem)]
         "
               >
                 EVERYTHING YOUR IDEA NEEDS
@@ -95,7 +105,7 @@ export default function AgencyPage() {
           text-center
           text-[0.88rem]
           leading-[1.65]
-          text-black/75
+          text-brand-black/75
           md:text-[0.95rem]
         "
               >
@@ -133,16 +143,16 @@ export default function AgencyPage() {
                 flex
                 min-h-[360px]
                 flex-col
-                rounded-[9px]
+                rounded-[1.5rem]
                 border
-                bg-white
+                bg-brand-card
                 p-5
                 transition-all
                 duration-500
                 ease-smooth
                 hover:-translate-y-1.5
                 hover:border-brand-orange
-                hover:shadow-[0_25px_60px_rgba(0,0,0,0.09)]
+                hover:shadow-[0_25px_60px_rgba(26,9,7,0.09)]
                 md:p-6
               "
                       style={{
@@ -190,7 +200,7 @@ export default function AgencyPage() {
                   font-black
                   uppercase
                   leading-[0.9]
-                  tracking-[-0.035em]
+                  tracking-[-0.025em]
                 "
                       >
                         {service.title}
@@ -204,11 +214,11 @@ export default function AgencyPage() {
                         className="
                   mt-4
                   max-w-[240px]
-                  text-[0.72rem]
+                  text-[0.8rem]
                   font-medium
                   uppercase
                   leading-[1.55]
-                  text-black/75
+                  text-brand-black/75
                 "
                       >
                         {service.blurb}
@@ -221,7 +231,7 @@ export default function AgencyPage() {
                       <p
                         className="
                   mt-2
-                  text-[0.68rem]
+                  text-[0.75rem]
                   font-bold
                   uppercase
                   leading-[1.4]
@@ -251,7 +261,7 @@ export default function AgencyPage() {
                       >
                         <span
                           className="
-                    text-[0.68rem]
+                    text-[0.75rem]
                     font-bold
                     uppercase
                     tracking-[0.02em]

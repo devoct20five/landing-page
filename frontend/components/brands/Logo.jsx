@@ -1,124 +1,68 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
+
+/**
+ * OCT20FIVE logo — uses the real brand artwork (not a text approximation).
+ *
+ * Variants follow the brand book's Logo System (slides 5 & 9):
+ *   orange  – primary mark, works on dark AND cream          (default)
+ *   cream   – single-colour reversed mark for dark/orange backgrounds
+ *   ink     – single-colour dark mark for cream backgrounds
+ *   badge   – solid orange tile with cream mark (app icon / compact use)
+ *
+ * Legacy aliases are kept so existing call-sites keep working:
+ *   'light' → orange (used on dark surfaces)   'dark' → ink (used on light surfaces)
+ *
+ * Rules from the book: never stretch, recolour, or add effects — so the
+ * mark is rendered at its native square aspect ratio with no filters.
+ */
+const SRC = {
+  orange: '/brand/logo-orange.png',
+  cream: '/brand/logo-cream.png',
+  ink: '/brand/logo-ink.png',
+  badge: '/brand/logo-badge.png',
+}
+const ALIAS = { light: 'orange', dark: 'ink' }
+
+const PX = { xs: 28, sm: 36, md: 46, lg: 64, xl: 96, '2xl': 140 }
 
 export default function Logo({
-  variant = 'light',
+  variant = 'orange',
   size = 'md',
-  href = '/agency',
+  href = '/',
   className = '',
+  asLink = true,
+  priority = false,
 }) {
-  const isDark = variant === 'dark'
+  const key = SRC[variant] ? variant : ALIAS[variant] || 'orange'
+  const px = typeof size === 'number' ? size : PX[size] || PX.md
 
-  const sizes = {
-    sm: {
-      wrapper: 'w-[34px] h-[34px]',
-      text: 'text-[8px]',
-      gap: 'leading-[0.78]',
-    },
+  const img = (
+    <Image
+      src={SRC[key]}
+      alt="OCT20FIVE"
+      width={px}
+      height={px}
+      priority={priority}
+      draggable={false}
+      style={{ width: px, height: px }}
+      className="select-none object-contain"
+    />
+  )
 
-    md: {
-      wrapper: 'w-[46px] h-[46px]',
-      text: 'text-[10px]',
-      gap: 'leading-[0.78]',
-    },
-
-    lg: {
-      wrapper: 'w-[58px] h-[58px]',
-      text: 'text-[13px]',
-      gap: 'leading-[0.78]',
-    },
+  if (!asLink || !href) {
+    return <span className={`inline-flex shrink-0 ${className}`}>{img}</span>
   }
-
-  const current = sizes[size] || sizes.md
 
   return (
     <Link
       href={href}
-      aria-label="OCT20FIVE"
-      className={`
-        ${current.wrapper}
-        relative
-        flex
-        shrink-0
-        items-center
-        justify-center
-        overflow-hidden
-        rounded-[3px]
-        transition-transform
-        duration-300
-        hover:scale-105
-        ${className}
-      `}
+      aria-label="OCT20FIVE — home"
+      className={`inline-flex shrink-0 items-center justify-center transition-transform duration-300 hover:scale-105 ${className}`}
     >
-
-      {/* =====================================================
-          LOGO BODY
-      ===================================================== */}
-
-      <span
-        className={`
-          relative
-          flex
-          h-full
-          w-full
-          flex-col
-          items-center
-          justify-center
-          ${current.gap}
-          font-display
-          font-black
-          uppercase
-          tracking-[-0.08em]
-          ${current.text}
-
-          ${
-            isDark
-              ? 'bg-brand-dark text-brand-orange'
-              : 'bg-brand-orange text-white'
-          }
-        `}
-      >
-
-        {/* OCT */}
-
-        <span>
-          OCT
-        </span>
-
-
-        {/* 20 */}
-
-        <span>
-          20
-        </span>
-
-
-        {/* FIVE */}
-
-        <span>
-          FIVE
-        </span>
-
-      </span>
-
-
-      {/* =====================================================
-          SUBTLE INNER BORDER
-      ===================================================== */}
-
-      <span
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          inset-[2px]
-          rounded-[2px]
-          border
-          border-white/10
-        "
-      />
-
+      {img}
     </Link>
   )
 }

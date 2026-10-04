@@ -275,7 +275,7 @@ export default function BookACallPage() {
                                   onClick={() => setField("date", d)}
                                   className={`aspect-square rounded-full text-sm font-medium transition-all
                                     ${!inMonth ? "opacity-20 cursor-not-allowed" : isPast ? "opacity-30 cursor-not-allowed" : "hover:bg-brand-orange/10 hover:text-brand-orange"}
-                                    ${isSelected ? "bg-brand-orange text-white hover:!bg-brand-orange hover:!text-white" : ""}
+                                    ${isSelected ? "bg-brand-orange text-brand-cream hover:!bg-brand-orange hover:!text-brand-cream" : ""}
                                   `}
                                 >
                                   {d.getDate()}

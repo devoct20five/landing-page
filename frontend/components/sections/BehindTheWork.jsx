@@ -77,7 +77,7 @@ export default function BehindTheWork({
                   font-black
                   uppercase
                   leading-[0.78]
-                  tracking-[-0.055em]
+                  tracking-[-0.03em]
                 "
               >
                 IDEAS
@@ -102,7 +102,7 @@ export default function BehindTheWork({
                   max-w-[410px]
                   text-[0.82rem]
                   leading-[1.6]
-                  text-white/70
+                  text-brand-cream/70
                   md:text-[0.9rem]
                 "
               >
@@ -143,7 +143,7 @@ export default function BehindTheWork({
                   w-full
                   overflow-hidden
                   rounded-[8px]
-                  bg-[#111]
+                  bg-brand-black
                 "
               >
 
@@ -170,9 +170,9 @@ export default function BehindTheWork({
                     absolute
                     inset-0
                     bg-gradient-to-t
-                    from-black/65
+                    from-brand-black/65
                     via-transparent
-                    to-black/10
+                    to-brand-black/10
                   "
                 />
 
@@ -190,7 +190,7 @@ export default function BehindTheWork({
                     rotate-[-3deg]
                     overflow-hidden
                     rounded-[3px]
-                    shadow-[0_15px_35px_rgba(0,0,0,0.35)]
+                    shadow-[0_15px_35px_rgba(26,9,7,0.35)]
                     sm:block
                   "
                 >
@@ -212,7 +212,7 @@ export default function BehindTheWork({
                     rotate-[2deg]
                     overflow-hidden
                     rounded-[3px]
-                    shadow-[0_15px_35px_rgba(0,0,0,0.35)]
+                    shadow-[0_15px_35px_rgba(26,9,7,0.35)]
                   "
                 >
                   <Image
@@ -233,7 +233,7 @@ export default function BehindTheWork({
                     rotate-[2deg]
                     overflow-hidden
                     rounded-[3px]
-                    shadow-[0_15px_35px_rgba(0,0,0,0.4)]
+                    shadow-[0_15px_35px_rgba(26,9,7,0.4)]
                   "
                 >
                   <Image
@@ -254,23 +254,23 @@ export default function BehindTheWork({
                     right-[10%]
                     hidden
                     rotate-[-2deg]
-                    bg-[#d9a875]
+                    bg-brand-peach
                     px-4
                     py-3
-                    text-black
-                    shadow-[0_15px_30px_rgba(0,0,0,0.3)]
+                    text-brand-black
+                    shadow-[0_15px_30px_rgba(26,9,7,0.3)]
                     md:block
                   "
                 >
-                  <p className="text-[8px] font-bold uppercase tracking-[0.15em]">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.15em]">
                     We create.
                   </p>
 
-                  <p className="mt-1 text-[9px] font-medium">
+                  <p className="mt-1 text-[11px] font-medium">
                     We concept.
                   </p>
 
-                  <p className="text-[9px] font-bold text-brand-orange">
+                  <p className="text-[11px] font-bold text-brand-orange">
                     We deliver.
                   </p>
                 </div>
@@ -303,11 +303,11 @@ export default function BehindTheWork({
 
               <p
                 className="
-                  text-[9px]
+                  text-[11px]
                   font-bold
                   uppercase
                   tracking-[0.12em]
-                  text-white/80
+                  text-brand-cream/80
                 "
               >
                 Explore what else we do
@@ -349,14 +349,14 @@ export default function BehindTheWork({
                       flex-col
                       rounded-[5px]
                       border
-                      border-white/10
-                      bg-white/[0.015]
+                      border-brand-cream/10
+                      bg-brand-cream/[0.015]
                       p-4
                       transition-all
                       duration-500
                       hover:-translate-y-1
                       hover:border-brand-orange/50
-                      hover:bg-white/[0.035]
+                      hover:bg-brand-cream/[0.035]
                     "
                   >
 
@@ -374,7 +374,7 @@ export default function BehindTheWork({
                         size={16}
                         strokeWidth={1.5}
                         className="
-                          text-white/60
+                          text-brand-cream/60
                           transition-transform
                           duration-500
                           group-hover:translate-x-1
@@ -405,7 +405,7 @@ export default function BehindTheWork({
                           max-w-[190px]
                           text-[0.65rem]
                           leading-[1.45]
-                          text-white/55
+                          text-brand-cream/55
                         "
                       >
                         {service.blurb}

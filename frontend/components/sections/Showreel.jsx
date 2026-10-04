@@ -50,7 +50,7 @@ export default function Showreel({
               overflow-hidden
               rounded-[9px]
               bg-brand-orange
-              shadow-[0_18px_40px_rgba(0,0,0,0.14)]
+              shadow-[0_18px_40px_rgba(26,9,7,0.14)]
               focus:outline-none
               focus-visible:ring-2
               focus-visible:ring-brand-orange
@@ -82,9 +82,9 @@ export default function Showreel({
                 absolute
                 inset-0
                 bg-gradient-to-br
-                from-white/[0.025]
+                from-brand-cream/[0.025]
                 via-transparent
-                to-black/[0.06]
+                to-brand-black/[0.06]
               "
             />
 
@@ -102,7 +102,8 @@ export default function Showreel({
                 items-center
                 justify-center
                 px-5
-                py-12
+                pb-32
+                pt-12
                 sm:min-h-[275px]
                 sm:px-8
                 md:min-h-[315px]
@@ -117,12 +118,12 @@ export default function Showreel({
                   max-w-[1100px]
                   text-center
                   font-display
-                  text-[clamp(3.2rem,10vw,9rem)]
+                  text-[clamp(2.6rem,7.2vw,6.5rem)]
                   font-black
                   uppercase
-                  leading-[0.78]
-                  tracking-[-0.065em]
-                  text-white
+                  leading-[0.92]
+                  tracking-[-0.02em]
+                  text-brand-cream
                 "
               >
                 <span className="block">
@@ -155,11 +156,12 @@ export default function Showreel({
               }}
               className="
                 absolute
-                left-1/2
-                top-1/2
+                inset-x-0
+                top-[85%]
                 z-20
-                -translate-x-1/2
-                -translate-y-1/2
+                -mt-10
+                flex
+                justify-center
               "
             >
 
@@ -179,8 +181,8 @@ export default function Showreel({
                   items-center
                   justify-center
                   rounded-full
-                  bg-white
-                  shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+                  bg-brand-card
+                  shadow-[0_8px_25px_rgba(26,9,7,0.18)]
                   transition-transform
                   duration-500
                   group-hover:scale-105

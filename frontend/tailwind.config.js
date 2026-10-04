@@ -18,6 +18,7 @@ module.exports = {
         sm: "1.5rem",
         lg: "2rem",
         xl: "2.5rem",
+        "2xl": "3rem",
       },
       screens: {
         "2xl": "1440px",
@@ -30,21 +31,28 @@ module.exports = {
       ======================================== */
 
       colors: {
+        /* OCT20FIVE brand book — Color System (slide 11)
+           Dark  #1A0907 · Cream #F6F0E8 · Orange #FF5A1F
+           Everything else is a tint/shade derived from those three. */
         brand: {
-          black: "#0A0A0A",
-          blackSoft: "#151515",
-          blackElevated: "#1E1E1E",
+          black: "#1A0907",
+          dark: "#1A0907", // alias: components historically used bg-brand-dark (undefined → transparent)
+          blackSoft: "#241210",
+          blackElevated: "#2E1A16",
 
           white: "#FFFFFF",
 
-          cream: "#F6F4EF",
-          creamSoft: "#EFE9DF",
+          cream: "#F6F0E8",
+          creamSoft: "#EDE4D8",
+          card: "#FBF8F3",
+          peach: "#F4E4D5",
 
-          text: "#111111",
-          textSoft: "#585858",
+          text: "#1A0907",
+          /* Secondary-typeface brown-gray sampled from brand book slide 14 */
+          textSoft: "#6F625A",
 
-          border: "#E8E2D9",
-          borderDark: "rgba(255,255,255,.08)",
+          border: "#E3D9CC",
+          borderDark: "rgba(246,240,232,.10)",
 
           orange: "#FF5A1F",
           orangeHover: "#E94D15",
@@ -107,15 +115,25 @@ module.exports = {
       ======================================== */
 
       fontFamily: {
+        /* Primary typeface — Saira (Regular / Bold / Heavy) */
         display: [
           "var(--font-display)",
-          "General Sans",
-          "Satoshi",
-          "Inter",
+          "Saira Variable",
+          "Saira",
+          "ui-sans-serif",
+          "system-ui",
           "sans-serif",
         ],
 
-        body: ["Satoshi", "Inter", "ui-sans-serif", "system-ui"],
+        /* Secondary typeface — Satoshi Variable (Light / Regular / Bold) */
+        body: [
+          "var(--font-body)",
+          "Satoshi",
+          "Satoshi Variable",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
 
         mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
@@ -125,7 +143,7 @@ module.exports = {
           "clamp(4rem,10vw,9rem)",
           {
             lineHeight: ".88",
-            letterSpacing: "-.045em",
+            letterSpacing: "-.022em",
             fontWeight: "700",
           },
         ],
@@ -134,7 +152,7 @@ module.exports = {
           "clamp(3rem,7vw,6.5rem)",
           {
             lineHeight: ".92",
-            letterSpacing: "-.04em",
+            letterSpacing: "-.028em",
             fontWeight: "700",
           },
         ],
@@ -143,7 +161,7 @@ module.exports = {
           "clamp(2.5rem,5vw,4.75rem)",
           {
             lineHeight: ".95",
-            letterSpacing: "-.03em",
+            letterSpacing: "-.022em",
             fontWeight: "700",
           },
         ],
@@ -152,7 +170,7 @@ module.exports = {
           "clamp(2rem,4vw,3.25rem)",
           {
             lineHeight: "1",
-            letterSpacing: "-.025em",
+            letterSpacing: "-.018em",
             fontWeight: "700",
           },
         ],
@@ -195,6 +213,7 @@ module.exports = {
         card: "2rem",
         section: "2.5rem",
         pill: "999px",
+        tile: "1.25rem",
 
         DEFAULT: "var(--radius)",
       },
@@ -204,11 +223,11 @@ module.exports = {
       ======================================== */
 
       boxShadow: {
-        soft: "0 20px 60px rgba(0,0,0,.08)",
+        soft: "0 20px 60px rgba(26,9,7,.08)",
 
-        medium: "0 30px 90px rgba(0,0,0,.12)",
+        medium: "0 30px 90px rgba(26,9,7,.12)",
 
-        floating: "0 50px 120px rgba(0,0,0,.18)",
+        floating: "0 50px 120px rgba(26,9,7,.18)",
 
         glow: "0 20px 50px rgba(255,90,31,.18)",
       },
