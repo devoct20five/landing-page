@@ -8,6 +8,14 @@ const nextConfig = {
   },
   // Renamed from experimental.serverComponentsExternalPackages in Next 15
   serverExternalPackages: ['mongodb'],
+  // Old per-service "Behind the Work" pages were duplicates of the portfolio.
+  async redirects() {
+    return ['editing', 'design', '3d-ads', 'web-dev'].map((s) => ({
+      source: `/agency/behind-the-work/${s}`,
+      destination: `/agency/portfolio?service=${s}`,
+      permanent: true,
+    }));
+  },
   webpack(config, { dev }) {
     if (dev) {
       // Reduce CPU/memory from file watching

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Film, FlaskConical, Lock, Sparkle } from "lucide-react";
+import { ArrowUpRight, Film, FlaskConical, Lock, Newspaper, Sparkle } from "lucide-react";
 
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -11,6 +11,8 @@ import Logo from "@/components/brands/Logo";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
 import Reveal, { Stagger, StaggerItem } from "@/components/motion/Reveal";
+import ArticleCard from "@/components/newsroom/ArticleCard";
+import { allArticles } from "@/lib/newsroom";
 
 /* =========================================================
    ECOSYSTEM — one live vertical, three on the way.
@@ -30,6 +32,17 @@ const VERTICALS = [
   },
   {
     n: "02",
+    key: "newsroom",
+    title: "Newsroom",
+    status: "Live",
+    href: "/newsroom",
+    cta: "Read the Newsroom",
+    icon: Newspaper,
+    blurb:
+      "Stories on film, design, technology and the business of making things — written by the people who do the work.",
+  },
+  {
+    n: "03",
     key: "film",
     title: "Film",
     status: "TBA",
@@ -38,7 +51,7 @@ const VERTICALS = [
       "Original documentaries, cinematic stories, branded films and visual narratives built for audiences that value exceptional storytelling.",
   },
   {
-    n: "03",
+    n: "04",
     key: "labs",
     title: "Labs",
     status: "TBA",
@@ -47,7 +60,7 @@ const VERTICALS = [
       "Experimental products, AI experiences, developer tools and technology ventures currently under active development.",
   },
   {
-    n: "04",
+    n: "05",
     key: "originals",
     title: "Originals",
     status: "TBA",
@@ -88,13 +101,13 @@ function VerticalCard({ v }) {
       )}
 
       <div className="relative flex items-start justify-between">
-        {live ? (
-          <IconTile>
-            <Logo variant="orange" size={52} asLink={false} />
+        {Icon ? (
+          <IconTile muted={!live}>
+            <Icon size={32} strokeWidth={1.5} className="text-brand-orange" />
           </IconTile>
         ) : (
-          <IconTile muted>
-            <Icon size={32} strokeWidth={1.5} className="text-brand-orange" />
+          <IconTile>
+            <Logo variant="orange" size={52} asLink={false} />
           </IconTile>
         )}
         <span className="font-display text-5xl font-black leading-none text-outline-ink">
@@ -204,11 +217,42 @@ export default function HomePage() {
               </Reveal>
             </div>
 
-            <Stagger className="relative mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-[1.15fr_1fr_1fr_1fr] lg:gap-8">
-              {VERTICALS.map((v) => (
+            <Stagger className="relative mt-14 grid gap-6 md:grid-cols-2 lg:gap-8">
+              {VERTICALS.filter((v) => v.status === "Live").map((v) => (
                 <VerticalCard key={v.key} v={v} />
               ))}
             </Stagger>
+            <p className="mt-14 text-[11px] font-bold uppercase tracking-[0.28em] text-brand-textSoft">
+              Coming next
+            </p>
+            <Stagger className="relative mt-5 grid gap-6 md:grid-cols-3 lg:gap-8">
+              {VERTICALS.filter((v) => v.status !== "Live").map((v) => (
+                <VerticalCard key={v.key} v={v} />
+              ))}
+            </Stagger>
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper id="newsroom" theme="dark">
+          <div className="container">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <Reveal><SectionTag>From the Newsroom</SectionTag></Reveal>
+                <Reveal delay={0.05}>
+                  <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream">
+                    Latest stories<span className="text-brand-orange">.</span>
+                  </h2>
+                </Reveal>
+              </div>
+              <Link href="/newsroom" className="btn btn-secondary">
+                Visit the Newsroom <ArrowUpRight size={16} />
+              </Link>
+            </div>
+            <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+              {allArticles().slice(0, 3).map((a) => (
+                <ArticleCard key={a.slug} article={a} variant="dark" />
+              ))}
+            </div>
           </div>
         </SectionWrapper>
       </main>

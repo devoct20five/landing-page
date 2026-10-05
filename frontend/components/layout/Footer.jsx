@@ -6,21 +6,29 @@ import { Mail, Instagram, Linkedin, ArrowUpRight } from "lucide-react";
 
 const AGENCY_NAVIGATE = [
   { label: "Services", href: "/agency#services" },
-  { label: "Work", href: "/agency#work" },
+  { label: "Portfolio", href: "/agency/portfolio" },
   { label: "Behind the Work", href: "/agency/behind-the-work" },
   { label: "Vision", href: "/agency/vision" },
   { label: "Careers", href: "/agency/careers" },
-  { label: "Newsroom", href: "#" },
 ];
 
 const SERVICE_NAVIGATE = [
   { label: "Solution", href: "#solution" },
   { label: "Work", href: "#work" },
-  { label: "Behind the Work", href: "/agency/behind-the-work" },
+  { label: "Portfolio", href: "/agency/portfolio" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQs", href: "#faqs" },
   { label: "Vision", href: "/agency/vision" },
-  { label: "Newsroom", href: "#" },
+];
+
+const NEWSROOM_NAVIGATE = [
+  { label: "All stories", href: "/newsroom" },
+  { label: "Film & Video", href: "/newsroom/category/film-video" },
+  { label: "Design", href: "/newsroom/category/design" },
+  { label: "Technology", href: "/newsroom/category/technology" },
+  { label: "Creator Economy", href: "/newsroom/category/creator-economy" },
+  { label: "Brand & Business", href: "/newsroom/category/brand-business" },
+  { label: "Culture", href: "/newsroom/category/culture" },
 ];
 
 const USEFUL_LINKS = [
@@ -32,7 +40,12 @@ const USEFUL_LINKS = [
 ];
 
 export default function Footer({ variant = "agency" }) {
-  const navLinks = variant === "service" ? SERVICE_NAVIGATE : AGENCY_NAVIGATE;
+  const navLinks =
+    variant === "newsroom"
+      ? NEWSROOM_NAVIGATE
+      : variant === "service"
+        ? SERVICE_NAVIGATE
+        : AGENCY_NAVIGATE;
 
   return (
 <footer className="relative overflow-hidden bg-brand-black text-brand-cream">

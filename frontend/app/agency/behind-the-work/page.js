@@ -42,28 +42,28 @@ const CRAFTS = [
   {
     title: "Editing",
     desc: "Cuts that hold attention — social, brand films, docs.",
-    href: "/agency/behind-the-work/editing",
+    href: "/agency/portfolio?service=editing",
     thumbnail:
       "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
   },
   {
     title: "Design",
     desc: "Identity, packaging, and visual systems built to last.",
-    href: "/agency/behind-the-work/design",
+    href: "/agency/portfolio?service=design",
     thumbnail:
       "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
   },
   {
     title: "3D-Ads",
     desc: "CGI and product films that feel real, not rendered.",
-    href: "/agency/behind-the-work/3d-ads",
+    href: "/agency/portfolio?service=3d-ads",
     thumbnail:
       "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
   },
   {
     title: "Web-Dev",
     desc: "Sites and products built for speed, taste, and conversion.",
-    href: "/agency/behind-the-work/web-dev",
+    href: "/agency/portfolio?service=web-dev",
     thumbnail:
       "https://images.unsplash.com/photo-1547658719-da2b51169166?crop=entropy&cs=srgb&fm=jpg&q=80&w=1200",
   },

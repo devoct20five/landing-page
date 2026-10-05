@@ -28,3 +28,79 @@ Source of truth: `book_brand.pptx`.
 1. `npm install` then `npm run build`
 2. Set `NEXT_PUBLIC_SITE_URL` (currently a placeholder) and `CORS_ORIGINS` in `.env` (currently `*`)
 3. Replace the ~46 Unsplash placeholder images with real work samples
+
+---
+# Round 2 — service pages, pricing, working CTAs
+
+## Service pages (editing / design / 3d-ads / web-dev)
+New section order, light/dark alternating: Hero → Solution → Trusted by → **Work gallery** (tabbed bento) →
+**Process** (3 steps) → **Why us** (6 reasons) → **Pricing** → FAQ → **Closing CTA band**.
+New components live in `components/service/`. Removed from service pages: the cramped tier rail,
+the identical "Behind the Work" block with floating images, and the dead showreel.
+
+## Pricing
+- `data/plans.js` is now the single source of truth. Totals are **computed** (unit × pack × (1 − discount)), never typed.
+- Pack selector (3 / 7 / 15) really drives every figure: per-unit price, list price struck through, total, savings.
+- Web Dev is priced per project (no packs, no volume discount) — shown as "Starting at".
+- Side-by-side compare table (`#compare`) and a "Custom" card with Book a call / Request a quote.
+- Prices are labelled **per video / design / ad / project** (was always "/project") and "exclude 18% GST".
+
+## CTAs — every one now resolves (crawled 54 internal targets, 0 broken)
+| CTA | Goes to |
+|---|---|
+| See plans | `#pricing` on the same page |
+| Get <plan> · N | `/agency/checkout?service=&plan=&pack=` (right plan, pack and total pre-selected) |
+| Book a call | `/agency/book-a-call?service=` (service pre-selected) |
+| Request a quote | `/agency/get-in-touch?service=` |
+Dead `#` links removed: Footer "Newsroom", team LinkedIn/Instagram (8), portfolio items without a URL (no longer clickable).
+Wrong paths fixed: checkout Terms/Refund links, `#compare`. Showreel only renders when `NEXT_PUBLIC_SHOWREEL_URL` is set.
+
+## Forms now actually deliver
+Contact, Book-a-call and Checkout previously only flipped a "success" flag in the browser.
+They now POST to `/api/leads` (`app/api/leads/route.js`) which stores to MongoDB (`MONGO_URL`, `DB_NAME`) and/or
+forwards to `LEADS_WEBHOOK_URL` (Slack, Zapier, Make, n8n, Google Apps Script). If neither is configured, the form says
+so and opens a pre-filled email instead — it never claims success for a lead that went nowhere.
+
+## Checkout (important)
+There is **no payment processor** behind the old checkout, yet it asked for card numbers, said "Payment successful / Paid in full"
+and claimed "256-bit SSL encrypted". Step 3 is now an honest **order request**: no card fields, "nothing is charged until you pay the
+invoice". Plug in Razorpay/Stripe when you're ready and restore a pay step.
+Call booking is likewise a **request** (the team confirms by email) — there is no calendar integration.
+
+## Needs your input
+1. Set `LEADS_WEBHOOK_URL` and/or `MONGO_URL` (without one, forms fall back to email).
+2. Confirm pack discounts (3→0%, 7→8%, 15→12%) in `PACK_DISCOUNT` — inferred from your original prices.
+3. 3D Ads old totals (₹116,640 / ₹369,600) didn't match their unit prices; they're now computed
+   (Advance ×7 = ₹115,920; Black ×15 = ₹462,000). Confirm that's intended.
+4. Web Dev tiers carried "8% / 12%" discount badges that make no sense for fixed-price projects — removed.
+5. Real work samples/URLs (all gallery images are stock) and real team social links.
+
+---
+# Round 3 — Newsroom + Portfolio
+
+## Newsroom (`/newsroom`)
+| Route | What |
+|---|---|
+| `/newsroom` | Masthead, desk navigation, top story + "Latest", desk-by-desk sections, reporters |
+| `/newsroom/category/[slug]` | One desk: top story, more from the desk, that desk's reporters |
+| `/newsroom/[slug]` | Article: breadcrumb, byline, cover, reading typography, share rail (copy/X/LinkedIn/WhatsApp/email), reading-progress bar, "In this story" TOC, tags, author box, "Keep reading" |
+| `/newsroom/authors/[slug]` | Profile: bio, desks, stats, **all their written material** with a desk filter |
+All pages are statically generated, have per-page metadata + Open Graph, and articles/authors emit schema.org JSON-LD. Unknown slugs 404.
+Code: `components/newsroom/`, `lib/newsroom.js`, `data/newsroom.js`. Home page now has a live Newsroom card and a "Latest stories" strip.
+
+⚠️ ALL newsroom content is PLACEHOLDER (12 articles, 4 fictional authors, 6 desks, stock images) so the design can be tested end to end.
+Replace `data/newsroom.js` (or swap it for a CMS fetch inside `lib/newsroom.js` — pages only use that file) before launch.
+
+## Portfolio (`/agency/portfolio`)
+One catalogue for all four services (`data/portfolio.js`, 24 items). Filter pills with counts, live search, URL-synced
+(`?service=design`), per-service blurb with links to the service page and its pricing, empty state.
+**Every service page links to its own filtered view** ("View all Design work · 6") and the portfolio links back to each
+service and its pricing. Nav + footer now say "Portfolio". The 4 old `/agency/behind-the-work/<service>` pages were duplicates and
+now 308-redirect to the portfolio.
+
+## Needs your input
+1. Real articles/authors/desks (and real author portraits — currently initial avatars).
+2. Real portfolio work: all 24 entries are placeholders; add `href` to make a card clickable.
+3. The old data gave *every* project a runtime (even logos and websites). Runtimes now show for Editing and 3D Ads only —
+   please confirm the 3D Ads ones (10–15 min for an ad looks wrong).
+4. No newsletter signup or comments yet (no backend for them) — say the word and I'll add signup through `/api/leads`.

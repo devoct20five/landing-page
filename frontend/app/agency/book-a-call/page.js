@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { submitLead } from "@/lib/submitLead";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -91,6 +92,8 @@ function buildMonth(base) {
   return { year, month, cells };
 }
 
+const SERVICE_LABEL = { editing: "Editing", design: "Design", "3d-ads": "3D Ads", "web-dev": "Web Dev" };
+
 export default function BookACallPage() {
   const [step, setStep] = useState(1);
   const [state, setState] = useState({
@@ -103,6 +106,8 @@ export default function BookACallPage() {
     time: null,
   });
   const [confirmed, setConfirmed] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [monthCursor, setMonthCursor] = useState(new Date());
   const monthData = useMemo(() => buildMonth(monthCursor), [monthCursor]);
   const today = new Date();
@@ -117,8 +122,15 @@ export default function BookACallPage() {
         : [...s.needs, n],
     }));
 
+  // ?service=editing&plan=advance (from a pricing CTA) pre-selects the need
+  useEffect(() => {
+    const svc = new URLSearchParams(window.location.search).get("service");
+    const label = SERVICE_LABEL[svc];
+    if (label) setState((x) => (x.needs.includes(label) ? x : { ...x, needs: [label] }));
+  }, []);
+
   const canConfirm =
-    state.name && state.email && state.role && state.needs.length > 0;
+    state.name && state.email && state.role && state.needs.length > 0 && !sending;
 
   const monthLabel = monthCursor
     .toLocaleString("en-US", { month: "long", year: "numeric" })
@@ -446,9 +458,30 @@ export default function BookACallPage() {
 
                       <form
                         className="brand-card !p-6 md:!p-8 space-y-8"
-                        onSubmit={(e) => {
+                        onSubmit={async (e) => {
                           e.preventDefault();
-                          if (canConfirm) setConfirmed(true);
+                          if (!canConfirm) return;
+                          setSending(true);
+                          setError("");
+                          const qs = new URLSearchParams(window.location.search);
+                          const res = await submitLead({
+                            kind: "call",
+                            name: state.name,
+                            email: state.email,
+                            service: state.needs.join(", "),
+                            plan: qs.get("plan") || "",
+                            message: state.project,
+                            details: {
+                              role: state.role,
+                              requestedDate: dateLabel || "",
+                              requestedTime: state.time ? `${state.time} IST` : "",
+                            },
+                          });
+                          setSending(false);
+                          if (res.ok) setConfirmed(true);
+                          else if (res.fallback)
+                            setError("We couldn't send this automatically, so we opened an email with your request. Please press send.");
+                          else setError(res.error || "Something went wrong. Please try again.");
                         }}
                       >
                         <div className="grid md:grid-cols-2 gap-4">
@@ -555,12 +588,18 @@ export default function BookACallPage() {
                         </FieldGroup>
 
                         <div className="space-y-3 pt-2">
+                          {error && (
+                            <p role="alert" className="rounded-card border border-brand-orange px-4 py-3 text-sm text-brand-orange">
+                              {error}
+                            </p>
+                          )}
                           <button
                             type="submit"
                             disabled={!canConfirm}
+                            aria-busy={sending}
                             className="btn btn-primary w-full justify-center"
                           >
-                            Confirm booking <ArrowRight size={16} />
+                            {sending ? "Sending…" : "Request this call"} <ArrowRight size={16} />
                           </button>
                           <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
                             <Lock size={12} />
@@ -599,15 +638,15 @@ export default function BookACallPage() {
                   </motion.div>
 
                   <p className="mt-8 eyebrow mx-auto w-fit">
-                    <span className="eyebrow-dot" /> Booking confirmed
+                    <span className="eyebrow-dot" /> Call request received
                   </p>
                   <h1 className="mt-4 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
-                    You&rsquo;re all set. <br />
-                    <span className="text-brand-orange">See you then.</span>
+                    Request sent. <br />
+                    <span className="text-brand-orange">We&rsquo;ll confirm soon.</span>
                   </h1>
                   <p className="mt-6 text-body-lg opacity-70 max-w-xl mx-auto">
-                    Your call with OCT20FIVE is booked. We&rsquo;ve sent the
-                    confirmation and meeting details to your email.
+                    We&rsquo;ve got your request. We&rsquo;ll email you to
+                    confirm the time and send the meeting link.
                   </p>
 
                   <div className="mt-12 grid md:grid-cols-2 gap-5 text-left">
@@ -621,7 +660,7 @@ export default function BookACallPage() {
                       <ConfRow
                         icon={Video}
                         title="Video call"
-                        subtitle="Google Meet"
+                        subtitle="Link sent on confirmation"
                         noBorder
                       />
                     </div>

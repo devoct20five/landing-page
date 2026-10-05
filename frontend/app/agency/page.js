@@ -47,6 +47,9 @@ export default function AgencyPage() {
               <a href="#services" className="btn btn-outline">
                 Our services
               </a>
+              <Link href="/agency/portfolio" className="btn btn-ghost">
+                Portfolio
+              </Link>
             </>
           }
         />

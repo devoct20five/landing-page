@@ -31,64 +31,43 @@ import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
+import { findPlan, priceFor, DEFAULT_PACK, GST_RATE } from "@/data/plans";
+import { submitLead } from "@/lib/submitLead";
 
 /* =========================================================
-   PLAN CATALOG
-   Swap this for a shared /data/plans.js import so pricing
-   stays in sync between the Pricing section and Checkout.
+   PLAN CATALOG — adapted from the shared price list (data/plans.js)
+   so the checkout can never disagree with the pricing section.
 ========================================================= */
-const PLAN_CATALOG = {
-  starter: {
-    name: "Starter",
-    packages: [
-      { id: "3", label: "3 Pack", price: 9000, unitLabel: "3 videos" },
-      { id: "7", label: "7 Pack", price: 18000, unitLabel: "7 videos" },
-      { id: "15", label: "15 Pack", price: 33000, unitLabel: "15 videos" },
-    ],
-    features: [
-      "Short-form video editing",
-      "2 revisions per video",
-      "48hr turnaround",
-      "Custom captions & sound design",
-    ],
-  },
-  growth: {
-    name: "Growth",
-    packages: [
-      { id: "3", label: "3 Pack", price: 21000, unitLabel: "3 videos" },
-      { id: "7", label: "7 Pack", price: 42000, unitLabel: "7 videos" },
-      { id: "15", label: "15 Pack", price: 78000, unitLabel: "15 videos" },
-    ],
-    features: [
-      "Long + short form editing",
-      "Unlimited revisions",
-      "24hr turnaround",
-      "Dedicated editor",
-      "Thumbnail design included",
-    ],
-  },
-  scale: {
-    name: "Scale",
-    packages: [
-      { id: "3", label: "3 Pack", price: 45000, unitLabel: "3 videos" },
-      { id: "7", label: "7 Pack", price: 88000, unitLabel: "7 videos" },
-      { id: "15", label: "15 Pack", price: 160000, unitLabel: "15 videos" },
-    ],
-    features: [
-      "Full production pipeline",
-      "Unlimited revisions",
-      "Same-day turnaround",
-      "Dedicated pod (editor + designer)",
-      "Priority Slack support",
-    ],
-  },
-};
-
-const ADDONS = [
+const EDITING_ADDONS = [
   { id: "rush", label: "Rush delivery (12hr)", price: 4000 },
   { id: "thumbnails", label: "Extra thumbnail set", price: 1500 },
   { id: "captions", label: "Multi-language captions", price: 2500 },
 ];
+
+function buildCheckoutPlan(serviceSlug, planKey) {
+  const { model, plan } = findPlan(serviceSlug, planKey);
+  if (!model || !plan) return null;
+  const packages =
+    model.mode === "project"
+      ? [{ id: "project", label: "Fixed price", price: plan.unit, unitLabel: "1 project" }]
+      : model.packs.map((n) => {
+          const p = priceFor(plan, n);
+          return {
+            id: String(n),
+            label: `${n} Pack`,
+            price: p.total,
+            unitLabel: `${n} ${n === 1 ? model.noun.one : model.noun.many}`,
+          };
+        });
+  return {
+    service: model.slug,
+    planKey: plan.key,
+    name: `${model.title} · ${plan.name}`,
+    packages,
+    features: plan.features,
+    addons: model.slug === "editing" ? EDITING_ADDONS : [],
+  };
+}
 
 const PAYMENT_METHODS = [
   {
@@ -124,9 +103,16 @@ function formatINR(n) {
 function CheckoutInner() {
   const params = useSearchParams();
 
-  const planKey = params.get("plan") || "growth";
-  const initialPackage = params.get("package") || "7";
-  const plan = PLAN_CATALOG[planKey] || PLAN_CATALOG.growth;
+  const serviceSlug = params.get("service") || "editing";
+  const planKey = params.get("plan") || "advance";
+  const initialPackage = params.get("pack") || String(DEFAULT_PACK);
+  const plan = useMemo(
+    () =>
+      buildCheckoutPlan(serviceSlug, planKey) ||
+      buildCheckoutPlan("editing", "advance"),
+    [serviceSlug, planKey],
+  );
+  const ADDONS = plan.addons;
 
   const [step, setStep] = useState(1);
   const [confirmed, setConfirmed] = useState(false);
@@ -136,7 +122,7 @@ function CheckoutInner() {
 
   const [selectedPackage, setSelectedPackage] = useState(
     plan.packages.find((p) => p.id === initialPackage)?.id ||
-      plan.packages[1]?.id,
+      plan.packages[Math.min(1, plan.packages.length - 1)].id,
   );
   const [addons, setAddons] = useState([]);
   const [promo, setPromo] = useState("");
@@ -154,16 +140,9 @@ function CheckoutInner() {
   });
 
   const [payment, setPayment] = useState("card");
-  const [card, setCard] = useState({
-    number: "",
-    expiry: "",
-    cvv: "",
-    name: "",
-  });
   const [agree, setAgree] = useState(false);
 
   const setDetail = (k, v) => setDetails((s) => ({ ...s, [k]: v }));
-  const setCardField = (k, v) => setCard((s) => ({ ...s, [k]: v }));
 
   const toggleAddon = (id) =>
     setAddons((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
@@ -182,7 +161,7 @@ function CheckoutInner() {
   const subtotal = (activePackage?.price || 0) + addonTotal;
   const discount = promoApplied ? Math.round(subtotal * promoApplied.pct) : 0;
   const taxable = subtotal - discount;
-  const gst = Math.round(taxable * 0.18);
+  const gst = Math.round(taxable * GST_RATE);
   const total = taxable + gst;
 
   const applyPromo = () => {
@@ -209,20 +188,48 @@ function CheckoutInner() {
   const canContinueStep1 = !!selectedPackage;
   const canContinueStep2 =
     details.name && details.email && details.phone && details.address;
-  const canConfirmPayment =
-    agree &&
-    (payment !== "card" ||
-      (card.number.replace(/\s/g, "").length >= 12 &&
-        card.expiry &&
-        card.cvv.length >= 3 &&
-        card.name));
-
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const canConfirmPayment = agree && !submitting;
   const goToStep2 = () => canContinueStep1 && setStep(2);
   const goToStep3 = () => canContinueStep2 && setStep(3);
 
-  const submitPayment = (e) => {
+  const submitPayment = async (e) => {
     e.preventDefault();
-    if (canConfirmPayment) setConfirmed(true);
+    if (!canConfirmPayment) return;
+    setSubmitting(true);
+    setSubmitError("");
+    const res = await submitLead({
+      kind: "order",
+      name: details.name,
+      email: details.email,
+      phone: details.phone,
+      company: details.company,
+      service: plan.service,
+      plan: plan.planKey,
+      pack: activePackage?.id,
+      message: details.notes,
+      details: {
+        orderId,
+        package: activePackage?.label,
+        addons: addons.join(",") || "none",
+        promo: promoApplied?.code || "none",
+        subtotal,
+        discount,
+        gst,
+        total,
+        gstNumber: details.gst,
+        address: details.address,
+        preferredPayment: payment,
+      },
+    });
+    setSubmitting(false);
+    if (res.ok) setConfirmed(true);
+    else if (res.fallback)
+      setSubmitError(
+        "We couldn't send this automatically, so we opened an email with your order details. Please press send to complete your request.",
+      );
+    else setSubmitError(res.error || "Something went wrong. Please try again.");
   };
 
   return (
@@ -297,7 +304,7 @@ function CheckoutInner() {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${plan.packages.length}, minmax(0, 1fr))` }}>
                           {plan.packages.map((p) => {
                             const selected = p.id === selectedPackage;
                             return (
@@ -344,7 +351,7 @@ function CheckoutInner() {
                       </div>
 
                       {/* Add-ons */}
-                      <div className="brand-card !p-6 md:!p-8 space-y-4">
+                      <div className={`brand-card !p-6 md:!p-8 space-y-4 ${ADDONS.length ? "" : "hidden"}`}>
                         <p className="eyebrow">
                           <span className="eyebrow-dot" /> 2. Add-ons{" "}
                           <span className="ml-2 text-[11px] opacity-50 normal-case">
@@ -493,7 +500,7 @@ function CheckoutInner() {
                             style={{ borderColor: "var(--surface-border)" }}
                           >
                             <span className="font-display uppercase text-sm tracking-tight">
-                              Total due
+                              Estimated total
                             </span>
                             <span className="font-display text-2xl uppercase tracking-tight text-brand-orange">
                               {formatINR(total)}
@@ -712,12 +719,13 @@ function CheckoutInner() {
                       <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
                         Last step.{" "}
                         <span className="text-brand-orange">
-                          Secure payment.
+                          Confirm your order.
                         </span>
                       </h1>
                       <p className="mt-6 text-body-lg opacity-70 max-w-md">
-                        Your payment is encrypted and processed securely. We
-                        never store your card details.
+                        No payment is taken on this page. Send your order
+                        request and we&rsquo;ll email you an invoice and a
+                        secure payment link within one business day.
                       </p>
 
                       <OrderMini
@@ -728,7 +736,7 @@ function CheckoutInner() {
                       />
 
                       <div className="mt-4 flex items-center gap-2 text-xs opacity-50">
-                        <Lock size={12} /> 256-bit SSL encrypted checkout
+                        <ShieldCheck size={12} /> Nothing is charged until you pay the invoice
                       </div>
                     </div>
 
@@ -737,7 +745,7 @@ function CheckoutInner() {
                         onSubmit={submitPayment}
                         className="brand-card !p-6 md:!p-8 space-y-8"
                       >
-                        <FieldGroup label="Payment method" required>
+                        <FieldGroup label="Preferred payment method" required>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                             {PAYMENT_METHODS.map(
                               ({ id, label, icon: Icon, desc }) => (
@@ -762,133 +770,10 @@ function CheckoutInner() {
                           </div>
                         </FieldGroup>
 
-                        <AnimatePresence mode="wait">
-                          {payment === "card" && (
-                            <motion.div
-                              key="card"
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="space-y-4 overflow-hidden"
-                            >
-                              <FieldGroup label="Card number" required>
-                                <div className="relative">
-                                  <CreditCard
-                                    size={16}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
-                                  />
-                                  <input
-                                    required
-                                    value={card.number}
-                                    onChange={(e) =>
-                                      setCardField("number", e.target.value)
-                                    }
-                                    className="brand-input !pl-10"
-                                    placeholder="1234 5678 9012 3456"
-                                    maxLength={19}
-                                  />
-                                </div>
-                              </FieldGroup>
-                              <div className="grid grid-cols-2 gap-4">
-                                <FieldGroup label="Expiry" required>
-                                  <input
-                                    required
-                                    value={card.expiry}
-                                    onChange={(e) =>
-                                      setCardField("expiry", e.target.value)
-                                    }
-                                    className="brand-input"
-                                    placeholder="MM/YY"
-                                    maxLength={5}
-                                  />
-                                </FieldGroup>
-                                <FieldGroup label="CVV" required>
-                                  <input
-                                    required
-                                    type="password"
-                                    value={card.cvv}
-                                    onChange={(e) =>
-                                      setCardField("cvv", e.target.value)
-                                    }
-                                    className="brand-input"
-                                    placeholder="•••"
-                                    maxLength={4}
-                                  />
-                                </FieldGroup>
-                              </div>
-                              <FieldGroup label="Name on card" required>
-                                <input
-                                  required
-                                  value={card.name}
-                                  onChange={(e) =>
-                                    setCardField("name", e.target.value)
-                                  }
-                                  className="brand-input"
-                                  placeholder="As it appears on your card"
-                                />
-                              </FieldGroup>
-                            </motion.div>
-                          )}
-
-                          {payment === "upi" && (
-                            <motion.div
-                              key="upi"
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <FieldGroup label="UPI ID" required>
-                                <input
-                                  className="brand-input"
-                                  placeholder="yourname@upi"
-                                />
-                              </FieldGroup>
-                              <p className="mt-3 text-xs opacity-60 flex items-center gap-2">
-                                <Info size={12} /> You&rsquo;ll receive a
-                                payment request on your UPI app.
-                              </p>
-                            </motion.div>
-                          )}
-
-                          {payment === "netbanking" && (
-                            <motion.div
-                              key="nb"
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <FieldGroup label="Select your bank" required>
-                                <select className="brand-input">
-                                  <option>HDFC Bank</option>
-                                  <option>ICICI Bank</option>
-                                  <option>State Bank of India</option>
-                                  <option>Axis Bank</option>
-                                  <option>Kotak Mahindra Bank</option>
-                                </select>
-                              </FieldGroup>
-                            </motion.div>
-                          )}
-
-                          {payment === "wallet" && (
-                            <motion.div
-                              key="wallet"
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <FieldGroup label="Select wallet" required>
-                                <select className="brand-input">
-                                  <option>Paytm Wallet</option>
-                                  <option>Amazon Pay</option>
-                                  <option>Mobikwik</option>
-                                </select>
-                              </FieldGroup>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <p className="rounded-card border border-brand-orange/30 bg-brand-orange/[0.06] px-4 py-3 text-sm opacity-90">
+                          We&rsquo;ll use this to prepare your invoice. You won&rsquo;t
+                          enter any card or bank details here.
+                        </p>
 
                         <div
                           className="pt-4 border-t space-y-2"
@@ -923,7 +808,7 @@ function CheckoutInner() {
                             style={{ borderColor: "var(--surface-border)" }}
                           >
                             <span className="font-display uppercase text-sm tracking-tight">
-                              Total due
+                              Estimated total
                             </span>
                             <span className="font-display text-2xl uppercase tracking-tight text-brand-orange">
                               {formatINR(total)}
@@ -940,14 +825,14 @@ function CheckoutInner() {
                           />
                           I agree to the{" "}
                           <Link
-                            href="/terms"
+                            href="/agency/terms-and-conditions"
                             className="text-brand-orange underline underline-offset-4"
                           >
                             Terms of Service
                           </Link>{" "}
                           and{" "}
                           <Link
-                            href="/refund-policy"
+                            href="/agency/refund-and-cancellation"
                             className="text-brand-orange underline underline-offset-4"
                           >
                             Refund Policy
@@ -955,6 +840,11 @@ function CheckoutInner() {
                           .
                         </label>
 
+                        {submitError && (
+                          <p role="alert" className="rounded-card border border-brand-orange px-4 py-3 text-sm text-brand-orange">
+                            {submitError}
+                          </p>
+                        )}
                         <div className="flex gap-3 pt-2">
                           <button
                             type="button"
@@ -968,13 +858,12 @@ function CheckoutInner() {
                             disabled={!canConfirmPayment}
                             className="btn btn-primary flex-1 justify-center"
                           >
-                            Pay {formatINR(total)} <Lock size={14} />
+                            {submitting ? "Sending…" : `Place order request · ${formatINR(total)}`}
                           </button>
                         </div>
                         <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
                           <ShieldCheck size={12} />
-                          Payments are processed securely. Your card details are
-                          never stored on our servers.
+                          Total includes 18% GST. You&rsquo;ll pay by invoice, not on this page.
                         </p>
                       </form>
                     </div>
@@ -1008,17 +897,17 @@ function CheckoutInner() {
                   </motion.div>
 
                   <p className="mt-8 eyebrow mx-auto w-fit">
-                    <span className="eyebrow-dot" /> Payment successful
+                    <span className="eyebrow-dot" /> Order request received
                   </p>
                   <h1 className="mt-4 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
-                    Order confirmed. <br />
+                    Request received. <br />
                     <span className="text-brand-orange">
                       Let&rsquo;s get started.
                     </span>
                   </h1>
                   <p className="mt-6 text-body-lg opacity-70 max-w-xl mx-auto">
-                    Thanks{details.name ? `, ${details.name}` : ""}. Your
-                    receipt and next steps have been sent to{" "}
+                    Thanks{details.name ? `, ${details.name}` : ""}. We&rsquo;ll
+                    email your invoice and payment link to{" "}
                     <span className="text-brand-orange font-medium">
                       {details.email}
                     </span>
@@ -1035,7 +924,7 @@ function CheckoutInner() {
                       <ConfRow
                         icon={BadgeIndianRupee}
                         title={formatINR(total)}
-                        subtitle="Paid in full"
+                        subtitle="Estimated total incl. GST · payable by invoice"
                       />
                       <ConfRow
                         icon={Calendar}

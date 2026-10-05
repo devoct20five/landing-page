@@ -216,22 +216,6 @@ export default function VisionPage() {
                     <p className="text-sm text-brand-textSoft mt-1">
                       Founder & CEO
                     </p>
-
-                    <div className="mt-4 flex gap-4">
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        LinkedIn
-                      </Link>
-
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        Instagram
-                      </Link>
-                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -255,22 +239,6 @@ export default function VisionPage() {
                     </h3>
 
                     <p className="text-sm text-brand-textSoft mt-1">Design Lead</p>
-
-                    <div className="mt-4 flex gap-4">
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        LinkedIn
-                      </Link>
-
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        Instagram
-                      </Link>
-                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -296,22 +264,6 @@ export default function VisionPage() {
                     <p className="text-sm text-brand-textSoft mt-1">
                       Head of Production
                     </p>
-
-                    <div className="mt-4 flex gap-4">
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        LinkedIn
-                      </Link>
-
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        Instagram
-                      </Link>
-                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -337,22 +289,6 @@ export default function VisionPage() {
                     <p className="text-sm text-brand-textSoft mt-1">
                       3D & Motion Lead
                     </p>
-
-                    <div className="mt-4 flex gap-4">
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        LinkedIn
-                      </Link>
-
-                      <Link
-                        href="#"
-                        className="text-brand-orange text-sm hover:underline"
-                      >
-                        Instagram
-                      </Link>
-                    </div>
                   </div>
                 </article>
               </Reveal>

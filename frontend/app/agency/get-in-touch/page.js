@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { submitLead } from "@/lib/submitLead";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -64,6 +66,8 @@ const TIMELINE = [
   "Not Sure Yet",
 ];
 
+const SERVICE_LABEL = { editing: "Editing", design: "Design", "3d-ads": "3D Ads", "web-dev": "Web Dev" };
+
 export default function GetInTouchPage() {
   const [state, setState] = useState({
     role: "Individual / Creator",
@@ -76,6 +80,15 @@ export default function GetInTouchPage() {
     file: null,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  // ?service=editing (from a service page CTA) pre-selects that need
+  useEffect(() => {
+    const svc = new URLSearchParams(window.location.search).get("service");
+    const label = SERVICE_LABEL[svc];
+    if (label) setState((s) => (s.needs.includes(label) ? s : { ...s, needs: [label] }));
+  }, []);
 
   const setField = (k, v) => setState((s) => ({ ...s, [k]: v }));
   const toggleNeed = (n) =>
@@ -86,11 +99,28 @@ export default function GetInTouchPage() {
         : [...s.needs, n],
     }));
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    if (typeof window !== "undefined")
+    if (sending) return;
+    setSending(true);
+    setError("");
+    const res = await submitLead({
+      kind: "contact",
+      name: state.name,
+      email: state.email,
+      service: state.needs.join(", "),
+      message: state.project,
+      details: { role: state.role, budget: state.budget, timeline: state.timeline },
+    });
+    setSending(false);
+    if (res.ok) {
+      setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (res.fallback) {
+      setError("We couldn't send this automatically, so we opened an email with your details. Please press send to reach us.");
+    } else {
+      setError(res.error || "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -196,8 +226,7 @@ export default function GetInTouchPage() {
 
                     {/* Right column form */}
                     <div className="lg:col-span-8" id="form">
-                      <form
-                        onSubmit={onSubmit}
+                      <form onSubmit={onSubmit}
                         className="brand-card !p-8 md:!p-10 space-y-8"
                       >
                         <div className="flex items-center gap-3 pb-2">
@@ -372,11 +401,17 @@ export default function GetInTouchPage() {
                         </FieldGroup>
 
                         <div className="pt-2 space-y-3">
+                          {error && (
+                            <p role="alert" className="rounded-card border border-brand-orange px-4 py-3 text-sm text-brand-orange">
+                              {error}
+                            </p>
+                          )}
                           <button
                             type="submit"
+                            disabled={sending}
                             className="btn btn-primary w-full justify-center"
                           >
-                            Send it our way <ArrowRight size={16} />
+                            {sending ? "Sending…" : "Send it our way"} <ArrowRight size={16} />
                           </button>
                           <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
                             <Check size={12} className="text-brand-orange" />

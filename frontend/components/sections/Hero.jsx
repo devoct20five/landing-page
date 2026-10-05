@@ -19,6 +19,7 @@ const EASE = [0.22, 1, 0.36, 1]
  *  description optional supporting paragraph (Satoshi)
  *  subline     "CONCEPT. CREATE. DELIVER." → rendered with orange full stops
  *  actions     optional buttons (ReactNode)
+ *  chips       optional short facts shown as pills under the actions
  *  image       optional photo, shown as a quiet monochrome texture under the glow
  */
 export default function Hero({
@@ -27,6 +28,8 @@ export default function Hero({
   description,
   subline,
   actions,
+  chips,
+  chipsLabel = 'Built for',
   image,
   imageAlt = '',
   showScrollCue = true,
@@ -133,6 +136,22 @@ export default function Hero({
             className="mt-10 flex flex-wrap items-center gap-3"
           >
             {actions}
+          </motion.div>
+        )}
+
+        {chips?.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.25, ease: EASE }}
+            className="mt-10 flex flex-wrap items-center gap-2.5"
+          >
+            <span className="mr-1 text-[11px] font-bold uppercase tracking-[0.25em] text-brand-cream/50">{chipsLabel}</span>
+            {chips.map((c) => (
+              <span key={c} className="rounded-full border border-brand-cream/20 bg-brand-cream/[0.06] px-4 py-1.5 text-sm font-medium text-brand-cream/90 backdrop-blur">
+                {c}
+              </span>
+            ))}
           </motion.div>
         )}
       </motion.div>

@@ -19,7 +19,7 @@ export default function FAQ({ theme = 'dark', items = FAQS }) {
             <Reveal><SectionTag>FAQs</SectionTag></Reveal>
             <Reveal delay={0.05}>
               <h2 className="mt-6 font-display uppercase leading-[0.9] tracking-tight text-display-xl text-balance">
-                Have a <br /> <span className="italic font-medium normal-case tracking-tight text-brand-orange">different</span> <br /> question?
+                Have a <br /> <span className="text-brand-orange">different</span> <br /> question?
               </h2>
             </Reveal>
             <Reveal delay={0.12}>

@@ -1,15 +1,43 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, X } from "lucide-react";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
 import Reveal from "@/components/motion/Reveal";
 
+/* YouTube / Vimeo page URLs → embeddable URLs; anything else is treated as a direct video file. */
+function toEmbed(url) {
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+  if (yt) return { iframe: `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0` };
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return { iframe: `https://player.vimeo.com/video/${vm[1]}?autoplay=1` };
+  return { file: url };
+}
+
+/**
+ * Showreel — plays `videoUrl` in a lightbox (set NEXT_PUBLIC_SHOWREEL_URL).
+ * With no URL the section is not rendered: a play button with nothing behind
+ * it is worse than no section.
+ */
 export default function Showreel({
   theme = "cream",
   id = "showreel",
+  videoUrl = process.env.NEXT_PUBLIC_SHOWREEL_URL,
 }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  if (!videoUrl) return null;
+  const media = toEmbed(videoUrl);
+
   return (
     <SectionWrapper id={id} theme={theme}>
       <div className="container">
@@ -30,6 +58,8 @@ export default function Showreel({
         <Reveal delay={0.08}>
           <motion.button
             type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Play showreel"
             whileHover={{
               scale: 1.008,
               y: -2,
@@ -209,6 +239,35 @@ export default function Showreel({
         </Reveal>
 
       </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-black/90 p-4 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Showreel"
+          >
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close showreel"
+              className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-brand-cream/30 text-brand-cream hover:bg-brand-cream hover:text-brand-black"
+            >
+              <X size={20} />
+            </button>
+            <div onClick={(e) => e.stopPropagation()} className="aspect-video w-full max-w-5xl overflow-hidden rounded-card bg-brand-black">
+              {media.iframe ? (
+                <iframe src={media.iframe} title="OCT20FIVE showreel" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen className="h-full w-full" />
+              ) : (
+                <video src={media.file} controls autoPlay className="h-full w-full" />
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </SectionWrapper>
   );
 }

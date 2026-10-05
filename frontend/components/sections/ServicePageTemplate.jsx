@@ -1,85 +1,77 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
-
 import Hero from "@/components/sections/Hero";
 import Solution from "@/components/sections/Solution";
 import TrustedBy from "@/components/sections/TrustedBy";
-import Showreel from "@/components/sections/Showreel";
-import CollectionRail from "./CollectionRail";
-import Workflow from "@/components/sections/Workflow";
-import BehindTheWork from "@/components/sections/BehindTheWork";
-import FeaturesGrid from "@/components/sections/FeaturesGrid";
 import FAQ from "@/components/sections/FAQ";
+import WorkGallery from "@/components/service/WorkGallery";
+import ProcessSteps from "@/components/service/ProcessSteps";
+import WhyUs from "@/components/service/WhyUs";
+import PricingSection from "@/components/service/PricingSection";
+import FinalCTA from "@/components/service/FinalCTA";
+import { getPricing, links } from "@/data/plans";
+import { countByService, portfolioHref } from "@/data/portfolio";
 
 /*
   ============================================================
-  SERVICE PAGE STRUCTURE
+  SERVICE PAGE — section order (light / dark alternate)
   ============================================================
-
-  Navbar
-      ↓
-  Hero
-      ↓
-  Solution
-      ↓
-  Trusted By
-      ↓
-  Showreel
-      ↓
-  Work Collections
-      ↓
-  Workflow
-      ↓
-  Behind The Work
-      ↓
-  Pricing
-      ↓
-  FAQ
-      ↓
-  Footer
+  Hero            dark   what we do · See plans / Book a call
+  Solution        light  who it's for, formats
+  Trusted by      dark
+  Work            light  tabbed bento gallery
+  Process         dark   3 steps
+  Why us          light  6 reasons
+  Pricing         dark   pack selector · plans · compare · custom
+  FAQ             light
+  Final CTA       orange
+  ------------------------------------------------------------
+  Every CTA resolves to a real route:
+    See plans   → #pricing (this page)
+    Get <plan>  → /agency/checkout?service=&plan=&pack=
+    Book a call → /agency/book-a-call?service=
+    Quote       → /agency/get-in-touch?service=
 */
-
 export default function ServicePageTemplate({ data }) {
-  const { hero, solution, workflow, pricing, collections, slug, title } = data;
-
+  const { hero, solution, workflow, collections, slug, title } = data;
+  const pricing = getPricing(slug);
 
   const collectionItems = Array.isArray(collections)
     ? collections
     : collections?.items || [];
-
-  const collectionEyebrow = Array.isArray(collections)
-    ? `${title} Work`
-    : collections?.eyebrow || `${title} Work`;
-
-  const collectionHeadline = Array.isArray(collections)
+  const workEyebrow = Array.isArray(collections)
+    ? `${title} work`
+    : collections?.eyebrow || `${title} work`;
+  const workHeadline = Array.isArray(collections)
     ? "Work made to make an impact."
     : collections?.headline || "Work made to make an impact.";
 
   return (
     <>
-      {/* =====================================================
-          NAVBAR
-          ===================================================== */}
-
       <Navbar variant="service" initialTheme="dark" />
 
       <main>
-        {/* =====================================================
-            HERO
-            ===================================================== */}
-
         <Hero
           eyebrow={`OCT20FIVE ${title}`}
           headline={hero.headline}
           subline={hero.tag}
           image={hero.image}
+          actions={
+            <>
+              <a href="#pricing" className="btn btn-primary">
+                See plans
+                <ArrowRight size={16} strokeWidth={2} />
+              </a>
+              <Link href={links.call(slug)} className="btn btn-secondary">
+                Book a call
+              </Link>
+            </>
+          }
         />
-
-        {/* =====================================================
-            SOLUTION
-            ===================================================== */}
 
         <Solution
           headline={solution.headline}
@@ -88,76 +80,38 @@ export default function ServicePageTemplate({ data }) {
           formats={solution.formats}
         />
 
-        {/* =====================================================
-            TRUSTED BY
-            ===================================================== */}
-
         <TrustedBy />
 
-        {/* =====================================================
-            SHOWREEL
-            ===================================================== */}
+        <WorkGallery
+          eyebrow={workEyebrow}
+          headline={workHeadline}
+          collections={collectionItems}
+          portfolioHref={portfolioHref(slug)}
+          portfolioLabel={`View all ${title} work`}
+          portfolioCount={countByService(slug)}
+        />
 
-        <Showreel />
-
-        {/* =====================================================
-            SELECTED WORK / COLLECTIONS
-            ===================================================== */}
-
-        {collectionItems.length > 0 && (
-          <CollectionRail
-            eyebrow={collectionEyebrow}
-            title={collectionHeadline}
-            collections={collectionItems}
-            accent="#ff5a1f"
-          />
-        )}
-
-        {/* =====================================================
-            WORKFLOW
-            ===================================================== */}
-
-        <Workflow
+        <ProcessSteps
           headline={workflow.headline}
           subline={workflow.subline}
           steps={workflow.steps}
           ctaLabel={workflow.ctaLabel}
-          ctaHref="/agency/get-in-touch"
+          ctaHref={links.call(slug)}
         />
 
-        {/* =====================================================
-            BEHIND THE WORK
-            ===================================================== */}
+        {pricing && <WhyUs reasons={pricing.reasons} />}
 
-        <BehindTheWork currentSlug={slug} />
+        {pricing && <PricingSection model={pricing} />}
 
-        {/* =====================================================
-            PRICING
-            ===================================================== */}
+        <FAQ theme="light" />
 
-        <FeaturesGrid
-          id="pricing"
-          theme="dark"
-          eyebrow={pricing.eyebrow || "Pricing"}
-          headline={pricing.headline}
-          subline={pricing.subline}
-          plans={pricing.plans}
-          features={pricing.features}
-          signature={pricing.signature}
-          compareLabel={pricing.compareLabel || "Compare Plans"}
-          compareHref={pricing.compareHref || "#compare"}
+        <FinalCTA
+          headline="Let's get started."
+          body="Pick a plan and check out in minutes — or talk to us first and we'll scope it together."
+          primary={{ label: "See plans", href: "#pricing" }}
+          secondary={{ label: workflow.ctaLabel || "Book a call", href: links.call(slug) }}
         />
-
-        {/* =====================================================
-            FAQ
-            ===================================================== */}
-
-        <FAQ />
       </main>
-
-      {/* =====================================================
-          FOOTER
-          ===================================================== */}
 
       <Footer variant="service" />
     </>
