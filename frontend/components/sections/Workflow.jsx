@@ -67,11 +67,11 @@ export default function Workflow({
 
                 {/* Content */}
                 <div className="ml-5 min-w-0">
-                  <h3 className="font-display text-[11px] font-semibold uppercase leading-tight tracking-tight md:text-xs">
+                  <h3 className="font-display text-xs font-semibold uppercase leading-tight tracking-tight md:text-xs">
                     {step.title}
                   </h3>
 
-                  <p className="mt-2 max-w-[220px] text-[10px] leading-[1.45] opacity-65 md:text-[11px]">
+                  <p className="mt-2 max-w-[220px] text-xs leading-[1.45] opacity-65 md:text-xs">
                     {step.body}
                   </p>
                 </div>
@@ -107,7 +107,7 @@ export default function Workflow({
             <MagneticButton
               href={ctaHref}
               variant="primary"
-              className="!rounded-full !px-5 !py-2.5 text-[11px] uppercase tracking-wide"
+              className="!rounded-full !px-5 !py-2.5 text-xs uppercase tracking-wide"
             >
               {ctaLabel}
               <ArrowRight size={14} />

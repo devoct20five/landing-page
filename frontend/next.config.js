@@ -10,11 +10,16 @@ const nextConfig = {
   serverExternalPackages: ['mongodb'],
   // Old per-service "Behind the Work" pages were duplicates of the portfolio.
   async redirects() {
-    return ['editing', 'design', '3d-ads', 'web-dev'].map((s) => ({
-      source: `/agency/behind-the-work/${s}`,
-      destination: `/agency/portfolio?service=${s}`,
-      permanent: true,
-    }));
+    return [
+      ...['editing', 'design', '3d-ads', 'web-dev'].map((s) => ({
+        source: `/agency/behind-the-work/${s}`,
+        destination: `/agency/portfolio?service=${s}`,
+        permanent: true,
+      })),
+      // "Newsroom" was renamed "Publication" — keep old links and shared URLs alive.
+      { source: '/newsroom', destination: '/publication', permanent: true },
+      { source: '/newsroom/:path*', destination: '/publication/:path*', permanent: true },
+    ];
   },
   webpack(config, { dev }) {
     if (dev) {

@@ -51,7 +51,7 @@ function PlanCard({ plan, model, pack }) {
       }`}
     >
       {featured && (
-        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-orange px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cream">
+        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-orange px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand-cream">
           Most popular
         </span>
       )}
@@ -68,7 +68,7 @@ function PlanCard({ plan, model, pack }) {
           <h3 className={`font-display text-2xl font-black uppercase tracking-tight ${ink}`}>{plan.name}</h3>
         </div>
         {!isProject && p.discountPct > 0 && (
-          <span className="rounded-full bg-brand-orange px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-brand-cream">
+          <span className="rounded-full bg-brand-orange px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-cream">
             Save {p.discountPct}%
           </span>
         )}
@@ -140,7 +140,7 @@ function PlanCard({ plan, model, pack }) {
         </Link>
         <Link
           href={links.call(model.slug, plan.key)}
-          className={`mt-3 flex items-center justify-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline ${
+          className={`tap mt-3 flex items-center justify-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline ${
             featured ? 'text-brand-black/70' : 'text-brand-cream/70'
           }`}
         >
@@ -197,7 +197,7 @@ export default function PricingSection({ model }) {
         <div className="mx-auto max-w-3xl text-center">
           <Reveal><SectionTag>Pricing</SectionTag></Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream text-balance">
+            <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream text-balance">
               {model.headline}
             </h2>
           </Reveal>
@@ -228,7 +228,7 @@ export default function PricingSection({ model }) {
                     <span className="relative flex items-center gap-2">
                       {n} {model.noun.many}
                       {PACK_DISCOUNT[n] > 0 && (
-                        <span className={`hidden rounded-full px-2 py-0.5 text-[10px] font-bold sm:inline ${on ? 'bg-brand-cream/20' : 'bg-brand-orange/20 text-brand-orange'}`}>
+                        <span className={`hidden rounded-full px-2 py-0.5 text-xs font-bold sm:inline ${on ? 'bg-brand-cream/20' : 'bg-brand-orange/20 text-brand-orange'}`}>
                           −{PACK_DISCOUNT[n]}%
                         </span>
                       )}
@@ -284,7 +284,7 @@ export default function PricingSection({ model }) {
               <div className="relative flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
                 <div className="max-w-xl">
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-brand-orange">Custom</p>
-                  <h3 className="mt-3 font-display text-3xl font-black uppercase leading-none tracking-tight text-brand-cream md:text-4xl">
+                  <h3 className="mt-3 font-display text-display-sm font-black uppercase leading-none tracking-tight text-brand-cream">
                     {model.custom.title}
                   </h3>
                   <p className="mt-4 text-brand-cream/70">{model.custom.body}</p>

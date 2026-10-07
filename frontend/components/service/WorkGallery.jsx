@@ -34,7 +34,7 @@ export default function WorkGallery({ eyebrow = 'Our work', headline, collection
           <div className="max-w-3xl">
             <Reveal><SectionTag>{eyebrow}</SectionTag></Reveal>
             <Reveal delay={0.05}>
-              <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-black text-balance">
+              <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-black text-balance">
                 {headline}
               </h2>
             </Reveal>

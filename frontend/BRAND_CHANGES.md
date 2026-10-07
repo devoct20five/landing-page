@@ -104,3 +104,28 @@ now 308-redirect to the portfolio.
 3. The old data gave *every* project a runtime (even logos and websites). Runtimes now show for Editing and 3D Ads only —
    please confirm the 3D Ads ones (10–15 min for an ad looks wrong).
 4. No newsletter signup or comments yet (no backend for them) — say the word and I'll add signup through `/api/leads`.
+
+---
+# Round 4 — Newsroom → Publication, and site-wide responsive type
+
+## Rebrand: Newsroom → Publication
+Routes now live under `/publication` (`/publication`, `/publication/category/<desk>`, `/publication/<article>`,
+`/publication/authors/<author>`). Old `/newsroom/*` URLs 308-redirect permanently. Code moved to
+`components/publication/`, `lib/publication.js`, `data/publication.js`. Nav, footer, home card and copy all say "Publication".
+
+## Responsive type system
+Found by measuring (tools/responsive-audit.py), not guessing — 18 pages × 8 widths (360 → 1920):
+- **Two tokens were used but never defined** (`text-display-2xl`, `text-body-lg`), so Careers and Behind-the-Work titles rendered at 16px.
+- Existing tokens had huge phone minimums (48px) → long words like "COMPLICATED." clipped at 360px. Replaced with one fluid scale in
+  `tailwind.config.js`: hero / display-2xl…sm / lead / body-lg / body / label, all `clamp(phone min, rem + vw, desktop max)`.
+- 21 one-off `text-[clamp(...)]` headings + 11 `text-4xl/5xl/7xl` combos migrated onto those tokens.
+- **12px floor**: ~66 micro-labels (8–11px) raised; the agency feature cards (text was 9px) are readable.
+- **Large screens**: root font-size steps 17px ≥1680, 18px ≥1920, 22px ≥2560; the container is rem-based so it grows with it
+  (previously 16px text floated in a fixed 1440px column on Full HD).
+- Safety nets: headings can't push the page sideways (`overflow-wrap`), `min-w-0` on the booking grids (was overflowing 4px at 360).
+- **Touch**: 44px minimum tap targets (buttons, tabs, footer links, logo, hamburger, inline text links); 16px form text on phones
+  so iOS Safari doesn't zoom on focus.
+Result: 144 page×width combinations — 0 overflow, 0 clipped headings, 0 text under 12px.
+Page-title sizes: 32–42px on a small phone → 44–66px tablet → 60–105px desktop → up to 136px on Full HD.
+
+Removed dead code: `components/sections/CollectionRail.jsx`.

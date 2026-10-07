@@ -77,7 +77,7 @@ export default function GetInTouchCTA({
                   mt-7
                   max-w-[620px]
                   font-display
-                  text-[clamp(3.2rem,5.8vw,6rem)]
+                  text-display-xl
                   font-black
                   uppercase
                   leading-[0.82]
@@ -198,7 +198,7 @@ export default function GetInTouchCTA({
                       className="
                         mt-3
                         max-w-[190px]
-                        text-[0.68rem]
+                        text-xs
                         leading-[1.55]
                         text-brand-black/60
                       "
@@ -220,7 +220,7 @@ export default function GetInTouchCTA({
                       items-center
                       justify-between
                       pt-8
-                      text-[0.68rem]
+                      text-xs
                       font-bold
                       uppercase
                       tracking-[0.02em]
@@ -320,7 +320,7 @@ export default function GetInTouchCTA({
                       className="
                         mt-3
                         max-w-[190px]
-                        text-[0.68rem]
+                        text-xs
                         leading-[1.55]
                         text-brand-black/60
                       "
@@ -342,7 +342,7 @@ export default function GetInTouchCTA({
                       items-center
                       justify-between
                       pt-8
-                      text-[0.68rem]
+                      text-xs
                       font-bold
                       uppercase
                       tracking-[0.02em]

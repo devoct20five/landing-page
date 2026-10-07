@@ -16,7 +16,7 @@ export default function TrustedBy({ theme = 'dark' }) {
       <div className="mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]">
         <div className="flex gap-16 md:gap-24 animate-marquee w-max">
           {items.map((brand, i) => (
-            <span key={i} className="font-display uppercase text-3xl md:text-5xl tracking-tight opacity-70 hover:opacity-100 transition">
+            <span key={i} className="font-display uppercase text-display-md tracking-tight opacity-70 hover:opacity-100 transition">
               {brand}
             </span>
           ))}

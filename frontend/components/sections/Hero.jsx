@@ -84,7 +84,7 @@ export default function Hero({
           {eyebrow}
         </motion.div>
 
-        <h1 className="max-w-[16ch] font-display text-[clamp(2.9rem,8.2vw,8rem)] font-black uppercase leading-[0.92] tracking-[-0.02em] text-brand-cream text-balance sm:max-w-[18ch]">
+        <h1 className="max-w-[16ch] font-display text-hero font-black uppercase leading-[0.92] tracking-[-0.02em] text-brand-cream text-balance sm:max-w-[18ch]">
           {words
             ? words.map((w, i) => (
                 <span key={i} className="mr-[0.22em] inline-block overflow-hidden align-bottom">
@@ -146,7 +146,7 @@ export default function Hero({
             transition={{ duration: 0.9, delay: 1.25, ease: EASE }}
             className="mt-10 flex flex-wrap items-center gap-2.5"
           >
-            <span className="mr-1 text-[11px] font-bold uppercase tracking-[0.25em] text-brand-cream/50">{chipsLabel}</span>
+            <span className="mr-1 text-xs font-bold uppercase tracking-[0.25em] text-brand-cream/50">{chipsLabel}</span>
             {chips.map((c) => (
               <span key={c} className="rounded-full border border-brand-cream/20 bg-brand-cream/[0.06] px-4 py-1.5 text-sm font-medium text-brand-cream/90 backdrop-blur">
                 {c}
@@ -166,7 +166,7 @@ export default function Hero({
         >
           <div className="container flex items-center gap-4">
             <span className="h-px flex-1 bg-brand-orange/60" />
-            <span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-brand-cream/70">
+            <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.3em] text-brand-cream/70">
               Scroll
               <motion.span
                 animate={{ y: [0, 5, 0] }}

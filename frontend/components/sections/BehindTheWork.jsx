@@ -73,7 +73,7 @@ export default function BehindTheWork({
                 className="
                   mt-6
                   font-display
-                  text-[clamp(3.6rem,6vw,6.5rem)]
+                  text-display-xl
                   font-black
                   uppercase
                   leading-[0.78]
@@ -262,15 +262,15 @@ export default function BehindTheWork({
                     md:block
                   "
                 >
-                  <p className="text-[11px] font-bold uppercase tracking-[0.15em]">
+                  <p className="text-xs font-bold uppercase tracking-[0.15em]">
                     We create.
                   </p>
 
-                  <p className="mt-1 text-[11px] font-medium">
+                  <p className="mt-1 text-xs font-medium">
                     We concept.
                   </p>
 
-                  <p className="text-[11px] font-bold text-brand-orange">
+                  <p className="text-xs font-bold text-brand-orange">
                     We deliver.
                   </p>
                 </div>
@@ -303,7 +303,7 @@ export default function BehindTheWork({
 
               <p
                 className="
-                  text-[11px]
+                  text-xs
                   font-bold
                   uppercase
                   tracking-[0.12em]
@@ -403,7 +403,7 @@ export default function BehindTheWork({
                         className="
                           mt-2
                           max-w-[190px]
-                          text-[0.65rem]
+                          text-xs
                           leading-[1.45]
                           text-brand-cream/55
                         "

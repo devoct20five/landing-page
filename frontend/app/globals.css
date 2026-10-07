@@ -6,6 +6,31 @@
    OCT20FIVE — Global Design System
    ============================== */
 
+
+/* ------------------------------------------------------------------
+   RESPONSIVE ROOT SIZE
+   Every size on the site is rem-based, so stepping the root size scales
+   type, spacing and the (rem-based) container together — instead of
+   leaving 16px text floating in a 1440px column on a 1920px+ monitor.
+------------------------------------------------------------------ */
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+@media (max-width: 359px) {
+  html { font-size: 93.75%; } /* 15px — very small phones */
+}
+@media (min-width: 1680px) {
+  html { font-size: 106.25%; } /* 17px */
+}
+@media (min-width: 1920px) {
+  html { font-size: 112.5%; } /* 18px — Full HD */
+}
+@media (min-width: 2560px) {
+  html { font-size: 137.5%; } /* 22px — QHD / 4K */
+}
+
 @layer base {
   :root {
     /* ------------------------------------------------------------
@@ -156,6 +181,7 @@
   h3,
   h4,
   h5 {
+    overflow-wrap: break-word; /* a long word can never push the page sideways */
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.015em;
@@ -387,9 +413,9 @@
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
     border: 1px solid var(--surface-border);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--surface-fg);
     background: transparent;
@@ -465,7 +491,7 @@
   .num-display {
     font-family: var(--font-display), "Archivo Black", sans-serif;
     font-weight: 700;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(2rem, 1.2rem + 3.2vw, 4.5rem);
     line-height: 1;
     color: var(--surface-fg);
     letter-spacing: -0.02em;
@@ -583,6 +609,39 @@
 }
 
 @layer utilities {
+  /* Touch devices: comfortable tap targets, and 16px form text so iOS
+     Safari doesn't zoom the page when an input is focused. */
+  @media (pointer: coarse) {
+    .btn,
+    [role="tab"],
+    .btn-icon,
+    .tap {
+      min-height: 2.75rem;
+    }
+    /* inline text links that would otherwise be ~20px tall */
+    .tap {
+      display: inline-flex;
+      align-items: center;
+    }
+    /* stacked footer link lists */
+    footer a {
+      padding-block: 0.4rem;
+    }
+    /* header logo + hamburger */
+    a[aria-label="OCT20FIVE — home"],
+    button[aria-label="Open navigation menu"] {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+    }
+  }
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
   /* Outlined numerals / words — the oversized "01 02 03…" device that
      opens every section in the brand book. */
   .text-outline {

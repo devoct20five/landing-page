@@ -21,7 +21,7 @@ module.exports = {
         "2xl": "3rem",
       },
       screens: {
-        "2xl": "1440px",
+        "2xl": "90rem", /* 1440px at 16px root; grows with the root on big screens */
       },
     },
 
@@ -138,66 +138,48 @@ module.exports = {
         mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
 
+      /* Fluid type scale — one source of truth.
+         Each token = clamp(phone minimum, rem + vw slope, desktop maximum).
+         Phone minimums are chosen so the longest uppercase Saira words
+         ("COMPLICATED.", "EVERYTHING") still fit a 360px-wide screen.
+         Everything is rem-based, so the html font-size steps on large
+         displays (see globals.css) scale the whole scale up together. */
       fontSize: {
         hero: [
-          "clamp(4rem,10vw,9rem)",
-          {
-            lineHeight: ".88",
-            letterSpacing: "-.022em",
-            fontWeight: "700",
-          },
+          "clamp(2.5rem, 1.35rem + 5.8vw, 8rem)",
+          { lineHeight: ".9", letterSpacing: "-.025em", fontWeight: "900" },
         ],
-
+        "display-2xl": [
+          "clamp(2.5rem, 1.3rem + 5.2vw, 7rem)",
+          { lineHeight: ".92", letterSpacing: "-.025em" },
+        ],
         "display-xl": [
-          "clamp(3rem,7vw,6.5rem)",
-          {
-            lineHeight: ".92",
-            letterSpacing: "-.028em",
-            fontWeight: "700",
-          },
+          "clamp(2.25rem, 1.25rem + 4.4vw, 6rem)",
+          { lineHeight: ".94", letterSpacing: "-.022em" },
         ],
-
         "display-lg": [
-          "clamp(2.5rem,5vw,4.75rem)",
-          {
-            lineHeight: ".95",
-            letterSpacing: "-.022em",
-            fontWeight: "700",
-          },
+          "clamp(2rem, 1.2rem + 3.2vw, 4.5rem)",
+          { lineHeight: ".96", letterSpacing: "-.02em" },
         ],
-
         "display-md": [
-          "clamp(2rem,4vw,3.25rem)",
-          {
-            lineHeight: "1",
-            letterSpacing: "-.018em",
-            fontWeight: "700",
-          },
+          "clamp(1.75rem, 1.15rem + 2.2vw, 3.25rem)",
+          { lineHeight: "1", letterSpacing: "-.018em" },
         ],
-
         "display-sm": [
-          "clamp(1.5rem,2vw,2.25rem)",
-          {
-            lineHeight: "1.1",
-            fontWeight: "600",
-          },
+          "clamp(1.375rem, 1rem + 1.2vw, 2.25rem)",
+          { lineHeight: "1.1", letterSpacing: "-.012em" },
         ],
-
         lead: [
-          "clamp(1.125rem,1.5vw,1.5rem)",
-          {
-            lineHeight: "1.7",
-          },
+          "clamp(1.0625rem, .95rem + .5vw, 1.375rem)",
+          { lineHeight: "1.65" },
         ],
-
-        eyebrow: [
-          ".72rem",
-          {
-            letterSpacing: ".22em",
-            lineHeight: "1",
-            fontWeight: "600",
-          },
+        "body-lg": [
+          "clamp(1rem, .94rem + .3vw, 1.1875rem)",
+          { lineHeight: "1.7" },
         ],
+        body: ["1rem", { lineHeight: "1.7" }],
+        /* smallest allowed text anywhere: 12px at the default root size */
+        label: [".75rem", { lineHeight: "1.2", letterSpacing: ".18em" }],
       },
 
       /* ========================================

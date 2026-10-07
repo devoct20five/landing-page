@@ -299,7 +299,7 @@ function CheckoutInner() {
                           <p className="eyebrow">
                             <span className="eyebrow-dot" /> 1. Your package
                           </p>
-                          <span className="text-[11px] uppercase opacity-50">
+                          <span className="text-xs uppercase opacity-50">
                             {plan.name} plan
                           </span>
                         </div>
@@ -318,7 +318,7 @@ function CheckoutInner() {
                                 <span className="text-xs uppercase tracking-tight font-semibold">
                                   {p.label}
                                 </span>
-                                <span className="text-[11px] opacity-60">
+                                <span className="text-xs opacity-60">
                                   {formatINR(p.price)}
                                 </span>
                               </button>
@@ -330,7 +330,7 @@ function CheckoutInner() {
                           className="pt-4 border-t"
                           style={{ borderColor: "var(--surface-border)" }}
                         >
-                          <p className="text-[11px] uppercase opacity-50 mb-3">
+                          <p className="text-xs uppercase opacity-50 mb-3">
                             Includes
                           </p>
                           <ul className="space-y-2">
@@ -354,7 +354,7 @@ function CheckoutInner() {
                       <div className={`brand-card !p-6 md:!p-8 space-y-4 ${ADDONS.length ? "" : "hidden"}`}>
                         <p className="eyebrow">
                           <span className="eyebrow-dot" /> 2. Add-ons{" "}
-                          <span className="ml-2 text-[11px] opacity-50 normal-case">
+                          <span className="ml-2 text-xs opacity-50 normal-case">
                             (Optional)
                           </span>
                         </p>
@@ -408,7 +408,7 @@ function CheckoutInner() {
                       <div className="brand-card !p-6 md:!p-8 space-y-5">
                         <p className="eyebrow">
                           <span className="eyebrow-dot" /> 3. Promo code{" "}
-                          <span className="ml-2 text-[11px] opacity-50 normal-case">
+                          <span className="ml-2 text-xs opacity-50 normal-case">
                             (Optional)
                           </span>
                         </p>
@@ -761,7 +761,7 @@ function CheckoutInner() {
                                   <span className="text-xs uppercase tracking-tight font-semibold">
                                     {label}
                                   </span>
-                                  <span className="text-[10px] opacity-50 normal-case">
+                                  <span className="text-xs opacity-50 normal-case">
                                     {desc}
                                   </span>
                                 </button>
@@ -1081,7 +1081,7 @@ function FieldGroup({ label, hint, tag, required, children }) {
           <span className="eyebrow-dot" /> {label}
           {required && <span className="text-brand-orange"> *</span>}
           {tag && (
-            <span className="ml-2 text-[11px] opacity-50 normal-case">
+            <span className="ml-2 text-xs opacity-50 normal-case">
               ({tag})
             </span>
           )}
@@ -1119,7 +1119,7 @@ function OrderMini({ plan, activePackage, total, onEdit }) {
           <Tag size={18} />
         </div>
         <div className="min-w-0">
-          <p className="text-[11px] uppercase opacity-50">Your order</p>
+          <p className="text-xs uppercase opacity-50">Your order</p>
           <p className="font-display text-base uppercase leading-tight truncate">
             {plan.name} — {activePackage?.label}
           </p>

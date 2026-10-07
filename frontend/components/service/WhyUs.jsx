@@ -13,7 +13,7 @@ export default function WhyUs({ reasons = [], title = 'Why teams pick us' }) {
         <div className="mx-auto max-w-3xl text-center">
           <Reveal><SectionTag>Why OCT20FIVE</SectionTag></Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-black text-balance">
+            <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-black text-balance">
               {title}
             </h2>
           </Reveal>

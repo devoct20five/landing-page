@@ -37,8 +37,8 @@ const links = [
 /* Main-site (ecosystem hub) navigation */
 const mainLinks = [
   {
-    label: 'Newsroom',
-    href: '/newsroom',
+    label: 'Publication',
+    href: '/publication',
   },
   {
     label: 'Ecosystem',
@@ -67,7 +67,7 @@ const contactHref = '/agency/book-a-call'
 
 export default function Navbar({ variant = 'agency', initialTheme = 'dark' }) {
   const pathname = usePathname()
-  const isMain = variant === 'utility' || variant === 'main' || variant === 'newsroom'
+  const isMain = variant === 'utility' || variant === 'main' || variant === 'publication'
   const navLinks = isMain ? mainLinks : links
   const homeHref = isMain ? '/' : '/agency'
 
@@ -329,7 +329,7 @@ export default function Navbar({ variant = 'agency', initialTheme = 'dark' }) {
                     rounded-full
                     px-3
                     py-2
-                    text-[11px]
+                    text-xs
                     font-semibold
                     uppercase
                     tracking-[0.08em]
@@ -394,7 +394,7 @@ export default function Navbar({ variant = 'agency', initialTheme = 'dark' }) {
                 rounded-full
                 bg-brand-orange
                 px-4
-                text-[11px]
+                text-xs
                 font-bold
                 uppercase
                 tracking-[0.045em]
@@ -442,7 +442,7 @@ export default function Navbar({ variant = 'agency', initialTheme = 'dark' }) {
                 rounded-full
                 border
                 px-4
-                text-[11px]
+                text-xs
                 font-semibold
                 uppercase
                 tracking-[0.09em]

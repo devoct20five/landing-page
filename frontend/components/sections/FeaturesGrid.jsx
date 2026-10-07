@@ -92,7 +92,7 @@ export default function FeaturesGrid({
                     mt-5
                     max-w-[700px]
                     font-display
-                    text-[clamp(2.8rem,5.5vw,5rem)]
+                    text-display-lg
                     font-black
                     uppercase
                     leading-[0.84]
@@ -223,7 +223,7 @@ export default function FeaturesGrid({
                               border-brand-orange/60
                               px-2
                               py-1
-                              text-[11px]
+                              text-xs
                               font-bold
                               uppercase
                               text-brand-orange
@@ -288,7 +288,7 @@ export default function FeaturesGrid({
                                 h-5
                                 items-center
                                 justify-center
-                                text-[11px]
+                                text-xs
                                 font-medium
                                 ${
                                   selected
@@ -311,7 +311,7 @@ export default function FeaturesGrid({
                       <div className="mt-3 px-2">
                         <div
                           className="
-                            text-[11px]
+                            text-xs
                             uppercase
                             tracking-[0.08em]
                             opacity-40
@@ -451,7 +451,7 @@ export default function FeaturesGrid({
                     />
 
                     <div className="min-w-0">
-                      <div className="text-[11px] font-bold uppercase text-brand-orange">
+                      <div className="text-xs font-bold uppercase text-brand-orange">
                         Signature
                       </div>
 
@@ -469,7 +469,7 @@ export default function FeaturesGrid({
 
                   <div className="flex items-center gap-4 md:gap-6">
                     <div>
-                      <div className="text-[11px] uppercase opacity-40">
+                      <div className="text-xs uppercase opacity-40">
                         From
                       </div>
 
@@ -490,7 +490,7 @@ export default function FeaturesGrid({
                           border
                           border-brand-cream/15
                           px-3
-                          text-[11px]
+                          text-xs
                           md:flex
                         "
                       >
@@ -509,7 +509,7 @@ export default function FeaturesGrid({
                         rounded-full
                         bg-brand-orange
                         px-3
-                        text-[11px]
+                        text-xs
                         font-bold
                       "
                     >
@@ -555,7 +555,7 @@ export default function FeaturesGrid({
                   />
 
                   <div>
-                    <div className="text-[11px] font-bold uppercase text-brand-orange">
+                    <div className="text-xs font-bold uppercase text-brand-orange">
                       Compare plans
                     </div>
 
@@ -563,7 +563,7 @@ export default function FeaturesGrid({
                       Everything. Side by side.
                     </div>
 
-                    <div className="mt-1 text-[11px] opacity-40">
+                    <div className="mt-1 text-xs opacity-40">
                       Compare prices, plans and features all in one place.
                     </div>
                   </div>
@@ -579,7 +579,7 @@ export default function FeaturesGrid({
                     border
                     border-brand-cream/15
                     px-3
-                    text-[11px]
+                    text-xs
                     transition-all
                     group-hover:border-brand-orange
                     group-hover:text-brand-orange
@@ -615,7 +615,7 @@ export default function FeaturesGrid({
                   mt-5
                   max-w-[760px]
                   font-display
-                  text-[clamp(2.7rem,5vw,4.6rem)]
+                  text-display-lg
                   font-black
                   uppercase
                   leading-[0.84]
@@ -768,14 +768,14 @@ export default function FeaturesGrid({
                       >
                         <h3
                           className="
-                            max-w-[190px]
+                            max-w-[260px]
                             font-display
-                            text-[0.72rem]
+                            text-xs
                             font-black
                             uppercase
                             leading-[1.05]
                             tracking-[-0.015em]
-                            md:text-[0.78rem]
+                            md:text-lg
                           "
                         >
                           {feature.title}
@@ -801,12 +801,12 @@ export default function FeaturesGrid({
                         <p
                           className="
                             mt-2
-                            max-w-[205px]
-                            text-[0.55rem]
+                            max-w-[340px]
+                            text-xs
                             font-medium
-                            leading-[1.45]
-                            opacity-60
-                            md:text-[0.59rem]
+                            leading-[1.55]
+                            opacity-70
+                            md:text-xs
                           "
                         >
                           {feature.body}

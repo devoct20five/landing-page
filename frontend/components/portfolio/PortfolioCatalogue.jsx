@@ -42,7 +42,7 @@ function Card({ item }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-black/70 via-transparent to-transparent opacity-80" />
-          <span className="absolute left-4 top-4 rounded-full bg-brand-black/70 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cream backdrop-blur">
+          <span className="absolute left-4 top-4 rounded-full bg-brand-black/70 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand-cream backdrop-blur">
             {label(item.service)}
           </span>
           {HAS_RUNTIME.has(item.service) && item.duration && (

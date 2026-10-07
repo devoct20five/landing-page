@@ -84,7 +84,7 @@ export default function AgencyPage() {
           uppercase
           leading-[0.95]
           tracking-[-0.03em]
-          text-[clamp(2.5rem,5.4vw,5rem)]
+          text-display-lg
         "
               >
                 EVERYTHING YOUR IDEA NEEDS

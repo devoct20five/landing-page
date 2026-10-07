@@ -21,14 +21,14 @@ const SERVICE_NAVIGATE = [
   { label: "Vision", href: "/agency/vision" },
 ];
 
-const NEWSROOM_NAVIGATE = [
-  { label: "All stories", href: "/newsroom" },
-  { label: "Film & Video", href: "/newsroom/category/film-video" },
-  { label: "Design", href: "/newsroom/category/design" },
-  { label: "Technology", href: "/newsroom/category/technology" },
-  { label: "Creator Economy", href: "/newsroom/category/creator-economy" },
-  { label: "Brand & Business", href: "/newsroom/category/brand-business" },
-  { label: "Culture", href: "/newsroom/category/culture" },
+const PUBLICATION_NAVIGATE = [
+  { label: "All stories", href: "/publication" },
+  { label: "Film & Video", href: "/publication/category/film-video" },
+  { label: "Design", href: "/publication/category/design" },
+  { label: "Technology", href: "/publication/category/technology" },
+  { label: "Creator Economy", href: "/publication/category/creator-economy" },
+  { label: "Brand & Business", href: "/publication/category/brand-business" },
+  { label: "Culture", href: "/publication/category/culture" },
 ];
 
 const USEFUL_LINKS = [
@@ -41,8 +41,8 @@ const USEFUL_LINKS = [
 
 export default function Footer({ variant = "agency" }) {
   const navLinks =
-    variant === "newsroom"
-      ? NEWSROOM_NAVIGATE
+    variant === "publication"
+      ? PUBLICATION_NAVIGATE
       : variant === "service"
         ? SERVICE_NAVIGATE
         : AGENCY_NAVIGATE;

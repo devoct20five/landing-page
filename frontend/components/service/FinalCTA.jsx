@@ -12,7 +12,7 @@ export default function FinalCTA({ headline = "Let's get started.", body, primar
       <div className="pointer-events-none absolute -right-16 -top-16 h-[22rem] w-[22rem] rounded-full border border-brand-cream/15" />
       <div className="container relative">
         <Reveal>
-          <h2 className="max-w-4xl font-display text-[clamp(2.6rem,6.5vw,6rem)] font-black uppercase leading-[0.95] tracking-[-0.02em] text-balance">
+          <h2 className="max-w-4xl font-display text-display-xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-balance">
             {headline}
           </h2>
         </Reveal>

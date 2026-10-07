@@ -148,7 +148,7 @@ export default function Showreel({
                   max-w-[1100px]
                   text-center
                   font-display
-                  text-[clamp(2.6rem,7.2vw,6.5rem)]
+                  text-display-xl
                   font-black
                   uppercase
                   leading-[0.92]

@@ -14,7 +14,7 @@ export default function ProcessSteps({ headline, subline, steps = [], ctaLabel =
         <div className="max-w-3xl">
           <Reveal><SectionTag>Process</SectionTag></Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream text-balance">
+            <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream text-balance">
               {headline}
             </h2>
           </Reveal>

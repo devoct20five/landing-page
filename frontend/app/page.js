@@ -11,8 +11,8 @@ import Logo from "@/components/brands/Logo";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
 import Reveal, { Stagger, StaggerItem } from "@/components/motion/Reveal";
-import ArticleCard from "@/components/newsroom/ArticleCard";
-import { allArticles } from "@/lib/newsroom";
+import ArticleCard from "@/components/publication/ArticleCard";
+import { allArticles } from "@/lib/publication";
 
 /* =========================================================
    ECOSYSTEM — one live vertical, three on the way.
@@ -32,11 +32,11 @@ const VERTICALS = [
   },
   {
     n: "02",
-    key: "newsroom",
-    title: "Newsroom",
+    key: "publication",
+    title: "Publication",
     status: "Live",
-    href: "/newsroom",
-    cta: "Read the Newsroom",
+    href: "/publication",
+    cta: "Read the Publication",
     icon: Newspaper,
     blurb:
       "Stories on film, design, technology and the business of making things — written by the people who do the work.",
@@ -124,7 +124,7 @@ function VerticalCard({ v }) {
           {v.title}
         </h3>
         <span
-          className={`rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] ${
+          className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] ${
             live
               ? "bg-brand-orange text-brand-cream"
               : "border border-brand-border text-brand-textSoft"
@@ -211,7 +211,7 @@ export default function HomePage() {
               </Reveal>
 
               <Reveal delay={0.05}>
-                <h2 className="mt-6 font-display text-[clamp(2.75rem,6vw,5.5rem)] font-black uppercase leading-[0.95] tracking-[-0.02em] text-brand-black">
+                <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.95] tracking-[-0.02em] text-brand-black">
                   Built for the future<span className="text-brand-orange">.</span>
                 </h2>
               </Reveal>
@@ -222,7 +222,7 @@ export default function HomePage() {
                 <VerticalCard key={v.key} v={v} />
               ))}
             </Stagger>
-            <p className="mt-14 text-[11px] font-bold uppercase tracking-[0.28em] text-brand-textSoft">
+            <p className="mt-14 text-xs font-bold uppercase tracking-[0.28em] text-brand-textSoft">
               Coming next
             </p>
             <Stagger className="relative mt-5 grid gap-6 md:grid-cols-3 lg:gap-8">
@@ -233,19 +233,19 @@ export default function HomePage() {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper id="newsroom" theme="dark">
+        <SectionWrapper id="publication" theme="dark">
           <div className="container">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div className="max-w-2xl">
-                <Reveal><SectionTag>From the Newsroom</SectionTag></Reveal>
+                <Reveal><SectionTag>From the Publication</SectionTag></Reveal>
                 <Reveal delay={0.05}>
-                  <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream">
+                  <h2 className="mt-6 font-display text-display-lg font-black uppercase leading-[0.98] tracking-[-0.02em] text-brand-cream">
                     Latest stories<span className="text-brand-orange">.</span>
                   </h2>
                 </Reveal>
               </div>
-              <Link href="/newsroom" className="btn btn-secondary">
-                Visit the Newsroom <ArrowUpRight size={16} />
+              <Link href="/publication" className="btn btn-secondary">
+                Visit the Publication <ArrowUpRight size={16} />
               </Link>
             </div>
             <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

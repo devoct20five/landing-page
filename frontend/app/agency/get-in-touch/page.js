@@ -299,7 +299,7 @@ export default function GetInTouchPage() {
                                 }`}
                               >
                                 <Icon size={18} />
-                                <span className="text-[11px] uppercase tracking-tight leading-tight">
+                                <span className="text-xs uppercase tracking-tight leading-tight">
                                   {label}
                                 </span>
                               </button>
@@ -448,7 +448,7 @@ function FieldGroup({ number, label, hint, tag, children }) {
           {number ? `${number}. ` : ""}
           {label}
           {tag && (
-            <span className="ml-2 text-[11px] opacity-50 normal-case">
+            <span className="ml-2 text-xs opacity-50 normal-case">
               ({tag})
             </span>
           )}

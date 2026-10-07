@@ -172,7 +172,7 @@ export default function BookACallPage() {
                   transition={{ duration: 0.5 }}
                 >
                   <StepHeader step={1} />
-                  <div className="grid lg:grid-cols-12 gap-10 mt-10">
+                  <div className="grid lg:grid-cols-12 gap-10 mt-10 [&>*]:min-w-0">
                     <div className="lg:col-span-4">
                       <SectionTag>Book a call</SectionTag>
                       <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
@@ -224,7 +224,7 @@ export default function BookACallPage() {
                             <label className="sr-only" htmlFor="tz">
                               Your time zone
                             </label>
-                            <p className="text-[11px] uppercase opacity-50 mb-1 text-right">
+                            <p className="text-xs uppercase opacity-50 mb-1 text-right">
                               Your time zone
                             </p>
                             <div
@@ -384,7 +384,7 @@ export default function BookACallPage() {
                   transition={{ duration: 0.5 }}
                 >
                   <StepHeader step={2} />
-                  <div className="grid lg:grid-cols-12 gap-10 mt-10">
+                  <div className="grid lg:grid-cols-12 gap-10 mt-10 [&>*]:min-w-0">
                     <div className="lg:col-span-4">
                       <SectionTag>Book a call</SectionTag>
                       <h1 className="mt-6 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
@@ -436,7 +436,7 @@ export default function BookACallPage() {
                             <Calendar size={18} />
                           </div>
                           <div>
-                            <p className="text-[11px] uppercase opacity-50">
+                            <p className="text-xs uppercase opacity-50">
                               Your selected slot
                             </p>
                             <p className="font-display text-lg uppercase leading-tight">
@@ -562,7 +562,7 @@ export default function BookACallPage() {
                                   <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-orange" />
                                 )}
                                 <Icon size={18} />
-                                <span className="text-[11px] uppercase tracking-tight leading-tight">
+                                <span className="text-xs uppercase tracking-tight leading-tight">
                                   {label}
                                 </span>
                               </button>
@@ -792,7 +792,7 @@ function MetaItem({ icon: Icon, label, value }) {
         <Icon size={14} />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] uppercase opacity-50">{label}</p>
+        <p className="text-xs uppercase opacity-50">{label}</p>
         <p className="text-xs font-medium truncate">{value}</p>
       </div>
     </div>
@@ -827,7 +827,7 @@ function FieldGroup({ label, hint, tag, required, children }) {
           <span className="eyebrow-dot" /> {label}
           {required && <span className="text-brand-orange"> *</span>}
           {tag && (
-            <span className="ml-2 text-[11px] opacity-50 normal-case">
+            <span className="ml-2 text-xs opacity-50 normal-case">
               ({tag})
             </span>
           )}

@@ -24,7 +24,7 @@ export default function VisionPage() {
               <div className="flex flex-col items-center text-center">
                 <SectionTag>Our Vision</SectionTag>
 
-                <h1 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-5xl md:text-7xl xl:text-8xl max-w-5xl text-balance">
+                <h1 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-display-2xl max-w-5xl text-balance">
                   We all started{" "}
                   <span className="text-brand-orange">
                     this creative agency...
@@ -79,7 +79,7 @@ export default function VisionPage() {
                   We just have one mission...
                 </p>
 
-                <h2 className="mt-5 font-display uppercase leading-[0.85] tracking-tight text-5xl md:text-7xl xl:text-8xl">
+                <h2 className="mt-5 font-display uppercase leading-[0.85] tracking-tight text-display-2xl">
                   <span className="text-brand-black">Concept.</span>{" "}
                   <span className="text-brand-black">Create.</span>{" "}
                   <span className="text-brand-black">Deliver.</span>{" "}
@@ -143,7 +143,7 @@ export default function VisionPage() {
               <div className="text-center">
                 <SectionTag>Core Members</SectionTag>
 
-                <h2 className="mt-6 font-display uppercase tracking-tight leading-[0.88] text-5xl md:text-7xl">
+                <h2 className="mt-6 font-display uppercase tracking-tight leading-[0.88] text-display-xl">
                   Leadership & Team
                 </h2>
               </div>
@@ -168,7 +168,7 @@ export default function VisionPage() {
                       OCT20FIVE
                     </p>
 
-                    <h3 className="font-display uppercase leading-[0.88] text-4xl md:text-6xl text-brand-cream">
+                    <h3 className="font-display uppercase leading-[0.88] text-display-lg text-brand-cream">
                       People
                       <br />
                       <span className="text-brand-orange">Who Made</span>
@@ -377,7 +377,7 @@ export default function VisionPage() {
                 <div className="max-w-5xl mx-auto text-center">
                   <SectionTag>Our Culture</SectionTag>
 
-                  <h2 className="mt-6 font-display uppercase leading-[0.88] tracking-tight text-4xl md:text-6xl">
+                  <h2 className="mt-6 font-display uppercase leading-[0.88] tracking-tight text-display-lg">
                     Great work begins with
                     <span className="text-brand-orange"> great people.</span>
                   </h2>
@@ -406,7 +406,7 @@ export default function VisionPage() {
                   <div className="relative">
                     <SectionTag>Let's Build Together</SectionTag>
 
-                    <h2 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-5xl md:text-7xl max-w-4xl mx-auto">
+                    <h2 className="mt-7 font-display uppercase leading-[0.86] tracking-tight text-display-xl max-w-4xl mx-auto">
                       Ready to create
                       <span className="text-brand-orange">
                         {" "}

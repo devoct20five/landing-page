@@ -2,14 +2,14 @@ import Eclipse from '@/components/brands/Eclipse'
 
 /**
  * Compact dark page header (brand book: dark field + eclipse glow + orange hairline).
- * Used by the newsroom, category, author and portfolio pages — the full-height
+ * Used by the publication, category, author and portfolio pages — the full-height
  * <Hero> is for landing pages, this is for pages people come to *use*.
  */
 export default function PageMasthead({ eyebrow, title, description, meta, children, size = 'xl' }) {
   const titleSize =
     size === 'lg'
-      ? 'text-[clamp(2.6rem,7vw,6rem)]'
-      : 'text-[clamp(3rem,9vw,8.5rem)]'
+      ? 'text-display-xl'
+      : 'text-hero'
   return (
     <section
       data-theme="dark"
