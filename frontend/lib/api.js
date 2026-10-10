@@ -1,9 +1,15 @@
 /* Same-origin proxy: the browser talks to /backend-api/* (rewritten by next.config.js to the
  * NestJS API). On the server (RSC / ISR) we call the backend directly. */
-const SERVER_BASE = (process.env.BACKEND_API_URL || "http://localhost:4000").replace(/\/$/, "") + "/api";
+const SERVER_BASE =
+  (
+    process.env.BACKEND_API_URL ||
+    (process.env.NODE_ENV === "production"
+      ? "https://landing-page-03cf.onrender.com"
+      : "http://localhost:4000")
+  ).replace(/\/$/, "") + "/api";
 
-export const apiBase = () => (typeof window === "undefined" ? SERVER_BASE : "/backend-api");
-
+export const apiBase = () =>
+  typeof window === "undefined" ? SERVER_BASE : "/backend-api";
 export class ApiError extends Error {
   constructor(message, status, body) {
     super(message);
@@ -12,7 +18,10 @@ export class ApiError extends Error {
   }
 }
 
-export async function api(path, { method = "GET", body, headers = {}, token, ...rest } = {}) {
+export async function api(
+  path,
+  { method = "GET", body, headers = {}, token, ...rest } = {},
+) {
   const res = await fetch(apiBase() + path, {
     method,
     headers: {
@@ -26,7 +35,11 @@ export async function api(path, { method = "GET", body, headers = {}, token, ...
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     const m = data?.message;
-    throw new ApiError(Array.isArray(m) ? m.join(", ") : m || `Request failed (${res.status})`, res.status, data);
+    throw new ApiError(
+      Array.isArray(m) ? m.join(", ") : m || `Request failed (${res.status})`,
+      res.status,
+      data,
+    );
   }
   return data;
 }
@@ -35,10 +48,22 @@ export async function api(path, { method = "GET", body, headers = {}, token, ...
 const KEY = "oct20five.session";
 export const session = {
   get() {
-    try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch { return null; }
+    try {
+      return JSON.parse(localStorage.getItem(KEY) || "null");
+    } catch {
+      return null;
+    }
   },
-  set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
-  clear() { try { localStorage.removeItem(KEY); } catch {} },
+  set(v) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(v));
+    } catch {}
+  },
+  clear() {
+    try {
+      localStorage.removeItem(KEY);
+    } catch {}
+  },
 };
 
 /** If NEXT_PUBLIC_WORKSPACE_URL is set the full workspace app is the post-login destination. */
