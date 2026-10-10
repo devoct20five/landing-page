@@ -65,7 +65,10 @@ export class UsersController {
   // intentionally permission-free self-service route would let any
   // logged-in user set their own roleId to an admin role's id.
   @Patch('me')
-  updateMe(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateMyProfileDto) {
+  updateMe(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: UpdateMyProfileDto,
+  ) {
     return this.usersService.update(user.id, dto);
   }
 

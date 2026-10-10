@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -31,32 +31,32 @@ import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/layout/Footer";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SectionTag from "@/components/ui/SectionTag";
-import { findPlan, priceFor, DEFAULT_PACK, GST_RATE } from "@/data/plans";
-import { submitLead } from "@/lib/submitLead";
+import { adaptService, priceFor } from "@/data/plans";
+import { api } from "@/lib/api";
+import { fetchService } from "@/lib/catalog";
+import { startPayment, waitForPaid } from "@/lib/payment";
 
 /* =========================================================
-   PLAN CATALOG — adapted from the shared price list (data/plans.js)
-   so the checkout can never disagree with the pricing section.
+   PLAN CATALOG — comes from the backend (`/public/catalog`).
+   The browser never decides a price: the cart is a list of
+   identifiers and the SERVER quotes and charges it.
 ========================================================= */
-const EDITING_ADDONS = [
-  { id: "rush", label: "Rush delivery (12hr)", price: 4000 },
-  { id: "thumbnails", label: "Extra thumbnail set", price: 1500 },
-  { id: "captions", label: "Multi-language captions", price: 2500 },
-];
-
-function buildCheckoutPlan(serviceSlug, planKey) {
-  const { model, plan } = findPlan(serviceSlug, planKey);
-  if (!model || !plan) return null;
+function buildCheckoutPlan(svc, planKey) {
+  const model = adaptService(svc);
+  if (!model) return null;
+  const plan = model.plans.find((p) => p.key === planKey) || model.plans.find((p) => p.featured) || model.plans[0];
   const packages =
     model.mode === "project"
-      ? [{ id: "project", label: "Fixed price", price: plan.unit, unitLabel: "1 project" }]
-      : model.packs.map((n) => {
-          const p = priceFor(plan, n);
+      ? [{ id: "project", packId: undefined, label: "Fixed price", price: plan.unit, unitLabel: "1 project" }]
+      : plan.packs.map((k) => {
+          const p = priceFor(plan, k.quantity, model.discounts);
           return {
-            id: String(n),
-            label: `${n} Pack`,
+            id: k.id,
+            packId: k.id,
+            quantity: k.quantity,
+            label: k.label,
             price: p.total,
-            unitLabel: `${n} ${n === 1 ? model.noun.one : model.noun.many}`,
+            unitLabel: `${k.quantity} ${k.quantity === 1 ? model.noun.one : model.noun.many}`,
           };
         });
   return {
@@ -65,68 +65,76 @@ function buildCheckoutPlan(serviceSlug, planKey) {
     name: `${model.title} · ${plan.name}`,
     packages,
     features: plan.features,
-    addons: model.slug === "editing" ? EDITING_ADDONS : [],
+    addons: model.addons.map((a) => ({ id: a.code, label: a.label, price: a.price })),
+    defaultPack: model.defaultPack,
   };
 }
 
-const PAYMENT_METHODS = [
-  {
-    id: "card",
-    label: "Card",
-    icon: CreditCard,
-    desc: "Visa, Mastercard, Amex",
-  },
-  {
-    id: "upi",
-    label: "UPI",
-    icon: BadgeIndianRupee,
-    desc: "GPay, PhonePe, Paytm",
-  },
-  {
-    id: "netbanking",
-    label: "Netbanking",
-    icon: Landmark,
-    desc: "All major banks",
-  },
-  {
-    id: "wallet",
-    label: "Wallet",
-    icon: Wallet,
-    desc: "Amazon Pay, Paytm Wallet",
-  },
-];
-
 function formatINR(n) {
-  return `₹${n.toLocaleString("en-IN")}`;
+  const v = Number(n) || 0;
+  return `₹${v.toLocaleString("en-IN", { minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 })}`;
 }
 
 function CheckoutInner() {
   const params = useSearchParams();
-
   const serviceSlug = params.get("service") || "editing";
   const planKey = params.get("plan") || "advance";
-  const initialPackage = params.get("pack") || String(DEFAULT_PACK);
-  const plan = useMemo(
-    () =>
-      buildCheckoutPlan(serviceSlug, planKey) ||
-      buildCheckoutPlan("editing", "advance"),
-    [serviceSlug, planKey],
-  );
+  const [state, setState] = useState({ loading: true, svc: null, error: "" });
+
+  useEffect(() => {
+    let live = true;
+    setState({ loading: true, svc: null, error: "" });
+    fetchService(serviceSlug).then((svc) => {
+      if (!live) return;
+      setState(svc ? { loading: false, svc, error: "" } : { loading: false, svc: null, error: "We couldn't load this package right now." });
+    });
+    return () => { live = false; };
+  }, [serviceSlug]);
+
+  if (state.loading || !state.svc) {
+    return (
+      <>
+        <Navbar variant="utility" initialTheme="dark" />
+        <main>
+          <SectionWrapper theme="dark" className="!pt-40 !pb-20">
+            <div className="container text-center">
+              {state.loading ? (
+                <p className="opacity-70">Loading your package…</p>
+              ) : (
+                <>
+                  <p className="opacity-80">{state.error}</p>
+                  <Link href="/agency" className="btn btn-outline mt-6 !w-auto">Back to services</Link>
+                </>
+              )}
+            </div>
+          </SectionWrapper>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+  return <CheckoutForm key={serviceSlug + planKey} svc={state.svc} planKey={planKey} initialPackage={params.get("pack")} />;
+}
+
+function CheckoutForm({ svc, planKey, initialPackage }) {
+  const plan = useMemo(() => buildCheckoutPlan(svc, planKey), [svc, planKey]);
   const ADDONS = plan.addons;
 
   const [step, setStep] = useState(1);
-  const [confirmed, setConfirmed] = useState(false);
-  const [orderId] = useState(
-    () => `OCT-${Math.floor(100000 + Math.random() * 900000)}`,
-  );
+  
+  const [order, setOrder] = useState(null); // set only once the backend reports PAID
+  const idemKey = useRef(null);
 
   const [selectedPackage, setSelectedPackage] = useState(
-    plan.packages.find((p) => p.id === initialPackage)?.id ||
+    plan.packages.find((p) => String(p.quantity) === String(initialPackage))?.id ||
+      plan.packages.find((p) => p.quantity === plan.defaultPack)?.id ||
       plan.packages[Math.min(1, plan.packages.length - 1)].id,
   );
   const [addons, setAddons] = useState([]);
   const [promo, setPromo] = useState("");
-  const [promoApplied, setPromoApplied] = useState(null);
+  const [promoApplied, setPromoApplied] = useState(null); // { code } once the server accepted it
+  const [quote, setQuote] = useState(null);
+  const [quoteError, setQuoteError] = useState("");
   const [promoError, setPromoError] = useState("");
 
   const [details, setDetails] = useState({
@@ -139,7 +147,6 @@ function CheckoutInner() {
     notes: "",
   });
 
-  const [payment, setPayment] = useState("card");
   const [agree, setAgree] = useState(false);
 
   const setDetail = (k, v) => setDetails((s) => ({ ...s, [k]: v }));
@@ -149,34 +156,51 @@ function CheckoutInner() {
 
   const activePackage = plan.packages.find((p) => p.id === selectedPackage);
 
-  const addonTotal = useMemo(
-    () =>
-      addons.reduce(
-        (sum, id) => sum + (ADDONS.find((a) => a.id === id)?.price || 0),
-        0,
-      ),
-    [addons],
+  const cartBody = useMemo(
+    () => ({
+      serviceSlug: plan.service,
+      planSlug: plan.planKey,
+      ...(activePackage?.packId ? { packId: activePackage.packId } : {}),
+      ...(addons.length ? { addonCodes: addons } : {}),
+      ...(promoApplied ? { promoCode: promoApplied.code } : {}),
+    }),
+    [plan, activePackage, addons, promoApplied],
   );
+  const cartKey = JSON.stringify(cartBody);
 
-  const subtotal = (activePackage?.price || 0) + addonTotal;
-  const discount = promoApplied ? Math.round(subtotal * promoApplied.pct) : 0;
-  const taxable = subtotal - discount;
-  const gst = Math.round(taxable * GST_RATE);
-  const total = taxable + gst;
+  // Every figure shown comes from the server's quote (debounced).
+  useEffect(() => {
+    let live = true;
+    const t = setTimeout(async () => {
+      try {
+        const q = await api("/checkout/quote", { method: "POST", body: JSON.parse(cartKey) });
+        if (live) { setQuote(q); setQuoteError(""); }
+      } catch (e) {
+        if (!live) return;
+        const parsed = JSON.parse(cartKey);
+        if (parsed.promoCode) {
+          setPromoApplied(null);
+          setPromoError(e.message || "Invalid promo code");
+        } else setQuoteError(e.message);
+      }
+    }, 150);
+    return () => { live = false; clearTimeout(t); };
+  }, [cartKey]);
+
+  // a different cart is a different order: never reuse the previous idempotency key
+  useEffect(() => { idemKey.current = null; }, [cartKey]);
+
+  const subtotal = quote ? quote.packTotal + quote.addonsTotal : 0;
+  const discount = quote?.promoDiscount || 0;
+  const gst = quote?.taxAmount || 0;
+  const total = quote?.total || 0;
+  const addonTotal = quote?.addonsTotal || 0;
 
   const applyPromo = () => {
     const code = promo.trim().toUpperCase();
     if (!code) return;
-    if (code === "OCT10") {
-      setPromoApplied({ code, pct: 0.1 });
-      setPromoError("");
-    } else if (code === "OCT20") {
-      setPromoApplied({ code, pct: 0.2 });
-      setPromoError("");
-    } else {
-      setPromoApplied(null);
-      setPromoError("Invalid promo code");
-    }
+    setPromoError("");
+    setPromoApplied({ code }); // the quote effect validates it server-side and clears it if invalid
   };
 
   const removePromo = () => {
@@ -185,7 +209,7 @@ function CheckoutInner() {
     setPromoError("");
   };
 
-  const canContinueStep1 = !!selectedPackage;
+  const canContinueStep1 = !!selectedPackage && !!quote;
   const canContinueStep2 =
     details.name && details.email && details.phone && details.address;
   const [submitting, setSubmitting] = useState(false);
@@ -199,37 +223,45 @@ function CheckoutInner() {
     if (!canConfirmPayment) return;
     setSubmitting(true);
     setSubmitError("");
-    const res = await submitLead({
-      kind: "order",
-      name: details.name,
-      email: details.email,
-      phone: details.phone,
-      company: details.company,
-      service: plan.service,
-      plan: plan.planKey,
-      pack: activePackage?.id,
-      message: details.notes,
-      details: {
-        orderId,
-        package: activePackage?.label,
-        addons: addons.join(",") || "none",
-        promo: promoApplied?.code || "none",
-        subtotal,
-        discount,
-        gst,
-        total,
-        gstNumber: details.gst,
-        address: details.address,
-        preferredPayment: payment,
-      },
-    });
-    setSubmitting(false);
-    if (res.ok) setConfirmed(true);
-    else if (res.fallback)
-      setSubmitError(
-        "We couldn't send this automatically, so we opened an email with your order details. Please press send to complete your request.",
-      );
-    else setSubmitError(res.error || "Something went wrong. Please try again.");
+    try {
+      if (!idemKey.current) idemKey.current = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const notes = [details.address && `Address: ${details.address}`, details.notes].filter(Boolean).join("\n");
+      const created = await api("/checkout/orders", {
+        method: "POST",
+        headers: { "Idempotency-Key": idemKey.current },
+        body: {
+          ...cartBody,
+          name: details.name,
+          email: details.email,
+          phone: details.phone,
+          ...(details.company ? { company: details.company } : {}),
+          ...(details.gst ? { gstin: details.gst } : {}),
+          ...(notes ? { notes } : {}),
+          acceptTerms: true,
+        },
+      });
+      if (!created.payment) {
+        setOrder(created.order);
+        return;
+      }
+      const result = await startPayment(created);
+      if (result.paid) {
+        setOrder(result.order || created.order);
+      } else if (result.cancelled) {
+        setSubmitError("Payment was cancelled. You haven't been charged — you can try again.");
+      } else if (result.failed) {
+        setSubmitError("The payment didn't go through. You haven't been charged — please try again.");
+      } else {
+        // the gateway said done but our verification is pending: ask the backend, never assume
+        const final = await waitForPaid(created.order.orderNumber, created.accessToken);
+        if (final?.status === "paid") setOrder(final);
+        else setSubmitError("We're still waiting for your bank to confirm. If you were charged, you'll get an email shortly — otherwise please try again.");
+      }
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -240,7 +272,7 @@ function CheckoutInner() {
           <div className="container">
             <AnimatePresence mode="wait">
               {/* ================= STEP 1 — CART / PLAN REVIEW ================= */}
-              {!confirmed && step === 1 && (
+              {!order && step === 1 && (
                 <motion.div
                   key="s1"
                   initial={{ opacity: 0, y: 20 }}
@@ -445,8 +477,7 @@ function CheckoutInner() {
                                 {promoApplied.code}
                               </span>
                               <span className="opacity-60">
-                                — {Math.round(promoApplied.pct * 100)}% off
-                                applied
+                                — {quote?.promoPercent ? `${quote.promoPercent}% off ` : ""}applied
                               </span>
                             </div>
                             <button
@@ -470,7 +501,7 @@ function CheckoutInner() {
                         >
                           <SummaryLine
                             label={`${plan.name} — ${activePackage?.label}`}
-                            value={formatINR(activePackage?.price || 0)}
+                            value={formatINR(quote ? quote.packTotal : activePackage?.price || 0)}
                           />
                           {addons.map((id) => {
                             const a = ADDONS.find((x) => x.id === id);
@@ -522,7 +553,7 @@ function CheckoutInner() {
               )}
 
               {/* ================= STEP 2 — DETAILS ================= */}
-              {!confirmed && step === 2 && (
+              {!order && step === 2 && (
                 <motion.div
                   key="s2"
                   initial={{ opacity: 0, y: 20 }}
@@ -704,7 +735,7 @@ function CheckoutInner() {
               )}
 
               {/* ================= STEP 3 — PAYMENT ================= */}
-              {!confirmed && step === 3 && (
+              {!order && step === 3 && (
                 <motion.div
                   key="s3"
                   initial={{ opacity: 0, y: 20 }}
@@ -723,9 +754,9 @@ function CheckoutInner() {
                         </span>
                       </h1>
                       <p className="mt-6 text-body-lg opacity-70 max-w-md">
-                        No payment is taken on this page. Send your order
-                        request and we&rsquo;ll email you an invoice and a
-                        secure payment link within one business day.
+                        Check your details and pay securely. Your workspace is
+                        created and your welcome email sent as soon as the
+                        payment is confirmed.
                       </p>
 
                       <OrderMini
@@ -736,7 +767,7 @@ function CheckoutInner() {
                       />
 
                       <div className="mt-4 flex items-center gap-2 text-xs opacity-50">
-                        <ShieldCheck size={12} /> Nothing is charged until you pay the invoice
+                        <ShieldCheck size={12} /> Payments are processed by our payment partner
                       </div>
                     </div>
 
@@ -745,43 +776,13 @@ function CheckoutInner() {
                         onSubmit={submitPayment}
                         className="brand-card !p-6 md:!p-8 space-y-8"
                       >
-                        <FieldGroup label="Preferred payment method" required>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            {PAYMENT_METHODS.map(
-                              ({ id, label, icon: Icon, desc }) => (
-                                <button
-                                  key={id}
-                                  type="button"
-                                  onClick={() => setPayment(id)}
-                                  className={`pill !flex-col !items-center !justify-center !py-4 gap-1 text-center ${
-                                    payment === id ? "pill-active" : ""
-                                  }`}
-                                >
-                                  <Icon size={18} />
-                                  <span className="text-xs uppercase tracking-tight font-semibold">
-                                    {label}
-                                  </span>
-                                  <span className="text-xs opacity-50 normal-case">
-                                    {desc}
-                                  </span>
-                                </button>
-                              ),
-                            )}
-                          </div>
-                        </FieldGroup>
-
-                        <p className="rounded-card border border-brand-orange/30 bg-brand-orange/[0.06] px-4 py-3 text-sm opacity-90">
-                          We&rsquo;ll use this to prepare your invoice. You won&rsquo;t
-                          enter any card or bank details here.
-                        </p>
-
                         <div
                           className="pt-4 border-t space-y-2"
                           style={{ borderColor: "var(--surface-border)" }}
                         >
                           <SummaryLine
                             label={`${plan.name} — ${activePackage?.label}`}
-                            value={formatINR(activePackage?.price || 0)}
+                            value={formatINR(quote ? quote.packTotal : activePackage?.price || 0)}
                             muted
                           />
                           {addons.length > 0 && (
@@ -858,12 +859,12 @@ function CheckoutInner() {
                             disabled={!canConfirmPayment}
                             className="btn btn-primary flex-1 justify-center"
                           >
-                            {submitting ? "Sending…" : `Place order request · ${formatINR(total)}`}
+                            {submitting ? "Processing…" : `Pay securely · ${formatINR(total)}`}
                           </button>
                         </div>
                         <p className="text-xs text-center opacity-60 flex items-center justify-center gap-2">
                           <ShieldCheck size={12} />
-                          Total includes 18% GST. You&rsquo;ll pay by invoice, not on this page.
+                          Total includes 18% GST. Card, UPI and netbanking are available at the payment step.
                         </p>
                       </form>
                     </div>
@@ -872,7 +873,7 @@ function CheckoutInner() {
               )}
 
               {/* ================= CONFIRMATION ================= */}
-              {confirmed && (
+              {order && (
                 <motion.div
                   key="conf"
                   initial={{ opacity: 0, scale: 0.98 }}
@@ -897,17 +898,17 @@ function CheckoutInner() {
                   </motion.div>
 
                   <p className="mt-8 eyebrow mx-auto w-fit">
-                    <span className="eyebrow-dot" /> Order request received
+                    <span className="eyebrow-dot" /> Payment confirmed
                   </p>
                   <h1 className="mt-4 font-display uppercase leading-[0.95] tracking-tight text-display-lg text-balance">
-                    Request received. <br />
+                    Payment confirmed. <br />
                     <span className="text-brand-orange">
                       Let&rsquo;s get started.
                     </span>
                   </h1>
                   <p className="mt-6 text-body-lg opacity-70 max-w-xl mx-auto">
-                    Thanks{details.name ? `, ${details.name}` : ""}. We&rsquo;ll
-                    email your invoice and payment link to{" "}
+                    Thanks{details.name ? `, ${details.name}` : ""}. We&rsquo;ve
+                    emailed your receipt and a secure link to set up your workspace to{" "}
                     <span className="text-brand-orange font-medium">
                       {details.email}
                     </span>
@@ -918,13 +919,13 @@ function CheckoutInner() {
                     <div className="brand-card !p-0 overflow-hidden">
                       <ConfRow
                         icon={Tag}
-                        title={`Order ${orderId}`}
+                        title={`Order ${order.orderNumber}`}
                         subtitle={`${plan.name} — ${activePackage?.label}`}
                       />
                       <ConfRow
                         icon={BadgeIndianRupee}
-                        title={formatINR(total)}
-                        subtitle="Estimated total incl. GST · payable by invoice"
+                        title={formatINR(order.total)}
+                        subtitle="Paid · incl. GST"
                       />
                       <ConfRow
                         icon={Calendar}
@@ -944,9 +945,9 @@ function CheckoutInner() {
                       </p>
                       <ul className="mt-5 space-y-3 text-sm">
                         {[
-                          "You'll receive an invoice & receipt by email",
-                          "Our team will reach out within 24 hours",
-                          "We'll kick off with an onboarding brief",
+                          "Open the email we sent and set your password",
+                          "Your order, invoice and onboarding project are waiting in your workspace",
+                          "Our team will reach out within 24 hours to kick off",
                         ].map((s) => (
                           <li key={s} className="flex items-start gap-3">
                             <Check
@@ -970,8 +971,8 @@ function CheckoutInner() {
                         hello@oct20five.com
                       </a>
                     </p>
-                    <Link href="/" className="btn btn-outline !w-auto shrink-0">
-                      Back to OCT20FIVE <ArrowRight size={16} />
+                    <Link href="/agency/login" className="btn btn-primary !w-auto shrink-0">
+                      Go to your workspace <ArrowRight size={16} />
                     </Link>
                   </div>
                 </motion.div>

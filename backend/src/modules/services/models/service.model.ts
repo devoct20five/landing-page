@@ -63,6 +63,31 @@ export class Service extends Model<Service> {
   })
   declare heroImageUrl: string | null;
 
+  /** 'packs' = sold in N-unit packs w/ volume discounts; 'project' = fixed price per project. */
+  @Default('packs')
+  @Column({
+    type: DataType.ENUM('packs', 'project'),
+    allowNull: false,
+    field: 'pricing_mode',
+  })
+  declare pricingMode: 'packs' | 'project';
+
+  @Column({ type: DataType.STRING(30), allowNull: true, field: 'unit_singular' })
+  declare unitSingular: string | null;
+
+  @Column({ type: DataType.STRING(30), allowNull: true, field: 'unit_plural' })
+  declare unitPlural: string | null;
+
+  /** The non-purchasable "built around your vision" tier (book a call). */
+  @Column({ type: DataType.STRING(150), allowNull: true, field: 'custom_title' })
+  declare customTitle: string | null;
+
+  @Column({ type: DataType.STRING(500), allowNull: true, field: 'custom_body' })
+  declare customBody: string | null;
+
+  @Column({ type: DataType.DECIMAL(12, 2), allowNull: true, field: 'custom_from_price' })
+  declare customFromPrice: number | null;
+
   @Default(true)
   @Column({
     type: DataType.BOOLEAN,

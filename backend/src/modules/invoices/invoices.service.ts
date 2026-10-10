@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -144,6 +145,10 @@ export class InvoicesService {
     dto: CreatePaymentDto,
     requester: RequestUser,
   ): Promise<Invoice> {
+    if (requester.userType === UserType.CLIENT) {
+      // Clients pay through the gateway; they must never mark their own invoice paid.
+      throw new ForbiddenException('Payments are recorded by the agency');
+    }
     const invoice = await this.findOneUnscoped(invoiceId);
     this.accessControl.assertClientAccess(requester, invoice.client_id);
 

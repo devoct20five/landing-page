@@ -7,11 +7,18 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { RolesModule } from '../roles/roles.module';
+import { AuthTokensModule } from './auth-tokens.module';
+import { MailModule } from '../mail/mail.module';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from '../users/models/user.model';
 import { ClientsModule } from '../clients/clients.module';
 
 @Module({
   imports: [
     UsersModule,
+    AuthTokensModule,
+    MailModule,
+    SequelizeModule.forFeature([User]),
     RolesModule,
     ClientsModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -29,7 +36,10 @@ import { ClientsModule } from '../clients/clients.module';
           // config-driven runtime string can never satisfy statically.
           // The value itself is validated by the `ms` package at runtime;
           // this cast only silences the compile-time mismatch.
-          expiresIn: config.get<string>('JWT_EXPIRES_IN', '8h') as unknown as number,
+          expiresIn: config.get<string>(
+            'JWT_EXPIRES_IN',
+            '8h',
+          ) as unknown as number,
         },
       }),
     }),

@@ -54,13 +54,19 @@ export class InvoicesController {
 
   @Get(':id')
   @RequirePermissions('invoices.view')
-  findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
+  findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: RequestUser,
+  ) {
     return this.invoicesService.findOne(id, user);
   }
 
   @Patch(':id')
   @RequirePermissions('invoices.edit')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateInvoiceDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateInvoiceDto,
+  ) {
     return this.invoicesService.update(id, dto);
   }
 

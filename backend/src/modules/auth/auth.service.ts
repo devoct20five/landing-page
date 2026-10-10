@@ -4,6 +4,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/sequelize';
+import { BadRequestException } from '@nestjs/common';
+import { AuthTokensService } from './auth-tokens.service';
+import { MailService } from '../mail/mail.service';
+import type { SetPasswordDto } from './dto/set-password.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { RolesService } from '../roles/roles.service';
@@ -21,7 +26,49 @@ export class AuthService {
     private readonly rolesService: RolesService,
     private readonly clientsService: ClientsService,
     private readonly jwtService: JwtService,
+    @InjectModel(User) private readonly userModel: typeof User,
+    private readonly authTokens: AuthTokensService,
+    private readonly mail: MailService,
   ) {}
+
+  /** One-time link from the welcome / reset email. Activates an invited account. */
+  async setPassword(dto: SetPasswordDto) {
+    const userId = await this.authTokens.consume(dto.token, [
+      'password_setup',
+      'password_reset',
+    ]);
+    if (!userId)
+      throw new BadRequestException(
+        'This link is invalid or has expired. Please request a new one.',
+      );
+    const user = await this.userModel.findByPk(userId);
+    if (!user || user.status === UserStatus.SUSPENDED)
+      throw new BadRequestException('This link is invalid or has expired.');
+    const passwordHash = await bcrypt.hash(dto.password, 12);
+    await user.update({ passwordHash, status: UserStatus.ACTIVE });
+    return { ok: true };
+  }
+
+  /** Never reveals whether the email exists. */
+  async forgotPassword(email: string) {
+    const user = await this.userModel.findOne({
+      where: { email: email.toLowerCase() },
+    });
+    if (user && user.status !== UserStatus.SUSPENDED) {
+      const bucket = Math.floor(Date.now() / 600_000); // one email per 10 minutes per user
+      await this.mail.enqueue({
+        dedupeKey: `password_reset:${user.id}:${bucket}`,
+        template: 'password_reset',
+        to: user.email,
+        data: {
+          userId: user.id,
+          name: (user.firstName ?? '').split(/\s+/)[0] || 'there',
+        },
+      });
+      this.mail.kick();
+    }
+    return { ok: true };
+  }
 
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmailWithPassword(dto.email);

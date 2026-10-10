@@ -21,6 +21,11 @@ const nextConfig = {
       { source: '/newsroom/:path*', destination: '/publication/:path*', permanent: true },
     ];
   },
+  // Same-origin proxy to the NestJS API (no CORS, one public origin).
+  async rewrites() {
+    const api = (process.env.BACKEND_API_URL || 'http://localhost:4000').replace(/\/$/, '');
+    return [{ source: '/backend-api/:path*', destination: `${api}/api/:path*` }];
+  },
   webpack(config, { dev }) {
     if (dev) {
       // Reduce CPU/memory from file watching

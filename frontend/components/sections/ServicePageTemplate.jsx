@@ -13,7 +13,7 @@ import ProcessSteps from "@/components/service/ProcessSteps";
 import WhyUs from "@/components/service/WhyUs";
 import PricingSection from "@/components/service/PricingSection";
 import FinalCTA from "@/components/service/FinalCTA";
-import { getPricing, links } from "@/data/plans";
+import { links } from "@/data/plans";
 import { countByService, portfolioHref } from "@/data/portfolio";
 
 /*
@@ -36,9 +36,8 @@ import { countByService, portfolioHref } from "@/data/portfolio";
     Book a call → /agency/book-a-call?service=
     Quote       → /agency/get-in-touch?service=
 */
-export default function ServicePageTemplate({ data }) {
+export default function ServicePageTemplate({ data, pricing }) {
   const { hero, solution, workflow, collections, slug, title } = data;
-  const pricing = getPricing(slug);
 
   const collectionItems = Array.isArray(collections)
     ? collections
@@ -101,7 +100,19 @@ export default function ServicePageTemplate({ data }) {
 
         {pricing && <WhyUs reasons={pricing.reasons} />}
 
-        {pricing && <PricingSection model={pricing} />}
+        {pricing ? (
+          <PricingSection model={pricing} />
+        ) : (
+          <section id="pricing" className="bg-brand-black py-24 text-center text-brand-cream">
+            <div className="container">
+              <h2 className="font-display text-3xl font-black uppercase">Pricing is loading slowly</h2>
+              <p className="mx-auto mt-4 max-w-md text-brand-cream/70">
+                We couldn&apos;t load live prices just now. Please refresh in a moment, or{" "}
+                <Link href={links.call(slug)} className="underline">book a call</Link> and we&apos;ll quote you directly.
+              </p>
+            </div>
+          </section>
+        )}
 
         <FAQ theme="light" />
 

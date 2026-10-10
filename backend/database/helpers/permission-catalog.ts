@@ -63,6 +63,7 @@ export const PERMISSION_CATALOG: PermissionDef[] = [
   { module: 'team', action: 'delete', description: 'Suspend/remove staff users' },
 
   // Finance
+  { module: 'orders', action: 'view', description: 'View storefront orders' },
   { module: 'invoices', action: 'view', description: 'View invoices' },
   { module: 'invoices', action: 'create', description: 'Create invoices' },
   { module: 'invoices', action: 'edit', description: 'Edit invoices' },
@@ -146,6 +147,7 @@ export const ROLE_PERMISSION_SLUGS: Record<'manager' | 'staff' | 'client', strin
     'files.view', 'files.upload', 'files.edit', 'files.delete',
     'clients.view', 'clients.create', 'clients.edit',
     'team.view', 'team.create', 'team.edit',
+    'orders.view',
     'invoices.view', 'invoices.create', 'invoices.edit',
     'payments.view', 'payments.create',
     'services.view', 'services.create', 'services.edit',

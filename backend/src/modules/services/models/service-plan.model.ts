@@ -85,6 +85,16 @@ export class ServicePlan extends Model<ServicePlan> {
   })
   declare discountPercent: number;
 
+  /** URL-safe, unique per service ("standard", "advance", "black"). */
+  @Column({ type: DataType.STRING(60), allowNull: true })
+  declare slug: string | null;
+
+  @Column({ type: DataType.STRING(500), allowNull: true })
+  declare description: string | null;
+
+  @Column({ type: DataType.SMALLINT.UNSIGNED, allowNull: true, field: 'delivery_days' })
+  declare deliveryDays: number | null;
+
   @Default(false)
   @Column({
     type: DataType.BOOLEAN,

@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { CatalogModule } from './modules/catalog/catalog.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
@@ -45,6 +48,8 @@ import { TasksModule } from './modules/tasks/tasks.module';
         config.getOrThrow<SequelizeModuleOptions>('database'),
     }),
 
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 300 }]),
+
     // Core modules
     UsersModule,
     RolesModule,
@@ -65,9 +70,12 @@ import { TasksModule } from './modules/tasks/tasks.module';
     ServicesModule,
     StaffModule,
     TasksModule,
+    CatalogModule,
+    OrdersModule,
   ],
 
   providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

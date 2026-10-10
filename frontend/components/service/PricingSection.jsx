@@ -8,7 +8,7 @@ import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionTag from '@/components/ui/SectionTag'
 import Reveal from '@/components/motion/Reveal'
 import { iconFor } from './icons'
-import { DEFAULT_PACK, PACK_DISCOUNT, formatINR, links, priceFor } from '@/data/plans'
+import { formatINR, links, priceFor } from '@/data/plans'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -33,7 +33,7 @@ function Money({ value, className = '' }) {
 function PlanCard({ plan, model, pack }) {
   const Icon = iconFor(plan.icon)
   const isProject = model.mode === 'project'
-  const p = priceFor(plan, pack)
+  const p = priceFor(plan, pack, model.discounts)
   const featured = plan.featured
   const noun = pack === 1 ? model.noun.one : model.noun.many
 
@@ -186,7 +186,7 @@ function CompareTable({ model }) {
 }
 
 export default function PricingSection({ model }) {
-  const [pack, setPack] = useState(DEFAULT_PACK)
+  const [pack, setPack] = useState(model.defaultPack)
   const [compare, setCompare] = useState(false)
   const isProject = model.mode === 'project'
 
@@ -227,9 +227,9 @@ export default function PricingSection({ model }) {
                     )}
                     <span className="relative flex items-center gap-2">
                       {n} {model.noun.many}
-                      {PACK_DISCOUNT[n] > 0 && (
+                      {model.discounts[n] > 0 && (
                         <span className={`hidden rounded-full px-2 py-0.5 text-xs font-bold sm:inline ${on ? 'bg-brand-cream/20' : 'bg-brand-orange/20 text-brand-orange'}`}>
-                          −{PACK_DISCOUNT[n]}%
+                          −{model.discounts[n]}%
                         </span>
                       )}
                     </span>

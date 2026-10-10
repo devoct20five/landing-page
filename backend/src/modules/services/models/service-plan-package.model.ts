@@ -57,6 +57,20 @@ export class ServicePlanPackage extends Model<ServicePlanPackage> {
   })
   declare label: string;
 
+  /** How many units this pack contains (3 / 7 / 15). 1 for project-priced services. */
+  @Default(1)
+  @Column({ type: DataType.SMALLINT.UNSIGNED, allowNull: false })
+  declare quantity: number;
+
+  /** Volume discount applied to unit price x quantity. */
+  @Default(0)
+  @Column({
+    type: DataType.DECIMAL(5, 2),
+    allowNull: false,
+    field: 'discount_percent',
+  })
+  declare discountPercent: number;
+
   @Default(0)
   @Column({
     type: DataType.SMALLINT.UNSIGNED,
