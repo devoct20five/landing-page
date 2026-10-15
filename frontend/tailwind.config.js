@@ -21,7 +21,8 @@ module.exports = {
         "2xl": "3rem",
       },
       screens: {
-        "2xl": "90rem", /* 1440px at 16px root; grows with the root on big screens */
+        "2xl":
+          "90rem" /* 1440px at 16px root; grows with the root on big screens */,
       },
     },
 
@@ -115,17 +116,25 @@ module.exports = {
       ======================================== */
 
       fontFamily: {
-        /* Primary typeface — Saira (Regular / Bold / Heavy) */
-        display: [
-          "var(--font-display)",
-          "Saira Variable",
-          "Saira",
+        /* Hero — Teko */
+        hero: [
+          "var(--font-hero)",
+          "Teko",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",
         ],
 
-        /* Secondary typeface — Satoshi Variable (Light / Regular / Bold) */
+        /* Paragraphs, links, headings, major text — Ubuntu */
+        display: [
+          "var(--font-display)",
+          "Ubuntu",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
+
+        /* Body / UI — Satoshi */
         body: [
           "var(--font-body)",
           "Satoshi",
@@ -135,19 +144,28 @@ module.exports = {
           "sans-serif",
         ],
 
+        /* Highlighted text — Great Vibes */
+        script: [
+          "var(--font-script)",
+          "Great Vibes",
+          "Brush Script MT",
+          "cursive",
+        ],
+
         mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
 
       /* Fluid type scale — one source of truth.
          Each token = clamp(phone minimum, rem + vw slope, desktop maximum).
-         Phone minimums are chosen so the longest uppercase Saira words
+         Phone minimums are chosen so the longest uppercase words
          ("COMPLICATED.", "EVERYTHING") still fit a 360px-wide screen.
          Everything is rem-based, so the html font-size steps on large
-         displays (see globals.css) scale the whole scale up together. */
+         displays (see globals.css) scale the whole scale up together.
+         Teko and Ubuntu max out at weight 700. */
       fontSize: {
         hero: [
           "clamp(2.5rem, 1.35rem + 5.8vw, 8rem)",
-          { lineHeight: ".9", letterSpacing: "-.025em", fontWeight: "900" },
+          { lineHeight: ".9", letterSpacing: ".01em", fontWeight: "700" },
         ],
         "display-2xl": [
           "clamp(2.5rem, 1.3rem + 5.2vw, 7rem)",
