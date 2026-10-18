@@ -12,14 +12,20 @@ export class ActivityController {
 
   @Get()
   @RequirePermissions('activity.view')
-  findAll(@Query() query: QueryActivityLogDto, @CurrentUser() user: RequestUser) {
+  findAll(
+    @Query() query: QueryActivityLogDto,
+    @CurrentUser() user: RequestUser,
+  ) {
     return this.activityService.findAll(query, user);
   }
 
   /** Dashboard "recent activity" widgets — grouped by calendar day. */
   @Get('feed')
   @RequirePermissions('activity.view')
-  findFeed(@Query() query: QueryActivityLogDto, @CurrentUser() user: RequestUser) {
+  findFeed(
+    @Query() query: QueryActivityLogDto,
+    @CurrentUser() user: RequestUser,
+  ) {
     return this.activityService.findGroupedByDay(query, user);
   }
 

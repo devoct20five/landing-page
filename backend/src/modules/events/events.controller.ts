@@ -31,7 +31,10 @@ export class EventsController {
 
   @Get(':id')
   @RequirePermissions('events.view')
-  findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
+  findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: RequestUser,
+  ) {
     return this.eventsService.findOne(id, user);
   }
 

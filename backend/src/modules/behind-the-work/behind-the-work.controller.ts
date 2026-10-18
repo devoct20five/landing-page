@@ -50,7 +50,10 @@ export class BehindTheWorkController {
 
   @Post()
   @RequirePermissions('behind_the_work.create')
-  create(@Body() dto: CreateBehindTheWorkDto, @CurrentUser() user: AuthenticatedUser) {
+  create(
+    @Body() dto: CreateBehindTheWorkDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.create(dto, user.id);
   }
 

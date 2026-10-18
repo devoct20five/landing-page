@@ -72,9 +72,11 @@ export class ApprovalsService {
     // What was missing was the staff side — a plain `staff` user had no
     // restriction and could list approvals for any project in the system.
     if (requester.userType === UserType.CLIENT) {
-      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+      where['clientId'] =
+        requester.clientId ?? '00000000-0000-0000-0000-000000000000';
     } else if (requester.roleSlug === 'staff') {
-      const scope = await this.accessControl.scopeProjectIdWhereForStaff(requester);
+      const scope =
+        await this.accessControl.scopeProjectIdWhereForStaff(requester);
       Object.assign(where, scope);
     } else if (query.clientId) {
       where['clientId'] = query.clientId;
@@ -122,9 +124,11 @@ export class ApprovalsService {
     };
 
     if (requester.userType === UserType.CLIENT) {
-      where['clientId'] = requester.clientId ?? '00000000-0000-0000-0000-000000000000';
+      where['clientId'] =
+        requester.clientId ?? '00000000-0000-0000-0000-000000000000';
     } else if (requester.roleSlug === 'staff') {
-      const scope = await this.accessControl.scopeProjectIdWhereForStaff(requester);
+      const scope =
+        await this.accessControl.scopeProjectIdWhereForStaff(requester);
       Object.assign(where, scope);
     }
 

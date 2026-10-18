@@ -18,7 +18,15 @@ export class OrdersController {
 
   @Get()
   @RequirePermissions('orders.view')
-  list(@Query('page') page?: string, @Query('limit') limit?: string, @Query('status') status?: string) {
-    return this.orders.adminList(Math.max(1, Number(page) || 1), Math.min(100, Math.max(1, Number(limit) || 25)), status);
+  list(
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('status') status?: string,
+  ) {
+    return this.orders.adminList(
+      Math.max(1, Number(page) || 1),
+      Math.min(100, Math.max(1, Number(limit) || 25)),
+      status,
+    );
   }
 }

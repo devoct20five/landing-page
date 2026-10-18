@@ -69,7 +69,10 @@ export class NotificationsController {
 
   @Delete(':id')
   @RequirePermissions('notifications.view')
-  remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser) {
+  remove(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.remove(id, user.id);
   }
 }
